@@ -163,6 +163,21 @@
       line-height: 1.55;
     }
 
+    .guide-link {
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      transition: .2s;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .guide-link:hover {
+      transform: translateY(-2px);
+      border-color: #8fc9de;
+      background: #eef9ff;
+    }
+
     .timeline {
       display: grid;
       gap: 10px;
@@ -451,10 +466,10 @@
           <span class="badge berry">頁面導覽</span>
           <h2>這一頁可以做什麼？</h2>
           <div class="guide">
-            <div class="guide-item"><strong>總覽與到校提醒：</strong>快速抓本學期規則與重要節點。</div>
-            <div class="guide-item"><strong>14 大情境：</strong>用關鍵字查詢，直接對學生回應。</div>
-            <div class="guide-item"><strong>科系願景：</strong>用 1 句話引導學生看見升學與就業方向。</div>
-            <div class="guide-item"><strong>工具與聯絡：</strong>掃碼啟用翻譯工具，並快速找到協作窗口。</div>
+            <button class="guide-item guide-link" data-jump-tab="overview"><strong>總覽與到校提醒：</strong>快速抓本學期規則與重要節點。</button>
+            <button class="guide-item guide-link" data-jump-tab="scenarios"><strong>14 大情境：</strong>用關鍵字查詢，直接對學生回應。</button>
+            <button class="guide-item guide-link" data-jump-tab="majors"><strong>科系願景：</strong>用 1 句話引導學生看見升學與就業方向。</button>
+            <button class="guide-item guide-link" data-jump-tab="resources"><strong>工具與聯絡：</strong>掃碼啟用翻譯工具，並快速找到協作窗口。</button>
           </div>
         </article>
 
@@ -690,14 +705,23 @@
 
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabPages = document.querySelectorAll(".tab-page");
+    const guideLinks = document.querySelectorAll("[data-jump-tab]");
+
+    function activateTab(tabName) {
+      tabButtons.forEach((b) => b.classList.toggle("active", b.dataset.tab === tabName));
+      const target = "tab-" + tabName;
+      tabPages.forEach((p) => p.classList.toggle("active", p.id === target));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
 
     tabButtons.forEach((btn) => {
       btn.addEventListener("click", () => {
-        tabButtons.forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        const target = "tab-" + btn.dataset.tab;
-        tabPages.forEach((p) => p.classList.toggle("active", p.id === target));
+        activateTab(btn.dataset.tab);
       });
+    });
+
+    guideLinks.forEach((link) => {
+      link.addEventListener("click", () => activateTab(link.dataset.jumpTab));
     });
 
     const cards = document.getElementById("cards");
