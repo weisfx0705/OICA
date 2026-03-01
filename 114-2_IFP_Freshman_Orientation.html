@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>義守大學國際專班外籍新生輔導懶人包｜老師版互動小幫手</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fffaf2;
+      --paper: #ffffff;
+      --ink: #24404a;
+      --sub: #52717b;
+      --mint: #b7f2d4;
+      --sky: #bfe6ff;
+      --peach: #ffd9bd;
+      --sun: #ffe98a;
+      --berry: #ff9fb4;
+      --danger: #ff7f7f;
+      --shadow: 0 8px 0 #e8dfd0;
+      --radius: 20px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 18% 12%, #fff1b6 0, #fff1b6 11%, transparent 12%),
+        radial-gradient(circle at 82% 8%, #d7f4ff 0, #d7f4ff 10%, transparent 11%),
+        radial-gradient(circle at 92% 90%, #ffe1ea 0, #ffe1ea 13%, transparent 14%),
+        linear-gradient(160deg, #fffef8, var(--bg));
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 20px 18px 46px;
+    }
+
+    .hero {
+      background: var(--paper);
+      border: 3px solid #f2e8d7;
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "🧸";
+      position: absolute;
+      right: 16px;
+      top: 8px;
+      font-size: 44px;
+      transform: rotate(8deg);
+    }
+
+    h1, h2, h3 {
+      font-family: "Baloo 2", "Noto Sans TC", sans-serif;
+      margin: 0;
+      letter-spacing: .3px;
+    }
+
+    h1 { font-size: clamp(1.45rem, 3.5vw, 2.25rem); line-height: 1.2; }
+    h2 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); margin-bottom: 10px; }
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--sub);
+      line-height: 1.7;
+    }
+
+    .tabs {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tab-btn {
+      border: 2px solid #cbe0e6;
+      background: #fff;
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--ink);
+      transition: .2s;
+    }
+
+    .tab-btn:hover,
+    .tab-btn.active {
+      border-color: #89c3d4;
+      background: #ecf9ff;
+      transform: translateY(-1px);
+    }
+
+    .tab-page {
+      margin-top: 16px;
+      display: none;
+      animation: fade .3s ease;
+    }
+
+    .tab-page.active { display: block; }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 2px solid #f3eadb;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+
+    .panel.small { grid-column: span 12; }
+    .panel.large { grid-column: span 12; }
+    .panel.half { grid-column: span 12; }
+
+    @media (min-width: 900px) {
+      .panel.small { grid-column: span 4; }
+      .panel.large { grid-column: span 8; }
+      .panel.half { grid-column: span 6; }
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 10px;
+      padding: 3px 10px;
+      font-size: .85rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .badge.mint { background: var(--mint); }
+    .badge.sun { background: var(--sun); }
+    .badge.peach { background: var(--peach); }
+    .badge.berry { background: #ffdbe6; }
+
+    .guide {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .guide-item {
+      border: 2px dashed #e8d8bd;
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: #fffdf8;
+      line-height: 1.55;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .event {
+      background: #fffdf9;
+      border: 2px dashed #f0d9b5;
+      border-radius: 14px;
+      padding: 10px 12px;
+      line-height: 1.6;
+    }
+
+    .event strong { color: #d06445; }
+
+    .checklist label {
+      display: flex;
+      gap: 8px;
+      margin: 8px 0;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .progress {
+      margin-top: 10px;
+      height: 14px;
+      border-radius: 999px;
+      border: 2px solid #f0e6d4;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #7dd9b0, #9bdcf9);
+      transition: width .25s ease;
+    }
+
+    .footer {
+      margin-top: 14px;
+      font-size: .95rem;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    .contact-footer {
+      margin-top: 18px;
+      background: #fff;
+      border: 2px solid #f0e5d3;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 14px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+
+    .contact-footer h3 { margin-bottom: 6px; }
+
+    .scenario-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .scenario-controls input {
+      border: 2px solid #cfe2e8;
+      border-radius: 12px;
+      padding: 10px 12px;
+      flex: 1;
+      min-width: 220px;
+      font-size: 1rem;
+    }
+
+    .chip {
+      border: 2px solid #c9dce2;
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: .2s;
+    }
+
+    .chip.active,
+    .chip:hover {
+      border-color: #91c8d6;
+      background: #effaff;
+      transform: translateY(-1px);
+    }
+
+    .cards {
+      display: grid;
+      gap: 10px;
+    }
+
+    .card {
+      background: #fff;
+      border: 2px solid #f1e7d8;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .card summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .card summary::-webkit-details-marker { display: none; }
+    .card[data-type="redirect"] summary { background: #fff2f2; }
+    .card[data-type="daily"] summary { background: #f3fbff; }
+    .card[data-type="language"] summary { background: #f8fff4; }
+    .card[data-type="emotion"] summary { background: #fff6fd; }
+
+    .card-body {
+      padding: 12px 14px 16px;
+      border-top: 1px dashed #ecdcbf;
+      line-height: 1.7;
+    }
+
+    .lang {
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 10px;
+      background: #fffaf0;
+      font-size: .95rem;
+    }
+
+    .lang span {
+      font-weight: 700;
+      color: #7d5d34;
+    }
+
+    .tri-grid {
+      margin-top: 10px;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 960px) {
+      .tri-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+
+    .tri-block {
+      border: 2px solid #efe3cd;
+      border-radius: 12px;
+      padding: 10px;
+      background: #fffdfa;
+      font-size: .94rem;
+      line-height: 1.6;
+    }
+
+    .tri-block.active {
+      border-color: #93cbe0;
+      background: #f1fbff;
+    }
+
+    .tri-head {
+      font-weight: 700;
+      color: #6b4f30;
+      margin-bottom: 6px;
+    }
+
+    .quick {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .major-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .major-nav button {
+      border: 2px solid #cde8f4;
+      background: #f0faff;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .major-nav button.active,
+    .major-nav button:hover {
+      background: #d7f4ff;
+      border-color: #8fc9de;
+    }
+
+    .major-card {
+      border: 2px solid #e9dfcf;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fffefb;
+    }
+
+    .major-card h3 { margin-bottom: 8px; }
+
+    .tip {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f8fff1;
+      border: 2px dashed #cde9ba;
+      line-height: 1.6;
+    }
+
+    .qr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .qr-card {
+      border: 2px solid #f1e7d8;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+      text-align: center;
+    }
+
+    .qr-card img {
+      width: 170px;
+      height: 170px;
+      border: 6px solid #fff6dc;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .voice-shot {
+      margin-top: 8px;
+      border: 2px solid #eadfce;
+      border-radius: 14px;
+      background: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .voice-shot img {
+      max-width: 360px;
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #e5ddd2;
+      background: #f9f9f9;
+    }
+
+    a { color: #1f84a8; font-weight: 700; word-break: break-all; }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <h1>義守大學國際專班外籍新生輔導懶人包<br>老師版互動小幫手</h1>
+      <p class="subtitle">以導師現場使用為核心：先看總覽，再進情境分頁即查即用，降低現場溝通壓力。</p>
+
+      <nav class="tabs" id="tabs">
+        <button class="tab-btn active" data-tab="overview">總覽與到校提醒</button>
+        <button class="tab-btn" data-tab="scenarios">14 大情境對話</button>
+        <button class="tab-btn" data-tab="majors">科系願景引導</button>
+        <button class="tab-btn" data-tab="resources">工具與聯絡</button>
+      </nav>
+    </header>
+
+    <section class="tab-page active" id="tab-overview">
+      <div class="grid">
+        <article class="panel large" style="grid-column: span 12;">
+          <span class="badge berry">頁面導覽</span>
+          <h2>這一頁可以做什麼？</h2>
+          <div class="guide">
+            <div class="guide-item"><strong>總覽與到校提醒：</strong>快速抓本學期規則與重要節點。</div>
+            <div class="guide-item"><strong>14 大情境：</strong>用關鍵字查詢，直接對學生回應。</div>
+            <div class="guide-item"><strong>科系願景：</strong>用 1 句話引導學生看見升學與就業方向。</div>
+            <div class="guide-item"><strong>工具與聯絡：</strong>掃碼啟用翻譯工具，並快速找到協作窗口。</div>
+          </div>
+        </article>
+
+        <article class="panel half">
+          <span class="badge sun">關鍵時程</span>
+          <h2>114 學年度第 2 學期新生到校提醒</h2>
+          <div class="timeline">
+            <div class="event">華語先修需完成 <strong>1 年、至少 720 小時</strong>。</div>
+            <div class="event">因入境延遲，<strong>114-2 華語課程與暑假安排順延 2 週</strong>。</div>
+            <div class="event">升讀大一前需通過 <strong>TOCFL A2</strong>。</div>
+          </div>
+        </article>
+
+        <article class="panel half" id="mentorTasks">
+          <span class="badge mint">導師行動清單</span>
+          <h2>第一次見面，可以聊聊．．．</h2>
+          <p class="tip"><strong>請老師，可以強調一年後就讀貴系的願景。</strong></p>
+          <div class="checklist" id="checklist">
+            <label><input type="checkbox"> 介紹校園生活資源（餐廳、交通、購物）</label>
+            <label><input type="checkbox"> 鼓勵學生多說華語，降低犯錯焦慮</label>
+            <label><input type="checkbox"> 主動關心想家與壓力狀況</label>
+            <label><input type="checkbox"> 涉及簽證/工作證/獎學金時立即轉介國際處</label>
+            <label><input type="checkbox"> 3/31前至應用資訊系統填寫新生定向輔導（每位學生1份）</label>
+          </div>
+          <div class="progress"><div class="bar" id="bar"></div></div>
+          <p class="footer" id="progressText">完成 0 / 4 項</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="tab-page" id="tab-scenarios">
+      <div class="panel">
+        <span class="badge berry">14 大情境對話</span>
+        <h2>即查即用：導師回應腳本</h2>
+
+        <div class="scenario-controls">
+          <input id="searchBox" type="search" placeholder="搜尋情境，例如：請假、想家、ARC、打工..." />
+          <button class="chip active" data-filter="all">全部</button>
+          <button class="chip" data-filter="daily">生活</button>
+          <button class="chip" data-filter="language">語言課堂</button>
+          <button class="chip" data-filter="emotion">情緒支持</button>
+          <button class="chip" data-filter="redirect">需轉介</button>
+        </div>
+
+        <div class="scenario-controls" id="langChooser">
+          <span class="footer" style="margin:0;">閱讀焦點語言（下方仍完整顯示三語）：</span>
+          <button class="chip active" data-lang="zh">繁中</button>
+          <button class="chip" data-lang="vi">Tiếng Việt</button>
+          <button class="chip" data-lang="en">English</button>
+        </div>
+
+        <div class="cards" id="cards"></div>
+      </div>
+    </section>
+
+    <section class="tab-page" id="tab-majors">
+      <div class="panel">
+        <span class="badge mint">科系願景引導</span>
+        <h2>完整三語引導</h2>
+        <div class="major-nav" id="majorNav"></div>
+        <div class="quick" id="majorCards"></div>
+      </div>
+    </section>
+
+    <section class="tab-page" id="tab-resources">
+      <div class="grid">
+        <article class="panel large">
+          <span class="badge peach">AI 即時翻譯工具</span>
+          <h2>掃碼使用（QR Code）</h2>
+          <div class="voice-shot">
+            <img
+              alt="Use Voice 按鈕截圖示意"
+              src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='372' height='301' viewBox='0 0 372 301'%3E%3Crect width='372' height='301' fill='%23e7e7e7'/%3E%3Crect x='0' y='42' width='252' height='174' rx='28' fill='%23f7f7f7' stroke='%23cccccc'/%3E%3Ccircle cx='108' cy='129' r='27' fill='none'/%3E%3Cpath d='M108 109a6 6 0 0 1 6 6v11a6 6 0 0 1-12 0v-11a6 6 0 0 1 6-6z' fill='%23000'/%3E%3Cpath d='M98 128c0 6 4 11 10 12v6h-4v3h9v-3h-4v-6c6-1 10-6 10-12h-3c0 5-4 9-8 9s-8-4-8-9h-2z' fill='%23000'/%3E%3Ccircle cx='206' cy='129' r='32' fill='%23ececec'/%3E%3Crect x='188' y='120' width='4' height='18' rx='2' fill='%23333'/%3E%3Crect x='196' y='115' width='4' height='28' rx='2' fill='%23333'/%3E%3Crect x='204' y='112' width='4' height='34' rx='2' fill='%23333'/%3E%3Crect x='212' y='115' width='4' height='28' rx='2' fill='%23333'/%3E%3Crect x='220' y='120' width='4' height='18' rx='2' fill='%23333'/%3E%3Crect x='120' y='216' width='150' height='46' rx='14' fill='%23000'/%3E%3Ctext x='195' y='245' text-anchor='middle' font-size='36' font-family='Arial, sans-serif' fill='white'%3EUse Voice%3C/text%3E%3C/svg%3E"
+            />
+          </div>
+          <p class="tip">備註：Chatgpt project 支援即時語音，請打開連結後，登入自己的帳號，在project中點擊use voice的按鈕，開始語音翻譯。</p>
+          <div class="qr-grid" id="qrGrid"></div>
+          <p class="footer">建議使用情境：破冰自我介紹、請假溝通、情緒安撫初步對話（免費版有每日上限）。</p>
+        </article>
+
+        <article class="panel small">
+          <span class="badge sun">外語輔導員</span>
+          <h2>協作窗口</h2>
+          <p>阮秋芳<br><a href="mailto:celia@isu.edu.tw">celia@isu.edu.tw</a><br>07-6577711 Ext.2086</p>
+          <p>阮玉翠<br><a href="mailto:mia1005@isu.edu.tw">mia1005@isu.edu.tw</a><br>07-6577711 Ext.2644</p>
+          <p>阮友重<br><a href="mailto:daniel18@isu.edu.tw">daniel18@isu.edu.tw</a><br>07-6577711 Ext.2098</p>
+        </article>
+
+      </div>
+    </section>
+
+    <footer class="contact-footer">
+      <h3>國際處</h3>
+      <div>84001 高雄市大樹區學城路一段1號，國際學院1樓</div>
+      <div>辦公時間：一(Mon) -五( Fri) : 8AM - 5PM (午休 Break: 12PM - 1PM)</div>
+      <div>TEL：886-7-6577711 ext.2099</div>
+      <div>EMAIL：<a href="mailto:oia@isu.edu.tw">oia@isu.edu.tw</a></div>
+    </footer>
+  </div>
+
+  <script>
+    const state = { lang: "zh", filter: "all", keyword: "" };
+
+    const scenarios = [
+      { id: 1, type: "daily", title: "校內用餐", ask: { zh: "老師，學校裡面哪裡可以買到好吃的？", vi: "Thưa thầy/cô, trong trường có chỗ nào bán đồ ăn ngon không ạ?", en: "Teacher, where can I buy good food on campus?" }, reply: { zh: "學校的餐廳有很多選擇，而且都很營養喔！如果一開始吃不習慣，可以去詢問國際處會說越南話的專員，他們通常會有一些很好的私房建議。", vi: "Căn tin trường có rất nhiều lựa chọn và đều rất bổ dưỡng! Nếu mới đầu ăn chưa quen, em có thể hỏi các chuyên viên nói tiếng Việt ở Phòng Quốc tế, họ thường có những gợi ý rất hay.", en: "The school cafeteria has many nutritious choices! If you are not used to it at first, you can ask the Vietnamese-speaking staff at the OIA. They usually have some great recommendations." } },
+      { id: 2, type: "daily", title: "購買日用品", ask: { zh: "我想買一些生活用品（衛生紙、洗髮精），要去哪裡買？", vi: "Em muốn mua một số đồ dùng sinh hoạt (giấy vệ sinh, dầu gội) thì mua ở đâu ạ?", en: "I want to buy some daily necessities (tissue, shampoo). Where should I go?" }, reply: { zh: "推薦你直接到學校對面的「義大購物中心」！裡面有非常多有名的商店，例如「屈臣氏」，要買日常生活用品非常方便。", vi: "Gợi ý em đến \"Trung tâm thương mại E-Da\" ngay đối diện trường! Trong đó có rất nhiều cửa hàng nổi tiếng, ví dụ như \"Watsons\", mua đồ dùng sinh hoạt rất tiện lợi.", en: "I highly recommend the \"E-Da Outlet Mall\" right across from the school! There are many famous stores inside, such as \"Watsons\", making it very convenient to buy daily necessities." } },
+      { id: 3, type: "daily", title: "生病就醫與健保", ask: { zh: "老師，我今天覺得頭痛、發燒，該怎麼辦？看醫生會不會很貴？", vi: "Thưa thầy/cô, hôm nay em thấy đau đầu, sốt, em phải làm sao ạ? Khám bệnh có đắt không?", en: "Teacher, I have a headache and a fever today. What should I do? Is seeing a doctor expensive?" }, reply: { zh: "如果不舒服，請隨時跟老師或國際處的專員說。我們義守大學擁有自己的「義大醫院」，就醫非常方便。另外，只要你們在這裡待滿六個月，就可以享有台灣的「全民健康保險」，看病會有很大的費用補助喔！", vi: "Nếu thấy không khỏe, hãy nói ngay với thầy/cô hoặc chuyên viên Phòng Quốc tế. Đại học I-Shou có \"Bệnh viện E-Da\" trực thuộc, khám bệnh rất tiện. Ngoài ra, chỉ cần ở đây đủ 6 tháng, các em sẽ được tham gia \"Bảo hiểm Y tế Toàn dân\" của Đài Loan, được hỗ trợ rất nhiều chi phí khám chữa bệnh!", en: "If you feel sick, please tell your teacher or the OIA staff. I-Shou University has its own \"E-Da Hospital,\" so getting medical care is very convenient. Also, once you stay here for six months, you will be covered by Taiwan's \"National Health Insurance,\" which heavily subsidizes medical expenses!" } },
+      { id: 4, type: "daily", title: "交通接駁", ask: { zh: "我週末想去高雄市區逛逛，要怎麼搭車？", vi: "Cuối tuần em muốn đi dạo ở trung tâm Cao Hùng, em phải đi xe thế nào ạ?", en: "I want to visit downtown Kaohsiung this weekend. How do I take the bus?" }, reply: { zh: "校園內有「義大客運」可以直達高鐵站或捷運站，非常方便安全。記得出門要注意安全，早點回宿舍喔！", vi: "Trong trường có \"Xe buýt E-Da\" đi thẳng đến trạm tàu cao tốc hoặc tàu điện ngầm, rất tiện và an toàn. Nhớ chú ý an toàn và về ký túc xá sớm nhé!", en: "You can take the \"E-Da Bus\" on campus directly to the HSR or MRT station. It's very convenient and safe. Have fun and return to the dorm early!" } },
+      { id: 5, type: "daily", title: "垃圾分類", ask: { zh: "老師，台灣的垃圾分類好複雜，我不知道怎麼丟。", vi: "Thưa thầy/cô, phân loại rác ở Đài Loan phức tạp quá, em không biết vứt thế nào.", en: "Teacher, Taiwan's recycling rules are so complicated. I don't know how to throw away my garbage." }, reply: { zh: "沒關係，慢慢學。主要分成「一般垃圾」、「資源回收（紙、塑膠、鐵鋁罐）」和「廚餘」。宿舍會有圖示說明，可以看著圖丟。", vi: "Không sao, cứ học từ từ. Rác chia thành \"rác thường\", \"rác tái chế (giấy, nhựa, lon)\" và \"rác thức ăn thừa\". Ký túc xá có bảng hướng dẫn bằng hình ảnh, em cứ nhìn theo nhé.", en: "That's okay, take your time to learn. It's mainly \"general garbage\", \"recycling (paper, plastic, cans)\", and \"food waste\". The dorm has picture guides to help you." } },
+      { id: 6, type: "language", title: "開口說華語", ask: { zh: "我會一點點中文，但我怕說錯被笑，不敢開口。", vi: "Em biết một chút tiếng Trung, nhưng em sợ nói sai bị cười nên không dám mở lời.", en: "I know a little Chinese, but I'm afraid of making mistakes and being laughed at, so I don't speak." }, reply: { zh: "不要怕！老師們都很開心聽到你們努力說中文。就算說錯，我們也會耐心聽懂，多說才會進步！", vi: "Đừng sợ! Các thầy cô rất vui khi nghe các em cố gắng nói tiếng Trung. Dù nói sai, chúng tôi vẫn kiên nhẫn lắng nghe, nói nhiều mới tiến bộ được!", en: "Don't be afraid! Teachers are very happy to hear you try speaking Chinese. Even if you make mistakes, we will listen patiently. Practice makes perfect!" } },
+      { id: 7, type: "language", title: "課程進度跟不上", ask: { zh: "中文課教得好快，我有些聽不懂，覺得壓力很大。", vi: "Lớp tiếng Trung dạy nhanh quá, có chỗ em nghe không hiểu, em thấy áp lực lắm.", en: "The Chinese class is too fast. I don't understand some parts and feel stressed." }, reply: { zh: "學習新語言本來就不容易，你已經做得很好了。如果有不懂的地方，下課可以問老師，或請助教幫忙複習。", vi: "Học ngôn ngữ mới vốn không dễ dàng, em đã làm rất tốt rồi. Nếu có chỗ nào không hiểu, sau giờ học hãy hỏi thầy cô, hoặc nhờ trợ giảng giúp ôn tập nhé.", en: "Learning a new language is hard, and you are doing great. If you don't understand, ask the teacher after class or ask the TA to help you review." } },
+      { id: 8, type: "language", title: "請假規定", ask: { zh: "老師，我明天肚子痛不能去上課，要怎麼辦？", vi: "Thưa thầy/cô, ngày mai em đau bụng không đi học được thì phải làm sao ạ?", en: "Teacher, I have a stomachache tomorrow and can't go to class. What should I do?" }, reply: { zh: "請一定要提早讓華語老師或助教知道，並按照規定完成請假手續。要好好保重身體喔。", vi: "Hãy báo trước cho giáo viên tiếng Trung hoặc trợ giảng biết, và hoàn thành thủ tục xin nghỉ phép theo quy định nhé. Giữ gìn sức khỏe nha.", en: "Please let your Chinese teacher or TA know in advance and follow the rules to apply for leave. Take good care of yourself." } },
+      { id: 9, type: "language", title: "尋求安靜讀書空間", ask: { zh: "宿舍有時候比較吵，哪裡有安靜的地方可以念書？", vi: "Ký túc xá đôi khi hơi ồn, có chỗ nào yên tĩnh để học bài không ạ?", en: "The dorm is sometimes noisy. Where can I find a quiet place to study?" }, reply: { zh: "學校的圖書館非常漂亮又安靜，是很棒的讀書地點。各學院也有自學空間，歡迎多加利用。", vi: "Thư viện của trường rất đẹp và yên tĩnh, là nơi tuyệt vời để học bài. Các khoa cũng có không gian tự học, em hãy tận dụng nhé.", en: "The university library is beautiful and quiet, making it a great place to study. Each college also has self-study areas you can use." } },
+      { id: 10, type: "emotion", title: "想家與孤單", ask: { zh: "剛來台灣覺得很孤單，晚上都會想家偷哭。", vi: "Mới đến Đài Loan em thấy rất cô đơn, tối nào cũng nhớ nhà và khóc thầm.", en: "I feel very lonely since I just arrived in Taiwan. I secretly cry at night missing home." }, reply: { zh: "這是非常正常的感受，老師以前出國念書也會這樣。你可以多跟同學聊聊天，或隨時來找老師、助教說說話，我們都是你在台灣的家人。", vi: "Cảm giác này rất bình thường, trước đây thầy/cô đi học xa cũng vậy. Em có thể trò chuyện với bạn bè, hoặc tìm thầy/cô, trợ giảng để tâm sự, chúng tôi là gia đình của em ở Đài Loan.", en: "This is very normal; I felt the same when I studied abroad. Talk to your classmates, or come chat with me or the TAs anytime. We are your family in Taiwan." } },
+      { id: 11, type: "redirect", title: "打工與工作證", ask: { zh: "老師，我可以去外面餐廳打工賺錢嗎？要怎麼申請工作證？", vi: "Thưa thầy/cô, em có thể ra ngoài làm thêm ở nhà hàng để kiếm tiền không? Xin giấy phép làm việc thế nào ạ?", en: "Teacher, can I work part-time at a restaurant outside to earn money? How do I apply for a work permit?" }, reply: { zh: "打工有非常嚴格的法律規定，如果弄錯會被取消簽證！請你帶護照直接去找「國際處的輔導員」，他們會幫你辦理合法的手續。", vi: "Việc làm thêm có quy định pháp luật rất nghiêm ngặt, nếu sai phạm sẽ bị hủy visa! Em hãy mang hộ chiếu đến gặp \"Chuyên viên Phòng Quốc tế\", họ sẽ giúp em làm thủ tục hợp pháp.", en: "Part-time work has strict legal rules; making a mistake could cancel your visa! Please take your passport to the \"OIA Counselors\", they will help you apply legally." } },
+      { id: 12, type: "redirect", title: "居留證與簽證問題", ask: { zh: "我的居留證好像下個月要到期了，我該怎麼辦？", vi: "Thẻ cư trú của em hình như tháng sau hết hạn, em phải làm sao ạ?", en: "My ARC seems to expire next month. What should I do?" }, reply: { zh: "居留證過期會被重罰喔！這件事非常重要，請你明天馬上把居留證拍下來，傳給「國際處專修部助教」，請他們協助你延期。", vi: "Thẻ cư trú quá hạn sẽ bị phạt rất nặng! Việc này rất quan trọng, ngày mai em hãy chụp lại thẻ cư trú và gửi cho \"Trợ giảng bộ phận dự bị Phòng Quốc tế\" để họ giúp em gia hạn ngay.", en: "Overstaying your ARC will result in heavy fines! This is very important. Please take a photo of your ARC tomorrow and send it to the \"OIA TAs\" immediately for extension assistance." } },
+      { id: 13, type: "redirect", title: "轉系與學業規劃", ask: { zh: "老師，我大一不想念現在選的這個系了，我可以換去其他系嗎？", vi: "Thưa thầy/cô, năm nhất em không muốn học ngành đã chọn nữa, em có thể chuyển sang ngành khác không?", en: "Teacher, I don't want to study my current chosen major next year. Can I change to another department?" }, reply: { zh: "教育部對國際專班的科系選擇有特殊限制（必須是重點產業）。請你預約時間去跟「國際處輔導員」討論，確認你符合哪些轉系資格。", vi: "Bộ Giáo dục có quy định đặc biệt về việc chọn ngành của lớp chuyên ban (phải là ngành trọng điểm). Em hãy đặt lịch hẹn với \"Chuyên viên Phòng Quốc tế\" để thảo luận xem em đủ điều kiện chuyển sang ngành nào nhé.", en: "The Ministry of Education has special restrictions on changing majors for this program. Please schedule an appointment with the \"OIA Counselors\" to discuss which departments you are eligible to transfer to." } },
+      { id: 14, type: "redirect", title: "獎學金與財務困難", ask: { zh: "老師，我家裡最近有點困難，我如果拿到 A2 會有多少獎學金？", vi: "Thưa thầy/cô, gia đình em gần đây hơi khó khăn, nếu em đạt A2 thì sẽ được bao nhiêu tiền học bổng ạ?", en: "Teacher, my family is having some financial difficulties recently. How much scholarship will I get if I pass A2?" }, reply: { zh: "老師理解你的辛苦。獎學金的發放金額和條件（比如出席率）有詳細的規定。為了保障你的權益，請你去「國際處」找專員，他們會幫你計算並說明補助方案。", vi: "Thầy/cô hiểu sự vất vả của em. Tiền học bổng và điều kiện (ví dụ: điểm danh) có quy định rất chi tiết. Để bảo vệ quyền lợi của mình, em hãy đến \"Phòng Quốc tế\" gặp chuyên viên, họ sẽ tính toán và giải thích các gói hỗ trợ cho em.", en: "I understand your situation. The scholarship amounts and conditions (like attendance) have detailed rules. To protect your rights, please go to the \"OIA\" to see the staff; they will calculate and explain the subsidies for you." } }
+    ];
+
+    const majors = [
+      {
+        key: "ee",
+        label: "電機工程學系",
+        intro: {
+          zh: "電機系以通訊與光電、控制與智慧科技、能源與系統科技為核心，課程結合理論、實作與 AI+X 應用，並透過電路深碗課程與太陽光電主題實作，讓學生從大一開始建立工程問題解決能力。若持續強化程式、控制與系統整合能力，一年後銜接大一專業學習將更有方向，未來在智慧電網、能源管理、光電通訊與自動化系統皆具發展潛力。",
+          vi: "Khoa Kỹ thuật Điện tập trung vào ba hướng chính: truyền thông-quang điện, điều khiển-công nghệ thông minh, và năng lượng-hệ thống. Chương trình kết hợp nền tảng lý thuyết, thực hành và ứng dụng AI+X, giúp sinh viên rèn năng lực giải quyết vấn đề kỹ thuật từ năm đầu. Nếu tiếp tục tăng cường kỹ năng lập trình, điều khiển và tích hợp hệ thống, sau một năm chuẩn bị tiếng Hoa sẽ vào chuyên ngành thuận lợi hơn và có cơ hội phát triển ở lưới điện thông minh, quản lý năng lượng, truyền thông quang và tự động hóa.",
+          en: "Electrical Engineering at ISU is built around three domains: communications and photonics, control and intelligent technology, and energy and systems technology. The curriculum blends fundamentals, hands-on labs, and AI+X applications, including advanced circuit and solar-themed practical training. Students who steadily strengthen coding, control, and system integration during the first year can transition into major study with clear direction. Career pathways include smart grids, energy management, photonic communications, and intelligent automation."
+        }
+      },
+      {
+        key: "ene",
+        label: "電子工程學系",
+        intro: {
+          zh: "電子系強調嵌入式系統、電子實驗、專題製作與 AI 應用，從組合語言到系統開發逐步培養硬體與軟體整合能力。課程設計重視實作導向，學生可在專題中完成從需求分析、電路驗證到成果展示的完整流程。若能在語言班期間先建立數理與程式基礎，升讀後更容易掌握電子設計節奏，未來可朝半導體、嵌入式裝置、智慧感測與 AIoT 產業發展。",
+          vi: "Khoa Kỹ thuật Điện tử chú trọng hệ thống nhúng, thí nghiệm điện tử, đồ án tốt nghiệp và ứng dụng AI. Từ hợp ngữ đến phát triển hệ thống, sinh viên được đào tạo theo lộ trình tích hợp phần cứng và phần mềm. Mô hình học tập thiên về thực hành, giúp người học trải nghiệm đầy đủ từ phân tích yêu cầu, kiểm chứng mạch đến trình bày sản phẩm. Nếu xây nền toán-lý-lập trình tốt trong năm dự bị, việc vào chuyên ngành sẽ thuận lợi hơn; hướng nghề nghiệp gồm bán dẫn, thiết bị nhúng, cảm biến thông minh và AIoT.",
+          en: "Electronic Engineering emphasizes embedded systems, electronics laboratories, capstone projects, and AI-enabled applications. From assembly language to system development, students progressively build hardware-software integration skills. Its practice-driven curriculum trains students through the full product flow: requirement analysis, circuit validation, and final demonstration. With strong math and programming preparation during the language year, students can adapt faster to major coursework and later pursue careers in semiconductors, embedded devices, smart sensing, and AIoT industries."
+        }
+      },
+      {
+        key: "csie",
+        label: "資訊工程學系",
+        intro: {
+          zh: "資工系聚焦軟體開發、資安、物聯網與行動應用，並結合 NVIDIA 夥伴資源與 iPAS 證照輔導，強化學生就業競爭力。系上提供五年一貫與專業檢定支持，鼓勵學生提早規劃升學與職涯。若在先修階段建立穩定的程式思維與邏輯能力，進入大一後可更快銜接演算法、系統與 AI 課程。未來可投入軟體工程、資訊安全、雲端服務與智慧製造數位轉型等領域。",
+          vi: "Khoa Khoa học Máy tính và Kỹ thuật Thông tin tập trung vào phát triển phần mềm, an ninh thông tin, IoT và ứng dụng di động. Nhà trường kết nối nguồn lực đối tác NVIDIA và hỗ trợ chứng chỉ iPAS để nâng cao năng lực việc làm. Chương trình có lộ trình 5 năm liên thông và tư vấn chuyên môn giúp sinh viên chuẩn bị sớm cho học tập và nghề nghiệp. Nếu rèn tốt tư duy lập trình và logic từ giai đoạn dự bị, sinh viên sẽ theo kịp các học phần thuật toán, hệ thống và AI; cơ hội nghề nghiệp mở rộng ở phần mềm, an ninh mạng, cloud và chuyển đổi số.",
+          en: "Computer Science and Information Engineering focuses on software development, cybersecurity, IoT, and mobile applications. With NVIDIA partner resources and iPAS certification support, the program strengthens practical employability. It also provides integrated graduate pathways and professional guidance for early academic and career planning. Students who build solid coding logic during the preparatory year can transition smoothly into algorithms, systems, and AI coursework. Future opportunities include software engineering, cybersecurity, cloud services, and digital transformation in smart industries."
+        }
+      },
+      {
+        key: "mis",
+        label: "資訊管理學系",
+        intro: {
+          zh: "資管系以「技術＋管理」雙軌培育為特色，課程同時訓練程式設計、系統分析與經營管理方法，讓學生能理解企業問題並提出可落地的數位解方。系上鼓勵五年一貫升學與跨域學習，協助學生在商業與科技之間建立整合能力。若一年內把語言與基礎資訊能力打穩，升讀後將更能掌握資料分析、商業系統與 AI 管理應用，未來可朝數位轉型、商業分析與資訊專案管理發展。",
+          vi: "Khoa Quản trị Hệ thống Thông tin đào tạo theo mô hình kép “công nghệ + quản trị”. Sinh viên học lập trình, phân tích hệ thống và phương pháp quản lý để hiểu bài toán doanh nghiệp và đưa ra giải pháp số khả thi. Khoa khuyến khích lộ trình 5 năm liên thông và học liên ngành, giúp người học kết nối tốt giữa kinh doanh và công nghệ. Nếu củng cố ngôn ngữ và nền tảng CNTT trong năm dự bị, sinh viên sẽ học tốt phân tích dữ liệu, hệ thống doanh nghiệp và ứng dụng AI trong quản trị; định hướng nghề nghiệp gồm chuyển đổi số, business analytics và quản lý dự án CNTT.",
+          en: "Information Management is distinguished by a dual-track model that integrates technology and management. Students develop programming and systems analysis skills while learning business and operational methods, enabling them to translate organizational needs into practical digital solutions. The department supports integrated graduate pathways and interdisciplinary learning to build strong business-tech integration. With solid language and IT foundations in the first year, students can progress quickly in data analytics, enterprise systems, and AI-enabled management, leading to careers in digital transformation, business analytics, and IT project management."
+        }
+      },
+      {
+        key: "mae",
+        label: "機械與自動化工程學系",
+        intro: {
+          zh: "機械與自動化系以智慧設計與製造、AI 機器人、逆向工程等特色場域為核心，強調「做中學」與跨域整合。課程從基礎機械原理延伸到智慧機械工廠實作，培養學生把理論轉為產品與系統的能力。若在先修年先建立工程數學與邏輯表達能力，銜接後更能掌握機電整合與自動化流程。未來可投入智慧製造、機器人應用、數位雙生與設備工程等高需求職位。",
+          vi: "Khoa Cơ khí và Tự động hóa lấy các không gian học tập đặc trưng như thiết kế-chế tạo thông minh, phòng thí nghiệm robot AI và kỹ thuật ngược làm nền tảng, nhấn mạnh học qua thực hành và tích hợp liên ngành. Chương trình đi từ nguyên lý cơ khí cơ bản đến thực hành nhà máy thông minh, giúp sinh viên chuyển hóa lý thuyết thành sản phẩm và hệ thống. Nếu chuẩn bị tốt toán kỹ thuật và tư duy logic trong năm dự bị, việc vào học chuyên ngành cơ điện tử và tự động hóa sẽ hiệu quả hơn. Cơ hội nghề nghiệp cao ở sản xuất thông minh, robot, digital twin và kỹ thuật thiết bị.",
+          en: "Mechanical and Automation Engineering is built on signature learning spaces in smart design and manufacturing, AI robotics, and reverse engineering, with a strong learn-by-doing approach. Coursework progresses from core mechanical principles to smart-factory implementation, training students to convert theory into working systems and products. Students who strengthen engineering math and analytical communication during the preparatory year transition more effectively into mechatronics and automation. Career prospects are strong in smart manufacturing, robotics applications, digital twins, and equipment engineering."
+        }
+      },
+      {
+        key: "che",
+        label: "化學工程學系",
+        intro: {
+          zh: "化工系以跨域創新、全英教學與數位學習為發展主軸，目標培育兼具永續理念與國際視野的化工人才。課程涵蓋質能平衡、工程數學、物化、單元操作、反應工程與程序控制，並導入 AI 與模組化主題課群，強化產業實務連結。若能在先修階段養成科學思辨與數據分析能力，升讀後將更容易進入製程優化與綠色製造領域，未來可發展於半導體材料、能源化工與生醫製程。",
+          vi: "Khoa Kỹ thuật Hóa học phát triển theo ba trục: đổi mới liên ngành, giảng dạy tiếng Anh và học tập số hóa, với mục tiêu đào tạo nhân lực hóa công có tư duy bền vững và tầm nhìn quốc tế. Chương trình gồm cân bằng vật chất-năng lượng, toán kỹ thuật, hóa lý, quá trình-thiết bị, phản ứng và điều khiển quá trình; đồng thời tích hợp AI và các cụm học phần mô-đun gắn với thực tiễn công nghiệp. Nếu rèn tốt tư duy khoa học và phân tích dữ liệu từ năm dự bị, sinh viên sẽ thuận lợi hơn khi học tối ưu hóa quy trình và sản xuất xanh, mở rộng cơ hội ở vật liệu bán dẫn, năng lượng và quy trình y-sinh.",
+          en: "Chemical Engineering at ISU develops along three pillars: interdisciplinary innovation, English-medium instruction, and digital learning. The program trains engineers with sustainability awareness and global competence through core courses in material/energy balances, engineering mathematics, physical chemistry, unit operations, reaction engineering, and process control. AI-integrated and modular themes connect learning with industry practice. Students who build scientific reasoning and data analysis skills during the preparatory year can more readily advance into process optimization and green manufacturing, with future pathways in semiconductor materials, energy-related chemical industries, and biomedical processing."
+        }
+      },
+      {
+        key: "civil",
+        label: "土木工程學系",
+        intro: {
+          zh: "土木系以創新工程教育為特色，將問題導向學習與深碗實作嵌入四年課程，強化結構、大地、材料、交通與營建管理整合能力。系上結合工程軟體模擬與實務專題，讓學生在真實議題中訓練判斷、設計與跨域協作。若在先修期累積數理與華語專業表達能力，升讀後更能掌握工程分析與現場應用。未來可投入公共建設、永續營建、防災工程與工程顧問等關鍵職涯。",
+          vi: "Khoa Kỹ thuật Xây dựng nổi bật với mô hình giáo dục kỹ thuật đổi mới, tích hợp học theo vấn đề và thực hành chuyên sâu vào toàn bộ chương trình 4 năm. Sinh viên được rèn năng lực tổng hợp về kết cấu, địa kỹ thuật, vật liệu, giao thông và quản lý xây dựng. Khoa kết hợp mô phỏng phần mềm với đồ án thực tế để huấn luyện tư duy đánh giá, thiết kế và phối hợp liên ngành. Nếu chuẩn bị tốt toán-lý và năng lực tiếng Hoa chuyên môn trong giai đoạn dự bị, sinh viên sẽ theo kịp phân tích kỹ thuật và ứng dụng hiện trường, mở ra cơ hội trong hạ tầng công cộng, xây dựng bền vững, phòng chống thiên tai và tư vấn kỹ thuật.",
+          en: "Civil Engineering features an innovation-driven model that embeds problem-based learning and deep practical studios across the four-year curriculum. Students develop integrated competence in structures, geotechnics, materials, transportation, and construction management. By combining engineering software simulation with real-world projects, the department trains judgment, design capability, and interdisciplinary collaboration. With strong math foundations and technical Chinese communication prepared in the first year, students can transition effectively into analysis and field application. Career tracks include public infrastructure, sustainable construction, disaster-prevention engineering, and consulting."
+        }
+      },
+      {
+        key: "mse",
+        label: "材料科學與工程學系",
+        intro: {
+          zh: "材料系以支援台灣高科技電子、半導體、光電與金屬產業人才需求為宗旨，並透過區域產學合作提供學生完整學用接軌路徑。課程結合材料基礎、分析檢測與製程應用，搭配企業參訪、專題與實作活動，培養從材料選擇到性能驗證的工程能力。若在先修年強化理化基礎與專業華語，升讀後將更能掌握先進材料開發，未來可投入半導體封裝、金屬材料與生醫材料等領域。",
+          vi: "Khoa Khoa học và Kỹ thuật Vật liệu được thành lập nhằm đáp ứng nhu cầu nhân lực cho các ngành công nghệ cao của Đài Loan như điện tử, bán dẫn, quang điện và kim loại, đồng thời tạo lộ trình gắn kết học tập-việc làm thông qua hợp tác doanh nghiệp khu vực. Chương trình kết hợp nền tảng vật liệu, phân tích-kiểm định và ứng dụng công nghệ chế tạo, cùng tham quan doanh nghiệp và đồ án thực hành để rèn năng lực từ lựa chọn vật liệu đến xác nhận tính năng. Nếu củng cố tốt nền tảng hóa-lý và tiếng Hoa chuyên ngành trong năm dự bị, sinh viên sẽ thuận lợi hơn khi học vật liệu tiên tiến, với hướng nghề nghiệp ở đóng gói bán dẫn, vật liệu kim loại và vật liệu y-sinh.",
+          en: "Materials Science and Engineering is positioned to serve Taiwan’s high-tech sectors, including electronics, semiconductors, photonics, and metals, while offering strong industry-linked learning pathways. The curriculum integrates materials fundamentals, characterization and testing, and process applications, reinforced by company visits and project-based practice. Students are trained to move from material selection to performance validation with engineering rigor. Those who build solid chemistry/physics foundations and technical Chinese during the preparatory year can progress faster in advanced materials development, with careers in semiconductor packaging, metallic materials, and biomedical materials."
+        }
+      },
+      {
+        key: "hm",
+        label: "餐旅管理學系",
+        intro: {
+          zh: "餐旅系結合校內實習、國際見習與產學合作，培養具服務設計、營運管理與跨文化溝通能力的專業人才。課程從餐廳實作、活動企劃到旅宿管理逐步深化，讓學生在真實場域建立團隊協作與顧客體驗設計能力。若在語言先修期同步累積華語與英語表達，升讀後更能掌握國際服務情境。未來可投入飯店、餐飲、會展與觀光產業，並具備向管理職發展的競爭力。",
+          vi: "Khoa Quản trị Nhà hàng Khách sạn kết hợp thực tập nội bộ, kiến tập quốc tế và hợp tác doanh nghiệp để đào tạo nhân lực có năng lực thiết kế dịch vụ, quản trị vận hành và giao tiếp liên văn hóa. Chương trình đi từ thực hành nhà hàng, tổ chức sự kiện đến quản trị lưu trú, giúp sinh viên phát triển kỹ năng làm việc nhóm và thiết kế trải nghiệm khách hàng trong bối cảnh thực tế. Nếu tăng cường tiếng Hoa và tiếng Anh trong giai đoạn dự bị, sinh viên sẽ thích nghi tốt hơn với môi trường dịch vụ quốc tế. Cơ hội nghề nghiệp gồm khách sạn, nhà hàng, MICE và du lịch, với lộ trình lên vị trí quản lý.",
+          en: "Hospitality Management combines on-campus practicum, international field training, and industry collaboration to cultivate professionals in service design, operations management, and cross-cultural communication. Coursework progresses from restaurant practice and event planning to lodging management, building teamwork and customer-experience capabilities in real settings. Students who strengthen both Chinese and English during the preparatory year can transition more smoothly into international service contexts. Career options include hotels, food and beverage operations, MICE, and tourism, with clear pathways toward management roles."
+        }
+      },
+      {
+        key: "ca",
+        label: "廚藝暨美食學學系",
+        intro: {
+          zh: "廚藝暨美食學學系以「廚藝科學與美學」及「綠色健康飲食」為發展主軸，課程兼顧中西餐、烘焙、飲調與餐飲服務，培養具國際觀與實作力的廚藝人才。系上重視校內餐廳實作、專題與證照輔導，讓學生從技術訓練走向創意研發與廚務管理。若在先修階段加強語言溝通與專業術語，升讀後更能展現跨文化餐飲表達力。未來可投入主廚、產品研發、餐飲管理與美食創業。",
+          vi: "Khoa Nghệ thuật Ẩm thực và Gastronomy phát triển theo hai trục chính: “khoa học và mỹ học ẩm thực” cùng “dinh dưỡng xanh-lành mạnh”. Chương trình bao gồm món Á-Âu, làm bánh, pha chế và phục vụ nhà hàng, nhằm đào tạo đầu bếp có tầm nhìn quốc tế và năng lực thực hành vững. Khoa chú trọng thực tập tại nhà hàng trong trường, đồ án và hỗ trợ chứng chỉ để sinh viên đi từ kỹ thuật nghề đến sáng tạo sản phẩm và quản trị bếp. Nếu tăng cường giao tiếp ngôn ngữ và thuật ngữ chuyên môn từ năm dự bị, sinh viên sẽ thể hiện tốt hơn trong môi trường ẩm thực đa văn hóa. Định hướng nghề nghiệp gồm bếp trưởng, R&D món ăn, quản trị F&B và khởi nghiệp ẩm thực.",
+          en: "The Department of Culinary Arts and Gastronomy is built on two pillars: culinary science and aesthetics, and green healthy dining. Its curriculum spans Chinese and Western cuisine, baking, beverage preparation, and food service, preparing students with international perspective and strong hands-on competence. Through campus restaurant practice, capstone work, and certification support, students progress from technical training to culinary innovation and kitchen management. With stronger language communication and professional terminology during the preparatory year, students can perform better in multicultural food-service settings. Career paths include chef positions, product R&D, F&B management, and culinary entrepreneurship."
+        }
+      },
+      {
+        key: "bme",
+        label: "生物醫學工程學系",
+        intro: {
+          zh: "生醫系以醫療產業需求為導向，融合醫學、工程與資訊科技，培育可將技術落地於健康照護場域的專業人才。課程強調醫材應用、智慧醫療、生醫材料與專題實戰，協助學生建立從需求辨識到系統開發的完整能力。若在先修年強化華語溝通與基礎理工能力，升讀後更能掌握跨領域學習節奏。未來可投入醫療器材、醫工研發、生技產業、AI 醫療與研究所進修。",
+          vi: "Khoa Kỹ thuật Y sinh định hướng theo nhu cầu ngành y tế, tích hợp y học, kỹ thuật và công nghệ thông tin để đào tạo nhân lực có thể triển khai công nghệ vào thực tiễn chăm sóc sức khỏe. Chương trình nhấn mạnh ứng dụng thiết bị y tế, y tế thông minh, vật liệu y sinh và đồ án thực chiến, giúp sinh viên hình thành năng lực đầy đủ từ nhận diện nhu cầu đến phát triển hệ thống. Nếu chuẩn bị tốt tiếng Hoa và nền tảng khoa học-kỹ thuật trong năm dự bị, sinh viên sẽ theo kịp học tập liên ngành hiệu quả hơn. Cơ hội phát triển gồm thiết bị y tế, R&D y sinh, công nghệ sinh học, AI y tế và học cao học.",
+          en: "Biomedical Engineering is driven by healthcare industry needs and integrates medicine, engineering, and information technology to train professionals who can apply technology in real care environments. The curriculum highlights medical device applications, smart healthcare, biomaterials, and project-based practice, building full-cycle capability from needs identification to system development. Students who strengthen Chinese communication and core STEM skills during the preparatory year can adapt faster to interdisciplinary learning. Future pathways include medical devices, biomedical R&D, biotech industries, AI healthcare applications, and graduate studies."
+        }
+      }
+    ];
+
+    const translationTools = [
+      {
+        name: "越南口說翻譯官",
+        url: "https://chatgpt.com/g/g-p-699fd9f95698819189422249d7a2efbf-yue-nan-kou-shuo-fan-yi-guan/project?ref=mini-ntp"
+      },
+      {
+        name: "英語口說翻譯官",
+        url: "https://chatgpt.com/g/g-p-696e286f6458819199e78f7ed337a7b5-kou-shuo-fan-yi-guan/project?ref=mini"
+      }
+    ];
+
+    const tabButtons = document.querySelectorAll(".tab-btn");
+    const tabPages = document.querySelectorAll(".tab-page");
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        tabButtons.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = "tab-" + btn.dataset.tab;
+        tabPages.forEach((p) => p.classList.toggle("active", p.id === target));
+      });
+    });
+
+    const cards = document.getElementById("cards");
+    const searchBox = document.getElementById("searchBox");
+    const langBtns = document.querySelectorAll("#langChooser .chip");
+    const filterBtns = document.querySelectorAll(".scenario-controls .chip[data-filter]");
+
+    function renderCards() {
+      const q = state.keyword.trim().toLowerCase();
+      const list = scenarios.filter((s) => {
+        const passFilter = state.filter === "all" || s.type === state.filter;
+        const passKeyword = !q || [
+          s.title, s.ask.zh, s.ask.vi, s.ask.en, s.reply.zh, s.reply.vi, s.reply.en
+        ].join(" ").toLowerCase().includes(q);
+        return passFilter && passKeyword;
+      });
+
+      cards.innerHTML = list.map((s) => {
+        const typeLabel = { daily: "生活", language: "語言課堂", emotion: "情緒支持", redirect: "需轉介" }[s.type];
+        return `
+          <details class="card" data-type="${s.type}">
+            <summary>
+              <span>(${s.id}) ${s.title}・${typeLabel}</span>
+              <span>${s.type === "redirect" ? "🚨" : "💬"}</span>
+            </summary>
+            <div class="card-body">
+              <div class="tri-grid">
+                <div class="tri-block ${state.lang === "zh" ? "active" : ""}">
+                  <div class="tri-head">繁中</div>
+                  <div><strong>學生問：</strong>${s.ask.zh}</div>
+                  <div class="lang"><span>導師可說：</span>${s.reply.zh}</div>
+                </div>
+                <div class="tri-block ${state.lang === "vi" ? "active" : ""}">
+                  <div class="tri-head">Tiếng Việt</div>
+                  <div><strong>Học sinh hỏi:</strong> ${s.ask.vi}</div>
+                  <div class="lang"><span>Giáo viên trả lời:</span> ${s.reply.vi}</div>
+                </div>
+                <div class="tri-block ${state.lang === "en" ? "active" : ""}">
+                  <div class="tri-head">English</div>
+                  <div><strong>Student asks:</strong> ${s.ask.en}</div>
+                  <div class="lang"><span>Mentor reply:</span> ${s.reply.en}</div>
+                </div>
+              </div>
+            </div>
+          </details>
+        `;
+      }).join("");
+
+      if (!list.length) {
+        cards.innerHTML = `<div class="tip">找不到符合的情境，試試關鍵字：<strong>請假、想家、打工、ARC、獎學金</strong></div>`;
+      }
+    }
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        state.filter = btn.dataset.filter;
+        renderCards();
+      });
+    });
+
+    langBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        langBtns.forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        state.lang = btn.dataset.lang;
+        renderCards();
+      });
+    });
+
+    searchBox.addEventListener("input", (e) => {
+      state.keyword = e.target.value;
+      renderCards();
+    });
+
+    const checkboxes = Array.from(document.querySelectorAll("#checklist input"));
+    const bar = document.getElementById("bar");
+    const progressText = document.getElementById("progressText");
+    function updateProgress() {
+      const done = checkboxes.filter((c) => c.checked).length;
+      const total = checkboxes.length;
+      bar.style.width = Math.round((done / total) * 100) + "%";
+      progressText.textContent = `完成 ${done} / ${total} 項`;
+    }
+    checkboxes.forEach((c) => c.addEventListener("change", updateProgress));
+
+    const majorCards = document.getElementById("majorCards");
+    const majorNav = document.getElementById("majorNav");
+    majorNav.innerHTML = majors.map((m) => `<button data-major-nav="${m.key}">${m.label}</button>`).join("");
+    majorCards.innerHTML = majors.map((m) => `
+      <article class="major-card" id="major-${m.key}">
+        <h3>🎯 ${m.label}</h3>
+        <div class="tri-grid">
+          <div class="tri-block">
+            <div class="tri-head">繁中</div>
+            <div>${m.intro.zh}</div>
+          </div>
+          <div class="tri-block">
+            <div class="tri-head">Tiếng Việt</div>
+            <div>${m.intro.vi}</div>
+          </div>
+          <div class="tri-block">
+            <div class="tri-head">English</div>
+            <div>${m.intro.en}</div>
+          </div>
+        </div>
+      </article>
+    `).join("");
+
+    majorNav.querySelectorAll("button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.majorNav;
+        const target = document.getElementById(`major-${key}`);
+        majorNav.querySelectorAll("button").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    const qrGrid = document.getElementById("qrGrid");
+    qrGrid.innerHTML = translationTools.map((tool) => {
+      const qr = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(tool.url)}`;
+      return `
+        <article class="qr-card">
+          <h3>${tool.name}</h3>
+          <img src="${qr}" alt="${tool.name} QR Code" />
+          <p><a href="${tool.url}" target="_blank" rel="noreferrer">開啟原始連結</a></p>
+        </article>
+      `;
+    }).join("");
+
+    renderCards();
+  </script>
+</body>
+</html>
