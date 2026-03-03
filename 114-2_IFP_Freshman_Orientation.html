@@ -465,7 +465,7 @@
 
     .qr-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       margin-top: 8px;
     }
@@ -647,11 +647,20 @@
         <article class="panel large">
           <span class="badge peach">AI 即時翻譯工具</span>
           <h2>掃碼使用（QR Code）</h2>
-          <div class="voice-shot">
+          <div class="voice-shot"
+            style="display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;">
             <img alt="Use Voice 按鈕截圖示意"
               src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='372' height='301' viewBox='0 0 372 301'%3E%3Crect width='372' height='301' fill='%23e7e7e7'/%3E%3Crect x='0' y='42' width='252' height='174' rx='28' fill='%23f7f7f7' stroke='%23cccccc'/%3E%3Ccircle cx='108' cy='129' r='27' fill='none'/%3E%3Cpath d='M108 109a6 6 0 0 1 6 6v11a6 6 0 0 1-12 0v-11a6 6 0 0 1 6-6z' fill='%23000'/%3E%3Cpath d='M98 128c0 6 4 11 10 12v6h-4v3h9v-3h-4v-6c6-1 10-6 10-12h-3c0 5-4 9-8 9s-8-4-8-9h-2z' fill='%23000'/%3E%3Ccircle cx='206' cy='129' r='32' fill='%23ececec'/%3E%3Crect x='188' y='120' width='4' height='18' rx='2' fill='%23333'/%3E%3Crect x='196' y='115' width='4' height='28' rx='2' fill='%23333'/%3E%3Crect x='204' y='112' width='4' height='34' rx='2' fill='%23333'/%3E%3Crect x='212' y='115' width='4' height='28' rx='2' fill='%23333'/%3E%3Crect x='220' y='120' width='4' height='18' rx='2' fill='%23333'/%3E%3Crect x='120' y='216' width='150' height='46' rx='14' fill='%23000'/%3E%3Ctext x='195' y='245' text-anchor='middle' font-size='36' font-family='Arial, sans-serif' fill='white'%3EUse Voice%3C/text%3E%3C/svg%3E" />
+            <a href="https://youtube.com/shorts/IJNr9_d764g?feature=share" target="_blank" rel="noreferrer"
+              style="display:inline-flex;align-items:center;gap:8px;background:#FF0000;color:#fff;padding:12px 20px;border-radius:12px;text-decoration:none;font-weight:700;font-size:1rem;transition:.2s;box-shadow:0 3px 10px rgba(255,0,0,.25);white-space:nowrap;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#fff">
+                <path
+                  d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 0 0 .5 6.19 31.6 31.6 0 0 0 0 12a31.6 31.6 0 0 0 .5 5.81 3.02 3.02 0 0 0 2.12 2.14c1.88.55 9.38.55 9.38.55s7.5 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14A31.6 31.6 0 0 0 24 12a31.6 31.6 0 0 0-.5-5.81zM9.75 15.02V8.98L15.5 12l-5.75 3.02z" />
+              </svg>
+              ▶ 觀看 Demo 影片
+            </a>
           </div>
-          <p class="tip">備註：Chatgpt project 支援即時語音，請打開連結後，登入自己的帳號，在project中點擊use voice的按鈕，開始語音翻譯。</p>
+          <p class="tip"><strong>備註：Chatgpt project 支援即時語音，請打開連結後，登入自己的帳號，在project中點擊use voice的按鈕，開始語音翻譯。</strong></p>
           <div class="qr-grid" id="qrGrid"></div>
           <p class="footer">建議使用情境：破冰自我介紹、請假溝通、情緒安撫初步對話（免費版有每日上限）。</p>
         </article>
@@ -659,9 +668,9 @@
         <article class="panel small">
           <span class="badge sun">外語輔導員</span>
           <h2>本處協作窗口</h2>
-          <p>阮秋芳<br><a href="mailto:celia@isu.edu.tw">celia@isu.edu.tw</a><br>07-6577711 Ext.2086</p>
-          <p>阮玉翠<br><a href="mailto:mia1005@isu.edu.tw">mia1005@isu.edu.tw</a><br>07-6577711 Ext.2644</p>
-          <p>阮友重<br><a href="mailto:daniel18@isu.edu.tw">daniel18@isu.edu.tw</a><br>07-6577711 Ext.2098</p>
+          <p>阮秋芳（越語專業）<br><a href="mailto:celia@isu.edu.tw">celia@isu.edu.tw</a><br>07-6577711 Ext.2086</p>
+          <p>阮玉翠（越語專業）<br><a href="mailto:mia1005@isu.edu.tw">mia1005@isu.edu.tw</a><br>07-6577711 Ext.2644</p>
+          <p>胡美佳（印尼語專業）<br><a href="mailto:meganagnes@isu.edu.tw">meganagnes@isu.edu.tw</a><br>07-6577711 Ext.2088</p>
         </article>
 
 
@@ -808,6 +817,14 @@
       {
         name: "英語口說翻譯官",
         url: "https://chatgpt.com/g/g-p-696e286f6458819199e78f7ed337a7b5-kou-shuo-fan-yi-guan/project?ref=mini"
+      },
+      {
+        name: "印尼語口說翻譯官",
+        url: "https://chatgpt.com/g/g-p-69a6800873b0819187e09d69aa7b8644-yin-ni-yu-kou-shuo-fan-yi-guan/project"
+      },
+      {
+        name: "泰語口說翻譯官",
+        url: "https://chatgpt.com/g/g-p-69a68063049c81919aa422ba55866ae3-tai-yu-kou-shuo-fan-yi-guan/project"
       }
     ];
 
