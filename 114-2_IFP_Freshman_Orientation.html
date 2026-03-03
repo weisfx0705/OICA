@@ -1,12 +1,15 @@
 <!doctype html>
 <html lang="zh-Hant">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>義守大學國際專班外籍新生輔導懶人包｜老師版互動小幫手</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap"
+    rel="stylesheet" />
   <style>
     :root {
       --bg: #fffaf2;
@@ -23,7 +26,9 @@
       --radius: 20px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -62,14 +67,23 @@
       transform: rotate(8deg);
     }
 
-    h1, h2, h3 {
+    h1,
+    h2,
+    h3 {
       font-family: "Baloo 2", "Noto Sans TC", sans-serif;
       margin: 0;
       letter-spacing: .3px;
     }
 
-    h1 { font-size: clamp(1.45rem, 3.5vw, 2.25rem); line-height: 1.2; }
-    h2 { font-size: clamp(1.2rem, 2.5vw, 1.6rem); margin-bottom: 10px; }
+    h1 {
+      font-size: clamp(1.45rem, 3.5vw, 2.25rem);
+      line-height: 1.2;
+    }
+
+    h2 {
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      margin-bottom: 10px;
+    }
 
     .subtitle {
       margin-top: 8px;
@@ -108,7 +122,9 @@
       animation: fade .3s ease;
     }
 
-    .tab-page.active { display: block; }
+    .tab-page.active {
+      display: block;
+    }
 
     .grid {
       display: grid;
@@ -124,14 +140,30 @@
       padding: 18px;
     }
 
-    .panel.small { grid-column: span 12; }
-    .panel.large { grid-column: span 12; }
-    .panel.half { grid-column: span 12; }
+    .panel.small {
+      grid-column: span 12;
+    }
+
+    .panel.large {
+      grid-column: span 12;
+    }
+
+    .panel.half {
+      grid-column: span 12;
+    }
 
     @media (min-width: 900px) {
-      .panel.small { grid-column: span 4; }
-      .panel.large { grid-column: span 8; }
-      .panel.half { grid-column: span 6; }
+      .panel.small {
+        grid-column: span 4;
+      }
+
+      .panel.large {
+        grid-column: span 8;
+      }
+
+      .panel.half {
+        grid-column: span 6;
+      }
     }
 
     .badge {
@@ -143,10 +175,21 @@
       margin-bottom: 8px;
     }
 
-    .badge.mint { background: var(--mint); }
-    .badge.sun { background: var(--sun); }
-    .badge.peach { background: var(--peach); }
-    .badge.berry { background: #ffdbe6; }
+    .badge.mint {
+      background: var(--mint);
+    }
+
+    .badge.sun {
+      background: var(--sun);
+    }
+
+    .badge.peach {
+      background: var(--peach);
+    }
+
+    .badge.berry {
+      background: #ffdbe6;
+    }
 
     .guide {
       display: grid;
@@ -192,7 +235,9 @@
       line-height: 1.6;
     }
 
-    .event strong { color: #d06445; }
+    .event strong {
+      color: #d06445;
+    }
 
     .checklist label {
       display: flex;
@@ -236,7 +281,9 @@
       color: var(--ink);
     }
 
-    .contact-footer h3 { margin-bottom: 6px; }
+    .contact-footer h3 {
+      margin-bottom: 6px;
+    }
 
     .scenario-controls {
       display: flex;
@@ -295,11 +342,25 @@
       align-items: center;
     }
 
-    .card summary::-webkit-details-marker { display: none; }
-    .card[data-type="redirect"] summary { background: #fff2f2; }
-    .card[data-type="daily"] summary { background: #f3fbff; }
-    .card[data-type="language"] summary { background: #f8fff4; }
-    .card[data-type="emotion"] summary { background: #fff6fd; }
+    .card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .card[data-type="redirect"] summary {
+      background: #fff2f2;
+    }
+
+    .card[data-type="daily"] summary {
+      background: #f3fbff;
+    }
+
+    .card[data-type="language"] summary {
+      background: #f8fff4;
+    }
+
+    .card[data-type="emotion"] summary {
+      background: #fff6fd;
+    }
 
     .card-body {
       padding: 12px 14px 16px;
@@ -328,7 +389,9 @@
     }
 
     @media (min-width: 960px) {
-      .tri-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .tri-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
 
     .tri-block {
@@ -387,7 +450,9 @@
       background: #fffefb;
     }
 
-    .major-card h3 { margin-bottom: 8px; }
+    .major-card h3 {
+      margin-bottom: 8px;
+    }
 
     .tip {
       margin-top: 10px;
@@ -438,14 +503,26 @@
       background: #f9f9f9;
     }
 
-    a { color: #1f84a8; font-weight: 700; word-break: break-all; }
+    a {
+      color: #1f84a8;
+      font-weight: 700;
+      word-break: break-all;
+    }
 
     @keyframes fade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <header class="hero">
@@ -466,10 +543,14 @@
           <span class="badge berry">頁面導覽</span>
           <h2>這一頁可以做什麼？</h2>
           <div class="guide">
-            <button class="guide-item guide-link" data-jump-tab="overview"><strong>總覽與到校提醒：</strong>快速抓本學期規則與重要節點。</button>
-            <button class="guide-item guide-link" data-jump-tab="scenarios"><strong>14 大情境：</strong>用關鍵字查詢，直接對學生回應。</button>
-            <button class="guide-item guide-link" data-jump-tab="majors"><strong>科系願景：</strong>用 1 句話引導學生看見升學與就業方向。</button>
-            <button class="guide-item guide-link" data-jump-tab="resources"><strong>工具與聯絡：</strong>掃碼啟用翻譯工具，並快速找到協作窗口。</button>
+            <button class="guide-item guide-link"
+              data-jump-tab="overview"><strong>總覽與到校提醒：</strong>快速抓本學期規則與重要節點。</button>
+            <button class="guide-item guide-link" data-jump-tab="scenarios"><strong>14
+                大情境：</strong>用關鍵字查詢，直接對學生回應。</button>
+            <button class="guide-item guide-link" data-jump-tab="majors"><strong>科系願景：</strong>用 1
+              句話引導學生看見升學與就業方向。</button>
+            <button class="guide-item guide-link"
+              data-jump-tab="resources"><strong>工具與聯絡：</strong>掃碼啟用翻譯工具，並快速找到協作窗口。</button>
           </div>
         </article>
 
@@ -494,7 +575,9 @@
             <label><input type="checkbox"> 涉及簽證/工作證/獎學金時立即轉介國際處</label>
             <label><input type="checkbox"> 3/31前至應用資訊系統填寫新生定向輔導（每位學生1份）</label>
           </div>
-          <div class="progress"><div class="bar" id="bar"></div></div>
+          <div class="progress">
+            <div class="bar" id="bar"></div>
+          </div>
           <p class="footer" id="progressText">完成 0 / 4 項</p>
         </article>
       </div>
@@ -536,14 +619,37 @@
 
     <section class="tab-page" id="tab-resources">
       <div class="grid">
+        <article class="panel large" style="grid-column: span 12;">
+          <span class="badge mint">📱 導師專屬 LINE 群組</span>
+          <h2>入學後的即時溝通管道</h2>
+          <p class="tip">待學生入學後，本處將為<strong>每一位導師</strong>建立一個<strong>專屬的 LINE 群組</strong>，方便即時溝通與輔導。</p>
+          <div class="guide" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+            <div class="guide-item" style="text-align:center;">
+              <div style="font-size:2rem;">👩‍🏫</div>
+              <strong>導師</strong>
+              <div style="color:var(--sub);font-size:.9rem;">班級導師本人</div>
+            </div>
+            <div class="guide-item" style="text-align:center;">
+              <div style="font-size:2rem;">🧑‍💼</div>
+              <strong>專屬 TA</strong>
+              <div style="color:var(--sub);font-size:.9rem;">本處指派之專屬助教</div>
+            </div>
+            <div class="guide-item" style="text-align:center;">
+              <div style="font-size:2rem;">👩‍🎓👨‍🎓</div>
+              <strong>所有專修部導生</strong>
+              <div style="color:var(--sub);font-size:.9rem;">該導師所帶之全體學生</div>
+            </div>
+          </div>
+          <p style="margin-top:12px;line-height:1.7;color:var(--sub);">透過此群組，導師可快速掌握學生動態、傳達重要訊息，TA
+            也能即時協助翻譯與溝通，確保輔導工作順暢進行。</p>
+        </article>
+
         <article class="panel large">
           <span class="badge peach">AI 即時翻譯工具</span>
           <h2>掃碼使用（QR Code）</h2>
           <div class="voice-shot">
-            <img
-              alt="Use Voice 按鈕截圖示意"
-              src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='372' height='301' viewBox='0 0 372 301'%3E%3Crect width='372' height='301' fill='%23e7e7e7'/%3E%3Crect x='0' y='42' width='252' height='174' rx='28' fill='%23f7f7f7' stroke='%23cccccc'/%3E%3Ccircle cx='108' cy='129' r='27' fill='none'/%3E%3Cpath d='M108 109a6 6 0 0 1 6 6v11a6 6 0 0 1-12 0v-11a6 6 0 0 1 6-6z' fill='%23000'/%3E%3Cpath d='M98 128c0 6 4 11 10 12v6h-4v3h9v-3h-4v-6c6-1 10-6 10-12h-3c0 5-4 9-8 9s-8-4-8-9h-2z' fill='%23000'/%3E%3Ccircle cx='206' cy='129' r='32' fill='%23ececec'/%3E%3Crect x='188' y='120' width='4' height='18' rx='2' fill='%23333'/%3E%3Crect x='196' y='115' width='4' height='28' rx='2' fill='%23333'/%3E%3Crect x='204' y='112' width='4' height='34' rx='2' fill='%23333'/%3E%3Crect x='212' y='115' width='4' height='28' rx='2' fill='%23333'/%3E%3Crect x='220' y='120' width='4' height='18' rx='2' fill='%23333'/%3E%3Crect x='120' y='216' width='150' height='46' rx='14' fill='%23000'/%3E%3Ctext x='195' y='245' text-anchor='middle' font-size='36' font-family='Arial, sans-serif' fill='white'%3EUse Voice%3C/text%3E%3C/svg%3E"
-            />
+            <img alt="Use Voice 按鈕截圖示意"
+              src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='372' height='301' viewBox='0 0 372 301'%3E%3Crect width='372' height='301' fill='%23e7e7e7'/%3E%3Crect x='0' y='42' width='252' height='174' rx='28' fill='%23f7f7f7' stroke='%23cccccc'/%3E%3Ccircle cx='108' cy='129' r='27' fill='none'/%3E%3Cpath d='M108 109a6 6 0 0 1 6 6v11a6 6 0 0 1-12 0v-11a6 6 0 0 1 6-6z' fill='%23000'/%3E%3Cpath d='M98 128c0 6 4 11 10 12v6h-4v3h9v-3h-4v-6c6-1 10-6 10-12h-3c0 5-4 9-8 9s-8-4-8-9h-2z' fill='%23000'/%3E%3Ccircle cx='206' cy='129' r='32' fill='%23ececec'/%3E%3Crect x='188' y='120' width='4' height='18' rx='2' fill='%23333'/%3E%3Crect x='196' y='115' width='4' height='28' rx='2' fill='%23333'/%3E%3Crect x='204' y='112' width='4' height='34' rx='2' fill='%23333'/%3E%3Crect x='212' y='115' width='4' height='28' rx='2' fill='%23333'/%3E%3Crect x='220' y='120' width='4' height='18' rx='2' fill='%23333'/%3E%3Crect x='120' y='216' width='150' height='46' rx='14' fill='%23000'/%3E%3Ctext x='195' y='245' text-anchor='middle' font-size='36' font-family='Arial, sans-serif' fill='white'%3EUse Voice%3C/text%3E%3C/svg%3E" />
           </div>
           <p class="tip">備註：Chatgpt project 支援即時語音，請打開連結後，登入自己的帳號，在project中點擊use voice的按鈕，開始語音翻譯。</p>
           <div class="qr-grid" id="qrGrid"></div>
@@ -552,11 +658,13 @@
 
         <article class="panel small">
           <span class="badge sun">外語輔導員</span>
-          <h2>協作窗口</h2>
+          <h2>本處協作窗口</h2>
           <p>阮秋芳<br><a href="mailto:celia@isu.edu.tw">celia@isu.edu.tw</a><br>07-6577711 Ext.2086</p>
           <p>阮玉翠<br><a href="mailto:mia1005@isu.edu.tw">mia1005@isu.edu.tw</a><br>07-6577711 Ext.2644</p>
           <p>阮友重<br><a href="mailto:daniel18@isu.edu.tw">daniel18@isu.edu.tw</a><br>07-6577711 Ext.2098</p>
         </article>
+
+
 
       </div>
     </section>
@@ -857,4 +965,5 @@
     renderCards();
   </script>
 </body>
+
 </html>
