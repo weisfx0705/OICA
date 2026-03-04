@@ -503,6 +503,48 @@
       background: #f9f9f9;
     }
 
+    /* 語音按鈕樣式 */
+    .voice-controls {
+      display: inline-flex;
+      gap: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+
+    .btn-v {
+      border: 1px solid #dce8ec;
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 6px;
+      font-size: 0.8rem;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .btn-v:hover {
+      background: #f0f9ff;
+      border-color: #8fc9de;
+    }
+
+    .btn-v.stop {
+      color: #d06445;
+    }
+
+    .btn-v.playing {
+      background: #e1f5fe;
+      border-color: #03a9f4;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
     a {
       color: #1f84a8;
       font-weight: 700;
@@ -828,6 +870,36 @@
       }
     ];
 
+    // 語音控制器
+    const voiceCtrl = {
+      synth: window.speechSynthesis,
+      utterance: null,
+      mapping: { zh: "zh-TW", vi: "vi-VN", en: "en-US" },
+      play(text, lang) {
+        this.stop();
+        this.utterance = new SpeechSynthesisUtterance(text);
+        this.utterance.lang = this.mapping[lang] || "zh-TW";
+        this.utterance.rate = 0.9;
+        this.synth.speak(this.utterance);
+        
+        // 更新 UI 狀態 (簡化處理)
+        document.querySelectorAll('.btn-v.play').forEach(b => b.classList.remove('playing'));
+      },
+      stop() {
+        if (this.synth.speaking) this.synth.cancel();
+      }
+    };
+
+    function getVoiceBtns(text, lang) {
+      const escapedText = text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      return `
+        <span class="voice-controls">
+          <button class="btn-v play" onclick="voiceCtrl.play('${escapedText}', '${lang}')">🔊 播放</button>
+          <button class="btn-v stop" onclick="voiceCtrl.stop()">⏹ 停止</button>
+        </span>
+      `;
+    }
+
     const tabButtons = document.querySelectorAll(".tab-btn");
     const tabPages = document.querySelectorAll(".tab-page");
     const guideLinks = document.querySelectorAll("[data-jump-tab]");
@@ -875,17 +947,17 @@
             <div class="card-body">
               <div class="tri-grid">
                 <div class="tri-block ${state.lang === "zh" ? "active" : ""}">
-                  <div class="tri-head">繁中</div>
+                  <div class="tri-head">繁中 ${getVoiceBtns(s.ask.zh + '。' + s.reply.zh, 'zh')}</div>
                   <div><strong>學生問：</strong>${s.ask.zh}</div>
                   <div class="lang"><span>導師可說：</span>${s.reply.zh}</div>
                 </div>
                 <div class="tri-block ${state.lang === "vi" ? "active" : ""}">
-                  <div class="tri-head">Tiếng Việt</div>
+                  <div class="tri-head">Tiếng Việt ${getVoiceBtns(s.ask.vi + '. ' + s.reply.vi, 'vi')}</div>
                   <div><strong>Học sinh hỏi:</strong> ${s.ask.vi}</div>
                   <div class="lang"><span>Giáo viên trả lời:</span> ${s.reply.vi}</div>
                 </div>
                 <div class="tri-block ${state.lang === "en" ? "active" : ""}">
-                  <div class="tri-head">English</div>
+                  <div class="tri-head">English ${getVoiceBtns(s.ask.en + '. ' + s.reply.en, 'en')}</div>
                   <div><strong>Student asks:</strong> ${s.ask.en}</div>
                   <div class="lang"><span>Mentor reply:</span> ${s.reply.en}</div>
                 </div>
@@ -942,15 +1014,15 @@
         <h3>🎯 ${m.label}</h3>
         <div class="tri-grid">
           <div class="tri-block">
-            <div class="tri-head">繁中</div>
+            <div class="tri-head">繁中 ${getVoiceBtns(m.intro.zh, 'zh')}</div>
             <div>${m.intro.zh}</div>
           </div>
           <div class="tri-block">
-            <div class="tri-head">Tiếng Việt</div>
+            <div class="tri-head">Tiếng Việt ${getVoiceBtns(m.intro.vi, 'vi')}</div>
             <div>${m.intro.vi}</div>
           </div>
           <div class="tri-block">
-            <div class="tri-head">English</div>
+            <div class="tri-head">English ${getVoiceBtns(m.intro.en, 'en')}</div>
             <div>${m.intro.en}</div>
           </div>
         </div>
