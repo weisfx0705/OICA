@@ -108,6 +108,16 @@
       gap: 22px;
       margin-top: 34px;
     }
+    .hero-grid > *,
+    .hero-card-grid > *,
+    .two-col > *,
+    .cards > *,
+    .position-grid > *,
+    .country-program-grid > *,
+    .solution-grid > *,
+    .strategy-strip > * {
+      min-width: 0;
+    }
     .hero-panel {
       padding: 24px;
       border-radius: 24px;
@@ -229,9 +239,12 @@
     .chart-box {
       position: relative;
       min-height: 380px;
+      max-width: 100%;
+      overflow: hidden;
     }
     .chart-box canvas {
       width: 100% !important;
+      max-width: 100% !important;
       height: 380px !important;
     }
     table {
@@ -478,16 +491,148 @@
     .download-pill:hover {
       background: rgba(167,58,42,0.14);
     }
+    .report-pager {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border: 1px solid rgba(22,33,29,0.12);
+      border-radius: 18px;
+      background: rgba(255, 250, 244, 0.94);
+      box-shadow: 0 18px 34px rgba(35, 28, 20, 0.14);
+      backdrop-filter: blur(12px);
+    }
+    .pager-status {
+      min-width: 168px;
+      line-height: 1.25;
+    }
+    .pager-status strong {
+      display: block;
+      font-size: 14px;
+      color: var(--ink);
+    }
+    .pager-status span {
+      display: block;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .pager-button {
+      appearance: none;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: var(--ink);
+      color: #fffaf5;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .pager-button[disabled] {
+      opacity: 0.35;
+      cursor: default;
+    }
     .isu-row td {
       background: rgba(167,58,42,0.12);
       font-weight: 700;
     }
     @media (max-width: 1100px) {
-      .hero-grid, .two-col, .notice-grid, .solution-grid, .cards, .position-grid, .strategy-strip {
+      .hero-grid, .two-col, .notice-grid, .position-grid, .strategy-strip {
         grid-template-columns: 1fr;
+      }
+      .cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .solution-grid.top-four {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .solution-grid.bottom-two,
+      .country-program-grid {
+        grid-template-columns: 1fr;
+      }
+      .shell {
+        width: min(1500px, calc(100vw - 20px));
+        padding: 18px 0 100px;
+      }
+      .section,
+      .hero {
+        padding: 24px;
+      }
+      .section-head {
+        align-items: start;
       }
       .chart-box canvas {
         height: 320px !important;
+      }
+      .panel {
+        padding: 18px;
+      }
+      table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      .attachment-table {
+        white-space: normal;
+      }
+    }
+    @media (max-width: 760px) {
+      body {
+        font-size: 16px;
+      }
+      .shell {
+        width: min(1500px, calc(100vw - 12px));
+        padding: 12px 0 110px;
+      }
+      .hero,
+      .section {
+        padding: 18px 16px;
+        border-radius: 22px;
+      }
+      h1 {
+        font-size: clamp(30px, 11vw, 44px);
+      }
+      .hero-panel h3,
+      .section h2 {
+        font-size: clamp(24px, 7vw, 34px);
+      }
+      .hero-panel p,
+      .section-head p,
+      .solution-card p,
+      .strategy-card p,
+      .mid-visual p {
+        font-size: 16px;
+      }
+      .cards,
+      .solution-grid.top-four,
+      .solution-grid.bottom-two,
+      .hero-card-grid {
+        grid-template-columns: 1fr;
+      }
+      .chart-box {
+        min-height: 290px;
+      }
+      .chart-box canvas {
+        height: 290px !important;
+      }
+      .report-pager {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        gap: 10px;
+        padding: 10px 12px;
+      }
+      .pager-status {
+        min-width: 0;
+        flex: 1;
+      }
+      .pager-button {
+        padding: 10px 12px;
+        font-size: 13px;
       }
     }
   </style>
@@ -860,6 +1005,14 @@
       </div>
     </section>
   </main>
+  <nav class="report-pager" aria-label="報告分頁導覽">
+    <button class="pager-button" id="prev-section" type="button">上頁</button>
+    <div class="pager-status">
+      <strong id="pager-title">封面</strong>
+      <span id="pager-count">1 / 11</span>
+    </div>
+    <button class="pager-button" id="next-section" type="button">下頁</button>
+  </nav>
   <script>
     const nationalOverviewData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "外國學生", "data": [18274, 18134, 20778, 24643], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "僑生", "data": [9796, 10175, 10583, 10931], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "港澳生", "data": [8992, 7966, 6570, 5302], "borderColor": "#315b96", "backgroundColor": "#315b9622"}]};
     const isuOverviewData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "境外學位生總數", "data": [1499, 1370, 1388, 1437], "borderColor": "#c1a24a", "backgroundColor": "#c1a24a22"}, {"label": "外國學生", "data": [918, 875, 993, 1128], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "僑生", "data": [94, 96, 105, 106], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "港澳生", "data": [464, 390, 284, 196], "borderColor": "#315b96", "backgroundColor": "#315b9622"}]};
@@ -1250,6 +1403,62 @@
         }
       }
     });
+
+    const reportSections = Array.from(document.querySelectorAll('main > section'));
+    const pagerTitle = document.getElementById('pager-title');
+    const pagerCount = document.getElementById('pager-count');
+    const prevSectionButton = document.getElementById('prev-section');
+    const nextSectionButton = document.getElementById('next-section');
+    let activeSectionIndex = 0;
+
+    function getSectionLabel(section, index) {
+      if (index === 0) return '封面';
+      return section.querySelector('.eyebrow')?.textContent?.trim() || `第 ${index + 1} 段`;
+    }
+
+    function updatePager(index) {
+      activeSectionIndex = index;
+      pagerTitle.textContent = getSectionLabel(reportSections[index], index);
+      pagerCount.textContent = `${index + 1} / ${reportSections.length}`;
+      prevSectionButton.disabled = index === 0;
+      nextSectionButton.disabled = index === reportSections.length - 1;
+    }
+
+    function scrollToSection(index) {
+      reportSections[index]?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      updatePager(index);
+    }
+
+    prevSectionButton.addEventListener('click', () => {
+      if (activeSectionIndex > 0) scrollToSection(activeSectionIndex - 1);
+    });
+
+    nextSectionButton.addEventListener('click', () => {
+      if (activeSectionIndex < reportSections.length - 1) scrollToSection(activeSectionIndex + 1);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowUp' || event.key === 'PageUp') {
+        event.preventDefault();
+        if (activeSectionIndex > 0) scrollToSection(activeSectionIndex - 1);
+      }
+      if (event.key === 'ArrowDown' || event.key === 'PageDown') {
+        event.preventDefault();
+        if (activeSectionIndex < reportSections.length - 1) scrollToSection(activeSectionIndex + 1);
+      }
+    });
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      const index = reportSections.indexOf(visible.target);
+      if (index >= 0) updatePager(index);
+    }, { threshold: [0.3, 0.55, 0.8] });
+
+    reportSections.forEach((section) => sectionObserver.observe(section));
+    updatePager(0);
 
   </script>
 </body>
