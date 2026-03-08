@@ -3003,7 +3003,7 @@
     const sourceMixData = { "labels": ["越南", "印尼", "香港", "日本", "泰國", "馬來西亞"], "datasets": [{ "label": "外國生", "data": [560, 201, 0, 88, 78, 27], "backgroundColor": "#a73a2a" }, { "label": "僑生", "data": [1, 67, 0, 0, 0, 36], "backgroundColor": "#1f5a4d" }, { "label": "港澳生", "data": [0, 0, 182, 0, 0, 0], "backgroundColor": "#315b96" }, { "label": "陸生", "data": [0, 0, 0, 0, 0, 0], "backgroundColor": "#c1a24a" }] };
     const deptTrendData = { "labels": ["111", "112", "113", "114"], "datasets": [{ "label": "餐旅管理學系", "data": [54, 42, 116, 202], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22" }, { "label": "企業管理學系", "data": [120, 109, 66, 55], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22" }, { "label": "智慧科技英語學士學位學程", "data": [66, 68, 69, 89], "borderColor": "#315b96", "backgroundColor": "#315b9622" }] };
     const overseasContextData = { "labels": ["111", "112", "113", "114"], "datasets": [{ "label": "境外學位生總數", "data": [1499, 1370, 1388, 1437], "backgroundColor": "#c1a24a" }, { "label": "境外新生實際註冊人數", "data": [368, 260, 279, 286], "backgroundColor": "#315b96" }], "shareLabels": [12.8, 12.83, 13.95, 15.35] };
-    const deptRiskData = { "labels": ["國際企業經營英語學士學位學程", "廚藝暨美食學學系", "智慧觀光餐旅管理英語學士學位學程", "國際傳媒與娛樂管理英語學士學位學程", "企業管理學系", "國際商務學系", "電影與電視學系", "大眾傳播學系"], "datasets": [{ "label": "114 境外生在學比率", "data": [95.18, 56.83, 96.55, 100.0, 23.3, 29.66, 22.03, 22.29], "backgroundColor": "#315b96" }, { "label": "114 新生註冊率", "data": [77.14, 62.9, 63.64, 52.63, 68.89, 55.56, 78.0, 61.22], "backgroundColor": "#a73a2a" }] };
+    const deptRiskData = { "labels": ["國際企業經營英語學士學位學程", "廚藝暨美食學學系", "智慧觀光餐旅管理英語學士學位學程", "國際傳媒與娛樂管理英語學士學位學程", "企業管理學系", "國際商務學系", "電影與電視學系", "大眾傳播學系", "智慧科技英語學士學位學程", "資訊管理學系", "機械與自動化工程學系", "資訊工程學系"], "datasets": [{ "label": "114 境外生在學比率", "data": [95.18, 56.83, 96.55, 100.0, 23.3, 29.66, 22.03, 22.29, 84.76, 25.0, 16.53, 12.22], "backgroundColor": "#315b96" }, { "label": "114 新生註冊率", "data": [77.14, 62.9, 63.64, 52.63, 68.89, 55.56, 78.0, 61.22, 94.12, 95.71, 100.0, 100.0], "backgroundColor": "#a73a2a" }] };
     const deptPressureData = { "labels": ["醫學科學與生物科技學系", "公共政策與管理學系", "資料科學與大數據分析學系", "國際溝通暨應用英語學系", "國際企業經營學系", "創意整合設計學系", "運動科技與休閒管理學系", "工業管理學系"], "datasets": [{ "label": "113 退學率", "data": [7.02, 6.18, 5.91, 5.84, 5.63, 5.51, 5.49, 5.38], "backgroundColor": "#a73a2a" }, { "label": "113 休學率", "data": [4.49, 3.37, 2.15, 3.9, 1.41, 4.24, 3.3, 8.6], "backgroundColor": "#315b96" }] };
     const benchmarkData = { "labels": ["靜宜大學", "銘傳大學", "長庚大學", "中國醫藥大學", "元智大學", "慈濟大學", "義守大學"], "datasets": [{ "label": "外國學生 113→114 成長率", "data": [37.04, 30.93, 23.32, 20.77, 19.24, 15.95, 13.6], "backgroundColor": ["#a73a2acc", "#a73a2acc", "#a73a2acc", "#a73a2acc", "#a73a2acc", "#a73a2acc", "#a73a2a"] }, { "label": "114 全校新生註冊率", "data": [97.47, 95.34, 94.01, 91.98, 97.08, 71.1, 86.84], "backgroundColor": ["#1f5a4dcc", "#1f5a4dcc", "#1f5a4dcc", "#1f5a4dcc", "#1f5a4dcc", "#1f5a4dcc", "#1f5a4d"] }, { "label": "114 學士班日間就學穩定率", "data": [92.23, 90.88, 92.7, 95.59, 94.55, 91.26, 88.81], "backgroundColor": ["#315b96cc", "#315b96cc", "#315b96cc", "#315b96cc", "#315b96cc", "#315b96cc", "#315b96"] }] };
     const hkCountData = { "labels": ["中國文化大學", "義守大學", "輔仁大學", "銘傳大學"], "datasets": [{ "label": "114 港澳生", "data": [148, 196, 307, 193], "backgroundColor": ["#c1a24a", "#a73a2a", "#c1a24a", "#c1a24a"] }] };
@@ -3305,12 +3305,12 @@
         maintainAspectRatio: false,
         plugins: {
           legend: { position: 'bottom' },
-          title: { display: true, text: '114 新生註冊率 vs 114 境外生在學比率', color: titleColor, font: { size: 18, weight: '700' } },
+          title: { display: true, text: '114 全系境外生比率 vs 114新生註冊率', color: titleColor, font: { size: 18, weight: '700' } },
           tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}%` } }
         },
         scales: {
           y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { callback: (v) => `${v}%` } },
-          x: { grid: { display: false } }
+          x: { grid: { display: false }, ticks: { maxRotation: 28, minRotation: 28, autoSkip: false } }
         }
       }
     });
