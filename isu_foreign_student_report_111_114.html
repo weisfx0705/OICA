@@ -777,7 +777,7 @@
     const nationalOverviewData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "外國學生", "data": [18274, 18134, 20778, 24643], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "僑生", "data": [9796, 10175, 10583, 10931], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "港澳生", "data": [8992, 7966, 6570, 5302], "borderColor": "#315b96", "backgroundColor": "#315b9622"}]};
     const isuOverviewData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "境外學位生總數", "data": [1499, 1370, 1388, 1437], "borderColor": "#c1a24a", "backgroundColor": "#c1a24a22"}, {"label": "外國學生", "data": [918, 875, 993, 1128], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "僑生", "data": [94, 96, 105, 106], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "港澳生", "data": [464, 390, 284, 196], "borderColor": "#315b96", "backgroundColor": "#315b9622"}]};
     const growthData = {"labels": ["境外學位生總數", "外國學生", "僑生", "港澳生", "陸生"], "datasets": [{"label": "義守大學", "data": [3.53, 13.6, 0.95, -30.99, 16.67], "backgroundColor": "#a73a2a"}, {"label": "全國一般大學", "data": [6.38, 18.6, 3.29, -19.3, -30.36], "backgroundColor": "#1f5a4d"}, {"label": "私立一般大學", "data": [11.18, 25.21, 0.79, -24.35, -35.0], "backgroundColor": "#315b96"}]};
-    const ratioTrendData = {"labels": ["111", "112", "113", "114"], "datasets": [{"type": "bar", "label": "境外學位生總數", "data": [1499, 1370, 1388, 1437], "backgroundColor": "#c1a24a", "yAxisID": "y"}, {"type": "line", "label": "日間在學學生數", "data": [11707, 10675, 9948, 9360], "borderColor": "#315b96", "backgroundColor": "#315b9622", "yAxisID": "y"}, {"type": "line", "label": "境外生占比", "data": [12.8, 12.83, 13.95, 15.35], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22", "yAxisID": "y1"}]};
+    const ratioTrendData = {"labels": ["111", "112", "113", "114"], "percentages": [12.8, 12.83, 13.95, 15.35], "datasets": [{"label": "其他日間學生數", "data": [10208, 9305, 8560, 7923], "backgroundColor": "#315b96", "stack": "students"}, {"label": "境外學位生總數", "data": [1499, 1370, 1388, 1437], "backgroundColor": "#c1a24a", "stack": "students"}]};
     const ratioRankData = {"labels": ["開南大學", "中華大學中華大學", "義守大學", "銘傳大學", "臺師大", "臺北醫學大學", "元智大學", "清華", "臺大", "靜宜大學"], "datasets": [{"label": "114 日間境外生占比", "data": [48.32, 33.23, 15.35, 14.41, 13.39, 12.4, 11.81, 10.7, 10.56, 10.31], "backgroundColor": ["#1f5a4d88", "#1f5a4d88", "#a73a2a", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88"]}]};
     const sourceTrendData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "越南", "data": [177, 193, 378, 561], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "印尼", "data": [259, 236, 247, 268], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "香港", "data": [397, 338, 257, 182], "borderColor": "#315b96", "backgroundColor": "#315b9622"}, {"label": "日本", "data": [105, 114, 105, 88], "borderColor": "#c1a24a", "backgroundColor": "#c1a24a22"}, {"label": "泰國", "data": [120, 118, 100, 78], "borderColor": "#8b5e3c", "backgroundColor": "#8b5e3c22"}]};
     const sourceMixData = {"labels": ["越南", "印尼", "香港", "日本", "泰國", "馬來西亞"], "datasets": [{"label": "外國生", "data": [560, 201, 0, 88, 78, 27], "backgroundColor": "#a73a2a"}, {"label": "僑生", "data": [1, 67, 0, 0, 0, 36], "backgroundColor": "#1f5a4d"}, {"label": "港澳生", "data": [0, 0, 182, 0, 0, 0], "backgroundColor": "#315b96"}, {"label": "陸生", "data": [0, 0, 0, 0, 0, 0], "backgroundColor": "#c1a24a"}]};
@@ -814,6 +814,28 @@
         ...extra
       };
     }
+
+    const stackedRatioLabelPlugin = {
+      id: 'stackedRatioLabelPlugin',
+      afterDatasetsDraw(chart) {
+        if (chart.canvas.id !== 'ratio-trend-chart') return;
+        const { ctx, scales: { x, y } } = chart;
+        const topDataset = chart.data.datasets[chart.data.datasets.length - 1];
+        const percentages = chart.data.percentages || [];
+        ctx.save();
+        ctx.fillStyle = '#a73a2a';
+        ctx.font = '700 14px "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        topDataset.data.forEach((_, index) => {
+          const total = chart.data.datasets.reduce((sum, ds) => sum + (Number(ds.data[index]) || 0), 0);
+          const xPos = x.getPixelForValue(index);
+          const yPos = y.getPixelForValue(total) - 8;
+          ctx.fillText(`${percentages[index].toFixed(2)}%`, xPos, yPos);
+        });
+        ctx.restore();
+      }
+    };
 
     new Chart(document.getElementById('national-overview-chart'), {
       type: 'line',
@@ -870,14 +892,39 @@
     });
 
     new Chart(document.getElementById('ratio-trend-chart'), {
+      type: 'bar',
       data: ratioTrendData,
-      options: lineBarOptions('境外生總數、日間分母與占比三線一起看', {
+      plugins: [stackedRatioLabelPlugin],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '日間在學學生數中的境外生總數與占比', color: titleColor, font: { size: 18, weight: '700' } },
+          tooltip: {
+            padding: 12,
+            callbacks: {
+              afterBody: (items) => {
+                const index = items[0].dataIndex;
+                const total = ratioTrendData.datasets.reduce((sum, ds) => sum + (Number(ds.data[index]) || 0), 0);
+                return [
+                  `日間在學學生數: ${total.toLocaleString()}`,
+                  `境外生占比: ${ratioTrendData.percentages[index].toFixed(2)}%`
+                ];
+              }
+            }
+          }
+        },
         scales: {
-          y: { beginAtZero: true, grid: { color: gridColor } },
-          y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: (v) => `${v}%` } },
-          x: { grid: { display: false } }
+          x: { stacked: true, grid: { display: false } },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            grid: { color: gridColor },
+            ticks: { callback: (v) => Number(v).toLocaleString() }
+          }
         }
-      })
+      }
     });
 
     new Chart(document.getElementById('ratio-rank-chart'), {
