@@ -1,0 +1,1256 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>義守大學境外生成長、占比與招生成效互動報告</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f7f2ea;
+      --paper: rgba(255,255,255,0.82);
+      --ink: #16211d;
+      --muted: #5f6764;
+      --line: rgba(22,33,29,0.12);
+      --accent: #a73a2a;
+      --emerald: #1f5a4d;
+      --blue: #315b96;
+      --gold: #c1a24a;
+      --sand: #efe3d1;
+      --shadow: 0 22px 55px rgba(35, 28, 20, 0.09);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", sans-serif;
+      font-size: 18px;
+      line-height: 1.72;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(193,162,74,0.16), transparent 24%),
+        radial-gradient(circle at top right, rgba(31,90,77,0.15), transparent 26%),
+        linear-gradient(180deg, #fbf7f0, var(--bg));
+    }
+    a { color: var(--accent); }
+    .shell {
+      width: min(1500px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 24px 0 80px;
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 52px;
+      border-radius: 34px;
+      background:
+        linear-gradient(140deg, rgba(12,32,29,0.98), rgba(23,54,47,0.93)),
+        linear-gradient(120deg, rgba(193,162,74,0.28), transparent 60%);
+      color: #fbfaf6;
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -110px;
+      top: -70px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(193,162,74,0.35), transparent 72%);
+      filter: blur(12px);
+    }
+    .kicker {
+      display: inline-flex;
+      padding: 6px 14px;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.82);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    h1, h2, h3 {
+      margin: 0;
+      line-height: 1.18;
+      font-family: "Noto Serif TC", serif;
+    }
+    h1 {
+      margin-top: 18px;
+      max-width: 920px;
+      font-size: clamp(42px, 4.5vw, 76px);
+    }
+    .hero p {
+      max-width: 920px;
+      margin: 18px 0 0;
+      color: rgba(251,250,246,0.86);
+      font-size: 18px;
+    }
+    .hero a {
+      color: rgba(255,236,213,0.96);
+      text-decoration-color: rgba(255,236,213,0.72);
+      text-underline-offset: 3px;
+      font-weight: 700;
+    }
+    .hero-meta {
+      margin-top: 10px;
+      color: rgba(251,250,246,0.72);
+      font-size: 14px;
+      letter-spacing: 0.03em;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      margin-top: 34px;
+    }
+    .hero-panel {
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .hero-panel h3 {
+      font-size: 34px;
+      line-height: 1.15;
+    }
+    .hero-panel p {
+      margin: 14px 0 0;
+      font-size: 23px;
+      line-height: 1.75;
+      color: rgba(255,250,245,0.96);
+      font-weight: 700;
+    }
+    .hero-panel .metric-red {
+      color: rgba(255, 208, 193, 0.96);
+    }
+    .hero-panel .metric-blue {
+      color: rgba(180, 214, 247, 0.96);
+    }
+    .hero-card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .hero-card {
+      padding: 20px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.92);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .hero-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .hero-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 30px;
+      line-height: 1.15;
+      font-weight: 900;
+      font-family: "Noto Sans TC", sans-serif;
+    }
+    .hero-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .section {
+      margin-top: 24px;
+      padding: 34px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+    .section-head p {
+      margin: 10px 0 0;
+      max-width: 860px;
+      color: var(--muted);
+    }
+    .eyebrow {
+      margin: 0;
+      color: var(--accent);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 13px;
+    }
+    .notice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .notice {
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.78);
+    }
+    .notice.good {
+      border-left: 5px solid var(--emerald);
+    }
+    .notice.warn {
+      border-left: 5px solid var(--gold);
+    }
+    .notice ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+    }
+    .panel {
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+    }
+    .chart-box {
+      position: relative;
+      min-height: 380px;
+    }
+    .chart-box canvas {
+      width: 100% !important;
+      height: 380px !important;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+    table a {
+      color: var(--accent);
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 3px;
+      font-weight: 700;
+    }
+    th, td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+    thead th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .stat-card {
+      padding: 22px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+    }
+    .stat-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .stat-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 34px;
+      line-height: 1.1;
+      font-weight: 900;
+    }
+    .stat-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .callout {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      border-left: 5px solid var(--gold);
+      background: rgba(193,162,74,0.1);
+      color: var(--ink);
+    }
+    .solution-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .solution-grid.top-four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .solution-grid.bottom-two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .position-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .country-program-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+    .country-program-card {
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+    }
+    .country-program-card h3 {
+      font-size: 24px;
+      color: var(--accent);
+    }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(31,90,77,0.08);
+      border: 1px solid rgba(31,90,77,0.14);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .solution-card {
+      padding: 22px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.82);
+    }
+    .section.solutions h2 {
+      font-size: clamp(40px, 4vw, 64px);
+      line-height: 1.1;
+      color: var(--accent);
+    }
+    .section.solutions .section-head p {
+      font-size: 22px;
+      max-width: 980px;
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .section.solutions .solution-card {
+      padding: 30px;
+      border-width: 2px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,248,240,0.92));
+    }
+    .section.solutions .solution-card h3 {
+      font-size: 30px;
+      line-height: 1.25;
+      color: var(--ink);
+    }
+    .solution-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
+    }
+    .strategy-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+      margin-bottom: 18px;
+    }
+    .strategy-card {
+      padding: 24px;
+      border-radius: 24px;
+      color: #fffaf5;
+      background:
+        linear-gradient(145deg, rgba(167,58,42,0.98), rgba(104,28,16,0.96));
+      box-shadow: 0 22px 44px rgba(90, 26, 18, 0.18);
+    }
+    .strategy-card:nth-child(2) {
+      background:
+        linear-gradient(145deg, rgba(31,90,77,0.98), rgba(12,52,42,0.96));
+      box-shadow: 0 22px 44px rgba(12, 52, 42, 0.18);
+    }
+    .strategy-card:nth-child(3) {
+      background:
+        linear-gradient(145deg, rgba(49,91,150,0.98), rgba(21,48,96,0.96));
+      box-shadow: 0 22px 44px rgba(21, 48, 96, 0.18);
+    }
+    .strategy-card span {
+      display: block;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.86;
+      font-weight: 700;
+    }
+    .strategy-card strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 40px;
+      line-height: 1.08;
+      font-weight: 900;
+    }
+    .strategy-card p {
+      margin: 12px 0 0;
+      font-size: 18px;
+      line-height: 1.7;
+      color: rgba(255,250,245,0.9);
+    }
+    .metric-red { color: var(--accent); font-weight: 900; }
+    .metric-green { color: var(--emerald); font-weight: 900; }
+    .metric-blue { color: var(--blue); font-weight: 900; }
+    .metric-gold { color: var(--gold); font-weight: 900; }
+    .mid-visual {
+      margin: 26px 0 10px;
+      padding: 24px;
+      border-radius: 26px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(247,242,234,0.9));
+      box-shadow: var(--shadow);
+    }
+    .mid-visual h3 {
+      font-size: 28px;
+      color: var(--ink);
+    }
+    .mid-visual p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .fine {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .attachment-table {
+      margin-top: 12px;
+    }
+    .download-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0 16px;
+    }
+    .download-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(167,58,42,0.16);
+      background: rgba(167,58,42,0.08);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .download-pill:hover {
+      background: rgba(167,58,42,0.14);
+    }
+    .isu-row td {
+      background: rgba(167,58,42,0.12);
+      font-weight: 700;
+    }
+    @media (max-width: 1100px) {
+      .hero-grid, .two-col, .notice-grid, .solution-grid, .cards, .position-grid, .strategy-strip {
+        grid-template-columns: 1fr;
+      }
+      .chart-box canvas {
+        height: 320px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="kicker">ISU / OUTLAND DEGREE STUDENTS / 111-114</div>
+      <h1>義守大學境外生成長、占比與招生成效互動報告</h1>
+      <p>資料來源為<a href="https://udb.moe.edu.tw/udata/ReportCategories" target="_blank" rel="noopener noreferrer">教育部大專校院校務資訊公開平台</a>學生類，共使用 16 項表冊、76 份 CSV，涵蓋在學學生、境外學位生、新生註冊率、就學穩定率、休退學與國際合作等類別。這份報告先看全國 111 到 114 學年的變化，再回到義守大學的招生、占比、來源國與改善方向。</p>
+      <div class="hero-meta">資料分析撰寫 by 義守大學國際及兩岸事務處 2026/03/07</div>
+      <div class="hero-grid">
+        <div class="hero-panel">
+          <h3>這次的發現</h3>
+          <p>111 到 114 學年，全國一般大學的外國學生持續增加，僑生溫和增加，港澳生持續減少。</p><p>義守 113→114 的境外學位生總數成長 <span class="metric-red">3.53%</span>，外國學生增加 <span class="metric-red">13.60%</span>，港澳生減少 <span class="metric-red">-30.99%</span>。</p><p>114 學年義守境外學位生占日間學制學生 <span class="metric-red">15.35%</span>，一般大學第 <span class="metric-blue">6</span> 名；來源前三名是越南、印尼、香港。</p>
+        </div>
+        <div class="hero-card-grid">
+        <article class="hero-card">
+          <span>資料表數</span>
+          <strong>76 份 CSV</strong>
+          <small>來自教育部平台學生類 16 項表冊</small>
+        </article>
+        
+        <article class="hero-card">
+          <span>全國一般大學外國學生</span>
+          <strong>34.85%</strong>
+          <small>111→114 由 18,274 人升到 24,643 人</small>
+        </article>
+        
+        <article class="hero-card">
+          <span>義守 114 境外學位生</span>
+          <strong>1,437</strong>
+          <small>113→114 成長 3.53%</small>
+        </article>
+        
+        <article class="hero-card">
+          <span>義守 114 境外生占比</span>
+          <strong>15.35%</strong>
+          <small>一般大學第 6 名；私立一般大學第 6 名</small>
+        </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">01 / Overview</p>
+          <h2>先看全國 111 到 114 學年的變化，再看義守自己的變化</h2>
+          <p>本報告以一般大學與私立一般大學作為比較基礎。最前面先交代全國一般大學的外國學生、僑生、港澳生變化，再回到義守大學自己的四年趨勢。</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <div class="chart-box"><canvas id="national-overview-chart"></canvas></div>
+          <table>
+            <thead><tr><th>全國一般大學</th><th>111</th><th>112</th><th>113</th><th>114</th><th>111→114</th></tr></thead>
+            <tbody><tr><td>外國學生</td><td>18,274</td><td>18,134</td><td>20,778</td><td>24,643</td><td>34.85%</td></tr><tr><td>僑生</td><td>9,796</td><td>10,175</td><td>10,583</td><td>10,931</td><td>11.59%</td></tr><tr><td>港澳生</td><td>8,992</td><td>7,966</td><td>6,570</td><td>5,302</td><td>-41.04%</td></tr></tbody>
+          </table>
+          <div class="callout">111 到 114 學年，全國一般大學的外國學生持續增加，僑生溫和增加，港澳生持續減少。市場主成長動能在外國學生。</div>
+        </div>
+        <div class="panel">
+          <div class="chart-box"><canvas id="isu-overview-chart"></canvas></div>
+          <table>
+            <thead><tr><th>義守大學</th><th>111</th><th>112</th><th>113</th><th>114</th><th>111→114</th></tr></thead>
+            <tbody><tr><td>境外學位生總數</td><td>1,499</td><td>1,370</td><td>1,388</td><td>1,437</td><td>-4.14%</td></tr><tr><td>外國學生</td><td>918</td><td>875</td><td>993</td><td>1,128</td><td>22.88%</td></tr><tr><td>僑生</td><td>94</td><td>96</td><td>105</td><td>106</td><td>12.77%</td></tr><tr><td>港澳生</td><td>464</td><td>390</td><td>284</td><td>196</td><td>-57.76%</td></tr></tbody>
+          </table>
+          <div class="callout">義守四年變化最明顯的是外國學生增加、港澳生減少。114 學年境外學位生總數為 1,437 人，來源前三名為越南、印尼、香港。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">02 / Growth</p>
+          <h2>113→114 五項變化中，義守成長速度低於一般大學與私立一般大學</h2>
+          <p>這一段比較境外學位生總數、外國學生、僑生、港澳生與陸生五項指標，直接對照義守、一般大學與私立一般大學。</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <div class="chart-box"><canvas id="growth-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>指標</th><th>義守</th><th>一般大學</th><th>私立一般大學</th></tr></thead>
+            <tbody><tr><td>境外學位生總數</td><td>3.53%</td><td>6.38%</td><td>11.18%</td></tr><tr><td>外國學生</td><td>13.60%</td><td>18.60%</td><td>25.21%</td></tr><tr><td>僑生</td><td>0.95%</td><td>3.29%</td><td>0.79%</td></tr><tr><td>港澳生</td><td>-30.99%</td><td>-19.30%</td><td>-24.35%</td></tr><tr><td>陸生</td><td>16.67%</td><td>-30.36%</td><td>-35.00%</td></tr></tbody>
+          </table>
+          <div class="callout">義守 113→114 的境外學位生總數成長 <strong>3.53%</strong>，低於一般大學 <strong>6.38%</strong> 與私立一般大學 <strong>11.18%</strong>；外國學生成長 <strong>13.60%</strong>，也低於兩個比較群。港澳生則與整體趨勢一樣持續下滑。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">03 / Ratio</p>
+          <h2>114 學年，義守境外學位生占日間學制學生 15.35%，一般大學第 6 名</h2>
+          <p>這一段看義守境外學位生在校內的比重，以及放到一般大學與私立一般大學之後的位置。</p>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="stat-card"><span>114 境外學位生</span><strong>1,437</strong><small>義守 114 學年在校境外學位生總數</small></article>
+        <article class="stat-card"><span>114 境外生占比</span><strong>15.35%</strong><small>占日間學制學生比重</small></article>
+        <article class="stat-card"><span>一般大學排名</span><strong>#6</strong><small>114 學年整體位置</small></article>
+        <article class="stat-card"><span>大型境外生學校排名</span><strong>#3</strong><small>只看境外生規模至少 500 人的一般大學</small></article>
+        <article class="stat-card"><span>私立一般大學排名</span><strong>#6</strong><small>義守在私立一般大學中的占比位置</small></article>
+      </div>
+      <div class="two-col" style="margin-top:18px;">
+        <div class="panel">
+          <div class="chart-box"><canvas id="ratio-trend-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>學年</th><th>境外生</th><th>日間學生數</th><th>占比</th></tr></thead>
+            <tbody><tr><td>111</td><td>1,499</td><td>11,707</td><td>12.80%</td></tr><tr><td>112</td><td>1,370</td><td>10,675</td><td>12.83%</td></tr><tr><td>113</td><td>1,388</td><td>9,948</td><td>13.95%</td></tr><tr><td>114</td><td>1,437</td><td>9,360</td><td>15.35%</td></tr></tbody>
+          </table>
+          <div class="fine" style="margin-top:12px;">111 到 114 學年，義守日間學制學生由 11,707 人降到 9,360 人；境外學位生占比上升，代表比重提高，但仍要和學生總量一起看。</div>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:18px;">
+        <div class="panel">
+          <div class="chart-box"><canvas id="ratio-rank-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>學校</th><th>排名</th><th>占比</th><th>境外生數</th></tr></thead>
+            <tbody><tr class=""><td>開南大學</td><td>#1</td><td>48.32%</td><td>1,479</td></tr><tr class=""><td>中華大學中華大學</td><td>#2</td><td>33.23%</td><td>976</td></tr><tr class="isu-row"><td>義守大學</td><td>#3</td><td>15.35%</td><td>1,437</td></tr><tr class=""><td>銘傳大學</td><td>#4</td><td>14.41%</td><td>2,391</td></tr><tr class=""><td>臺師大</td><td>#5</td><td>13.39%</td><td>1,942</td></tr><tr class=""><td>臺北醫學大學</td><td>#6</td><td>12.40%</td><td>741</td></tr><tr class=""><td>元智大學</td><td>#7</td><td>11.81%</td><td>1,049</td></tr><tr class=""><td>清華</td><td>#8</td><td>10.70%</td><td>1,820</td></tr><tr class=""><td>臺大</td><td>#9</td><td>10.56%</td><td>3,513</td></tr><tr class=""><td>靜宜大學</td><td>#10</td><td>10.31%</td><td>1,039</td></tr></tbody>
+          </table>
+          <div class="fine" style="margin-top:12px;">這張榜單刻意限制在「114 境外生規模至少 500 人」的一般大學，避免極小校的高占比把比較基準扭曲。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">04 / Position</p>
+          <h2>放在私立一般大學來看，義守 114 學年的境外學位生規模在前段</h2>
+          <p>以下全部只看 114 學年私立一般大學，直接列出你指定的名次區間與各校人數，讓競爭位置一眼看懂。</p>
+        </div>
+      </div>
+      <div class="cards"><article class="stat-card"><span>境外學位生總數</span><strong>#3</strong><small>114 學年 1,437 人</small></article><article class="stat-card"><span>外國學生</span><strong>#3</strong><small>114 學年 1,128 人</small></article><article class="stat-card"><span>僑生</span><strong>#13</strong><small>114 學年 106 人</small></article><article class="stat-card"><span>港澳生</span><strong>#3</strong><small>114 學年 196 人</small></article></div>
+      <div class="position-grid"><article class='panel'><h3>私立一般大學境外學生總數前 3 名</h3><table><thead><tr><th>排名</th><th>學校</th><th>人數</th></tr></thead><tbody><tr class=""><td>#1</td><td>銘傳大學</td><td>2,391</td></tr><tr class=""><td>#2</td><td>開南大學</td><td>1,479</td></tr><tr class="isu-row"><td>#3</td><td>義守大學</td><td>1,437</td></tr></tbody></table></article><article class='panel'><h3>私立一般大學外國學生前 3 名</h3><table><thead><tr><th>排名</th><th>學校</th><th>人數</th></tr></thead><tbody><tr class=""><td>#1</td><td>銘傳大學</td><td>1,795</td></tr><tr class=""><td>#2</td><td>開南大學</td><td>1,445</td></tr><tr class="isu-row"><td>#3</td><td>義守大學</td><td>1,128</td></tr></tbody></table></article><article class='panel'><h3>私立一般大學僑生第 11 到 15 名</h3><table><thead><tr><th>排名</th><th>學校</th><th>人數</th></tr></thead><tbody><tr class=""><td>#11</td><td>臺北醫學大學</td><td>138</td></tr><tr class=""><td>#12</td><td>高雄醫學大學</td><td>116</td></tr><tr class="isu-row"><td>#13</td><td>義守大學</td><td>106</td></tr><tr class=""><td>#14</td><td>長庚大學</td><td>91</td></tr><tr class=""><td>#15</td><td>中山醫學大學</td><td>80</td></tr></tbody></table></article><article class='panel'><h3>私立一般大學港澳生前 3 名</h3><table><thead><tr><th>排名</th><th>學校</th><th>人數</th></tr></thead><tbody><tr class=""><td>#1</td><td>輔仁大學</td><td>307</td></tr><tr class=""><td>#2</td><td>淡江大學</td><td>199</td></tr><tr class="isu-row"><td>#3</td><td>義守大學</td><td>196</td></tr></tbody></table></article></div>
+      <div class="panel" style="margin-top:18px;">
+        <h3>義守大學114學年度</h3>
+        <table>
+          <thead><tr><th>指標</th><th>114 人數</th><th>114 排名</th></tr></thead>
+          <tbody><tr class="isu-row"><td>境外學位生總數</td><td>1,437</td><td>#3</td></tr><tr class="isu-row"><td>外國學生</td><td>1,128</td><td>#3</td></tr><tr class="isu-row"><td>僑生</td><td>106</td><td>#13</td></tr><tr class="isu-row"><td>港澳生</td><td>196</td><td>#3</td></tr></tbody>
+        </table>
+        <div class="callout">義守 114 學年在私立一般大學中的境外學位生總數排名第 3，外國學生排名第 3，港澳生排名第 3，僑生排名第 13。</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">05 / Source Mix</p>
+          <h2>114 學年來源前三名是越南、印尼、香港；四年變化是越南增加、香港減少</h2>
+          <p>這一段直接看義守境外學位生的來源國變化，先看四年趨勢，再看 114 學年的身分類別構成。</p>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="stat-card"><span>114 第 1 名</span><strong>越南</strong><small>561 人</small></article>
+        <article class="stat-card"><span>114 第 2 名</span><strong>印尼</strong><small>268 人</small></article>
+        <article class="stat-card"><span>114 第 3 名</span><strong>香港</strong><small>182 人</small></article>
+        <article class="stat-card"><span>四年累積前 3</span><strong>越南 / 香港 / 印尼</strong><small>1,309 / 1,174 / 1,010</small></article>
+      </div>
+      <div class="two-col" style="margin-top:18px;">
+        <div class="panel">
+          <div class="chart-box"><canvas id="source-trend-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>來源國</th><th>111</th><th>112</th><th>113</th><th>114</th></tr></thead>
+            <tbody><tr><td>越南</td><td>177</td><td>193</td><td>378</td><td>561</td></tr><tr><td>印尼</td><td>259</td><td>236</td><td>247</td><td>268</td></tr><tr><td>香港</td><td>397</td><td>338</td><td>257</td><td>182</td></tr><tr><td>日本</td><td>105</td><td>114</td><td>105</td><td>88</td></tr><tr><td>泰國</td><td>120</td><td>118</td><td>100</td><td>78</td></tr></tbody>
+          </table>
+          <div class="fine" style="margin-top:12px;">越南由 111 學年的 177 人增加到 114 學年的 561 人；香港由 397 人降到 182 人。義守目前最主要的增量來源已經很清楚。</div>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:18px;">
+        <div class="panel">
+          <div class="chart-box"><canvas id="source-mix-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>來源國</th><th>境外生</th><th>外國生</th><th>僑生</th><th>港澳生</th><th>陸生</th></tr></thead>
+            <tbody><tr><td>越南</td><td>561</td><td>560</td><td>1</td><td>0</td><td>0</td></tr><tr><td>印尼</td><td>268</td><td>201</td><td>67</td><td>0</td><td>0</td></tr><tr><td>香港</td><td>182</td><td>0</td><td>0</td><td>182</td><td>0</td></tr><tr><td>日本</td><td>88</td><td>88</td><td>0</td><td>0</td><td>0</td></tr><tr><td>泰國</td><td>78</td><td>78</td><td>0</td><td>0</td><td>0</td></tr><tr><td>馬來西亞</td><td>63</td><td>27</td><td>36</td><td>0</td><td>0</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mid-visual" style="margin-top:18px;">
+        <h3>港澳線比較</h3>
+        <p>以下四校直接比較 114 港澳生規模、港澳生成長率與外國生成長率：中國文化大學、義守大學、輔仁大學、銘傳大學。</p>
+        <div class="two-col" style="margin-top:18px;">
+          <div class="panel">
+            <div class="chart-box"><canvas id="hk-count-chart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="chart-box"><canvas id="hk-growth-chart"></canvas></div>
+          </div>
+        </div>
+        <div class="panel" style="margin-top:18px;">
+          <table>
+            <thead><tr><th>學校</th><th>114 港澳生</th><th>港澳生成長率</th><th>外國生成長率</th></tr></thead>
+            <tbody><tr class=""><td>中國文化大學</td><td>148</td><td>-30.19%</td><td>99.61%</td></tr><tr class="isu-row"><td>義守大學</td><td>196</td><td>-30.99%</td><td>13.60%</td></tr><tr class=""><td>輔仁大學</td><td>307</td><td>-8.36%</td><td>10.84%</td></tr><tr class=""><td>銘傳大學</td><td>193</td><td>-36.93%</td><td>30.93%</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">06 / Enrollment</p>
+          <h2>義守接下來要提升的是新生報到與在學穩定</h2>
+          <p>只看在校人數不夠，還要一起看新生註冊與在學穩定。這兩個數字決定招生是否真正落地。</p>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="stat-card"><span>114 全校新生註冊率</span><strong>86.84%</strong><small>一般大學第 52；私立一般大學第 22</small></article>
+        <article class="stat-card"><span>114 境外新生實際註冊</span><strong>286</strong><small>111 為 368 人</small></article>
+        <article class="stat-card"><span>114 學士班日間就學穩定率</span><strong>88.81%</strong><small>一般大學第 48；私立一般大學第 20</small></article>
+        <article class="stat-card"><span>114 外國學生</span><strong>1,128</strong><small>114 學年義守外國學生在校人數</small></article>
+      </div>
+      <div class="two-col" style="margin-top:18px;">
+        <div class="panel">
+          <div class="chart-box"><canvas id="reg-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>學年</th><th>境外新生註冊</th><th>全校新生註冊率</th></tr></thead>
+            <tbody><tr class="isu-row"><td>111</td><td>368</td><td>64.97%</td></tr><tr class="isu-row"><td>112</td><td>260</td><td>71.27%</td></tr><tr class="isu-row"><td>113</td><td>279</td><td>80.71%</td></tr><tr class="isu-row"><td>114</td><td>286</td><td>86.84%</td></tr></tbody>
+          </table>
+          <div class="fine" style="margin-top:12px;">義守全校新生註冊率 111→114 由 64.97% 升到 86.84%，已有進步，但放到一般大學排序仍不在前段，報到流程還有空間。</div>
+        </div>
+      </div>
+      <div class="two-col" style="margin-top:18px;">
+        <div class="panel">
+          <div class="chart-box"><canvas id="benchmark-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>學校</th><th>114 外國生</th><th>成長率</th><th>註冊率</th><th>穩定率</th></tr></thead>
+            <tbody><tr class=""><td>靜宜大學</td><td>936</td><td>37.04%</td><td>97.47%</td><td>92.23%</td></tr><tr class=""><td>銘傳大學</td><td>1,795</td><td>30.93%</td><td>95.34%</td><td>90.88%</td></tr><tr class=""><td>長庚大學</td><td>349</td><td>23.32%</td><td>94.01%</td><td>92.70%</td></tr><tr class=""><td>中國醫藥大學</td><td>314</td><td>20.77%</td><td>91.98%</td><td>95.59%</td></tr><tr class=""><td>元智大學</td><td>979</td><td>19.24%</td><td>97.08%</td><td>94.55%</td></tr><tr class=""><td>慈濟大學</td><td>349</td><td>15.95%</td><td>71.10%</td><td>91.26%</td></tr><tr class="isu-row"><td>義守大學</td><td>1,128</td><td>13.60%</td><td>86.84%</td><td>88.81%</td></tr></tbody>
+          </table>
+          <div class="callout">銘傳、靜宜、元智等校值得參照，因為它們在外國學生增加的同時，新生註冊率與在學穩定率也維持在較高水準。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">07 / Programs</p>
+          <h2>熱門科系與同科系競爭</h2>
+          <p>這一段直接觀察科系。上半部使用你提供的校內整理，呈現各國學生在義守偏好的熱門科系；下半部則用教育部系所統計，觀察義守主力科系的四年變化與同名科系競爭位置。</p>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>校內整理：各國學生偏好的熱門科系</h3>
+        <div class="country-program-grid"><article class='country-program-card'><h3>越南</h3><div class='tag-list'><span class='tag'>國際管理碩士班</span><span class='tag'>餐旅管理</span><span class='tag'>企管</span><span class='tag'>國際企業經營</span><span class='tag'>智慧觀光餐旅</span><span class='tag'>國際傳媒娛樂管理</span><span class='tag'>大傳</span></div></article><article class='country-program-card'><h3>印尼</h3><div class='tag-list'><span class='tag'>廚藝美食</span><span class='tag'>國際企業經營</span><span class='tag'>餐旅管理</span><span class='tag'>智慧科技</span><span class='tag'>智慧觀光餐旅</span><span class='tag'>國際傳媒</span><span class='tag'>國際商務</span></div></article><article class='country-program-card'><h3>泰國</h3><div class='tag-list'><span class='tag'>國際企業經營</span><span class='tag'>國際管理碩士班</span><span class='tag'>智慧科技</span><span class='tag'>國際傳媒娛樂管理</span><span class='tag'>智慧觀光餐旅</span><span class='tag'>財務商業分析</span></div></article><article class='country-program-card'><h3>菲律賓</h3><div class='tag-list'><span class='tag'>智慧科技</span><span class='tag'>國際企業經營</span><span class='tag'>智慧觀光餐旅</span><span class='tag'>國際管理碩士班</span><span class='tag'>財務商業分析</span><span class='tag'>設備工程專班</span></div></article><article class='country-program-card'><h3>馬來西亞</h3><div class='tag-list'><span class='tag'>大傳</span><span class='tag'>電影電視</span><span class='tag'>餐旅管理</span><span class='tag'>廚藝美食</span><span class='tag'>企管</span><span class='tag'>新媒體設計</span></div></article><article class='country-program-card'><h3>日本</h3><div class='tag-list'><span class='tag'>資管</span><span class='tag'>餐旅管理</span><span class='tag'>智慧觀光餐旅</span><span class='tag'>企管</span><span class='tag'>國際企業經營</span><span class='tag'>國際傳媒娛樂管理</span></div></article><article class='country-program-card'><h3>香港</h3><div class='tag-list'><span class='tag'>廚藝美食</span><span class='tag'>職能治療</span><span class='tag'>電影電視</span><span class='tag'>大傳</span><span class='tag'>應用日語</span><span class='tag'>物理治療</span><span class='tag'>新媒體設計</span></div></article></div>
+      </div>
+      <div class="two-col" style="margin-top:18px;">
+        <div class="panel">
+          <div class="chart-box"><canvas id="dept-trend-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>系所</th><th>111</th><th>114</th><th>111→114</th><th>114 排名</th></tr></thead>
+            <tbody><tr><td>餐旅管理學系</td><td>54</td><td>202</td><td>274.07%</td><td>#1</td></tr><tr><td>企業管理學系</td><td>120</td><td>55</td><td>-54.17%</td><td>#5</td></tr><tr><td>智慧科技英語學士學位學程</td><td>66</td><td>89</td><td>34.85%</td><td>#1</td></tr></tbody>
+          </table>
+          <div class="callout">這裡的跨校競爭分析使用教育部「外國學生數及其在學比率-以系所統計」資料，所以科系面比較的是外國學生，不延伸到僑生與港澳生。</div>
+        </div>
+      </div>
+      <div class="position-grid"><article class='panel'><h3>餐旅管理學系</h3><table><thead><tr><th>排名</th><th>學校</th><th>114 外國學生</th></tr></thead><tbody><tr class="isu-row"><td>#1</td><td>義守大學</td><td>202</td></tr><tr class=""><td>#2</td><td>玄奘大學</td><td>155</td></tr><tr class=""><td>#3</td><td>銘傳大學</td><td>36</td></tr><tr class=""><td>#4</td><td>輔仁大學</td><td>21</td></tr><tr class=""><td>#5</td><td>東海大學</td><td>16</td></tr></tbody></table><div class='fine' style='margin-top:12px;'>114 年義守在同名科系中排名第 1。</div></article><article class='panel'><h3>企業管理學系</h3><table><thead><tr><th>排名</th><th>學校</th><th>114 外國學生</th></tr></thead><tbody><tr class=""><td>#1</td><td>東海大學</td><td>72</td></tr><tr class=""><td>#2</td><td>銘傳大學</td><td>64</td></tr><tr class=""><td>#3</td><td>真理大學</td><td>62</td></tr><tr class=""><td>#4</td><td>臺師大</td><td>56</td></tr><tr class="isu-row"><td>#5</td><td>義守大學</td><td>55</td></tr></tbody></table><div class='fine' style='margin-top:12px;'>114 年義守在同名科系中排名第 5。</div></article><article class='panel'><h3>智慧科技英語學士學位學程</h3><table><thead><tr><th>排名</th><th>學校</th><th>114 外國學生</th></tr></thead><tbody><tr class="isu-row"><td>#1</td><td>義守大學</td><td>89</td></tr></tbody></table><div class='fine' style='margin-top:12px;'>114 資料中，這個同名學程只有義守大學列入統計。</div></article></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">08 / Overseas Lens</p>
+          <h2>境外生占比提高之後，更需要完整觀察註冊、支持與留才機制</h2>
+          <p>這一段把境外生總量、境外新生註冊與全校註冊率放在一起看，判斷問題到底出在名單不足，還是出在轉換與支持機制。</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <div class="chart-box"><canvas id="overseas-context-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>學年</th><th>境外學位生總數</th><th>境外新生實際註冊</th><th>境外生占比</th><th>全校註冊率</th></tr></thead>
+            <tbody><tr><td>111</td><td>1,499</td><td>368</td><td>12.80%</td><td>64.97%</td></tr><tr><td>112</td><td>1,370</td><td>260</td><td>12.83%</td><td>71.27%</td></tr><tr><td>113</td><td>1,388</td><td>279</td><td>13.95%</td><td>80.71%</td></tr><tr><td>114</td><td>1,437</td><td>286</td><td>15.35%</td><td>86.84%</td></tr></tbody>
+          </table>
+          <div class="callout">義守的境外生占比由 12.80% 提高到 15.35%，同時全校註冊率由 64.97% 升到 86.84%。這表示真正的關鍵不是境外生多寡，而是不同系所、不同族群的報到與留才機制是否跟得上。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">09 / Department Signals</p>
+          <h2>系所層次的訊號更重要：義守已經出現「境外新生很多，但註冊率差異很大」的分化</h2>
+          <p>這一段把 114 系級註冊率與境外新生、113 系級退學與休學壓力一起放進來看，讓風險點不再只停留在全校平均。</p>
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="panel">
+          <div class="chart-box"><canvas id="dept-risk-chart"></canvas></div>
+          <table>
+            <thead><tr><th>系所</th><th>境外新生</th><th>註冊率</th><th>境外在學生</th><th>境外在學比率</th></tr></thead>
+            <tbody><tr><td>國際企業經營英語學士學位學程</td><td>25</td><td>77.14%</td><td>79</td><td>95.18%</td></tr><tr><td>廚藝暨美食學學系</td><td>22</td><td>62.90%</td><td>129</td><td>56.83%</td></tr><tr><td>智慧觀光餐旅管理英語學士學位學程</td><td>12</td><td>63.64%</td><td>56</td><td>96.55%</td></tr><tr><td>國際傳媒與娛樂管理英語學士學位學程</td><td>10</td><td>52.63%</td><td>10</td><td>100.00%</td></tr><tr><td>企業管理學系</td><td>8</td><td>68.89%</td><td>41</td><td>23.30%</td></tr><tr><td>國際商務學系</td><td>7</td><td>55.56%</td><td>43</td><td>29.66%</td></tr><tr><td>電影與電視學系</td><td>7</td><td>78.00%</td><td>39</td><td>22.03%</td></tr><tr><td>大眾傳播學系</td><td>6</td><td>61.22%</td><td>39</td><td>22.29%</td></tr></tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>系所</th><th>境外新生</th><th>註冊率</th><th>境外在學生</th><th>境外在學比率</th></tr></thead>
+            <tbody><tr><td>智慧科技英語學士學位學程</td><td>25</td><td>94.12%</td><td>89</td><td>84.76%</td></tr><tr><td>資訊管理學系</td><td>20</td><td>95.71%</td><td>60</td><td>25.00%</td></tr><tr><td>機械與自動化工程學系</td><td>15</td><td>100.00%</td><td>41</td><td>16.53%</td></tr><tr><td>資訊工程學系</td><td>13</td><td>100.00%</td><td>66</td><td>12.22%</td></tr></tbody>
+          </table>
+          <div class="callout">114 學年表現最明顯的是：智慧科技英語學士學位學程、資訊管理學系、資訊工程學系、機械與自動化工程學系。這些系所在有一定境外新生量的情況下，註冊率仍維持在高檔，值得複製做法。</div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:18px;">
+        <h3>113 大系所的退學、休學與境外比率</h3>
+        <p class="fine">為了避免小型專班把退學率放大，這裡只看 113 學年學士班(日間)、在學學生至少 120 人的系所。</p>
+        <div class="chart-box"><canvas id="dept-pressure-chart"></canvas></div>
+        <table>
+          <thead><tr><th>系所</th><th>在學學生數</th><th>113 退學率</th><th>113 休學率</th><th>113 境外生數</th><th>113 境外在學比率</th></tr></thead>
+          <tbody><tr><td>醫學科學與生物科技學系</td><td>356</td><td>7.02%</td><td>4.49%</td><td>3</td><td>1.69%</td></tr><tr><td>公共政策與管理學系</td><td>178</td><td>6.18%</td><td>3.37%</td><td>1</td><td>1.12%</td></tr><tr><td>資料科學與大數據分析學系</td><td>186</td><td>5.91%</td><td>2.15%</td><td>0</td><td>0.00%</td></tr><tr><td>國際溝通暨應用英語學系</td><td>308</td><td>5.84%</td><td>3.90%</td><td>37</td><td>24.03%</td></tr><tr><td>國際企業經營學系</td><td>142</td><td>5.63%</td><td>1.41%</td><td>62</td><td>87.32%</td></tr><tr><td>創意整合設計學系</td><td>236</td><td>5.51%</td><td>4.24%</td><td>15</td><td>12.71%</td></tr><tr><td>運動科技與休閒管理學系</td><td>182</td><td>5.49%</td><td>3.30%</td><td>12</td><td>13.19%</td></tr><tr><td>工業管理學系</td><td>186</td><td>5.38%</td><td>8.60%</td><td>2</td><td>2.15%</td></tr><tr><td>新媒體設計學系</td><td>270</td><td>4.44%</td><td>3.70%</td><td>25</td><td>18.52%</td></tr><tr><td>土木工程學系</td><td>350</td><td>4.29%</td><td>6.29%</td><td>5</td><td>2.86%</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section solutions">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">10 / Closing Strategy</p>
+          <h2>從招生成績，走向人才蓄水池</h2>
+          <p>Google Gemini Deep Research 對台灣新南向政策與國際招生環境之分析，整理日期為 2026/03/08。</p>
+        </div>
+      </div>
+      <div class="strategy-strip"><article class='strategy-card'><span>第一優先</span><strong>註冊與續留</strong><p>先把報到、入學、二年級留存接成同一路徑。</p></article><article class='strategy-card'><span>主軸定位</span><strong>智慧科技</strong><p>讓高科技與工程成為下一輪國際招生主力。</p></article><article class='strategy-card'><span>第二品牌</span><strong>健康醫療</strong><p>把醫療與醫學科技做成義守獨特優勢。</p></article></div>
+      <div class="two-col">
+        <div class="panel">
+          <h3>參照校</h3>
+          <p class="fine">本段參照校為：靜宜大學、銘傳大學、長庚大學、中國醫藥大學、元智大學、慈濟大學。</p>
+          <div class="chart-box"><canvas id="solution-compare-chart"></canvas></div>
+        </div>
+        <div class="panel">
+          <h3>決策訊號</h3>
+          <div class="callout">義守與參照校最大的差距，不在於完全沒有成長，而在於成長還沒有順利接到報到、穩定率與後續留才。下一階段的管理重點，應該從「辦更多活動」轉成「把招生漏斗接完整」。</div>
+          <div class="callout">策略上也不能再只談國別市場。未來的主軸要同時包含智慧科技、工程製造、健康醫療、國別 × 科系配置、在台近端生源，以及從註冊一路追到就業的儀表板。</div>
+        </div>
+      </div>
+      <div class="solution-grid top-four"><article class='solution-card'><h3>先補註冊與續留</h3><p>義守外國學生 113→114 成長 <span class="metric-red">13.60%</span>，但 114 全校新生註冊率只有 <span class="metric-red">86.84%</span>，學士班日間就學穩定率為 <span class="metric-blue">88.81%</span>。下一步的核心不是再把名單加大，而是把錄取、報到、入學、二年級續留接成同一條管理路徑。</p></article><article class='solution-card'><h3>把高科技做成主戰場</h3><p>未來三到五年，義守不能只把自己定位成招收境外生的綜合大學，而要更清楚定位成外籍青年進入台灣智慧科技、AI、工程製造與半導體供應鏈的起點。這代表招生主力要從一般性宣傳，轉向智慧科技、資訊、工程與相關專班的產品化擴量。</p></article><article class='solution-card'><h3>把醫療健康做成第二品牌</h3><p>義守最有條件拉開差距的另一條線，是健康醫療與醫學科技。這一塊不是只談護理或醫學，而是要把國際醫療、健康管理、醫工、智慧醫療與集團醫療資源一起打包，形成和其他學校不同的招生敘事。</p></article><article class='solution-card'><h3>國別 × 科系精準配置</h3><p>市場策略不能只分國家，也不能只分科系。越南、印尼、香港、日本各自對應的熱門科系、語言條件、報到阻力和完成率都不同，後續應把國別廣告、系所頁面、面談腳本與獎助條件做成對應版本。</p></article></div>
+      <div class="solution-grid bottom-two"><article class='solution-card'><h3>開發境內國際生源</h3><p>招生不應只靠海外教育展。已經在台灣就讀國際學校、僑外高中職或語言銜接班的學生，轉換成本更低、生活適應更快，也更容易接上正式學位班。這一群應該變成義守下一輪最值得系統經營的近端市場。</p></article><article class='solution-card'><h3>建立留才導向儀表板</h3><p>真正的策略檢核不應只看每年招到幾人，而要一路追到註冊率、休學率、退學率、TOCFL 達標率、實習媒合率與留台就業率。沒有這條資料鏈，招生就很難從活動導向走到投資導向。</p></article></div>
+      <div class="two-col" style="margin-top:18px;">
+        <div class="panel">
+          <h3>資料來源與下載清單</h3>
+          <p class="fine">本報告使用本次下載的 76 份校級 CSV。清單如下。</p>
+          <div class="download-toolbar"><a class="download-pill" href="downloads/growth-rank/download_manifest_growth_rank_20260306.csv" download>下載成長與排名清單</a><a class="download-pill" href="downloads/foreign-student/download_manifest_moe_udb_20260306.csv" download>下載來源國與系所清單</a><a class="download-pill" href="downloads/registration-dropout/download_manifest_registration_dropout_20260308.csv" download>下載註冊與退學清單</a></div>
+          <table class="attachment-table">
+            <thead><tr><th>表冊</th><th>頁面標題</th><th>學年</th><th>檔名</th><th>大小</th><th>下載</th></tr></thead>
+            <tbody><tr><td>學1-2</td><td>學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計</td><td>111</td><td><a href="downloads/growth-rank/stud_1_2_school_111.csv" download>stud_1_2_school_111.csv</a></td><td>59,578</td><td><a class="download-pill" href="downloads/growth-rank/stud_1_2_school_111.csv" download>下載</a></td></tr><tr><td>學1-2</td><td>學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計</td><td>112</td><td><a href="downloads/growth-rank/stud_1_2_school_112.csv" download>stud_1_2_school_112.csv</a></td><td>58,360</td><td><a class="download-pill" href="downloads/growth-rank/stud_1_2_school_112.csv" download>下載</a></td></tr><tr><td>學1-2</td><td>學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計</td><td>113</td><td><a href="downloads/growth-rank/stud_1_2_school_113.csv" download>stud_1_2_school_113.csv</a></td><td>56,133</td><td><a class="download-pill" href="downloads/growth-rank/stud_1_2_school_113.csv" download>下載</a></td></tr><tr><td>學1-2</td><td>學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計</td><td>114</td><td><a href="downloads/growth-rank/stud_1_2_school_114.csv" download>stud_1_2_school_114.csv</a></td><td>55,706</td><td><a class="download-pill" href="downloads/growth-rank/stud_1_2_school_114.csv" download>下載</a></td></tr><tr><td>學3-6</td><td>學3-6.畢業境外生數-以「校(含學制班別)」統計</td><td>111</td><td><a href="downloads/growth-rank/stud_3_6_graduate_school_111.csv" download>stud_3_6_graduate_school_111.csv</a></td><td>290,880</td><td><a class="download-pill" href="downloads/growth-rank/stud_3_6_graduate_school_111.csv" download>下載</a></td></tr><tr><td>學3-6</td><td>學3-6.畢業境外生數-以「校(含學制班別)」統計</td><td>112</td><td><a href="downloads/growth-rank/stud_3_6_graduate_school_112.csv" download>stud_3_6_graduate_school_112.csv</a></td><td>0</td><td><a class="download-pill" href="downloads/growth-rank/stud_3_6_graduate_school_112.csv" download>下載</a></td></tr><tr><td>學3-6</td><td>學3-6.畢業境外生數-以「校(含學制班別)」統計</td><td>113</td><td><a href="downloads/growth-rank/stud_3_6_graduate_school_113.csv" download>stud_3_6_graduate_school_113.csv</a></td><td>287,305</td><td><a class="download-pill" href="downloads/growth-rank/stud_3_6_graduate_school_113.csv" download>下載</a></td></tr><tr><td>學3-6</td><td>學3-6.畢業境外生數-以「校(含學制班別)」統計</td><td>114</td><td><a href="downloads/growth-rank/stud_3_6_graduate_school_114.csv" download>stud_3_6_graduate_school_114.csv</a></td><td>23</td><td><a class="download-pill" href="downloads/growth-rank/stud_3_6_graduate_school_114.csv" download>下載</a></td></tr><tr><td>學3-7</td><td>學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計</td><td>111</td><td><a href="downloads/growth-rank/stud_3_7_identity_school_111.csv" download>stud_3_7_identity_school_111.csv</a></td><td>589,406</td><td><a class="download-pill" href="downloads/growth-rank/stud_3_7_identity_school_111.csv" download>下載</a></td></tr><tr><td>學3-7</td><td>學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計</td><td>112</td><td><a href="downloads/growth-rank/stud_3_7_identity_school_112.csv" download>stud_3_7_identity_school_112.csv</a></td><td>584,756</td><td><a class="download-pill" href="downloads/growth-rank/stud_3_7_identity_school_112.csv" download>下載</a></td></tr><tr><td>學3-7</td><td>學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計</td><td>113</td><td><a href="downloads/growth-rank/stud_3_7_identity_school_113.csv" download>stud_3_7_identity_school_113.csv</a></td><td>577,215</td><td><a class="download-pill" href="downloads/growth-rank/stud_3_7_identity_school_113.csv" download>下載</a></td></tr><tr><td>學3-7</td><td>學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計</td><td>114</td><td><a href="downloads/growth-rank/stud_3_7_identity_school_114.csv" download>stud_3_7_identity_school_114.csv</a></td><td>566,979</td><td><a class="download-pill" href="downloads/growth-rank/stud_3_7_identity_school_114.csv" download>下載</a></td></tr><tr><td>學11</td><td>學11.學校辦理國際合作與交流資料表-以「校」統計</td><td>111</td><td><a href="downloads/growth-rank/stud_11_international_coop_school_111.csv" download>stud_11_international_coop_school_111.csv</a></td><td>187,311</td><td><a class="download-pill" href="downloads/growth-rank/stud_11_international_coop_school_111.csv" download>下載</a></td></tr><tr><td>學11</td><td>學11.學校辦理國際合作與交流資料表-以「校」統計</td><td>112</td><td><a href="downloads/growth-rank/stud_11_international_coop_school_112.csv" download>stud_11_international_coop_school_112.csv</a></td><td>190,077</td><td><a class="download-pill" href="downloads/growth-rank/stud_11_international_coop_school_112.csv" download>下載</a></td></tr><tr><td>學11</td><td>學11.學校辦理國際合作與交流資料表-以「校」統計</td><td>113</td><td><a href="downloads/growth-rank/stud_11_international_coop_school_113.csv" download>stud_11_international_coop_school_113.csv</a></td><td>182,711</td><td><a class="download-pill" href="downloads/growth-rank/stud_11_international_coop_school_113.csv" download>下載</a></td></tr><tr><td>學11</td><td>學11.學校辦理國際合作與交流資料表-以「校」統計</td><td>114</td><td><a href="downloads/growth-rank/stud_11_international_coop_school_114.csv" download>stud_11_international_coop_school_114.csv</a></td><td>23</td><td><a class="download-pill" href="downloads/growth-rank/stud_11_international_coop_school_114.csv" download>下載</a></td></tr><tr><td>學12-2</td><td>學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計</td><td>111</td><td><a href="downloads/growth-rank/stud_12_2_registration_system_111.csv" download>stud_12_2_registration_system_111.csv</a></td><td>626,925</td><td><a class="download-pill" href="downloads/growth-rank/stud_12_2_registration_system_111.csv" download>下載</a></td></tr><tr><td>學12-2</td><td>學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計</td><td>112</td><td><a href="downloads/growth-rank/stud_12_2_registration_system_112.csv" download>stud_12_2_registration_system_112.csv</a></td><td>595,685</td><td><a class="download-pill" href="downloads/growth-rank/stud_12_2_registration_system_112.csv" download>下載</a></td></tr><tr><td>學12-2</td><td>學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計</td><td>113</td><td><a href="downloads/growth-rank/stud_12_2_registration_system_113.csv" download>stud_12_2_registration_system_113.csv</a></td><td>586,592</td><td><a class="download-pill" href="downloads/growth-rank/stud_12_2_registration_system_113.csv" download>下載</a></td></tr><tr><td>學12-2</td><td>學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計</td><td>114</td><td><a href="downloads/growth-rank/stud_12_2_registration_system_114.csv" download>stud_12_2_registration_system_114.csv</a></td><td>593,239</td><td><a class="download-pill" href="downloads/growth-rank/stud_12_2_registration_system_114.csv" download>下載</a></td></tr><tr><td>學12-3</td><td>學12-3.新生(含境外生)註冊率-以「校」統計</td><td>111</td><td><a href="downloads/growth-rank/stud_12_3_registration_school_111.csv" download>stud_12_3_registration_school_111.csv</a></td><td>158,633</td><td><a class="download-pill" href="downloads/growth-rank/stud_12_3_registration_school_111.csv" download>下載</a></td></tr><tr><td>學12-3</td><td>學12-3.新生(含境外生)註冊率-以「校」統計</td><td>112</td><td><a href="downloads/growth-rank/stud_12_3_registration_school_112.csv" download>stud_12_3_registration_school_112.csv</a></td><td>153,334</td><td><a class="download-pill" href="downloads/growth-rank/stud_12_3_registration_school_112.csv" download>下載</a></td></tr><tr><td>學12-3</td><td>學12-3.新生(含境外生)註冊率-以「校」統計</td><td>113</td><td><a href="downloads/growth-rank/stud_12_3_registration_school_113.csv" download>stud_12_3_registration_school_113.csv</a></td><td>145,498</td><td><a class="download-pill" href="downloads/growth-rank/stud_12_3_registration_school_113.csv" download>下載</a></td></tr><tr><td>學12-3</td><td>學12-3.新生(含境外生)註冊率-以「校」統計</td><td>114</td><td><a href="downloads/growth-rank/stud_12_3_registration_school_114.csv" download>stud_12_3_registration_school_114.csv</a></td><td>149,511</td><td><a class="download-pill" href="downloads/growth-rank/stud_12_3_registration_school_114.csv" download>下載</a></td></tr><tr><td>學13-2</td><td>學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起)</td><td>111</td><td><a href="downloads/growth-rank/stud_13_2_suspend_school_111.csv" download>stud_13_2_suspend_school_111.csv</a></td><td>171,078</td><td><a class="download-pill" href="downloads/growth-rank/stud_13_2_suspend_school_111.csv" download>下載</a></td></tr><tr><td>學13-2</td><td>學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起)</td><td>112</td><td><a href="downloads/growth-rank/stud_13_2_suspend_school_112.csv" download>stud_13_2_suspend_school_112.csv</a></td><td>168,158</td><td><a class="download-pill" href="downloads/growth-rank/stud_13_2_suspend_school_112.csv" download>下載</a></td></tr><tr><td>學13-2</td><td>學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起)</td><td>113</td><td><a href="downloads/growth-rank/stud_13_2_suspend_school_113.csv" download>stud_13_2_suspend_school_113.csv</a></td><td>162,020</td><td><a class="download-pill" href="downloads/growth-rank/stud_13_2_suspend_school_113.csv" download>下載</a></td></tr><tr><td>學13-2</td><td>學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起)</td><td>114</td><td><a href="downloads/growth-rank/stud_13_2_suspend_school_114.csv" download>stud_13_2_suspend_school_114.csv</a></td><td>23</td><td><a class="download-pill" href="downloads/growth-rank/stud_13_2_suspend_school_114.csv" download>下載</a></td></tr><tr><td>學14-2</td><td>學14-2.退學人數-以「校(含學制班別)」統計(111學年度起)</td><td>111</td><td><a href="downloads/growth-rank/stud_14_2_dropout_school_111.csv" download>stud_14_2_dropout_school_111.csv</a></td><td>322,065</td><td><a class="download-pill" href="downloads/growth-rank/stud_14_2_dropout_school_111.csv" download>下載</a></td></tr><tr><td>學14-2</td><td>學14-2.退學人數-以「校(含學制班別)」統計(111學年度起)</td><td>112</td><td><a href="downloads/growth-rank/stud_14_2_dropout_school_112.csv" download>stud_14_2_dropout_school_112.csv</a></td><td>316,306</td><td><a class="download-pill" href="downloads/growth-rank/stud_14_2_dropout_school_112.csv" download>下載</a></td></tr><tr><td>學14-2</td><td>學14-2.退學人數-以「校(含學制班別)」統計(111學年度起)</td><td>113</td><td><a href="downloads/growth-rank/stud_14_2_dropout_school_113.csv" download>stud_14_2_dropout_school_113.csv</a></td><td>304,619</td><td><a class="download-pill" href="downloads/growth-rank/stud_14_2_dropout_school_113.csv" download>下載</a></td></tr><tr><td>學14-2</td><td>學14-2.退學人數-以「校(含學制班別)」統計(111學年度起)</td><td>114</td><td><a href="downloads/growth-rank/stud_14_2_dropout_school_114.csv" download>stud_14_2_dropout_school_114.csv</a></td><td>23</td><td><a class="download-pill" href="downloads/growth-rank/stud_14_2_dropout_school_114.csv" download>下載</a></td></tr><tr><td>學16</td><td>學16.學士班以下就學穩定率-以「校(含學制班別)」統計</td><td>111</td><td><a href="downloads/growth-rank/stud_16_attendance_school_111.csv" download>stud_16_attendance_school_111.csv</a></td><td>29,312</td><td><a class="download-pill" href="downloads/growth-rank/stud_16_attendance_school_111.csv" download>下載</a></td></tr><tr><td>學16</td><td>學16.學士班以下就學穩定率-以「校(含學制班別)」統計</td><td>112</td><td><a href="downloads/growth-rank/stud_16_attendance_school_112.csv" download>stud_16_attendance_school_112.csv</a></td><td>28,511</td><td><a class="download-pill" href="downloads/growth-rank/stud_16_attendance_school_112.csv" download>下載</a></td></tr><tr><td>學16</td><td>學16.學士班以下就學穩定率-以「校(含學制班別)」統計</td><td>113</td><td><a href="downloads/growth-rank/stud_16_attendance_school_113.csv" download>stud_16_attendance_school_113.csv</a></td><td>26,855</td><td><a class="download-pill" href="downloads/growth-rank/stud_16_attendance_school_113.csv" download>下載</a></td></tr><tr><td>學16</td><td>學16.學士班以下就學穩定率-以「校(含學制班別)」統計</td><td>114</td><td><a href="downloads/growth-rank/stud_16_attendance_school_114.csv" download>stud_16_attendance_school_114.csv</a></td><td>26,867</td><td><a class="download-pill" href="downloads/growth-rank/stud_16_attendance_school_114.csv" download>下載</a></td></tr><tr><td>foreign_by_identity</td><td>學3-7.境外學位生數(依身分類別呈現)-以校統計 (isu)</td><td>111</td><td><a href="downloads/foreign-student/moe_udb_foreign_by_identity_isu_111.csv" download>moe_udb_foreign_by_identity_isu_111.csv</a></td><td>6,662</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_by_identity_isu_111.csv" download>下載</a></td></tr><tr><td>foreign_by_identity</td><td>學3-7.境外學位生數(依身分類別呈現)-以校統計 (isu)</td><td>112</td><td><a href="downloads/foreign-student/moe_udb_foreign_by_identity_isu_112.csv" download>moe_udb_foreign_by_identity_isu_112.csv</a></td><td>7,004</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_by_identity_isu_112.csv" download>下載</a></td></tr><tr><td>foreign_by_identity</td><td>學3-7.境外學位生數(依身分類別呈現)-以校統計 (isu)</td><td>113</td><td><a href="downloads/foreign-student/moe_udb_foreign_by_identity_isu_113.csv" download>moe_udb_foreign_by_identity_isu_113.csv</a></td><td>6,731</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_by_identity_isu_113.csv" download>下載</a></td></tr><tr><td>foreign_by_identity</td><td>學3-7.境外學位生數(依身分類別呈現)-以校統計 (isu)</td><td>114</td><td><a href="downloads/foreign-student/moe_udb_foreign_by_identity_isu_114.csv" download>moe_udb_foreign_by_identity_isu_114.csv</a></td><td>6,462</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_by_identity_isu_114.csv" download>下載</a></td></tr><tr><td>foreign_by_identity</td><td>學3-7.境外學位生數(依身分類別呈現)-以校統計 (national)</td><td>111</td><td><a href="downloads/foreign-student/moe_udb_foreign_by_identity_national_111.csv" download>moe_udb_foreign_by_identity_national_111.csv</a></td><td>589,406</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_by_identity_national_111.csv" download>下載</a></td></tr><tr><td>foreign_by_identity</td><td>學3-7.境外學位生數(依身分類別呈現)-以校統計 (national)</td><td>112</td><td><a href="downloads/foreign-student/moe_udb_foreign_by_identity_national_112.csv" download>moe_udb_foreign_by_identity_national_112.csv</a></td><td>584,756</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_by_identity_national_112.csv" download>下載</a></td></tr><tr><td>foreign_by_identity</td><td>學3-7.境外學位生數(依身分類別呈現)-以校統計 (national)</td><td>113</td><td><a href="downloads/foreign-student/moe_udb_foreign_by_identity_national_113.csv" download>moe_udb_foreign_by_identity_national_113.csv</a></td><td>577,215</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_by_identity_national_113.csv" download>下載</a></td></tr><tr><td>foreign_by_identity</td><td>學3-7.境外學位生數(依身分類別呈現)-以校統計 (national)</td><td>114</td><td><a href="downloads/foreign-student/moe_udb_foreign_by_identity_national_114.csv" download>moe_udb_foreign_by_identity_national_114.csv</a></td><td>566,979</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_by_identity_national_114.csv" download>下載</a></td></tr><tr><td>foreign_students_by_department</td><td>學3-2.外國學生數及其在學比率-以系所統計 (isu)</td><td>111</td><td><a href="downloads/foreign-student/moe_udb_foreign_students_by_department_isu_111.csv" download>moe_udb_foreign_students_by_department_isu_111.csv</a></td><td>4,546</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_students_by_department_isu_111.csv" download>下載</a></td></tr><tr><td>foreign_students_by_department</td><td>學3-2.外國學生數及其在學比率-以系所統計 (isu)</td><td>112</td><td><a href="downloads/foreign-student/moe_udb_foreign_students_by_department_isu_112.csv" download>moe_udb_foreign_students_by_department_isu_112.csv</a></td><td>5,022</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_students_by_department_isu_112.csv" download>下載</a></td></tr><tr><td>foreign_students_by_department</td><td>學3-2.外國學生數及其在學比率-以系所統計 (isu)</td><td>113</td><td><a href="downloads/foreign-student/moe_udb_foreign_students_by_department_isu_113.csv" download>moe_udb_foreign_students_by_department_isu_113.csv</a></td><td>5,252</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_students_by_department_isu_113.csv" download>下載</a></td></tr><tr><td>foreign_students_by_department</td><td>學3-2.外國學生數及其在學比率-以系所統計 (isu)</td><td>114</td><td><a href="downloads/foreign-student/moe_udb_foreign_students_by_department_isu_114.csv" download>moe_udb_foreign_students_by_department_isu_114.csv</a></td><td>5,529</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_students_by_department_isu_114.csv" download>下載</a></td></tr><tr><td>foreign_students_by_department</td><td>學3-2.外國學生數及其在學比率-以系所統計 (national)</td><td>111</td><td><a href="downloads/foreign-student/moe_udb_foreign_students_by_department_national_111.csv" download>moe_udb_foreign_students_by_department_national_111.csv</a></td><td>424,136</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_students_by_department_national_111.csv" download>下載</a></td></tr><tr><td>foreign_students_by_department</td><td>學3-2.外國學生數及其在學比率-以系所統計 (national)</td><td>112</td><td><a href="downloads/foreign-student/moe_udb_foreign_students_by_department_national_112.csv" download>moe_udb_foreign_students_by_department_national_112.csv</a></td><td>422,314</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_students_by_department_national_112.csv" download>下載</a></td></tr><tr><td>foreign_students_by_department</td><td>學3-2.外國學生數及其在學比率-以系所統計 (national)</td><td>113</td><td><a href="downloads/foreign-student/moe_udb_foreign_students_by_department_national_113.csv" download>moe_udb_foreign_students_by_department_national_113.csv</a></td><td>451,632</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_students_by_department_national_113.csv" download>下載</a></td></tr><tr><td>foreign_students_by_department</td><td>學3-2.外國學生數及其在學比率-以系所統計 (national)</td><td>114</td><td><a href="downloads/foreign-student/moe_udb_foreign_students_by_department_national_114.csv" download>moe_udb_foreign_students_by_department_national_114.csv</a></td><td>465,565</td><td><a class="download-pill" href="downloads/foreign-student/moe_udb_foreign_students_by_department_national_114.csv" download>下載</a></td></tr><tr><td>學1-1</td><td>學1-1.正式學籍在學學生人數-以「系(所)」統計</td><td>111</td><td><a href="downloads/registration-dropout/stud_1_1_student_department_111.csv" download>stud_1_1_student_department_111.csv</a></td><td>1,103,447</td><td><a class="download-pill" href="downloads/registration-dropout/stud_1_1_student_department_111.csv" download>下載</a></td></tr><tr><td>學1-1</td><td>學1-1.正式學籍在學學生人數-以「系(所)」統計</td><td>112</td><td><a href="downloads/registration-dropout/stud_1_1_student_department_112.csv" download>stud_1_1_student_department_112.csv</a></td><td>1,090,943</td><td><a class="download-pill" href="downloads/registration-dropout/stud_1_1_student_department_112.csv" download>下載</a></td></tr><tr><td>學1-1</td><td>學1-1.正式學籍在學學生人數-以「系(所)」統計</td><td>113</td><td><a href="downloads/registration-dropout/stud_1_1_student_department_113.csv" download>stud_1_1_student_department_113.csv</a></td><td>1,098,263</td><td><a class="download-pill" href="downloads/registration-dropout/stud_1_1_student_department_113.csv" download>下載</a></td></tr><tr><td>學1-1</td><td>學1-1.正式學籍在學學生人數-以「系(所)」統計</td><td>114</td><td><a href="downloads/registration-dropout/stud_1_1_student_department_114.csv" download>stud_1_1_student_department_114.csv</a></td><td>1,096,030</td><td><a class="download-pill" href="downloads/registration-dropout/stud_1_1_student_department_114.csv" download>下載</a></td></tr><tr><td>學1-2</td><td>學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計</td><td>111</td><td><a href="downloads/registration-dropout/stud_1_2_student_school_111.csv" download>stud_1_2_student_school_111.csv</a></td><td>59,578</td><td><a class="download-pill" href="downloads/registration-dropout/stud_1_2_student_school_111.csv" download>下載</a></td></tr><tr><td>學1-2</td><td>學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計</td><td>112</td><td><a href="downloads/registration-dropout/stud_1_2_student_school_112.csv" download>stud_1_2_student_school_112.csv</a></td><td>58,360</td><td><a class="download-pill" href="downloads/registration-dropout/stud_1_2_student_school_112.csv" download>下載</a></td></tr><tr><td>學1-2</td><td>學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計</td><td>113</td><td><a href="downloads/registration-dropout/stud_1_2_student_school_113.csv" download>stud_1_2_student_school_113.csv</a></td><td>56,133</td><td><a class="download-pill" href="downloads/registration-dropout/stud_1_2_student_school_113.csv" download>下載</a></td></tr><tr><td>學1-2</td><td>學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計</td><td>114</td><td><a href="downloads/registration-dropout/stud_1_2_student_school_114.csv" download>stud_1_2_student_school_114.csv</a></td><td>55,706</td><td><a class="download-pill" href="downloads/registration-dropout/stud_1_2_student_school_114.csv" download>下載</a></td></tr><tr><td>學3-1</td><td>學3-1.境外學位生數及其在學比率-以「系(所)」統計</td><td>111</td><td><a href="downloads/registration-dropout/stud_3_1_foreign_degree_department_111.csv" download>stud_3_1_foreign_degree_department_111.csv</a></td><td>830,028</td><td><a class="download-pill" href="downloads/registration-dropout/stud_3_1_foreign_degree_department_111.csv" download>下載</a></td></tr><tr><td>學3-1</td><td>學3-1.境外學位生數及其在學比率-以「系(所)」統計</td><td>112</td><td><a href="downloads/registration-dropout/stud_3_1_foreign_degree_department_112.csv" download>stud_3_1_foreign_degree_department_112.csv</a></td><td>829,043</td><td><a class="download-pill" href="downloads/registration-dropout/stud_3_1_foreign_degree_department_112.csv" download>下載</a></td></tr><tr><td>學3-1</td><td>學3-1.境外學位生數及其在學比率-以「系(所)」統計</td><td>113</td><td><a href="downloads/registration-dropout/stud_3_1_foreign_degree_department_113.csv" download>stud_3_1_foreign_degree_department_113.csv</a></td><td>848,926</td><td><a class="download-pill" href="downloads/registration-dropout/stud_3_1_foreign_degree_department_113.csv" download>下載</a></td></tr><tr><td>學3-1</td><td>學3-1.境外學位生數及其在學比率-以「系(所)」統計</td><td>114</td><td><a href="downloads/registration-dropout/stud_3_1_foreign_degree_department_114.csv" download>stud_3_1_foreign_degree_department_114.csv</a></td><td>856,847</td><td><a class="download-pill" href="downloads/registration-dropout/stud_3_1_foreign_degree_department_114.csv" download>下載</a></td></tr><tr><td>學12-1</td><td>學12-1.新生(含境外生)註冊率-以「系(所)」統計</td><td>111</td><td><a href="downloads/registration-dropout/stud_12_1_registration_department_111.csv" download>stud_12_1_registration_department_111.csv</a></td><td>7,693,860</td><td><a class="download-pill" href="downloads/registration-dropout/stud_12_1_registration_department_111.csv" download>下載</a></td></tr><tr><td>學12-1</td><td>學12-1.新生(含境外生)註冊率-以「系(所)」統計</td><td>112</td><td><a href="downloads/registration-dropout/stud_12_1_registration_department_112.csv" download>stud_12_1_registration_department_112.csv</a></td><td>7,385,626</td><td><a class="download-pill" href="downloads/registration-dropout/stud_12_1_registration_department_112.csv" download>下載</a></td></tr><tr><td>學12-1</td><td>學12-1.新生(含境外生)註冊率-以「系(所)」統計</td><td>113</td><td><a href="downloads/registration-dropout/stud_12_1_registration_department_113.csv" download>stud_12_1_registration_department_113.csv</a></td><td>7,292,033</td><td><a class="download-pill" href="downloads/registration-dropout/stud_12_1_registration_department_113.csv" download>下載</a></td></tr><tr><td>學12-1</td><td>學12-1.新生(含境外生)註冊率-以「系(所)」統計</td><td>114</td><td><a href="downloads/registration-dropout/stud_12_1_registration_department_114.csv" download>stud_12_1_registration_department_114.csv</a></td><td>7,252,828</td><td><a class="download-pill" href="downloads/registration-dropout/stud_12_1_registration_department_114.csv" download>下載</a></td></tr><tr><td>學13-1</td><td>學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起)</td><td>111</td><td><a href="downloads/registration-dropout/stud_13_1_suspend_department_111.csv" download>stud_13_1_suspend_department_111.csv</a></td><td>2,833,460</td><td><a class="download-pill" href="downloads/registration-dropout/stud_13_1_suspend_department_111.csv" download>下載</a></td></tr><tr><td>學13-1</td><td>學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起)</td><td>112</td><td><a href="downloads/registration-dropout/stud_13_1_suspend_department_112.csv" download>stud_13_1_suspend_department_112.csv</a></td><td>2,802,591</td><td><a class="download-pill" href="downloads/registration-dropout/stud_13_1_suspend_department_112.csv" download>下載</a></td></tr><tr><td>學13-1</td><td>學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起)</td><td>113</td><td><a href="downloads/registration-dropout/stud_13_1_suspend_department_113.csv" download>stud_13_1_suspend_department_113.csv</a></td><td>2,815,858</td><td><a class="download-pill" href="downloads/registration-dropout/stud_13_1_suspend_department_113.csv" download>下載</a></td></tr><tr><td>學13-1</td><td>學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起)</td><td>114</td><td><a href="downloads/registration-dropout/stud_13_1_suspend_department_114.csv" download>stud_13_1_suspend_department_114.csv</a></td><td>23</td><td><a class="download-pill" href="downloads/registration-dropout/stud_13_1_suspend_department_114.csv" download>下載</a></td></tr><tr><td>學14-1</td><td>學14-1.退學人數-以「系(所)」統計(111學年度起)</td><td>111</td><td><a href="downloads/registration-dropout/stud_14_1_dropout_department_111.csv" download>stud_14_1_dropout_department_111.csv</a></td><td>5,602,633</td><td><a class="download-pill" href="downloads/registration-dropout/stud_14_1_dropout_department_111.csv" download>下載</a></td></tr><tr><td>學14-1</td><td>學14-1.退學人數-以「系(所)」統計(111學年度起)</td><td>112</td><td><a href="downloads/registration-dropout/stud_14_1_dropout_department_112.csv" download>stud_14_1_dropout_department_112.csv</a></td><td>5,552,570</td><td><a class="download-pill" href="downloads/registration-dropout/stud_14_1_dropout_department_112.csv" download>下載</a></td></tr><tr><td>學14-1</td><td>學14-1.退學人數-以「系(所)」統計(111學年度起)</td><td>113</td><td><a href="downloads/registration-dropout/stud_14_1_dropout_department_113.csv" download>stud_14_1_dropout_department_113.csv</a></td><td>5,552,536</td><td><a class="download-pill" href="downloads/registration-dropout/stud_14_1_dropout_department_113.csv" download>下載</a></td></tr><tr><td>學14-1</td><td>學14-1.退學人數-以「系(所)」統計(111學年度起)</td><td>114</td><td><a href="downloads/registration-dropout/stud_14_1_dropout_department_114.csv" download>stud_14_1_dropout_department_114.csv</a></td><td>23</td><td><a class="download-pill" href="downloads/registration-dropout/stud_14_1_dropout_department_114.csv" download>下載</a></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script>
+    const nationalOverviewData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "外國學生", "data": [18274, 18134, 20778, 24643], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "僑生", "data": [9796, 10175, 10583, 10931], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "港澳生", "data": [8992, 7966, 6570, 5302], "borderColor": "#315b96", "backgroundColor": "#315b9622"}]};
+    const isuOverviewData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "境外學位生總數", "data": [1499, 1370, 1388, 1437], "borderColor": "#c1a24a", "backgroundColor": "#c1a24a22"}, {"label": "外國學生", "data": [918, 875, 993, 1128], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "僑生", "data": [94, 96, 105, 106], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "港澳生", "data": [464, 390, 284, 196], "borderColor": "#315b96", "backgroundColor": "#315b9622"}]};
+    const growthData = {"labels": ["境外學位生總數", "外國學生", "僑生", "港澳生", "陸生"], "datasets": [{"label": "義守大學", "data": [3.53, 13.6, 0.95, -30.99, 16.67], "backgroundColor": "#a73a2a"}, {"label": "全國一般大學", "data": [6.38, 18.6, 3.29, -19.3, -30.36], "backgroundColor": "#1f5a4d"}, {"label": "私立一般大學", "data": [11.18, 25.21, 0.79, -24.35, -35.0], "backgroundColor": "#315b96"}]};
+    const ratioTrendData = {"labels": ["111", "112", "113", "114"], "percentages": [12.8, 12.83, 13.95, 15.35], "datasets": [{"label": "其他日間學生數", "data": [10208, 9305, 8560, 7923], "backgroundColor": "#315b96", "stack": "students"}, {"label": "境外學位生總數", "data": [1499, 1370, 1388, 1437], "backgroundColor": "#c1a24a", "stack": "students"}]};
+    const ratioRankData = {"labels": ["開南大學", "中華大學中華大學", "義守大學", "銘傳大學", "臺師大", "臺北醫學大學", "元智大學", "清華", "臺大", "靜宜大學"], "datasets": [{"label": "114 日間境外生占比", "data": [48.32, 33.23, 15.35, 14.41, 13.39, 12.4, 11.81, 10.7, 10.56, 10.31], "backgroundColor": ["#1f5a4d88", "#1f5a4d88", "#a73a2a", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88", "#1f5a4d88"]}]};
+    const sourceTrendData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "越南", "data": [177, 193, 378, 561], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "印尼", "data": [259, 236, 247, 268], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "香港", "data": [397, 338, 257, 182], "borderColor": "#315b96", "backgroundColor": "#315b9622"}, {"label": "日本", "data": [105, 114, 105, 88], "borderColor": "#c1a24a", "backgroundColor": "#c1a24a22"}, {"label": "泰國", "data": [120, 118, 100, 78], "borderColor": "#8b5e3c", "backgroundColor": "#8b5e3c22"}]};
+    const sourceMixData = {"labels": ["越南", "印尼", "香港", "日本", "泰國", "馬來西亞"], "datasets": [{"label": "外國生", "data": [560, 201, 0, 88, 78, 27], "backgroundColor": "#a73a2a"}, {"label": "僑生", "data": [1, 67, 0, 0, 0, 36], "backgroundColor": "#1f5a4d"}, {"label": "港澳生", "data": [0, 0, 182, 0, 0, 0], "backgroundColor": "#315b96"}, {"label": "陸生", "data": [0, 0, 0, 0, 0, 0], "backgroundColor": "#c1a24a"}]};
+    const deptTrendData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "餐旅管理學系", "data": [54, 42, 116, 202], "borderColor": "#a73a2a", "backgroundColor": "#a73a2a22"}, {"label": "企業管理學系", "data": [120, 109, 66, 55], "borderColor": "#1f5a4d", "backgroundColor": "#1f5a4d22"}, {"label": "智慧科技英語學士學位學程", "data": [66, 68, 69, 89], "borderColor": "#315b96", "backgroundColor": "#315b9622"}]};
+    const overseasContextData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "境外學位生總數", "data": [1499, 1370, 1388, 1437], "backgroundColor": "#c1a24a"}, {"label": "境外新生實際註冊人數", "data": [368, 260, 279, 286], "backgroundColor": "#315b96"}], "shareLabels": [12.8, 12.83, 13.95, 15.35]};
+    const deptRiskData = {"labels": ["國際企業經營英語學士學位學程", "廚藝暨美食學學系", "智慧觀光餐旅管理英語學士學位學程", "國際傳媒與娛樂管理英語學士學位學程", "企業管理學系", "國際商務學系", "電影與電視學系", "大眾傳播學系"], "datasets": [{"label": "114 境外新生實際註冊人數", "data": [25, 22, 12, 10, 8, 7, 7, 6], "backgroundColor": "#315b96"}, {"label": "114 新生註冊率", "data": [77.14, 62.9, 63.64, 52.63, 68.89, 55.56, 78.0, 61.22], "backgroundColor": "#a73a2a"}]};
+    const deptPressureData = {"labels": ["醫學科學與生物科技學系", "公共政策與管理學系", "資料科學與大數據分析學系", "國際溝通暨應用英語學系", "國際企業經營學系", "創意整合設計學系", "運動科技與休閒管理學系", "工業管理學系"], "datasets": [{"label": "113 退學率", "data": [7.02, 6.18, 5.91, 5.84, 5.63, 5.51, 5.49, 5.38], "backgroundColor": "#a73a2a"}, {"label": "113 休學率", "data": [4.49, 3.37, 2.15, 3.9, 1.41, 4.24, 3.3, 8.6], "backgroundColor": "#315b96"}, {"label": "113 境外生在學比率", "data": [1.69, 1.12, 0.0, 24.03, 87.32, 12.71, 13.19, 2.15], "backgroundColor": "#c1a24a"}]};
+    const benchmarkData = {"labels": ["靜宜大學", "銘傳大學", "長庚大學", "中國醫藥大學", "元智大學", "慈濟大學", "義守大學"], "datasets": [{"label": "外國學生 113→114 成長率", "data": [37.04, 30.93, 23.32, 20.77, 19.24, 15.95, 13.6], "backgroundColor": ["#a73a2acc", "#a73a2acc", "#a73a2acc", "#a73a2acc", "#a73a2acc", "#a73a2acc", "#a73a2a"]}, {"label": "114 全校新生註冊率", "data": [97.47, 95.34, 94.01, 91.98, 97.08, 71.1, 86.84], "backgroundColor": ["#1f5a4dcc", "#1f5a4dcc", "#1f5a4dcc", "#1f5a4dcc", "#1f5a4dcc", "#1f5a4dcc", "#1f5a4d"]}, {"label": "114 學士班日間就學穩定率", "data": [92.23, 90.88, 92.7, 95.59, 94.55, 91.26, 88.81], "backgroundColor": ["#315b96cc", "#315b96cc", "#315b96cc", "#315b96cc", "#315b96cc", "#315b96cc", "#315b96"]}]};
+    const hkCountData = {"labels": ["中國文化大學", "義守大學", "輔仁大學", "銘傳大學"], "datasets": [{"label": "114 港澳生", "data": [148, 196, 307, 193], "backgroundColor": ["#c1a24a", "#a73a2a", "#c1a24a", "#c1a24a"]}]};
+    const hkGrowthData = {"labels": ["中國文化大學", "義守大學", "輔仁大學", "銘傳大學"], "datasets": [{"label": "港澳生成長率", "data": [-30.19, -30.99, -8.36, -36.93], "backgroundColor": ["#315b96cc", "#315b96", "#315b96cc", "#315b96cc"]}, {"label": "外國生成長率", "data": [99.61, 13.6, 10.84, 30.93], "backgroundColor": ["#1f5a4dcc", "#1f5a4d", "#1f5a4dcc", "#1f5a4dcc"]}]};
+    const regData = {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "境外新生實際註冊人數", "data": [368, 260, 279, 286], "backgroundColor": "#a73a2a", "yAxisID": "y"}, {"label": "全校新生註冊率", "data": [64.97, 71.27, 80.71, 86.84], "backgroundColor": "#1f5a4d", "yAxisID": "y1"}]};
+    const solutionCompareData = {"labels": ["外國學生\n113→114成長率", "114全校\n新生註冊率", "114學士班日間\n就學穩定率"], "datasets": [{"label": "義守大學", "data": [13.6, 86.84, 88.81], "backgroundColor": "#a73a2a"}, {"label": "參照校平均", "data": [24.54, 91.16, 92.87], "backgroundColor": "#1f5a4d"}]};
+
+    Chart.defaults.font.family = '"Noto Sans TC", sans-serif';
+    Chart.defaults.color = '#16211d';
+    Chart.defaults.plugins.legend.labels.boxWidth = 14;
+    Chart.defaults.plugins.legend.labels.boxHeight = 14;
+
+    const gridColor = 'rgba(22,33,29,0.12)';
+    const titleColor = '#16211d';
+
+    function lineBarOptions(title, extra = {}) {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: title, color: titleColor, font: { size: 18, weight: '700' } },
+          tooltip: { padding: 12 }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor } },
+          y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false } },
+          x: { grid: { display: false } }
+        },
+        ...extra
+      };
+    }
+
+    const stackedRatioLabelPlugin = {
+      id: 'stackedRatioLabelPlugin',
+      afterDatasetsDraw(chart) {
+        if (chart.canvas.id !== 'ratio-trend-chart') return;
+        const { ctx, scales: { x, y } } = chart;
+        const topDataset = chart.data.datasets[chart.data.datasets.length - 1];
+        const percentages = chart.data.percentages || [];
+        ctx.save();
+        ctx.fillStyle = '#a73a2a';
+        ctx.font = '700 14px "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        topDataset.data.forEach((_, index) => {
+          const total = chart.data.datasets.reduce((sum, ds) => sum + (Number(ds.data[index]) || 0), 0);
+          const xPos = x.getPixelForValue(index);
+          const yPos = y.getPixelForValue(total) - 8;
+          ctx.fillText(`${percentages[index].toFixed(2)}%`, xPos, yPos);
+        });
+        ctx.restore();
+      }
+    };
+
+    const overseasShareLabelPlugin = {
+      id: 'overseasShareLabelPlugin',
+      afterDatasetsDraw(chart) {
+        if (chart.canvas.id !== 'overseas-context-chart') return;
+        const percentages = chart.data.shareLabels || [];
+        const targetDataset = chart.data.datasets[1];
+        const { ctx } = chart;
+        ctx.save();
+        ctx.fillStyle = '#a73a2a';
+        ctx.font = '700 14px "Noto Sans TC", sans-serif';
+        ctx.textAlign = 'center';
+        targetDataset.data.forEach((value, index) => {
+          const meta = chart.getDatasetMeta(1).data[index];
+          if (!meta) return;
+          ctx.fillText(`${percentages[index].toFixed(2)}%`, meta.x, meta.y - 8);
+        });
+        ctx.restore();
+      }
+    };
+
+    new Chart(document.getElementById('national-overview-chart'), {
+      type: 'line',
+      data: nationalOverviewData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '全國一般大學：外國學生、僑生、港澳生四年變化', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('isu-overview-chart'), {
+      type: 'line',
+      data: isuOverviewData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '義守大學：境外學位生、外國學生、僑生、港澳生四年變化', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('growth-chart'), {
+      type: 'bar',
+      data: growthData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '113→114 五項成長率比較', color: titleColor, font: { size: 18, weight: '700' } },
+          tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}%` } }
+        },
+        scales: {
+          y: { grid: { color: gridColor }, ticks: { callback: (v) => `${v}%` } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('ratio-trend-chart'), {
+      type: 'bar',
+      data: ratioTrendData,
+      plugins: [stackedRatioLabelPlugin],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '日間在學學生數中的境外生總數與占比', color: titleColor, font: { size: 18, weight: '700' } },
+          tooltip: {
+            padding: 12,
+            callbacks: {
+              afterBody: (items) => {
+                const index = items[0].dataIndex;
+                const total = ratioTrendData.datasets.reduce((sum, ds) => sum + (Number(ds.data[index]) || 0), 0);
+                return [
+                  `日間在學學生數: ${total.toLocaleString()}`,
+                  `境外生占比: ${ratioTrendData.percentages[index].toFixed(2)}%`
+                ];
+              }
+            }
+          }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false } },
+          y: {
+            stacked: true,
+            beginAtZero: true,
+            grid: { color: gridColor },
+            ticks: { callback: (v) => Number(v).toLocaleString() }
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('ratio-rank-chart'), {
+      type: 'bar',
+      data: ratioRankData,
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: '114 境外生規模≥500 校之日間占比前十', color: titleColor, font: { size: 18, weight: '700' } },
+          tooltip: { callbacks: { label: (ctx) => `${ctx.raw.toFixed(2)}%` } }
+        },
+        scales: {
+          x: { beginAtZero: true, grid: { color: gridColor }, ticks: { callback: (v) => `${v}%` } },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('source-trend-chart'), {
+      type: 'line',
+      data: sourceTrendData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '義守主要來源國的境外生四年趨勢', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('source-mix-chart'), {
+      type: 'bar',
+      data: sourceMixData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '114 前六大來源國的身分類別構成', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          x: { stacked: true, grid: { display: false } },
+          y: { stacked: true, beginAtZero: true, grid: { color: gridColor } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('reg-chart'), {
+      type: 'bar',
+      data: regData,
+      options: lineBarOptions('境外新生實際註冊與全校新生註冊率', {
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor } },
+          y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { callback: (v) => `${v}%` } },
+          x: { grid: { display: false } }
+        }
+      })
+    });
+
+    new Chart(document.getElementById('benchmark-chart'), {
+      type: 'bar',
+      data: benchmarkData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '可參照校：成長率、註冊率、穩定率三項同看', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { callback: (v) => `${v}%` } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('dept-trend-chart'), {
+      type: 'line',
+      data: deptTrendData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '義守外國學生主力科系 111-114 變化', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('overseas-context-chart'), {
+      type: 'bar',
+      data: overseasContextData,
+      plugins: [overseasShareLabelPlugin],
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '境外生總數、境外新生與境外生占比', color: titleColor, font: { size: 18, weight: '700' } },
+          tooltip: {
+            callbacks: {
+              afterBody: (items) => {
+                const i = items[0].dataIndex;
+                return [`境外生占比: ${overseasContextData.shareLabels[i].toFixed(2)}%`];
+              }
+            }
+          }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor }, ticks: { callback: (v) => Number(v).toLocaleString() } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('dept-risk-chart'), {
+      type: 'bar',
+      data: deptRiskData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '114 境外新生量高但註冊率偏低的系所', color: titleColor, font: { size: 18, weight: '700' } },
+          tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}${ctx.dataset.label.includes('註冊率') ? '%' : ' 人'}` } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('dept-pressure-chart'), {
+      type: 'bar',
+      data: deptPressureData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '113 大系所的退學率、休學率與境外在學比率', color: titleColor, font: { size: 18, weight: '700' } },
+          tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toFixed(2)}%` } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor }, ticks: { callback: (v) => `${v}%` } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('solution-compare-chart'), {
+      type: 'bar',
+      data: solutionCompareData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '成長率、註冊率、就學穩定率比較', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { callback: (v) => `${v}%` } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('hk-count-chart'), {
+      type: 'bar',
+      data: hkCountData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          title: { display: true, text: '114 港澳生人數比較', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          y: { beginAtZero: true, grid: { color: gridColor } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('hk-growth-chart'), {
+      type: 'bar',
+      data: hkGrowthData,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: { display: true, text: '港澳生成長率與外國生成長率比較', color: titleColor, font: { size: 18, weight: '700' } }
+        },
+        scales: {
+          y: { grid: { color: gridColor }, ticks: { callback: (v) => `${v}%` } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>
