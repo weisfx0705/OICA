@@ -463,6 +463,284 @@
       line-height: 1.6;
     }
 
+    .line-search {
+      margin-top: 16px;
+      border: 2px solid #efe4d2;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #fffdfa, #fff7eb);
+      padding: 16px;
+    }
+
+    .line-search-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .line-search-head p {
+      margin: 6px 0 0;
+    }
+
+    .line-search-actions {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .line-reset {
+      border: 2px solid #d7e7ea;
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .line-reset:hover {
+      border-color: #8fc9de;
+      background: #eef9ff;
+    }
+
+    .line-lookup-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+      grid-template-columns: 1fr;
+    }
+
+    .line-panel {
+      border: 2px solid #efe1cb;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .82);
+      padding: 14px;
+    }
+
+    .line-panel h4 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .line-search-controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .line-search label {
+      display: grid;
+      gap: 6px;
+      font-weight: 700;
+      color: #6b4f30;
+    }
+
+    .line-search input,
+    .line-search select {
+      width: 100%;
+      border: 2px solid #d9e7eb;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .line-search input::placeholder {
+      color: #8d9aa0;
+    }
+
+    .line-search select:disabled {
+      background: #f7f2ea;
+      color: #9a9389;
+      cursor: not-allowed;
+    }
+
+    .match-hint {
+      margin-top: 8px;
+      font-size: .94rem;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    .match-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+      max-height: 270px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .match-item {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      text-align: left;
+      border: 2px solid #e6ecef;
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px 12px;
+      cursor: pointer;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .match-item small {
+      display: block;
+      color: var(--sub);
+      font-size: .84rem;
+      margin-top: 2px;
+    }
+
+    .match-item span:last-child {
+      color: #7b5b36;
+      font-size: .92rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .match-item:hover,
+    .match-item.active {
+      border-color: #8fc9de;
+      background: #eef9ff;
+    }
+
+    .line-result {
+      margin-top: 14px;
+    }
+
+    .line-card {
+      display: grid;
+      gap: 14px;
+      grid-template-columns: 1fr;
+      align-items: center;
+      border: 2px solid #ecdcc6;
+      border-radius: 16px;
+      padding: 14px;
+      background: #fffefb;
+    }
+
+    .line-card h4 {
+      margin: 0 0 8px;
+      font-size: 1.18rem;
+    }
+
+    .line-card p {
+      margin: 6px 0;
+      line-height: 1.7;
+    }
+
+    .student-highlight {
+      margin: 10px 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #f7fff5;
+      border: 2px dashed #cae6c0;
+      line-height: 1.6;
+    }
+
+    .line-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .line-meta span {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #eef9ff;
+      border: 1px solid #cce5ef;
+      font-size: .9rem;
+      font-weight: 700;
+      color: #47606b;
+    }
+
+    .student-roster {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .student-pill {
+      border: 2px solid #ece4d7;
+      border-radius: 12px;
+      background: #fff;
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .student-pill strong,
+    .student-pill span {
+      display: block;
+    }
+
+    .student-pill span {
+      margin-top: 3px;
+      color: var(--sub);
+      font-size: .86rem;
+    }
+
+    .student-pill:hover,
+    .student-pill.active {
+      border-color: #8fc9de;
+      background: #eef9ff;
+    }
+
+    .line-qr-wrap {
+      display: grid;
+      gap: 10px;
+      justify-items: center;
+    }
+
+    .line-note {
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px dashed #e8d5bf;
+      background: #fffaf2;
+      line-height: 1.7;
+      color: #7a6142;
+      text-align: center;
+    }
+
+    .line-card img {
+      width: min(220px, 100%);
+      aspect-ratio: 1 / 1;
+      border: 6px solid #fff6dc;
+      border-radius: 16px;
+      background: #fff;
+      justify-self: center;
+    }
+
+    .line-empty {
+      margin-top: 0;
+    }
+
+    @media (min-width: 900px) {
+      .line-lookup-grid {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+      }
+    }
+
+    @media (min-width: 880px) {
+      .line-card {
+        grid-template-columns: minmax(0, 1.25fr) auto;
+      }
+    }
+
     .qr-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -575,6 +853,7 @@
         <button class="tab-btn active" data-tab="overview">總覽與到校提醒</button>
         <button class="tab-btn" data-tab="scenarios">14 大情境對話</button>
         <button class="tab-btn" data-tab="majors">科系願景引導</button>
+        <button class="tab-btn" data-tab="line-groups">📱 導師專屬 LINE 群組</button>
         <button class="tab-btn" data-tab="resources">工具與聯絡</button>
       </nav>
     </header>
@@ -591,6 +870,8 @@
                 大情境：</strong>用關鍵字查詢，直接對學生回應。</button>
             <button class="guide-item guide-link" data-jump-tab="majors"><strong>科系願景：</strong>用 1
               句話引導學生看見升學與就業方向。</button>
+            <button class="guide-item guide-link"
+              data-jump-tab="line-groups"><strong>導師 LINE 群組：</strong>雙向查找學生、導師與群組 QR code。</button>
             <button class="guide-item guide-link"
               data-jump-tab="resources"><strong>工具與聯絡：</strong>掃碼啟用翻譯工具，並快速找到協作窗口。</button>
           </div>
@@ -659,7 +940,7 @@
       </div>
     </section>
 
-    <section class="tab-page" id="tab-resources">
+    <section class="tab-page" id="tab-line-groups">
       <div class="grid">
         <article class="panel large" style="grid-column: span 12;">
           <span class="badge mint">📱 導師專屬 LINE 群組</span>
@@ -684,8 +965,55 @@
           </div>
           <p style="margin-top:12px;line-height:1.7;color:var(--sub);">透過此群組，導師可快速掌握學生動態、傳達重要訊息，TA
             也能即時協助翻譯與溝通，確保輔導工作順暢進行。</p>
+          <div class="line-search">
+            <div class="line-search-head">
+              <div>
+                <h3>LINE 群組 QR Code 搜尋引擎</h3>
+                <p class="footer" style="margin-top:4px;">支援 <strong>學生找導師</strong>、<strong>導師找學生</strong>，並同步顯示對應 LINE 群組 QR code。</p>
+              </div>
+              <div class="line-search-actions">
+                <span class="badge sun" style="margin-bottom:0;">學生 / 導師 / 群組</span>
+                <button class="line-reset" id="lineResetBtn" type="button">重設查詢</button>
+              </div>
+            </div>
+            <div class="line-lookup-grid">
+              <section class="line-panel">
+                <span class="badge mint">學生找導師</span>
+                <h4>輸入學號或姓名</h4>
+                <label for="lineStudentSearch">學生查詢
+                  <input id="lineStudentSearch" type="search" placeholder="例如：11496231E、孝桐、阮..." />
+                </label>
+                <div class="match-hint" id="lineStudentHint">輸入後會列出符合的學生，點選即可直接帶出導師、學生名單與 LINE 群組。</div>
+                <div class="match-list" id="lineStudentMatches"></div>
+              </section>
+              <section class="line-panel">
+                <span class="badge peach">導師找學生 / 學系找群組</span>
+                <h4>先選學系，再選導師</h4>
+                <div class="line-search-controls">
+                  <label for="lineDeptSelect">1. 選擇學系
+                    <select id="lineDeptSelect">
+                      <option value="">請先選擇學系</option>
+                    </select>
+                  </label>
+                  <label for="lineTeacherSelect">2. 選擇導師
+                    <select id="lineTeacherSelect" disabled>
+                      <option value="">請先選擇學系</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="match-hint">若從左側點選學生，這裡會自動同步到該學生的導師與學系。</div>
+              </section>
+            </div>
+            <div class="line-result" id="lineGroupResult">
+              <div class="tip line-empty">可從左側搜尋學生，或從右側依學系選導師；選定後會顯示群組 QR code 與學生名單。</div>
+            </div>
+          </div>
         </article>
+      </div>
+    </section>
 
+    <section class="tab-page" id="tab-resources">
+      <div class="grid">
         <article class="panel large">
           <span class="badge peach">AI 即時翻譯工具</span>
           <h2>掃碼使用（QR Code）</h2>
@@ -870,6 +1198,243 @@
       }
     ];
 
+    const lineGroups = [
+      { department: "電機系", teacher: "孫迺翔", url: "https://line.me/ti/g/KcCG3rr6uv" },
+      { department: "電子系", teacher: "林彥勝", url: "https://line.me/ti/g/h_qAheDUkM" },
+      { department: "資工系", teacher: "蔡雅茹", url: "https://line.me/ti/g/juwtzxyY_V" },
+      { department: "資管系", teacher: "陳筠昀", url: "https://line.me/ti/g/sX8dxpgSuE" },
+      { department: "資管系", teacher: "陳秀如", url: "", note: "Word 檔中未附群組連結，待補。" },
+      { department: "機械系", teacher: "劉芳寶", url: "https://line.me/ti/g/UkuwZrDaG-" },
+      { department: "化工系", teacher: "劉建宏", url: "https://line.me/ti/g/QhJnMnNRkR" },
+      { department: "土木系", teacher: "古志生", url: "https://line.me/ti/g/_VQfQdfyrq" },
+      { department: "材料系", teacher: "謝之駿", url: "https://line.me/ti/g/ZQkBgD5FKa" },
+      { department: "餐旅系", teacher: "傅信維", url: "https://line.me/ti/g/v2N9qVhzNC" },
+      { department: "餐旅系", teacher: "溫武男", url: "https://line.me/ti/g/5gw99JmMfS" },
+      { department: "餐旅系", teacher: "黃一正", url: "https://line.me/ti/g/h7CbpnpSh5" },
+      { department: "餐旅系", teacher: "保里乃玲", url: "https://line.me/ti/g/hBH793wAuQ" },
+      { department: "餐旅系", teacher: "張琬菁", url: "https://line.me/ti/g/ZM3_KtyXNN" },
+      { department: "廚藝系", teacher: "汪芷榆", url: "https://line.me/ti/g/Zw5h7X-Bqs" },
+      { department: "醫工系", teacher: "王智昱", url: "https://line.me/ti/g/63cmP2Cjvx" }
+    ];
+
+    const studentRosterText = String.raw`學號|姓名|導師姓名|導師單位
+11496231E|孝桐|古志生|土木工程學系
+11496061E|黎方英維|古志生|土木工程學系
+11496062E|吳家葉|古志生|土木工程學系
+11496228E|潘慧婷|劉建宏|化學工程學系
+11496229E|丁香莊|劉建宏|化學工程學系
+11496230E|范俊偉|劉建宏|化學工程學系
+11496063E|阮文武|謝之駿|材料科學與工程學系
+11496064E|蘇文青|謝之駿|材料科學與工程學系
+11496065E|楊明智|謝之駿|材料科學與工程學系
+11496232E|杜黃南|謝之駿|材料科學與工程學系
+11496223E|范登科|劉芳寶|機械與自動化工程學系
+11496224E|黎俊傑|劉芳寶|機械與自動化工程學系
+11496225E|黎鴻君|劉芳寶|機械與自動化工程學系
+11496226E|黃明專|劉芳寶|機械與自動化工程學系
+11496227E|陳國慶|劉芳寶|機械與自動化工程學系
+11496040E|黎成達|劉芳寶|機械與自動化工程學系
+11496041E|阮金發|劉芳寶|機械與自動化工程學系
+11496042E|梅國趙|劉芳寶|機械與自動化工程學系
+11496043E|翁崇庭|劉芳寶|機械與自動化工程學系
+11496044E|圍黎明|劉芳寶|機械與自動化工程學系
+11496049E|阮文寶|劉芳寶|機械與自動化工程學系
+11496050E|黎金山|劉芳寶|機械與自動化工程學系
+11496051E|阮維祥|劉芳寶|機械與自動化工程學系
+11496052E|黎新維|劉芳寶|機械與自動化工程學系
+11496053E|阮泰安|劉芳寶|機械與自動化工程學系
+11496054E|黎日河|劉芳寶|機械與自動化工程學系
+11496055E|張孟雄|劉芳寶|機械與自動化工程學系
+11496057E|阮德英|劉芳寶|機械與自動化工程學系
+11496058E|談黎玉|劉芳寶|機械與自動化工程學系
+11496203E|武黃原|林彥勝|半導體學士學位學程
+11496204E|黃玉如意|林彥勝|半導體學士學位學程
+11496205E|胡氏垂莊|林彥勝|半導體學士學位學程
+11496206E|阮黃秀|林彥勝|半導體學士學位學程
+11496015E|潘文沙邊|林彥勝|半導體學士學位學程
+11496017E|黎金梅|林彥勝|半導體學士學位學程
+11496018E|阮玉富|林彥勝|半導體學士學位學程
+11496019E|阮友慶|林彥勝|半導體學士學位學程
+11496020E|武黃日明|林彥勝|半導體學士學位學程
+11496021E|潘善明|林彥勝|半導體學士學位學程
+11496022E|方仲信|林彥勝|半導體學士學位學程
+11496207E|甲氏瓊英|蔡雅茹|資訊工程學系
+11496208E|范進功|蔡雅茹|資訊工程學系
+11496209E|黎懷蒼|蔡雅茹|資訊工程學系
+11496210E|陳大義|蔡雅茹|資訊工程學系
+11496211E|范德英|蔡雅茹|資訊工程學系
+11496212E|阮英泰|蔡雅茹|資訊工程學系
+11496024E|黃天厚|蔡雅茹|資訊工程學系
+11496026E|阮晉才|蔡雅茹|資訊工程學系
+11496028E|阮柏浦文|蔡雅茹|資訊工程學系
+11496029E|楊阮草薇|蔡雅茹|資訊工程學系
+11496031E|范氏明書|蔡雅茹|資訊工程學系
+11496032E|陶氏蘭英|蔡雅茹|資訊工程學系
+11496034E|裴維慶|蔡雅茹|資訊工程學系
+11496035E|黃世榮|蔡雅茹|資訊工程學系
+11496037E|黎永智|蔡雅茹|資訊工程學系
+11496038E|陶黃福|蔡雅茹|資訊工程學系
+11496002E|高光偉|蔡雅茹|資訊工程學系
+11496079E|阮嘉福|陳秀如|資訊管理學系
+11496080E|胡氏明珠|陳秀如|資訊管理學系
+11496081E|黎旭顏|陳秀如|資訊管理學系
+11496083E|朱氏玉英|陳秀如|資訊管理學系
+11496085E|阮泰芳草|陳秀如|資訊管理學系
+11496088E|武孟世|陳秀如|資訊管理學系
+11496089E|謝氏蘭櫻|陳秀如|資訊管理學系
+11496218E|阮光功|陳秀如|資訊管理學系
+11496219E|杜氏嬌鶯|陳秀如|資訊管理學系
+11496220E|黃慶輝|陳秀如|資訊管理學系
+11496221E|裴氏秋香|陳秀如|資訊管理學系
+11496222E|楊氏妙何|陳秀如|資訊管理學系
+11496213E|楊燕玉|陳筠昀|資訊管理學系
+11496214E|阮玉鄧科|陳筠昀|資訊管理學系
+11496215E|陳氏雪蘭|陳筠昀|資訊管理學系
+11496216E|陶楊仲孝|陳筠昀|資訊管理學系
+11496217E|黎清芳|陳筠昀|資訊管理學系
+11496066E|洪金竹|陳筠昀|資訊管理學系
+11496068E|張越黃|陳筠昀|資訊管理學系
+11496069E|宋文貴|陳筠昀|資訊管理學系
+11496070E|阮海燕|陳筠昀|資訊管理學系
+11496072E|杜岱成發|陳筠昀|資訊管理學系
+11496073E|黃友秀|陳筠昀|資訊管理學系
+11496075E|阮玉美淵|陳筠昀|資訊管理學系
+11496077E|阮國輝|陳筠昀|資訊管理學系
+11496200E|胡國傑|孫迺翔|電機工程學系
+11496201E|潘文猛|孫迺翔|電機工程學系
+11496202E|阮氏芳蘭|孫迺翔|電機工程學系
+11496005E|從氏清莊|孫迺翔|電機工程學系
+11496006E|阮文南|孫迺翔|電機工程學系
+11496008E|黃志祥|孫迺翔|電機工程學系
+11496010E|農青沉|孫迺翔|電機工程學系
+11496011E|潘春忠|孫迺翔|電機工程學系
+11496003E|曾芸春|汪芷榆|廚藝暨美食學學系
+11496004E|白偉大|汪芷榆|廚藝暨美食學學系
+11496290E|豆英秀|汪芷榆|廚藝暨美食學學系
+11496291E|黎黃淵莊|汪芷榆|廚藝暨美食學學系
+11496292E|黎進武|汪芷榆|廚藝暨美食學學系
+11496293E|李文智|汪芷榆|廚藝暨美食學學系
+11496294E|韋光榮|汪芷榆|廚藝暨美食學學系
+11496295E|鄧成仁|汪芷榆|廚藝暨美食學學系
+11496296E|武氏碧芳|汪芷榆|廚藝暨美食學學系
+11496297E|阮氏明|汪芷榆|廚藝暨美食學學系
+11496298E|阮幸珊|汪芷榆|廚藝暨美食學學系
+11496299E|陶秋芳|汪芷榆|廚藝暨美食學學系
+11496300E|阮氏莊|汪芷榆|廚藝暨美食學學系
+11496185E|黎氏錦愛|汪芷榆|廚藝暨美食學學系
+11496186E|武環保|汪芷榆|廚藝暨美食學學系
+11496187E|阮香江|汪芷榆|廚藝暨美食學學系
+11496188E|潘文進|汪芷榆|廚藝暨美食學學系
+11496192E|黎友達|汪芷榆|廚藝暨美食學學系
+11496193E|張氏垂莊|汪芷榆|廚藝暨美食學學系
+11496197E|陳玉秋草|汪芷榆|廚藝暨美食學學系
+11496199E|杜英書|汪芷榆|廚藝暨美食學學系
+11496251E|阮慶玄|保里乃玲|餐旅管理學系
+11496252E|趙氏翠娜|保里乃玲|餐旅管理學系
+11496253E|范明德|保里乃玲|餐旅管理學系
+11496254E|杜河美|保里乃玲|餐旅管理學系
+11496255E|阮善緣|保里乃玲|餐旅管理學系
+11496256E|張明譽|保里乃玲|餐旅管理學系
+11496257E|黃阮成名|保里乃玲|餐旅管理學系
+11496258E|胡阮竹英|保里乃玲|餐旅管理學系
+11496259E|陳海燈|保里乃玲|餐旅管理學系
+11496260E|范誠忠|保里乃玲|餐旅管理學系
+11496261E|阮氏雪兒|保里乃玲|餐旅管理學系
+11496262E|阮明書|保里乃玲|餐旅管理學系
+11496263E|阮氏梅貞|保里乃玲|餐旅管理學系
+11496264E|阮黃萬福|保里乃玲|餐旅管理學系
+11496265E|鄭美淵|保里乃玲|餐旅管理學系
+11496266E|黃氏雲|保里乃玲|餐旅管理學系
+11496267E|鄭黃南|保里乃玲|餐旅管理學系
+11496268E|陳阮翠瓊|保里乃玲|餐旅管理學系
+11496269E|武氏明書|保里乃玲|餐旅管理學系
+11496270E|裴女燕兒|保里乃玲|餐旅管理學系
+11496271E|阮何英|張琬菁|餐旅管理學系
+11496272E|阮娷英|張琬菁|餐旅管理學系
+11496273E|陳氏娥|張琬菁|餐旅管理學系
+11496274E|阮瓊英|張琬菁|餐旅管理學系
+11496275E|裴氏秋姮|張琬菁|餐旅管理學系
+11496276E|范黃英|張琬菁|餐旅管理學系
+11496277E|阮氏如金|張琬菁|餐旅管理學系
+11496278E|鄧胡春香|張琬菁|餐旅管理學系
+11496279E|阮玉寶珍|張琬菁|餐旅管理學系
+11496280E|黎玉燕燕|張琬菁|餐旅管理學系
+11496281E|阮玉蘭英|張琬菁|餐旅管理學系
+11496282E|阮氏竹英|張琬菁|餐旅管理學系
+11496283E|譚氏夢詩|張琬菁|餐旅管理學系
+11496284E|阮氏青翠|張琬菁|餐旅管理學系
+11496285E|杜黎玉安|張琬菁|餐旅管理學系
+11496286E|阮玉黃英|張琬菁|餐旅管理學系
+11496287E|周如慧|張琬菁|餐旅管理學系
+11496288E|阮氏芳|張琬菁|餐旅管理學系
+11496289E|周文慶輝|張琬菁|餐旅管理學系
+11496100E|演瓊芝|傅信維|餐旅管理學系
+11496104E|阮氏茶嵋|傅信維|餐旅管理學系
+11496105E|阮氏探|傅信維|餐旅管理學系
+11496106E|阮氏嬌眉|傅信維|餐旅管理學系
+11496107E|阮氏緣|傅信維|餐旅管理學系
+11496108E|阮俊傑|傅信維|餐旅管理學系
+11496110E|阮黎草薇|傅信維|餐旅管理學系
+11496112E|張素涓|傅信維|餐旅管理學系
+11496115E|陳嬌英|傅信維|餐旅管理學系
+11496116E|黃天意|傅信維|餐旅管理學系
+11496117E|範氏艷貞|傅信維|餐旅管理學系
+11496124E|鄧翠銀|傅信維|餐旅管理學系
+11496126E|馬玉安|傅信維|餐旅管理學系
+11496128E|武李明書|傅信維|餐旅管理學系
+11496131E|黎氏英詩|傅信維|餐旅管理學系
+11496132E|何玉海登|傅信維|餐旅管理學系
+11496135E|范紅英|傅信維|餐旅管理學系
+11496138E|阮夏薇|傅信維|餐旅管理學系
+11496140E|馬玄珍|傅信維|餐旅管理學系
+11496141E|克佩滄|傅信維|餐旅管理學系
+11496175E|阮氏心蘭|黃一正|餐旅管理學系
+11496176E|蘇文戰|黃一正|餐旅管理學系
+11496178E|黃如瓊|黃一正|餐旅管理學系
+11496179E|武阮黃如|黃一正|餐旅管理學系
+11496180E|杜清琳|黃一正|餐旅管理學系
+11496182E|裴氏如意|黃一正|餐旅管理學系
+11496183E|黃氏芳英|黃一正|餐旅管理學系
+11496238E|車何寶鈴|黃一正|餐旅管理學系
+11496239E|阮氏芳燕|黃一正|餐旅管理學系
+11496240E|阮玉翠薇|黃一正|餐旅管理學系
+11496241E|黃瑞黎娜|黃一正|餐旅管理學系
+11496242E|黎美娟|黃一正|餐旅管理學系
+11496243E|張氏娥|黃一正|餐旅管理學系
+11496244E|張氏青竹|黃一正|餐旅管理學系
+11496245E|潘趙敏|黃一正|餐旅管理學系
+11496246E|裴如意|黃一正|餐旅管理學系
+11496247E|阮氏芳薇|黃一正|餐旅管理學系
+11496248E|阮玉泉|黃一正|餐旅管理學系
+11496249E|陳阮寶珍|黃一正|餐旅管理學系
+11496250E|阮氏茶|黃一正|餐旅管理學系
+11496143E|黎氏如玉|溫武男|餐旅管理學系
+11496145E|李氏秋安|溫武男|餐旅管理學系
+11496147E|阮黃燕|溫武男|餐旅管理學系
+11496149E|汝氏燕兒|溫武男|餐旅管理學系
+11496150E|范玉黃|溫武男|餐旅管理學系
+11496151E|武氏玉梨|溫武男|餐旅管理學系
+11496152E|黎趙金黃|溫武男|餐旅管理學系
+11496153E|範氏秀貞|溫武男|餐旅管理學系
+11496155E|黎氏玉富|溫武男|餐旅管理學系
+11496158E|阮氏秀英|溫武男|餐旅管理學系
+11496159E|范氏妙輝|溫武男|餐旅管理學系
+11496160E|團氏英雪|溫武男|餐旅管理學系
+11496163E|阮垂玲|溫武男|餐旅管理學系
+11496166E|阮氏慶玄|溫武男|餐旅管理學系
+11496168E|鄧清玄|溫武男|餐旅管理學系
+11496169E|吳氏如瓊|溫武男|餐旅管理學系
+11496170E|韋中發|溫武男|餐旅管理學系
+11496171E|范君麗|溫武男|餐旅管理學系
+11496172E|阮高平|溫武男|餐旅管理學系
+11496174E|範氏妙水|溫武男|餐旅管理學系
+11496097E|胡錦桃|王智昱|生物醫學工程學系
+11496233E|陳氏碧鳳|王智昱|生物醫學工程學系
+11496234E|陳艷芝|王智昱|生物醫學工程學系
+11496235E|黎芳莊|王智昱|生物醫學工程學系
+11496236E|胡寶玉|王智昱|生物醫學工程學系
+11496237E|阮氏翠薇|王智昱|生物醫學工程學系`;
+
     // 語音控制器
     const voiceCtrl = {
       synth: window.speechSynthesis,
@@ -1050,6 +1615,242 @@
         </article>
       `;
     }).join("");
+
+    const lineDeptSelect = document.getElementById("lineDeptSelect");
+    const lineTeacherSelect = document.getElementById("lineTeacherSelect");
+    const lineStudentSearch = document.getElementById("lineStudentSearch");
+    const lineStudentMatches = document.getElementById("lineStudentMatches");
+    const lineStudentHint = document.getElementById("lineStudentHint");
+    const lineGroupResult = document.getElementById("lineGroupResult");
+    const lineResetBtn = document.getElementById("lineResetBtn");
+
+    const escapeHtml = (value) => String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
+    const teacherLabel = (name) => `${name}老師`;
+    const teacherKeyOf = (name) => String(name).replace(/老師$/, "").trim();
+
+    const lineGroupMap = new Map(
+      lineGroups.map((group) => [teacherKeyOf(group.teacher), { ...group, teacherKey: teacherKeyOf(group.teacher) }])
+    );
+
+    const studentRoster = studentRosterText
+      .trim()
+      .split("\n")
+      .slice(1)
+      .map((line) => {
+        const [studentId, name, teacher, unit] = line.split("|").map((part) => part.trim());
+        return {
+          studentId,
+          name,
+          teacher,
+          teacherKey: teacherKeyOf(teacher),
+          teacherLabel: teacherLabel(teacher),
+          unit
+        };
+      });
+
+    const teacherDirectory = Array.from(studentRoster.reduce((map, student) => {
+      if (!map.has(student.teacherKey)) {
+        const group = lineGroupMap.get(student.teacherKey) || {};
+        map.set(student.teacherKey, {
+          teacher: student.teacher,
+          teacherKey: student.teacherKey,
+          teacherLabel: student.teacherLabel,
+          unit: student.unit,
+          groupDepartment: group.department || student.unit,
+          url: group.url || "",
+          note: group.note || "",
+          students: []
+        });
+      }
+      map.get(student.teacherKey).students.push(student);
+      return map;
+    }, new Map()).values());
+
+    const teacherDirectoryMap = new Map(teacherDirectory.map((teacher) => [teacher.teacherKey, teacher]));
+    const unitList = [...new Set(teacherDirectory.map((teacher) => teacher.unit))];
+    const lineState = { selectedTeacherKey: "", selectedStudentId: "" };
+
+    lineDeptSelect.innerHTML = `
+      <option value="">請選擇學系</option>
+      ${unitList.map((unit) => `<option value="${escapeHtml(unit)}">${escapeHtml(unit)}</option>`).join("")}
+    `;
+
+    function renderStudentMatches() {
+      const keyword = lineStudentSearch.value.trim();
+      if (!keyword) {
+        lineStudentHint.textContent = "輸入學號或姓名後會列出符合學生，點選即可同步帶出導師與群組。";
+        lineStudentMatches.innerHTML = "";
+        return;
+      }
+
+      const q = keyword.toLowerCase();
+      const matches = studentRoster.filter((student) =>
+        [student.studentId, student.name, student.teacher, student.unit].join(" ").toLowerCase().includes(q)
+      );
+
+      lineStudentHint.textContent = matches.length
+        ? `找到 ${matches.length} 位符合學生，點選任一位即可切換到對應導師與群組。`
+        : "查無符合學生，請確認學號或姓名。";
+
+      lineStudentMatches.innerHTML = matches.length ? matches.slice(0, 18).map((student) => `
+        <button class="match-item ${lineState.selectedStudentId === student.studentId ? "active" : ""}" type="button" data-student-id="${student.studentId}">
+          <span>
+            <strong>${escapeHtml(student.name)}</strong>
+            <small>${escapeHtml(student.studentId)}</small>
+          </span>
+          <span>${escapeHtml(student.teacherLabel)}</span>
+        </button>
+      `).join("") : "";
+    }
+
+    function syncTeacherOptions(preferredTeacherKey = "") {
+      const unit = lineDeptSelect.value;
+      if (!unit) {
+        lineTeacherSelect.disabled = true;
+        lineTeacherSelect.innerHTML = `<option value="">請先選擇學系</option>`;
+        return;
+      }
+
+      const teachers = teacherDirectory.filter((teacher) => teacher.unit === unit);
+      lineTeacherSelect.disabled = false;
+      lineTeacherSelect.innerHTML = `
+        <option value="">請選擇導師</option>
+        ${teachers.map((teacher) => `
+          <option value="${escapeHtml(teacher.teacherKey)}" ${teacher.teacherKey === preferredTeacherKey ? "selected" : ""}>
+            ${escapeHtml(teacher.teacherLabel)}
+          </option>
+        `).join("")}
+      `;
+    }
+
+    function renderLineResult() {
+      const teacher = teacherDirectoryMap.get(lineState.selectedTeacherKey);
+      if (!teacher) {
+        lineGroupResult.innerHTML = `<div class="tip line-empty">可從左側搜尋學生，或從右側依學系選導師；選定後會顯示群組 QR code 與學生名單。</div>`;
+        return;
+      }
+
+      const selectedStudent = teacher.students.find((student) => student.studentId === lineState.selectedStudentId);
+      const qrMarkup = teacher.url
+        ? `
+          <div class="line-qr-wrap">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(teacher.url)}" alt="${escapeHtml(teacher.teacherLabel)} LINE 群組 QR Code" />
+            <a href="${teacher.url}" target="_blank" rel="noreferrer">開啟原始連結</a>
+          </div>
+        `
+        : `<div class="line-note">${escapeHtml(teacher.note || "目前尚未整理到可用的 LINE 群組連結。")}</div>`;
+
+      lineGroupResult.innerHTML = `
+        <article class="line-card">
+          <div>
+            <div class="line-meta">
+              <span>${escapeHtml(teacher.unit)}</span>
+              <span>${escapeHtml(teacher.teacherLabel)}</span>
+              <span>學生 ${teacher.students.length} 位</span>
+              <span>群組分類：${escapeHtml(teacher.groupDepartment)}</span>
+            </div>
+            <h4>${escapeHtml(teacher.teacherLabel)} 導師群組</h4>
+            <p>可由學生反查導師，也可由導師反查整班學生；右側同步顯示對應的 LINE 群組 QR code。</p>
+            ${selectedStudent ? `
+              <div class="student-highlight">
+                目前鎖定學生：<strong>${escapeHtml(selectedStudent.name)}</strong>（${escapeHtml(selectedStudent.studentId)}）
+              </div>
+            ` : ""}
+            <div class="student-roster">
+              ${teacher.students.map((student) => `
+                <button class="student-pill ${selectedStudent && selectedStudent.studentId === student.studentId ? "active" : ""}" type="button" data-student-id="${student.studentId}">
+                  <strong>${escapeHtml(student.name)}</strong>
+                  <span>${escapeHtml(student.studentId)}</span>
+                </button>
+              `).join("")}
+            </div>
+          </div>
+          ${qrMarkup}
+        </article>
+      `;
+    }
+
+    function selectTeacher(teacherKey, options = {}) {
+      const teacher = teacherDirectoryMap.get(teacherKey);
+      if (!teacher) {
+        lineState.selectedTeacherKey = "";
+        if (!options.keepStudent) lineState.selectedStudentId = "";
+        renderLineResult();
+        return;
+      }
+
+      lineState.selectedTeacherKey = teacher.teacherKey;
+      if (!options.keepStudent) lineState.selectedStudentId = "";
+      lineDeptSelect.value = teacher.unit;
+      syncTeacherOptions(teacher.teacherKey);
+      renderLineResult();
+      renderStudentMatches();
+    }
+
+    function selectStudent(studentId) {
+      const student = studentRoster.find((item) => item.studentId === studentId);
+      if (!student) return;
+      lineState.selectedStudentId = student.studentId;
+      lineStudentSearch.value = `${student.studentId} ${student.name}`;
+      lineDeptSelect.value = student.unit;
+      syncTeacherOptions(student.teacherKey);
+      lineTeacherSelect.value = student.teacherKey;
+      lineState.selectedTeacherKey = student.teacherKey;
+      renderStudentMatches();
+      renderLineResult();
+    }
+
+    function resetLineLookup() {
+      lineState.selectedTeacherKey = "";
+      lineState.selectedStudentId = "";
+      lineStudentSearch.value = "";
+      lineDeptSelect.value = "";
+      lineTeacherSelect.disabled = true;
+      lineTeacherSelect.innerHTML = `<option value="">請先選擇學系</option>`;
+      renderStudentMatches();
+      renderLineResult();
+    }
+
+    lineStudentSearch.addEventListener("input", renderStudentMatches);
+
+    lineStudentMatches.addEventListener("click", (event) => {
+      const target = event.target.closest("[data-student-id]");
+      if (!target) return;
+      selectStudent(target.dataset.studentId);
+    });
+
+    lineDeptSelect.addEventListener("change", () => {
+      lineState.selectedTeacherKey = "";
+      lineState.selectedStudentId = "";
+      syncTeacherOptions();
+      renderLineResult();
+      renderStudentMatches();
+    });
+
+    lineTeacherSelect.addEventListener("change", () => {
+      if (!lineTeacherSelect.value) {
+        lineState.selectedTeacherKey = "";
+        lineState.selectedStudentId = "";
+        renderLineResult();
+        renderStudentMatches();
+        return;
+      }
+      selectTeacher(lineTeacherSelect.value);
+    });
+
+    lineGroupResult.addEventListener("click", (event) => {
+      const target = event.target.closest("[data-student-id]");
+      if (!target) return;
+      selectStudent(target.dataset.studentId);
+    });
+
+    lineResetBtn.addEventListener("click", resetLineLookup);
 
     renderCards();
   </script>
