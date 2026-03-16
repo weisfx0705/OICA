@@ -1,0 +1,1559 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>六校境外生人數成長與獎助政策對照分析</title>
+  <style>
+    :root {
+      --bg: #151822;
+      --paper: #f4eee4;
+      --paper-2: #fbf7f0;
+      --ink: #1a2230;
+      --muted: #697180;
+      --line: rgba(24, 32, 45, 0.10);
+      --hot: #b24d34;
+      --teal: #29695e;
+      --gold: #c49b5c;
+      --shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Avenir Next", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(178, 77, 52, 0.24), transparent 28%),
+        radial-gradient(circle at 92% 0%, rgba(196, 155, 92, 0.18), transparent 22%),
+        linear-gradient(180deg, #11141c 0%, #171b26 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.35;
+    }
+
+    .page {
+      width: min(1260px, calc(100vw - 40px));
+      margin: 28px auto 56px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-main,
+    .hero-side,
+    section {
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      background: linear-gradient(160deg, rgba(244, 238, 228, 0.98), rgba(254, 250, 244, 0.95));
+      padding: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-main::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      bottom: -40px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(178, 77, 52, 0.16), transparent 70%);
+    }
+
+    .hero-side {
+      background: linear-gradient(180deg, rgba(23, 29, 40, 0.98), rgba(32, 43, 60, 0.96));
+      color: #f5efe7;
+      padding: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--hot);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: "Palatino Linotype", "Times New Roman", serif;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: clamp(34px, 5.8vw, 60px);
+      line-height: 0.98;
+      max-width: 12ch;
+    }
+
+    .hero-summary {
+      margin: 16px 0 0;
+      max-width: 65ch;
+      font-size: 15.5px;
+      line-height: 1.85;
+      color: rgba(24, 32, 45, 0.82);
+    }
+
+    .hero-side h2 {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .hero-side ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.8;
+      font-size: 14px;
+      color: rgba(245, 239, 231, 0.84);
+    }
+
+    section {
+      margin-top: 18px;
+      background: linear-gradient(180deg, rgba(244, 238, 228, 0.98), rgba(252, 248, 241, 0.94));
+      padding: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      margin: 8px 0 0;
+      max-width: 78ch;
+      line-height: 1.8;
+      color: rgba(24, 32, 45, 0.72);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      border-radius: 18px;
+      padding: 18px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(24, 32, 45, 0.08);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 40px;
+      line-height: 1;
+      color: var(--hot);
+      font-family: "Palatino Linotype", "Times New Roman", serif;
+      margin-bottom: 8px;
+    }
+
+    .stat-card p {
+      margin: 0;
+      line-height: 1.7;
+      font-size: 13.5px;
+      color: rgba(24, 32, 45, 0.74);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .summary-box {
+      border-radius: 22px;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(24, 32, 45, 0.96), rgba(33, 46, 63, 0.92));
+      color: #f6f0e8;
+    }
+
+    .summary-box.light {
+      background: linear-gradient(180deg, rgba(196, 155, 92, 0.14), rgba(255, 255, 255, 0.94));
+      color: var(--ink);
+      border: 1px solid rgba(196, 155, 92, 0.18);
+    }
+
+    .summary-box h3 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .summary-box ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.8;
+      font-size: 14.5px;
+    }
+
+    .summary-box p {
+      margin: 0;
+      line-height: 1.8;
+      font-size: 14.5px;
+    }
+
+    .chart-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .chart-card {
+      border-radius: 22px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(24, 32, 45, 0.08);
+    }
+
+    .chart-card h3 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .chart-card p {
+      margin: 0 0 12px;
+      line-height: 1.75;
+      color: rgba(24, 32, 45, 0.72);
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .grid-line {
+      stroke: rgba(24, 32, 45, 0.12);
+      stroke-width: 1;
+    }
+
+    .axis-label {
+      fill: rgba(24, 32, 45, 0.72);
+      font-size: 12px;
+      font-family: "Avenir Next", "PingFang TC", sans-serif;
+    }
+
+    .axis-left {
+      text-anchor: end;
+    }
+
+    .axis-center {
+      text-anchor: middle;
+    }
+
+    .legend-label {
+      fill: rgba(24, 32, 45, 0.68);
+      font-size: 12px;
+      font-family: "Avenir Next", "PingFang TC", sans-serif;
+    }
+
+    .bar-label {
+      text-anchor: middle;
+      fill: rgba(24, 32, 45, 0.84);
+      font-size: 11.5px;
+      font-family: "Avenir Next", "PingFang TC", sans-serif;
+    }
+
+    .series-label {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: "Avenir Next", "PingFang TC", sans-serif;
+    }
+
+    .policy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .policy-card {
+      border-radius: 22px;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(249, 244, 236, 0.86));
+      border: 1px solid rgba(24, 32, 45, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 12px 26px rgba(17, 20, 28, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .policy-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 6px;
+      background: linear-gradient(90deg, rgba(178, 77, 52, 0.92), rgba(196, 155, 92, 0.78), rgba(41, 105, 94, 0.76));
+    }
+
+    .policy-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: start;
+      margin-bottom: 16px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid rgba(24, 32, 45, 0.08);
+    }
+
+    .policy-head {
+      min-width: 0;
+    }
+
+    .policy-card .eyebrow {
+      margin-bottom: 10px;
+      color: rgba(178, 77, 52, 0.92);
+      letter-spacing: 0.16em;
+    }
+
+    .policy-card h3 {
+      font-size: 36px;
+      line-height: 0.98;
+      color: #152033;
+    }
+
+    .delta-pill {
+      min-width: 128px;
+      padding: 14px 16px 12px;
+      border-radius: 18px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(178, 77, 52, 0.92), rgba(139, 53, 36, 0.96));
+      color: white;
+      box-shadow: 0 12px 24px rgba(139, 53, 36, 0.22);
+    }
+
+    .delta-pill strong {
+      display: block;
+      font-size: 34px;
+      line-height: 1;
+      font-family: "Palatino Linotype", "Times New Roman", serif;
+    }
+
+    .delta-pill small {
+      display: block;
+      margin-top: 6px;
+      font-size: 11.5px;
+      line-height: 1.35;
+      letter-spacing: 0.02em;
+    }
+
+    .policy-meta {
+      margin-bottom: 16px;
+      padding: 14px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(21, 32, 51, 0.035), rgba(255, 255, 255, 0.74));
+      border: 1px solid rgba(24, 32, 45, 0.08);
+    }
+
+    .metric-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-bottom: 12px;
+    }
+
+    .metric-row span {
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(41, 105, 94, 0.08);
+      border: 1px solid rgba(41, 105, 94, 0.14);
+      color: rgba(24, 32, 45, 0.82);
+    }
+
+    .score-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 0;
+    }
+
+    .score-row span {
+      border-radius: 12px;
+      padding: 8px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(24, 32, 45, 0.05);
+      border: 1px solid rgba(24, 32, 45, 0.09);
+      color: rgba(24, 32, 45, 0.8);
+    }
+
+    .formula-box {
+      border-radius: 18px;
+      padding: 16px 18px;
+      background: linear-gradient(180deg, rgba(24, 32, 45, 0.05), rgba(255, 255, 255, 0.86));
+      border: 1px solid rgba(24, 32, 45, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .formula-box h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .formula-box p {
+      margin: 0;
+      line-height: 1.78;
+      font-size: 14px;
+      color: rgba(24, 32, 45, 0.76);
+    }
+
+    .policy-section {
+      margin-bottom: 14px;
+      padding: 14px 16px 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(24, 32, 45, 0.07);
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .foreign-section {
+      background: linear-gradient(180deg, rgba(178, 77, 52, 0.045), rgba(255, 255, 255, 0.8));
+    }
+
+    .diaspora-section {
+      background: linear-gradient(180deg, rgba(41, 105, 94, 0.05), rgba(255, 255, 255, 0.8));
+    }
+
+    .track-title {
+      margin: 0 0 10px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(24, 32, 45, 0.62);
+    }
+
+    .track-copy {
+      margin: 0 0 12px;
+      line-height: 1.75;
+      font-size: 14px;
+      color: rgba(24, 32, 45, 0.76);
+    }
+
+    .detail-list {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.78;
+      font-size: 14px;
+      color: rgba(24, 32, 45, 0.8);
+    }
+
+    .detail-list li+li {
+      margin-top: 6px;
+    }
+
+    .detail-list.compact {
+      font-size: 13.5px;
+      margin-bottom: 0;
+    }
+
+    .detail-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .detail-panel {
+      padding: 14px 16px 12px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(24, 32, 45, 0.04), rgba(255, 255, 255, 0.76));
+      border: 1px solid rgba(24, 32, 45, 0.08);
+    }
+
+    .card-note {
+      margin: 0;
+      padding-top: 14px;
+      border-top: 1px dashed rgba(24, 32, 45, 0.14);
+      line-height: 1.8;
+      font-size: 14px;
+      color: rgba(24, 32, 45, 0.78);
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .compare-box {
+      border-radius: 22px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid rgba(24, 32, 45, 0.08);
+    }
+
+    .compare-box h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .compare-box p {
+      margin: 0 0 12px;
+      line-height: 1.78;
+      font-size: 14px;
+      color: rgba(24, 32, 45, 0.76);
+    }
+
+    .compare-box ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.78;
+      font-size: 14px;
+      color: rgba(24, 32, 45, 0.76);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead th {
+      background: rgba(24, 32, 45, 0.94);
+      color: #f6f0e8;
+      text-align: left;
+      padding: 12px 10px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    tbody td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(24, 32, 45, 0.08);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: rgba(24, 32, 45, 0.03);
+    }
+
+    .footer-note {
+      line-height: 1.82;
+      font-size: 13.5px;
+      color: rgba(24, 32, 45, 0.72);
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm;
+      }
+
+      body {
+        background: white;
+      }
+
+      body::before {
+        display: none;
+      }
+
+      .page {
+        width: auto;
+        margin: 0;
+      }
+
+      .hero-main,
+      .hero-side,
+      section {
+        box-shadow: none;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+      }
+
+      .policy-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .policy-card {
+        margin: 0;
+        border: 1px solid rgba(24, 32, 45, 0.14);
+        page-break-inside: avoid;
+        break-inside: avoid-page;
+      }
+
+      .detail-columns {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .chart-card,
+      .compare-box,
+      .summary-box,
+      .formula-box {
+        page-break-inside: avoid;
+        break-inside: avoid-page;
+      }
+
+      .policy-card::before {
+        height: 4px;
+      }
+    }
+
+    @media (max-width: 980px) {
+
+      .hero,
+      .stat-grid,
+      .summary-grid,
+      .policy-grid,
+      .detail-columns,
+      .compare-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .policy-card h3 {
+        font-size: 32px;
+      }
+
+      .policy-card-top {
+        flex-direction: column;
+      }
+
+      .delta-pill {
+        width: 100%;
+      }
+
+      .page {
+        width: min(100vw - 20px, 1260px);
+      }
+
+      section,
+      .hero-main,
+      .hero-side {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="hero">
+      <article class="hero-main">
+        <p class="eyebrow">For ISU Leadership</p>
+        <h1>六校境外生人數成長與獎助政策對照分析</h1>
+        <p class="hero-summary">
+          本報告聚焦 111 至 114 學年度六校境外生人數的實際變化，直接對照
+          <strong>境外生總數、外國學生、僑生、港澳生</strong>
+          的成長軌跡，並把這些變化與各校對外國學生、僑生與港澳生的獎助策略對讀，
+          目的是判斷哪一類政策真正帶動了量體，哪一類政策只是在維持既有盤。
+        </p>
+      </article>
+      <aside class="hero-side">
+        <p class="eyebrow" style="color:#f4c67f;">Reading Guide</p>
+        <h2>觀察</h2>
+        <ul>
+          <li>先看總量有沒有成長，再拆成外國學生、僑生、港澳生三條線。</li>
+          <li>獎助制度分成外國學生主軸與僑港澳主軸。</li>
+          <li>外國學生獎助條件的強弱，及其對外國學生成長的解釋力。</li>
+        </ul>
+      </aside>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Top Line</p>
+          <h2>111→114 的六校總體訊號</h2>
+          <p>六校整體境外生總數雖然仍有增加，但真正撐起增量的是外國學生。也因此，評估獎助政策效果時，應優先回到外國學生方案本身的強弱。</p>
+        </div>
+      </div>
+      <div class="stat-grid">
+        <article class="stat-card">
+          <strong>+377</strong>
+          <p>六校合計境外生總數淨增長。整體仍有增加，但成長來源並不平均。</p>
+        </article>
+        <article class="stat-card">
+          <strong>+1,645</strong>
+          <p>外國學生是唯一真正的大幅成長來源，幾乎扛起全部淨增量。</p>
+        </article>
+        <article class="stat-card">
+          <strong>靜宜</strong>
+          <p>外國學生成長率最高的是 靜宜，111→114 成長率 +108.0%。</p>
+        </article>
+        <article class="stat-card">
+          <strong>+0.62</strong>
+          <p>外國學生獎助拉力指數與外國學生成長率呈中度正相關，代表制度強弱與成長方向大致對得上。</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Key Findings</p>
+          <h2>重要觀察</h2>
+        </div>
+      </div>
+      <div class="summary-grid">
+        <article class="summary-box">
+          <h3>三個關於獎助學金的的觀察</h3>
+          <ul>
+            <li>總量成長前三名是 靜宜、銘傳、文化</li>
+            <li>若改看外國學生成長率，前段班也是 靜宜、文化、銘傳。這些學校的共通點，是外國學生獎助條件公開、直觀、容易被市場理解。</li>
+            <li>將著金額高不見得能留住外國學生，應該綜合觀察<strong>高額度 + 清楚門檻 + 續留路徑可理解</strong></li>
+          </ul>
+        </article>
+        <article class="summary-box light">
+          <h3>義守的關鍵訊號</h3>
+          <p>
+            義守在 111→114 之間，外國學生增加 <strong>+238</strong>，
+            代表高額外國學生方案確實有市場吸引力。義守目前對外傳達的補助上限，已屬六校中最高級距，
+            也是市場上最容易被注意到的強訊號；但另一個同樣清楚的訊號，是續獎門檻與追繳風險偏高。
+            例如班排前 40%、每學期至少 9 學分、操行 85 分以上、前 9 週出席率門檻、服務學習要求，
+            以及未達標可能取消或追回獎助，這些條件會讓學生與家長先記住「續獎難、風險高」，
+            而不只是「金額高」。因此，義守應該把高額優勢，轉成<strong>高額、清楚、可預期</strong>的續獎設計。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Growth Charts</p>
+          <h2>111-114 人數成長比較</h2>
+          <p>以下四張圖只直接比較六校在不同境外生來源上的量體變化。</p>
+        </div>
+      </div>
+      <div class="chart-grid">
+        <article class="chart-card">
+          <h3>1. 境外生總數</h3>
+          <p>真正的總量擴張，必須看 111 到 114 是否連續上升。靜宜、銘傳與文化的總量曲線相對完整；義守與淡江則顯示不同市場之間出現抵銷。</p>
+          <svg viewBox="0 0 920 360" class="chart-svg" role="img" aria-label="111 到 114 學年度六校境外生總數群組直條圖">
+            <line x1="72" y1="308.00" x2="896" y2="308.00" class="grid-line" /><text x="60" y="312.00"
+              class="axis-label axis-left">0</text>
+            <line x1="72" y1="247.22" x2="896" y2="247.22" class="grid-line" /><text x="60" y="251.22"
+              class="axis-label axis-left">500</text>
+            <line x1="72" y1="186.43" x2="896" y2="186.43" class="grid-line" /><text x="60" y="190.43"
+              class="axis-label axis-left">1000</text>
+            <line x1="72" y1="125.65" x2="896" y2="125.65" class="grid-line" /><text x="60" y="129.65"
+              class="axis-label axis-left">1500</text>
+            <line x1="72" y1="64.87" x2="896" y2="64.87" class="grid-line" /><text x="60" y="68.87"
+              class="axis-label axis-left">2000</text>
+            <line x1="72" y1="38.00" x2="896" y2="38.00" class="grid-line" /><text x="60" y="42.00"
+              class="axis-label axis-left">2221</text>
+            <rect x="84.36" y="75.32" width="21.97" height="232.68" rx="4" fill="#d9c8b1" />
+            <rect x="114.57" y="80.67" width="21.97" height="227.33" rx="4" fill="#c4b28b" />
+            <rect x="144.79" y="68.88" width="21.97" height="239.12" rx="4" fill="#b78e54" />
+            <rect x="175.00" y="38.00" width="21.97" height="270.00" rx="4" fill="#8b5e34" /><text x="185.99" y="30.00"
+              class="bar-label">2221</text><text x="140.67" y="344" class="axis-label axis-center">銘傳</text>
+            <rect x="221.69" y="131.73" width="21.97" height="176.27" rx="4" fill="#d9c8b1" />
+            <rect x="251.91" y="152.64" width="21.97" height="155.36" rx="4" fill="#c4b28b" />
+            <rect x="282.12" y="155.92" width="21.97" height="152.08" rx="4" fill="#b78e54" />
+            <rect x="312.33" y="161.27" width="21.97" height="146.73" rx="4" fill="#8b5e34" /><text x="323.32"
+              y="153.27" class="bar-label">1207</text><text x="278.00" y="344" class="axis-label axis-center">淡江</text>
+            <rect x="359.03" y="196.16" width="21.97" height="111.84" rx="4" fill="#d9c8b1" />
+            <rect x="389.24" y="217.07" width="21.97" height="90.93" rx="4" fill="#c4b28b" />
+            <rect x="419.45" y="219.38" width="21.97" height="88.62" rx="4" fill="#b78e54" />
+            <rect x="449.67" y="170.39" width="21.97" height="137.61" rx="4" fill="#8b5e34" /><text x="460.65"
+              y="162.39" class="bar-label">1132</text><text x="415.33" y="344" class="axis-label axis-center">文化</text>
+            <rect x="496.36" y="242.23" width="21.97" height="65.77" rx="4" fill="#d9c8b1" />
+            <rect x="526.57" y="244.42" width="21.97" height="63.58" rx="4" fill="#c4b28b" />
+            <rect x="556.79" y="227.89" width="21.97" height="80.11" rx="4" fill="#b78e54" />
+            <rect x="587.00" y="197.74" width="21.97" height="110.26" rx="4" fill="#8b5e34" /><text x="597.99"
+              y="189.74" class="bar-label">907</text><text x="552.67" y="344" class="axis-label axis-center">靜宜</text>
+            <rect x="633.69" y="196.40" width="21.97" height="111.60" rx="4" fill="#d9c8b1" />
+            <rect x="663.91" y="210.87" width="21.97" height="97.13" rx="4" fill="#c4b28b" />
+            <rect x="694.12" y="223.15" width="21.97" height="84.85" rx="4" fill="#b78e54" />
+            <rect x="724.33" y="224.61" width="21.97" height="83.39" rx="4" fill="#8b5e34" /><text x="735.32" y="216.61"
+              class="bar-label">686</text><text x="690.00" y="344" class="axis-label axis-center">逢甲</text>
+            <rect x="771.03" y="139.99" width="21.97" height="168.01" rx="4" fill="#d9c8b1" />
+            <rect x="801.24" y="157.01" width="21.97" height="150.99" rx="4" fill="#c4b28b" />
+            <rect x="831.45" y="151.54" width="21.97" height="156.46" rx="4" fill="#b78e54" />
+            <rect x="861.67" y="144.01" width="21.97" height="163.99" rx="4" fill="#8b5e34" /><text x="872.65"
+              y="136.01" class="bar-label">1349</text><text x="827.33" y="344" class="axis-label axis-center">義守</text>
+            <rect x="72" y="10" width="14" height="14" rx="3" fill="#d9c8b1" /><text x="94" y="22"
+              class="legend-label">111</text>
+            <rect x="182" y="10" width="14" height="14" rx="3" fill="#c4b28b" /><text x="204" y="22"
+              class="legend-label">112</text>
+            <rect x="292" y="10" width="14" height="14" rx="3" fill="#b78e54" /><text x="314" y="22"
+              class="legend-label">113</text>
+            <rect x="402" y="10" width="14" height="14" rx="3" fill="#8b5e34" /><text x="424" y="22"
+              class="legend-label">114</text>
+          </svg>
+        </article>
+        <article class="chart-card">
+          <h3>2. 外國學生總數</h3>
+          <p>六校近年的擴張幾乎都集中在外國學生。只要外國學生線長得快，總量就有機會撐住；文化大學114年主力明顯以外國學生為主。</p>
+          <svg viewBox="0 0 920 360" class="chart-svg" role="img" aria-label="111 到 114 學年度六校外國學生總數群組直條圖">
+            <line x1="72" y1="308.00" x2="896" y2="308.00" class="grid-line" /><text x="60" y="312.00"
+              class="axis-label axis-left">0</text>
+            <line x1="72" y1="275.51" x2="896" y2="275.51" class="grid-line" /><text x="60" y="279.51"
+              class="axis-label axis-left">200</text>
+            <line x1="72" y1="243.02" x2="896" y2="243.02" class="grid-line" /><text x="60" y="247.02"
+              class="axis-label axis-left">400</text>
+            <line x1="72" y1="210.53" x2="896" y2="210.53" class="grid-line" /><text x="60" y="214.53"
+              class="axis-label axis-left">600</text>
+            <line x1="72" y1="178.04" x2="896" y2="178.04" class="grid-line" /><text x="60" y="182.04"
+              class="axis-label axis-left">800</text>
+            <line x1="72" y1="145.55" x2="896" y2="145.55" class="grid-line" /><text x="60" y="149.55"
+              class="axis-label axis-left">1000</text>
+            <line x1="72" y1="113.05" x2="896" y2="113.05" class="grid-line" /><text x="60" y="117.05"
+              class="axis-label axis-left">1200</text>
+            <line x1="72" y1="80.56" x2="896" y2="80.56" class="grid-line" /><text x="60" y="84.56"
+              class="axis-label axis-left">1400</text>
+            <line x1="72" y1="48.07" x2="896" y2="48.07" class="grid-line" /><text x="60" y="52.07"
+              class="axis-label axis-left">1600</text>
+            <line x1="72" y1="38.00" x2="896" y2="38.00" class="grid-line" /><text x="60" y="42.00"
+              class="axis-label axis-left">1662</text>
+            <rect x="84.36" y="129.62" width="21.97" height="178.38" rx="4" fill="#d9c8b1" />
+            <rect x="114.57" y="128.97" width="21.97" height="179.03" rx="4" fill="#c4b28b" />
+            <rect x="144.79" y="101.68" width="21.97" height="206.32" rx="4" fill="#b78e54" />
+            <rect x="175.00" y="38.00" width="21.97" height="270.00" rx="4" fill="#8b5e34" /><text x="185.99" y="30.00"
+              class="bar-label">1662</text><text x="140.67" y="344" class="axis-label axis-center">銘傳</text>
+            <rect x="221.69" y="202.89" width="21.97" height="105.11" rx="4" fill="#d9c8b1" />
+            <rect x="251.91" y="211.83" width="21.97" height="96.17" rx="4" fill="#c4b28b" />
+            <rect x="282.12" y="203.54" width="21.97" height="104.46" rx="4" fill="#b78e54" />
+            <rect x="312.33" y="198.51" width="21.97" height="109.49" rx="4" fill="#8b5e34" /><text x="323.32"
+              y="190.51" class="bar-label">674</text><text x="278.00" y="344" class="axis-label axis-center">淡江</text>
+            <rect x="359.03" y="241.72" width="21.97" height="66.28" rx="4" fill="#d9c8b1" />
+            <rect x="389.24" y="250.82" width="21.97" height="57.18" rx="4" fill="#c4b28b" />
+            <rect x="419.45" y="246.43" width="21.97" height="61.57" rx="4" fill="#b78e54" />
+            <rect x="449.67" y="174.79" width="21.97" height="133.21" rx="4" fill="#8b5e34" /><text x="460.65"
+              y="166.79" class="bar-label">820</text><text x="415.33" y="344" class="axis-label axis-center">文化</text>
+            <rect x="496.36" y="244.97" width="21.97" height="63.03" rx="4" fill="#d9c8b1" />
+            <rect x="526.57" y="242.53" width="21.97" height="65.47" rx="4" fill="#c4b28b" />
+            <rect x="556.79" y="216.54" width="21.97" height="91.46" rx="4" fill="#b78e54" />
+            <rect x="587.00" y="176.90" width="21.97" height="131.10" rx="4" fill="#8b5e34" /><text x="597.99"
+              y="168.90" class="bar-label">807</text><text x="552.67" y="344" class="axis-label axis-center">靜宜</text>
+            <rect x="633.69" y="243.02" width="21.97" height="64.98" rx="4" fill="#d9c8b1" />
+            <rect x="663.91" y="247.73" width="21.97" height="60.27" rx="4" fill="#c4b28b" />
+            <rect x="694.12" y="249.84" width="21.97" height="58.16" rx="4" fill="#b78e54" />
+            <rect x="724.33" y="245.45" width="21.97" height="62.55" rx="4" fill="#8b5e34" /><text x="735.32" y="237.45"
+              class="bar-label">385</text><text x="690.00" y="344" class="axis-label axis-center">逢甲</text>
+            <rect x="771.03" y="175.27" width="21.97" height="132.73" rx="4" fill="#d9c8b1" />
+            <rect x="801.24" y="184.53" width="21.97" height="123.47" rx="4" fill="#c4b28b" />
+            <rect x="831.45" y="161.14" width="21.97" height="146.86" rx="4" fill="#b78e54" />
+            <rect x="861.67" y="136.61" width="21.97" height="171.39" rx="4" fill="#8b5e34" /><text x="872.65"
+              y="128.61" class="bar-label">1055</text><text x="827.33" y="344" class="axis-label axis-center">義守</text>
+            <rect x="72" y="10" width="14" height="14" rx="3" fill="#d9c8b1" /><text x="94" y="22"
+              class="legend-label">111</text>
+            <rect x="182" y="10" width="14" height="14" rx="3" fill="#c4b28b" /><text x="204" y="22"
+              class="legend-label">112</text>
+            <rect x="292" y="10" width="14" height="14" rx="3" fill="#b78e54" /><text x="314" y="22"
+              class="legend-label">113</text>
+            <rect x="402" y="10" width="14" height="14" rx="3" fill="#8b5e34" /><text x="424" y="22"
+              class="legend-label">114</text>
+          </svg>
+        </article>
+        <article class="chart-card">
+          <h3>3. 僑生總數</h3>
+          <p>僑生變化大多偏平，意味這條線的獎助政策更多是在維持穩定，而不是創造爆發性成長。</p>
+          <svg viewBox="0 0 920 360" class="chart-svg" role="img" aria-label="111 到 114 學年度六校僑生總數群組直條圖">
+            <line x1="72" y1="308.00" x2="896" y2="308.00" class="grid-line" /><text x="60" y="312.00"
+              class="axis-label axis-left">0</text>
+            <line x1="72" y1="242.78" x2="896" y2="242.78" class="grid-line" /><text x="60" y="246.78"
+              class="axis-label axis-left">100</text>
+            <line x1="72" y1="177.57" x2="896" y2="177.57" class="grid-line" /><text x="60" y="181.57"
+              class="axis-label axis-left">200</text>
+            <line x1="72" y1="112.35" x2="896" y2="112.35" class="grid-line" /><text x="60" y="116.35"
+              class="axis-label axis-left">300</text>
+            <line x1="72" y1="47.13" x2="896" y2="47.13" class="grid-line" /><text x="60" y="51.13"
+              class="axis-label axis-left">400</text>
+            <line x1="72" y1="38.00" x2="896" y2="38.00" class="grid-line" /><text x="60" y="42.00"
+              class="axis-label axis-left">414</text>
+            <rect x="84.36" y="88.22" width="21.97" height="219.78" rx="4" fill="#d9c8b1" />
+            <rect x="114.57" y="55.61" width="21.97" height="252.39" rx="4" fill="#c4b28b" />
+            <rect x="144.79" y="38.00" width="21.97" height="270.00" rx="4" fill="#b78e54" />
+            <rect x="175.00" y="58.87" width="21.97" height="249.13" rx="4" fill="#8b5e34" /><text x="185.99" y="50.87"
+              class="bar-label">382</text><text x="140.67" y="344" class="axis-label axis-center">銘傳</text>
+            <rect x="221.69" y="109.74" width="21.97" height="198.26" rx="4" fill="#d9c8b1" />
+            <rect x="251.91" y="96.70" width="21.97" height="211.30" rx="4" fill="#c4b28b" />
+            <rect x="282.12" y="86.26" width="21.97" height="221.74" rx="4" fill="#b78e54" />
+            <rect x="312.33" y="81.70" width="21.97" height="226.30" rx="4" fill="#8b5e34" /><text x="323.32" y="73.70"
+              class="bar-label">347</text><text x="278.00" y="344" class="axis-label axis-center">淡江</text>
+            <rect x="359.03" y="193.87" width="21.97" height="114.13" rx="4" fill="#d9c8b1" />
+            <rect x="389.24" y="205.61" width="21.97" height="102.39" rx="4" fill="#c4b28b" />
+            <rect x="419.45" y="200.39" width="21.97" height="107.61" rx="4" fill="#b78e54" />
+            <rect x="449.67" y="189.96" width="21.97" height="118.04" rx="4" fill="#8b5e34" /><text x="460.65"
+              y="181.96" class="bar-label">181</text><text x="415.33" y="344" class="axis-label axis-center">文化</text>
+            <rect x="496.36" y="278.65" width="21.97" height="29.35" rx="4" fill="#d9c8b1" />
+            <rect x="526.57" y="274.74" width="21.97" height="33.26" rx="4" fill="#c4b28b" />
+            <rect x="556.79" y="272.78" width="21.97" height="35.22" rx="4" fill="#b78e54" />
+            <rect x="587.00" y="262.35" width="21.97" height="45.65" rx="4" fill="#8b5e34" /><text x="597.99" y="254.35"
+              class="bar-label">70</text><text x="552.67" y="344" class="axis-label axis-center">靜宜</text>
+            <rect x="633.69" y="198.43" width="21.97" height="109.57" rx="4" fill="#d9c8b1" />
+            <rect x="663.91" y="185.39" width="21.97" height="122.61" rx="4" fill="#c4b28b" />
+            <rect x="694.12" y="197.78" width="21.97" height="110.22" rx="4" fill="#b78e54" />
+            <rect x="724.33" y="188.00" width="21.97" height="120.00" rx="4" fill="#8b5e34" /><text x="735.32"
+              y="180.00" class="bar-label">184</text><text x="690.00" y="344" class="axis-label axis-center">逢甲</text>
+            <rect x="771.03" y="246.70" width="21.97" height="61.30" rx="4" fill="#d9c8b1" />
+            <rect x="801.24" y="246.04" width="21.97" height="61.96" rx="4" fill="#c4b28b" />
+            <rect x="831.45" y="240.17" width="21.97" height="67.83" rx="4" fill="#b78e54" />
+            <rect x="861.67" y="239.52" width="21.97" height="68.48" rx="4" fill="#8b5e34" /><text x="872.65" y="231.52"
+              class="bar-label">105</text><text x="827.33" y="344" class="axis-label axis-center">義守</text>
+            <rect x="72" y="10" width="14" height="14" rx="3" fill="#d9c8b1" /><text x="94" y="22"
+              class="legend-label">111</text>
+            <rect x="182" y="10" width="14" height="14" rx="3" fill="#c4b28b" /><text x="204" y="22"
+              class="legend-label">112</text>
+            <rect x="292" y="10" width="14" height="14" rx="3" fill="#b78e54" /><text x="314" y="22"
+              class="legend-label">113</text>
+            <rect x="402" y="10" width="14" height="14" rx="3" fill="#8b5e34" /><text x="424" y="22"
+              class="legend-label">114</text>
+          </svg>
+        </article>
+        <article class="chart-card">
+          <h3>4. 港澳生總數</h3>
+          <p>港澳生在各校都有走弱現象，這一張圖主要作為背景參考，不作為本報告的主要政策判讀焦點。</p>
+          <svg viewBox="0 0 920 360" class="chart-svg" role="img" aria-label="111 到 114 學年度六校港澳生總數群組直條圖">
+            <line x1="72" y1="308.00" x2="896" y2="308.00" class="grid-line" /><text x="60" y="312.00"
+              class="axis-label axis-left">0</text>
+            <line x1="72" y1="249.18" x2="896" y2="249.18" class="grid-line" /><text x="60" y="253.18"
+              class="axis-label axis-left">100</text>
+            <line x1="72" y1="190.35" x2="896" y2="190.35" class="grid-line" /><text x="60" y="194.35"
+              class="axis-label axis-left">200</text>
+            <line x1="72" y1="131.53" x2="896" y2="131.53" class="grid-line" /><text x="60" y="135.53"
+              class="axis-label axis-left">300</text>
+            <line x1="72" y1="72.71" x2="896" y2="72.71" class="grid-line" /><text x="60" y="76.71"
+              class="axis-label axis-left">400</text>
+            <line x1="72" y1="38.00" x2="896" y2="38.00" class="grid-line" /><text x="60" y="42.00"
+              class="axis-label axis-left">459</text>
+            <rect x="84.36" y="59.18" width="21.97" height="248.82" rx="4" fill="#d9c8b1" />
+            <rect x="114.57" y="88.00" width="21.97" height="220.00" rx="4" fill="#c4b28b" />
+            <rect x="144.79" y="143.29" width="21.97" height="164.71" rx="4" fill="#b78e54" />
+            <rect x="175.00" y="205.06" width="21.97" height="102.94" rx="4" fill="#8b5e34" /><text x="185.99"
+              y="197.06" class="bar-label">175</text><text x="140.67" y="344" class="axis-label axis-center">銘傳</text>
+            <rect x="221.69" y="53.29" width="21.97" height="254.71" rx="4" fill="#d9c8b1" />
+            <rect x="251.91" y="101.53" width="21.97" height="206.47" rx="4" fill="#c4b28b" />
+            <rect x="282.12" y="152.71" width="21.97" height="155.29" rx="4" fill="#b78e54" />
+            <rect x="312.33" y="199.18" width="21.97" height="108.82" rx="4" fill="#8b5e34" /><text x="323.32"
+              y="191.18" class="bar-label">185</text><text x="278.00" y="344" class="axis-label axis-center">淡江</text>
+            <rect x="359.03" y="143.29" width="21.97" height="164.71" rx="4" fill="#d9c8b1" />
+            <rect x="389.24" y="170.94" width="21.97" height="137.06" rx="4" fill="#c4b28b" />
+            <rect x="419.45" y="199.76" width="21.97" height="108.24" rx="4" fill="#b78e54" />
+            <rect x="449.67" y="232.12" width="21.97" height="75.88" rx="4" fill="#8b5e34" /><text x="460.65" y="224.12"
+              class="bar-label">129</text><text x="415.33" y="344" class="axis-label axis-center">文化</text>
+            <rect x="496.36" y="263.88" width="21.97" height="44.12" rx="4" fill="#d9c8b1" />
+            <rect x="526.57" y="269.18" width="21.97" height="38.82" rx="4" fill="#c4b28b" />
+            <rect x="556.79" y="283.29" width="21.97" height="24.71" rx="4" fill="#b78e54" />
+            <rect x="587.00" y="290.35" width="21.97" height="17.65" rx="4" fill="#8b5e34" /><text x="597.99" y="282.35"
+              class="bar-label">30</text><text x="552.67" y="344" class="axis-label axis-center">靜宜</text>
+            <rect x="633.69" y="138.59" width="21.97" height="169.41" rx="4" fill="#d9c8b1" />
+            <rect x="663.91" y="173.88" width="21.97" height="134.12" rx="4" fill="#c4b28b" />
+            <rect x="694.12" y="209.18" width="21.97" height="98.82" rx="4" fill="#b78e54" />
+            <rect x="724.33" y="239.76" width="21.97" height="68.24" rx="4" fill="#8b5e34" /><text x="735.32" y="231.76"
+              class="bar-label">116</text><text x="690.00" y="344" class="axis-label axis-center">逢甲</text>
+            <rect x="771.03" y="38.00" width="21.97" height="270.00" rx="4" fill="#d9c8b1" />
+            <rect x="801.24" y="80.94" width="21.97" height="227.06" rx="4" fill="#c4b28b" />
+            <rect x="831.45" y="143.88" width="21.97" height="164.12" rx="4" fill="#b78e54" />
+            <rect x="861.67" y="196.82" width="21.97" height="111.18" rx="4" fill="#8b5e34" /><text x="872.65"
+              y="188.82" class="bar-label">189</text><text x="827.33" y="344" class="axis-label axis-center">義守</text>
+            <rect x="72" y="10" width="14" height="14" rx="3" fill="#d9c8b1" /><text x="94" y="22"
+              class="legend-label">111</text>
+            <rect x="182" y="10" width="14" height="14" rx="3" fill="#c4b28b" /><text x="204" y="22"
+              class="legend-label">112</text>
+            <rect x="292" y="10" width="14" height="14" rx="3" fill="#b78e54" /><text x="314" y="22"
+              class="legend-label">113</text>
+            <rect x="402" y="10" width="14" height="14" rx="3" fill="#8b5e34" /><text x="424" y="22"
+              class="legend-label">114</text>
+          </svg>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Policy Mapping</p>
+          <h2>把人數成長對回獎助政策</h2>
+          <p>下面每張卡都完整呈現外國學生與僑港澳生的主要獎助制度、條件與限制，再對照實際人數變化，讓長官可以直接判斷制度優劣。</p>
+        </div>
+      </div>
+      <article class="formula-box">
+        <h3>拉力公式</h3>
+        <p>
+          本報告的外國學生拉力指數採 <strong>金額力度 + 前端清晰度 + 續留完整性</strong> 三項相加，單項各為 1 到 5 分，總分 15 分。
+          金額力度看首年可感知的補助強弱，前端清晰度看學生是否容易理解自己能拿到什麼，續留完整性看從首年到後續是否有連續且可預期的續獎路徑。
+        </p>
+      </article>
+      <div class="policy-grid">
+        <article class="policy-card">
+          <div class="policy-card-top">
+            <div class="policy-head">
+              <p class="eyebrow">Policy Dossier</p>
+              <h3>銘傳</h3>
+            </div>
+            <div class="delta-pill"><strong>12</strong><small>外國學生拉力 /15</small></div>
+          </div>
+          <div class="policy-meta">
+            <div class="metric-row">
+              <span>境外總數 +307</span>
+              <span>外國學生 +564</span>
+              <span>外國學生成長率 +51.4%</span>
+              <span>僑生 +45</span>
+              <span>港澳生 -248</span>
+            </div>
+            <div class="score-row"><span>金額力度 4/5</span><span>前端清晰度 4/5</span><span>續留完整性 4/5</span></div>
+          </div>
+          <div class="policy-section foreign-section">
+            <p class="track-title">外國學生獎助制度</p>
+            <ul class="detail-list">
+              <li>一般外國學生可領生活學習助學金，每學期 NT$8,000。</li>
+              <li>國際學院舊制依成績提供 40% / 30% / 20% 學費減免，續留路徑清楚。</li>
+              <li>男子足球、男子籃球運動績優分 A/B/C 級，最高可到全額學雜費、營養費與四年住宿。</li>
+            </ul>
+          </div>
+          <div class="policy-section diaspora-section">
+            <p class="track-title">僑生／港澳生獎助制度</p>
+            <ul class="detail-list">
+              <li>海外僑生生活補助助學金約 NT$3,000 / 月，約每月或每年 100 人。</li>
+              <li>海外僑生學習津貼約 NT$2,100 / 月，約每月 15 人。</li>
+              <li>海外僑生優異獎學金第一學期約 NT$5,000 / 學期，約每學期 15 人。</li>
+              <li>校友會或僑生組織捐助等校內僑生獎學金，約 NT$5,000 至 NT$36,000 / 學期，名額有限，例如 10 人 / 學期。</li>
+              <li>僑生協會或海外僑生團體獎學金約 NT$5,000 至 NT$10,000，名額視各協會或贊助單位而定。</li>
+              <li>另有研究所優秀僑生月領至少 NT$10,000，要求學業 80 分、操行 85 分以上，不得重複領取其他校內外補助。</li>
+            </ul>
+          </div>
+          <div class="detail-columns">
+            <div class="detail-panel">
+              <p class="track-title">優勢</p>
+              <ul class="detail-list compact">
+                <li>外國學生方案分層完整，學術型、國際學院型、運動型都有對應入口。</li>
+                <li>前端訊號多元，不是單靠單一金額方案。</li>
+              </ul>
+            </div>
+            <div class="detail-panel">
+              <p class="track-title">弱點</p>
+              <ul class="detail-list compact">
+                <li>一般外國學生定額不算特別高，真正高額集中在特殊方案。</li>
+                <li>僑港澳主軸較偏研究所與菁英導向，普遍擴張力有限。</li>
+              </ul>
+            </div>
+          </div>
+          <p class="card-note">外國學生方案最完整，因此外國學生大幅成長，成為銘傳總量擴張的核心。</p>
+        </article>
+
+        <article class="policy-card">
+          <div class="policy-card-top">
+            <div class="policy-head">
+              <p class="eyebrow">Policy Dossier</p>
+              <h3>淡江</h3>
+            </div>
+            <div class="delta-pill"><strong>12</strong><small>外國學生拉力 /15</small></div>
+          </div>
+          <div class="policy-meta">
+            <div class="metric-row">
+              <span>境外總數 -243</span>
+              <span>外國學生 +27</span>
+              <span>外國學生成長率 +4.2%</span>
+              <span>僑生 +43</span>
+              <span>港澳生 -248</span>
+            </div>
+            <div class="score-row"><span>金額力度 4/5</span><span>前端清晰度 3/5</span><span>續留完整性 5/5</span></div>
+          </div>
+          <div class="policy-section foreign-section">
+            <p class="track-title">外國學生獎助制度</p>
+            <ul class="detail-list">
+              <li>境外生入學獎學金以學雜費減免為主，通常提供一年同額學雜費減免，不同國籍可能略有差異。</li>
+              <li>有蓮境外生獎學金，大學部可申請 NT$50,000，研究所另有更高額度方案。</li>
+              <li>外國學生優秀獎學金，大學／碩士每學期 NT$30,000，博士每學期 NT$40,000。</li>
+              <li>外國學生助學金每月 NT$10,000，單學期最多 3 個月，但需具工作許可。</li>
+              <li>多數受獎生需執行英語教學、翻譯或服務工作，月負擔可達 20 至 30 小時。</li>
+            </ul>
+          </div>
+          <div class="policy-section diaspora-section">
+            <p class="track-title">僑生／港澳生獎助制度</p>
+            <ul class="detail-list">
+              <li>僑生獎學金約 NT$8,600 / 學期。</li>
+              <li>僑生與港澳生有校內清寒獎學金、僑委會、校友會與基金會多層資金池。</li>
+              <li>馬來西亞、港澳、泰國、印尼等地另有入學獎學金，可達一年學雜費同額。</li>
+            </ul>
+          </div>
+          <div class="detail-columns">
+            <div class="detail-panel">
+              <p class="track-title">優勢</p>
+              <ul class="detail-list compact">
+                <li>資金池最大，區域型招生獎學金與僑生網絡經營很完整。</li>
+                <li>外國學生與僑港澳皆有多條經費來源，不容易斷線。</li>
+              </ul>
+            </div>
+            <div class="detail-panel">
+              <p class="track-title">弱點</p>
+              <ul class="detail-list compact">
+                <li>制度複雜且勞務義務重，學生感受未必等於帳面條件。</li>
+                <li>高資源不一定會自動轉成外國學生快速成長。</li>
+              </ul>
+            </div>
+          </div>
+          <p class="card-note">淡江的制度寬而深，但因勞務與行政負擔高，對外國學生擴張的轉換率沒有完全放出來。</p>
+        </article>
+
+        <article class="policy-card">
+          <div class="policy-card-top">
+            <div class="policy-head">
+              <p class="eyebrow">Policy Dossier</p>
+              <h3>文化</h3>
+            </div>
+            <div class="delta-pill"><strong>12</strong><small>外國學生拉力 /15</small></div>
+          </div>
+          <div class="policy-meta">
+            <div class="metric-row">
+              <span>境外總數 +212</span>
+              <span>外國學生 +412</span>
+              <span>外國學生成長率 +101.0%</span>
+              <span>僑生 +6</span>
+              <span>港澳生 -151</span>
+            </div>
+            <div class="score-row"><span>金額力度 4/5</span><span>前端清晰度 4/5</span><span>續留完整性 4/5</span></div>
+          </div>
+          <div class="policy-section foreign-section">
+            <p class="track-title">外國學生獎助制度</p>
+            <ul class="detail-list">
+              <li>外國新生頂尖者可享全額學雜費，一般優秀者 NT$50,000，重點發展系所加碼到 NT$70,000。</li>
+              <li>第一年附校內宿舍基本房型住宿，前端價格訊號明確。</li>
+              <li>僑港澳生暨外國學生獎助學金若學業平均 80 分以上、操行 80 分以上、且學期排名前 10%，可享全額學雜費補助。</li>
+              <li>若學業平均 70 分以上、操行 80 分以上、且班級排名前 30%，可領 NT$20,000 / 學年。</li>
+              <li>在學生若就讀重點發展系所，可用更低成績門檻換到更高額獎助。</li>
+            </ul>
+          </div>
+          <div class="policy-section diaspora-section">
+            <p class="track-title">僑生／港澳生獎助制度</p>
+            <ul class="detail-list">
+              <li>僑港澳生暨外國學生獎助學金若學業平均 80 分以上、操行 80 分以上、且學期排名前 10%，可享全額學雜費補助。</li>
+              <li>若學業平均 70 分以上、操行 80 分以上、且班級排名前 30%，可領 NT$20,000 / 學年。</li>
+              <li>另設境外生學伴獎學金，每帶一位新生每學期 NT$5,000。</li>
+            </ul>
+          </div>
+          <div class="detail-columns">
+            <div class="detail-panel">
+              <p class="track-title">優勢</p>
+              <ul class="detail-list compact">
+                <li>重點系所導流非常強，能直接把經費投到想要長的學系。</li>
+                <li>住宿與現金一起給，對外國學生前端吸引力高。</li>
+              </ul>
+            </div>
+            <div class="detail-panel">
+              <p class="track-title">弱點</p>
+              <ul class="detail-list compact">
+                <li>制度高度政策化，不一定對所有系所或所有來源市場都同樣有力。</li>
+                <li>僑港澳方案的吸引力不如外國學生主軸鮮明。</li>
+              </ul>
+            </div>
+          </div>
+          <p class="card-note">文化的外國學生成長幾乎與重點系所加碼同步，顯示導流型獎助對擴張有效。</p>
+        </article>
+
+        <article class="policy-card">
+          <div class="policy-card-top">
+            <div class="policy-head">
+              <p class="eyebrow">Policy Dossier</p>
+              <h3>靜宜</h3>
+            </div>
+            <div class="delta-pill"><strong>14</strong><small>外國學生拉力 /15</small></div>
+          </div>
+          <div class="policy-meta">
+            <div class="metric-row">
+              <span>境外總數 +366</span>
+              <span>外國學生 +419</span>
+              <span>外國學生成長率 +108.0%</span>
+              <span>僑生 +25</span>
+              <span>港澳生 -45</span>
+            </div>
+            <div class="score-row"><span>金額力度 5/5</span><span>前端清晰度 5/5</span><span>續留完整性 4/5</span></div>
+          </div>
+          <div class="policy-section foreign-section">
+            <p class="track-title">外國學生獎助制度</p>
+            <ul class="detail-list">
+              <li>入學第一年可獲雜費同額獎學金；若由海外聯盟中學畢業或合作留台機構推薦，另可獲學費同額獎學金。</li>
+              <li>外國學生以華語或英語檢定直接兌換學雜費、學費或雜費減免，首年條件非常清楚。</li>
+              <li>第二年起依前一學期班排名次分級發放 NT$35,000 / 20,000 / 8,000。</li>
+              <li>前 15% 為 NT$35,000，15.01% 至 30% 為 NT$20,000，30.01% 至 50% 為 NT$8,000。</li>
+              <li>需完成服務學習時數，且轉學、休學、延畢或出國研修多數情況即停發。</li>
+            </ul>
+          </div>
+          <div class="policy-section diaspora-section">
+            <p class="track-title">僑生／港澳生獎助制度</p>
+            <ul class="detail-list">
+              <li>僑生依聯招與推薦管道提供首年學費或雜費減免。</li>
+              <li>第二年起同樣依班排級距制發放 NT$35,000 / 20,000 / 8,000，並需完成約 10 小時服務學習。</li>
+              <li>整體制度公開且續留路徑明確，但高名次級距競爭壓力也高。</li>
+            </ul>
+          </div>
+          <div class="detail-columns">
+            <div class="detail-panel">
+              <p class="track-title">優勢</p>
+              <ul class="detail-list compact">
+                <li>前端價格訊號最清楚，學生一看就知道自己可拿多少。</li>
+                <li>首年與續留條件連續，外國學生擴張最容易形成穩定節奏。</li>
+              </ul>
+            </div>
+            <div class="detail-panel">
+              <p class="track-title">弱點</p>
+              <ul class="detail-list compact">
+                <li>班排制競爭壓力很大，制度屬高要求模型。</li>
+                <li>若學生無法適應續留門檻，後續留存壓力高。</li>
+              </ul>
+            </div>
+          </div>
+          <p class="card-note">靜宜是『清楚制度直接轉成人數』的代表，外國學生增長與政策設計最一致。</p>
+        </article>
+
+        <article class="policy-card">
+          <div class="policy-card-top">
+            <div class="policy-head">
+              <p class="eyebrow">Policy Dossier</p>
+              <h3>逢甲</h3>
+            </div>
+            <div class="delta-pill"><strong>11</strong><small>外國學生拉力 /15</small></div>
+          </div>
+          <div class="policy-meta">
+            <div class="metric-row">
+              <span>境外總數 -232</span>
+              <span>外國學生 -15</span>
+              <span>外國學生成長率 -3.8%</span>
+              <span>僑生 +16</span>
+              <span>港澳生 -172</span>
+            </div>
+            <div class="score-row"><span>金額力度 5/5</span><span>前端清晰度 3/5</span><span>續留完整性 3/5</span></div>
+          </div>
+          <div class="policy-section foreign-section">
+            <p class="track-title">外國學生獎助制度</p>
+            <ul class="detail-list">
+              <li>外國學生入學獎助採 NT$120,000 / 60,000 / 30,000 / 20,000 四級矩陣。</li>
+              <li>金額高、前端容易理解，但主體偏一次性入學方案。</li>
+              <li>受健保與稅務規範影響，經常需拆次撥款，實際體感會被行政摩擦削弱。</li>
+            </ul>
+          </div>
+          <div class="policy-section diaspora-section">
+            <p class="track-title">僑生／港澳生獎助制度</p>
+            <ul class="detail-list">
+              <li>僑生與國際學生入學獎學金共用 NT$120,000 / 60,000 / 30,000 / 20,000 四級矩陣。</li>
+              <li>僑生與外國學生共用相近的矩陣式制度，差異化較少。</li>
+              <li>不可重複領取政府高額補助，並可能進入工讀或服務媒合。</li>
+            </ul>
+          </div>
+          <div class="detail-columns">
+            <div class="detail-panel">
+              <p class="track-title">優勢</p>
+              <ul class="detail-list compact">
+                <li>帳面金額高，對第一眼招生宣傳很有力。</li>
+                <li>制度標準化，學校操作成本低。</li>
+              </ul>
+            </div>
+            <div class="detail-panel">
+              <p class="track-title">弱點</p>
+              <ul class="detail-list compact">
+                <li>續留設計與分眾程度不足，難以持續帶動外國學生擴張。</li>
+                <li>高額方案被行政摩擦與排他限制稀釋。</li>
+              </ul>
+            </div>
+          </div>
+          <p class="card-note">逢甲說明了高額不是萬靈丹；若缺少清楚的續留與分眾設計，外國學生不一定會長。</p>
+        </article>
+
+        <article class="policy-card">
+          <div class="policy-card-top">
+            <div class="policy-head">
+              <p class="eyebrow">Policy Dossier</p>
+              <h3>義守</h3>
+            </div>
+            <div class="delta-pill"><strong>13</strong><small>外國學生拉力 /15</small></div>
+          </div>
+          <div class="policy-meta">
+            <div class="metric-row">
+              <span>境外總數 -33</span>
+              <span>外國學生 +238</span>
+              <span>外國學生成長率 +29.1%</span>
+              <span>僑生 +11</span>
+              <span>港澳生 -270</span>
+            </div>
+            <div class="score-row"><span>金額力度 5/5</span><span>前端清晰度 4/5</span><span>續留完整性 4/5</span></div>
+          </div>
+          <div class="policy-section foreign-section">
+            <p class="track-title">外國學生獎助制度</p>
+            <ul class="detail-list">
+              <li>外國新生獎助額度從 NT$40,000 到 NT$175,000，最高可涵蓋全額學雜費加宿舍補助。</li>
+              <li>大學最多 4 年、碩士最多 2 年、博士最多 3 年，名義上有長年期保障。</li>
+              <li>續領要求班排前 40%、至少 9 學分、操行 85 分以上，並受出席率與服務學習約束。</li>
+              <li>前 9 週出席率若未達門檻，可能取消並追回獎助。</li>
+            </ul>
+          </div>
+          <div class="policy-section diaspora-section">
+            <p class="track-title">僑生／港澳生獎助制度</p>
+            <ul class="detail-list">
+              <li>僑生及港澳生新生依入學第一學年表現，經國際處分兩學期個別審議後核定，每學期最高獎助本校安排住宿地點之一學期住宿費。</li>
+              <li>僑生及港澳生在學生依在學表現，經國際處審議後核定，每學期最高獎助本校安排住宿地點之一學期住宿費。</li>
+              <li>受獎助學生須先自行支付全額住宿費，再由國際處與住宿組辦理以獎助學金抵減住宿費。</li>
+              <li>宿舍空調費與清潔費由學生自行負擔，因此前端價格訊號偏向住宿補助，而非現金或學雜費減免。</li>
+            </ul>
+          </div>
+          <div class="detail-columns">
+            <div class="detail-panel">
+              <p class="track-title">優勢</p>
+              <ul class="detail-list compact">
+                <li>外國學生帳面額度最高，第一眼拉力非常強。</li>
+                <li>外國學生確實出現明顯增長，代表這條線有用。</li>
+              </ul>
+            </div>
+            <div class="detail-panel">
+              <p class="track-title">弱點</p>
+              <ul class="detail-list compact">
+                <li>續領條件、出席率與追回條款過重，學生先感受到風險。</li>
+                <li>制度主力太偏外國學生，對其他來源市場支撐不足。</li>
+              </ul>
+            </div>
+          </div>
+          <p class="card-note">義守的外國學生方案有效，但高風險條件壓縮了擴張速度，且制度重心過度集中在外國學生。</p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Foreign Student Link</p>
+          <h2>六校外國學生獎助優劣，與外國學生成長的關聯</h2>
+          <p>這一段只看外國學生，且比較基礎改用 <strong>111→114 外國學生成長率</strong>，避免學校原本基數大就自然吃到優勢。</p>
+        </div>
+      </div>
+      <div class="compare-grid">
+        <article class="compare-box">
+          <h3>判讀結論</h3>
+          <p>外國學生獎助拉力指數與外國學生成長率的相關係數約 <strong>+0.62</strong>，屬中度正相關。這代表制度優劣與成長表現大致對得上，但不是單一因果。</p>
+          <ul>
+            <li>最有效的不是單純高額，而是像靜宜這樣，把條件講清楚、把續留路徑講清楚，讓學生知道「怎麼拿、怎麼續」。</li>
+            <li>淡江與逢甲都證明，資源大或金額高，不必然等於外國學生一定快速成長；若制度複雜、勞務重或續留設計不強，效果會被打折。</li>
+            <li>義守的外國學生有明顯成長，說明高額制度是有力的；但若風險訊號太強，就很難像靜宜那樣把成長幅度做滿。</li>
+          </ul>
+        </article>
+        <article class="compare-box">
+          <h3>關係圖</h3>
+          <p>越靠右代表外國學生獎助制度越強，越高代表 111→114 外國學生成長率越高。理想位置是右上角。</p>
+          <svg viewBox="0 0 920 360" class="chart-svg" role="img" aria-label="外國學生獎助拉力與外國學生成長率關係圖">
+            <line x1="72.00" y1="34" x2="72.00" y2="304" class="grid-line" /><text x="72.00" y="342"
+              class="axis-label axis-center">9</text>
+            <line x1="209.33" y1="34" x2="209.33" y2="304" class="grid-line" /><text x="209.33" y="342"
+              class="axis-label axis-center">10</text>
+            <line x1="346.67" y1="34" x2="346.67" y2="304" class="grid-line" /><text x="346.67" y="342"
+              class="axis-label axis-center">11</text>
+            <line x1="484.00" y1="34" x2="484.00" y2="304" class="grid-line" /><text x="484.00" y="342"
+              class="axis-label axis-center">12</text>
+            <line x1="621.33" y1="34" x2="621.33" y2="304" class="grid-line" /><text x="621.33" y="342"
+              class="axis-label axis-center">13</text>
+            <line x1="758.67" y1="34" x2="758.67" y2="304" class="grid-line" /><text x="758.67" y="342"
+              class="axis-label axis-center">14</text>
+            <line x1="896.00" y1="34" x2="896.00" y2="304" class="grid-line" /><text x="896.00" y="342"
+              class="axis-label axis-center">15</text>
+            <line x1="72" y1="296.31" x2="896" y2="296.31" class="grid-line" /><text x="60" y="300.31"
+              class="axis-label axis-left">-10%</text>
+            <line x1="72" y1="275.82" x2="896" y2="275.82" class="grid-line" /><text x="60" y="279.82"
+              class="axis-label axis-left">0%</text>
+            <line x1="72" y1="234.83" x2="896" y2="234.83" class="grid-line" /><text x="60" y="238.83"
+              class="axis-label axis-left">20%</text>
+            <line x1="72" y1="193.84" x2="896" y2="193.84" class="grid-line" /><text x="60" y="197.84"
+              class="axis-label axis-left">40%</text>
+            <line x1="72" y1="152.85" x2="896" y2="152.85" class="grid-line" /><text x="60" y="156.85"
+              class="axis-label axis-left">60%</text>
+            <line x1="72" y1="111.86" x2="896" y2="111.86" class="grid-line" /><text x="60" y="115.86"
+              class="axis-label axis-left">80%</text>
+            <line x1="72" y1="70.87" x2="896" y2="70.87" class="grid-line" /><text x="60" y="74.87"
+              class="axis-label axis-left">100%</text><text x="460.00" y="358"
+              class="legend-label axis-center">外國學生獎助拉力指數</text><text x="18" y="180.00" class="legend-label axis-center"
+              transform="rotate(-90 18 180.00)">111→114 外國學生成長率</text>
+            <circle cx="484.00" cy="170.54" r="11" fill="#8b1e3f" fill-opacity="0.88" /><text x="496.00" y="158.54"
+              class="series-label" fill="#8b1e3f">銘傳</text>
+            <circle cx="484.00" cy="267.27" r="11" fill="#226c57" fill-opacity="0.88" /><text x="496.00" y="255.27"
+              class="series-label" fill="#226c57">淡江</text>
+            <circle cx="484.00" cy="68.86" r="11" fill="#9c5b1c" fill-opacity="0.88" /><text x="496.00" y="86.86"
+              class="series-label" fill="#9c5b1c">文化</text>
+            <circle cx="758.67" cy="54.49" r="11" fill="#23549a" fill-opacity="0.88" /><text x="770.67" y="42.49"
+              class="series-label" fill="#23549a">靜宜</text>
+            <circle cx="346.67" cy="283.51" r="11" fill="#b66a18" fill-opacity="0.88" /><text x="358.67" y="301.51"
+              class="series-label" fill="#b66a18">逢甲</text>
+            <circle cx="621.33" cy="216.12" r="11" fill="#4b5568" fill-opacity="0.88" /><text x="633.33" y="234.12"
+              class="series-label" fill="#4b5568">義守</text>
+          </svg>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Comparison</p>
+          <h2>比較矩陣</h2>
+          <p>把六校 111 與 114 的總量、外國學生、僑生與港澳生增減，以及各自成長率放在一起，可直接看出哪一校是全面擴張，哪一校主要靠外國學生在撐。</p>
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>學校</th>
+            <th>111 境外總數</th>
+            <th>114 境外總數</th>
+            <th>總數增減</th>
+            <th>總數成長率</th>
+            <th>外國學生</th>
+            <th>外國成長率</th>
+            <th>僑生</th>
+            <th>僑生成長率</th>
+            <th>港澳生</th>
+            <th>港澳成長率</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>銘傳</strong></td>
+            <td>1,914</td>
+            <td>2,221</td>
+            <td>+307</td>
+            <td>+16.0%</td>
+            <td>+564</td>
+            <td>+51.4%</td>
+            <td>+45</td>
+            <td>+13.4%</td>
+            <td>-248</td>
+            <td>-58.6%</td>
+          </tr>
+
+          <tr>
+            <td><strong>淡江</strong></td>
+            <td>1,450</td>
+            <td>1,207</td>
+            <td>-243</td>
+            <td>-16.8%</td>
+            <td>+27</td>
+            <td>+4.2%</td>
+            <td>+43</td>
+            <td>+14.1%</td>
+            <td>-248</td>
+            <td>-57.3%</td>
+          </tr>
+
+          <tr>
+            <td><strong>文化</strong></td>
+            <td>920</td>
+            <td>1,132</td>
+            <td>+212</td>
+            <td>+23.0%</td>
+            <td>+412</td>
+            <td>+101.0%</td>
+            <td>+6</td>
+            <td>+3.4%</td>
+            <td>-151</td>
+            <td>-53.9%</td>
+          </tr>
+
+          <tr>
+            <td><strong>靜宜</strong></td>
+            <td>541</td>
+            <td>907</td>
+            <td>+366</td>
+            <td>+67.7%</td>
+            <td>+419</td>
+            <td>+108.0%</td>
+            <td>+25</td>
+            <td>+55.6%</td>
+            <td>-45</td>
+            <td>-60.0%</td>
+          </tr>
+
+          <tr>
+            <td><strong>逢甲</strong></td>
+            <td>918</td>
+            <td>686</td>
+            <td>-232</td>
+            <td>-25.3%</td>
+            <td>-15</td>
+            <td>-3.8%</td>
+            <td>+16</td>
+            <td>+9.5%</td>
+            <td>-172</td>
+            <td>-59.7%</td>
+          </tr>
+
+          <tr>
+            <td><strong>義守</strong></td>
+            <td>1,382</td>
+            <td>1,349</td>
+            <td>-33</td>
+            <td>-2.4%</td>
+            <td>+238</td>
+            <td>+29.1%</td>
+            <td>+11</td>
+            <td>+11.7%</td>
+            <td>-270</td>
+            <td>-58.8%</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Implication For ISU</p>
+          <h2>對義守最關鍵的策略意涵</h2>
+        </div>
+      </div>
+      <div class="summary-grid">
+        <article class="summary-box light">
+          <h3>1. 外國學生獎助線有效，但還不夠</h3>
+          <p>
+            義守的外國學生在 111→114 已增加 <strong>+238</strong>，
+            代表高額外國學生方案確實有市場吸引力。這一條線不應被否定，反而應視為目前最有成果的政策主軸。
+          </p>
+        </article>
+        <article class="summary-box light">
+          <h3>2. 要把高額變成「可信的高額」</h3>
+          <p>
+            義守的帳面額度在六校中非常強，但出席率、班排、操行與追回條款也最重。
+            如果長官要追求外國學生更快成長，優先順序應是降低學生對制度風險的感受，
+            把義守從「高額但很硬」調整成<strong>高額且可預期</strong>。
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Methods</p>
+          <h2>資料來源</h2>
+        </div>
+      </div>
+      <p class="footer-note">
+        1. 獎助政策整理依據本地文件 <strong>境外生獎助學金比較分析.md</strong>。<br />
+        2. 人數資料採教育部大專校院校務資訊公開平台 <strong>學3-7. 境外學位生數（依身分類別呈現）</strong>。<br />
+        3. 分析範圍限定為 <strong>111-114 學年度、私立一般大學、日間學士班</strong>。<br />
+        4. 本報告的重點是比較各校不同來源市場的量體變化，並將其對讀到公開可見的獎助制度方向。
+      </p>
+    </section>
+  </main>
+</body>
+
+</html>
