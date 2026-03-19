@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>香港市場研究</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --paper: rgba(255,255,255,0.84);
+      --paper-strong: rgba(255,255,255,0.94);
+      --ink: #151a23;
+      --muted: #596170;
+      --line: rgba(21, 26, 35, 0.12);
+      --scarlet: #b2482f;
+      --teal: #1f6660;
+      --navy: #24395b;
+      --gold: #c59b45;
+      --shadow: 0 26px 60px rgba(31, 25, 18, 0.12);
+      --radius: 28px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font: 16px/1.75 "Noto Sans TC", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(197, 155, 69, 0.18), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(31, 102, 96, 0.16), transparent 28%),
+        linear-gradient(180deg, #f8f4ec 0%, var(--bg) 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(21,26,35,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21,26,35,0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.32), transparent 40%);
+    }
+    a { color: var(--scarlet); text-underline-offset: 3px; }
+    .shell {
+      width: min(1360px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 22px 0 64px;
+      position: relative;
+      z-index: 1;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .crumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(21,26,35,0.08);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+      border-radius: 34px;
+      color: #f9f5ee;
+      background:
+        linear-gradient(145deg, rgba(19, 24, 34, 0.98), rgba(35, 48, 66, 0.96)),
+        linear-gradient(90deg, rgba(197, 155, 69, 0.18), transparent);
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      right: -80px;
+      top: -60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(197, 155, 69, 0.26), transparent 70%);
+      filter: blur(14px);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    h1, h2, h3 {
+      margin: 0;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+    h1 {
+      margin-top: 18px;
+      max-width: 11ch;
+      font-size: clamp(42px, 5vw, 74px);
+    }
+    .hero-summary {
+      max-width: 68ch;
+      margin: 16px 0 0;
+      color: rgba(249, 245, 238, 0.84);
+    }
+    .source-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(249, 245, 238, 0.9);
+      font-size: 14px;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .metric-card {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.9);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .metric-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 34px;
+      line-height: 1.05;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+    }
+    .metric-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+    }
+    section {
+      margin-top: 18px;
+      padding: 28px;
+      border-radius: var(--radius);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+    .section-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 72ch;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+    }
+    .panel {
+      padding: 20px;
+      border-radius: 24px;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+    }
+    .chart-wrap {
+      height: 360px;
+    }
+    .callout {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(178,72,47,0.08), rgba(31,102,96,0.05));
+      border-left: 4px solid var(--scarlet);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 11px 10px;
+      border-bottom: 1px solid rgba(21,26,35,0.08);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .isu-row td {
+      background: rgba(178, 72, 47, 0.10);
+      font-weight: 700;
+    }
+    .focus-row td {
+      background: rgba(31, 102, 96, 0.10);
+      font-weight: 700;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .dept-card {
+      padding: 18px;
+      border-radius: 24px;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+    }
+    .dept-card h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .dept-card ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .dept-card li + li {
+      margin-top: 8px;
+    }
+    .footnote {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .link-card {
+      display: block;
+      padding: 22px;
+      border-radius: 24px;
+      text-decoration: none;
+      color: inherit;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .link-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px rgba(21,26,35,0.08);
+    }
+    .link-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 26px;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+      line-height: 1.1;
+    }
+    .link-card span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .link-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+    @media (max-width: 1080px) {
+      .metric-grid,
+      .dept-grid,
+      .link-grid,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .chart-wrap {
+        height: 320px;
+      }
+    }
+    @media (max-width: 720px) {
+      .shell { width: min(100vw - 18px, 100%); }
+      .hero, section { padding: 22px; border-radius: 24px; }
+      h1 { max-width: none; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    
+    <div class="topbar">
+      <a class="crumb" href="../index.html">返回報告入口</a>
+      <div>資料來源固定為教育部大專校院校務資訊公開平台 CSV</div>
+    </div>
+
+    
+    <header class="hero">
+      <div class="eyebrow">Country Research</div>
+      <h1>香港作為單一市場，臺灣哪些學校真正吃到成長</h1>
+      <p class="hero-summary">本頁只使用目前資料夾中的 CSV 檔，核心底表為教育部大專校院校務資訊公開平台之校級國別資料 `stud_3_7_identity_school_111~114.csv`，因此「國家 x 學校」的人數與成長率皆直接來自公開平台，不用人工估算。</p>
+      <div class="source-note">資料來源：教育部大專校院校務資訊公開平台 CSV。國家別學生數統一採 `stud_3_7_identity_school_111~114.csv` 的境外學位生總人數(A)欄位，讓越南、印尼、香港、日本、泰國、菲律賓、馬來西亞可以在同一尺度比較；科系差異代理則採 `stud_3_1_foreign_degree_department_114.csv` 的各校境外學位生熱門系所。</div>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>114 全國總量</span>
+          <strong>4,662</strong>
+          <small>香港在全部公開平台學校中的學生合計</small>
+        </article>
+        <article class="metric-card">
+          <span>111→114 成長</span>
+          <strong>-48.04%</strong>
+          <small>全國該市場在四年內的整體變化</small>
+        </article>
+        <article class="metric-card">
+          <span>義守 114 規模</span>
+          <strong>182</strong>
+          <small>義守在此市場的 114 年學生數</small>
+        </article>
+        <article class="metric-card">
+          <span>義守 111→114</span>
+          <strong>-54.16%</strong>
+          <small>114 年全部公開平台學校排名 #3</small>
+        </article>
+      </div>
+      <div class="callout">備注：義守大學整體境外學位生由 1,499 人降至 1,437 人，111→114 總成長率為 -4.14%。同期，義守來自 香港 的學生由 397 人變為 182 人，該市場變化率為 -54.16%。因此單一市場的升降，不等於義守整體境外生規模也會跟著同方向變化。</div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">01 / School Trend</div>
+          <h2>前段學校不是一起長，而是少數幾校明顯加速</h2>
+          <p>先把 香港 市場的前五校攤開看 111 到 114 學年的序列，判斷到底是均勻成長，還是特定學校把量能集中吃下來。</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="chart-wrap"><canvas id="trend-hong-kong"></canvas></div>
+<script>new Chart(document.getElementById("trend-hong-kong"), {"type": "line", "data": {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "臺大", "data": [364, 350, 309, 284], "borderColor": "#b2482f", "backgroundColor": "#b2482f22", "tension": 0.32, "fill": false}, {"label": "輔仁", "data": [312, 292, 255, 204], "borderColor": "#1f6660", "backgroundColor": "#1f666022", "tension": 0.32, "fill": false}, {"label": "義守", "data": [397, 338, 257, 182], "borderColor": "#24395b", "backgroundColor": "#24395b22", "tension": 0.32, "fill": false}, {"label": "淡江大學學校財團法人淡江大學", "data": [413, 331, 251, 175], "borderColor": "#c59b45", "backgroundColor": "#c59b4522", "tension": 0.32, "fill": false}, {"label": "臺師大", "data": [249, 227, 212, 171], "borderColor": "#7d4c39", "backgroundColor": "#7d4c3922", "tension": 0.32, "fill": false}]}, "options": {"responsive": true, "maintainAspectRatio": false, "interaction": {"mode": "index", "intersect": false}, "plugins": {"legend": {"position": "bottom"}}, "scales": {"y": {"beginAtZero": true}}}});</script>
+        </div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>學校</th>
+                <th>114 人數</th>
+                <th>111→114 增量</th>
+                <th>111→114</th>
+                <th>113→114</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr class="">
+            <td>1</td>
+            <td>國立臺灣大學</td>
+            <td>284</td>
+            <td>-80</td>
+            <td>-21.98%</td>
+            <td>-8.09%</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>2</td>
+            <td>輔仁大學</td>
+            <td>204</td>
+            <td>-108</td>
+            <td>-34.62%</td>
+            <td>-20.00%</td>
+          </tr>
+        
+
+          <tr class="isu-row">
+            <td>3</td>
+            <td>義守大學</td>
+            <td>182</td>
+            <td>-215</td>
+            <td>-54.16%</td>
+            <td>-29.18%</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>4</td>
+            <td>淡江大學學校財團法人淡江大學</td>
+            <td>175</td>
+            <td>-238</td>
+            <td>-57.63%</td>
+            <td>-30.28%</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>5</td>
+            <td>國立臺灣師範大學</td>
+            <td>171</td>
+            <td>-78</td>
+            <td>-31.33%</td>
+            <td>-19.34%</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>6</td>
+            <td>銘傳大學</td>
+            <td>164</td>
+            <td>-224</td>
+            <td>-57.73%</td>
+            <td>-37.64%</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>7</td>
+            <td>國立成功大學</td>
+            <td>136</td>
+            <td>-89</td>
+            <td>-39.56%</td>
+            <td>-13.92%</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>8</td>
+            <td>中國文化大學</td>
+            <td>135</td>
+            <td>-149</td>
+            <td>-52.46%</td>
+            <td>-31.12%</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>9</td>
+            <td>國立政治大學</td>
+            <td>130</td>
+            <td>-69</td>
+            <td>-34.67%</td>
+            <td>-14.47%</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>10</td>
+            <td>中原大學</td>
+            <td>128</td>
+            <td>-122</td>
+            <td>-48.80%</td>
+            <td>-25.15%</td>
+          </tr>
+        </tbody>
+          </table>
+          <div class="callout">114 年 香港 市場前五校合計已有 1,016 人。若前段學校的增量與成長率長期都高於義守，就代表競爭對手正在更快地吃下新增量。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">02 / Latest Scale</div>
+          <h2>114 年最新規模排序</h2>
+          <p>這裡只看最新年度的人數規模，不再放佔比，只用實際學生數來看哪些學校已經卡住前段位置。</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel"><div class="chart-wrap"><canvas id="share-hong-kong"></canvas></div>
+<script>new Chart(document.getElementById("share-hong-kong"), {"type": "bar", "data": {"labels": ["臺大", "輔仁", "義守", "淡江大學學校財團法人淡江大學", "臺師大", "銘傳", "國立成功大學", "文化"], "datasets": [{"label": "114 香港學生", "data": [284, 204, 182, 175, 171, 164, 136, 135], "backgroundColor": ["#b2482f", "#1f6660", "#24395b", "#c59b45", "#7d4c39", "#6a7081", "#8d6e63", "#497aa0"]}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}}, "scales": {"y": {"beginAtZero": true}}}});</script></div>
+        <div class="panel">
+          <h3>研究判讀</h3>
+          <p>如果一個市場同時呈現「總量成長」與「前幾校集中度提高」，策略上就不只是跟所有大學競爭，而是必須拆解前段對手的校系供給與招生敘事。這也是後續 one-pager 應優先鎖定的對象群。</p>
+          <div class="callout">這一頁的國家別人數全部直接來自公開平台校級國別 CSV，沒有混入招生文案、媒體資料或主觀排名。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">03 / ISU Only</div>
+          <h2>只看義守，該國學生數怎麼變</h2>
+          <p>這張折線圖單獨抽出義守大學在 香港 市場的 111 到 114 變化，讓單校趨勢可以和全國及競校脈絡分開閱讀。</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel"><div class="chart-wrap"><canvas id="isu-only-hong-kong"></canvas></div>
+<script>new Chart(document.getElementById("isu-only-hong-kong"), {"type": "line", "data": {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "義守大學 香港學生", "data": [397, 338, 257, 182], "borderColor": "#b2482f", "backgroundColor": "#b2482f22", "tension": 0.32, "fill": true, "pointRadius": 4, "pointHoverRadius": 6}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}}, "scales": {"y": {"beginAtZero": true}}}});</script></div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>學年</th>
+                <th>義守學生數</th>
+                <th>相較前一年增減</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>111</td><td>397</td><td>n/a</td></tr><tr><td>112</td><td>338</td><td>-59</td></tr><tr><td>113</td><td>257</td><td>-81</td></tr><tr><td>114</td><td>182</td><td>-75</td></tr>
+            </tbody>
+          </table>
+          <div class="callout">這張圖只回答一件事：義守在這個市場到底有沒有持續擴張。它不處理競校比較，只處理單校自己的時間序列。</div>
+        </div>
+      </div>
+    </section>
+
+    
+  </div>
+</body>
+</html>

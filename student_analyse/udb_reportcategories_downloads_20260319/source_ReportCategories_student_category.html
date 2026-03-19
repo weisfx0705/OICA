@@ -1,0 +1,1566 @@
+
+
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="keywords" content="教育部大專校院校務資訊公開平臺">
+    <meta name="description" content="教育部大專校院校務資訊公開平臺">
+    <meta name="device" content="ng1-97">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="Accessible_website" content="本網站通過AA檢測等級無障礙網頁檢測">
+    <title>資訊查詢-學生類</title>
+    <title id="Head_Title">教育部大專校院校務資訊公開平臺</title>
+    <link href="/Static/udata/css/Query.css" type="text/css" rel="stylesheet">
+    
+    
+    <link href="/Static/udata/css/bootstrap.css" rel="stylesheet"/>
+<link href="/Static/udata/css/OpenInfoStyle.css" rel="stylesheet"/>
+<link href="/Static/udata/css/all.min.css" rel="stylesheet"/>
+<link href="/Static/udata/css/fontawesome.min.css" rel="stylesheet"/>
+<link href="/Static/udata/css/solid.min.css" rel="stylesheet"/>
+
+    <link href="/Static/udata/css/Select/bootstrap-select.min.css" rel="stylesheet"/>
+
+    <script src="/Static/udata/js/Scripts/jquery-3.7.1.min.js"></script>
+
+    <script src="/Static/udata/js/Scripts/bootstrap.bundle.min.js"></script>
+<script src="/Static/udata/js/Scripts/bootstrap5-helpers.js"></script>
+
+    <script src="/Static/udata/js/Scripts/Select/bootstrap-select.min.js"></script>
+<script src="/Static/udata/js/Scripts/Select/bootstrap-select.defaults.zh-TW.js"></script>
+
+    
+    
+    <link href="/Static/udata/css/CustomizeBootstrap.css" type="text/css" rel="stylesheet">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-J106S0H5JQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-J106S0H5JQ');
+    </script>
+  
+</head>
+<body>
+    <noscript>
+        <div style="color: #f00; text-align:center">
+            很抱歉，網站的某些功能在JavaScript沒有啟用的狀態下無法正常使用。
+        </div>
+    </noscript>
+    <a id="gotocenter" href="#Container_Brick" title="跳到主要內容" class="sr-only sr-only-focusable">跳到主要內容</a>
+    <!-- Modal -->
+    <div id="DataProcessModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="modal-title">資料處理中，請稍待…</p>
+                </div>
+                <div class="modal-body">
+                    <div class="loader mx-auto my-0"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal(處理匯出時無資料的情形) -->
+    <div id="ExportNoData" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                    <p class="modal-title">提醒！</p>
+                </div>
+                <div class="modal-body">
+                    <p>所匯出的檔案，無相關統計資料…</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ErrorData" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-sm">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                    <p class="modal-title">提醒！</p>
+                </div>
+                <div class="modal-body">
+                    <p>所匯出的檔案，無相關統計資料…</p>
+                </div>
+            </div>
+        </div>
+    </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light my-0" role="navigation">
+    <div class="container">
+
+        <!-- BS5 Toggle Button -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#bs-example-navbar-collapse-1"
+                aria-controls="bs-example-navbar-collapse-1"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+            <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/udata/Index" title="移至首頁">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            首頁
+                        </a>
+                    </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/udata/Sitemap" title="移至網站導覽">
+                        <i class="fa fa-sitemap" aria-hidden="true"></i>
+                        網站導覽
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/udata/AboutProject" title="移至計畫緣起">
+                        <i class="fa fa-book" aria-hidden="true"></i>
+                        計畫緣起
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/udata/Contact" title="移至聯絡我們">
+                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        聯絡我們
+                    </a>
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <!-- Header Carousel -->
+    <header id="myCarousel" class="carousel slide">
+        <!-- Indicators -->
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner new-ver">
+            <div class="active item banner-style">
+                <h1 class="my-0 text-center"><a href="/udata/Index" title="移至首頁"><img src="/Static/public/images/banner_short-udata.svg" alt="教育部大專校院校務資訊公開平台" /></a></h1>
+            </div>
+        </div>
+    </header>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light my-0" role="navigation">
+    <div class="container">
+
+        <!-- ::: Brand -->
+        <a class="navbar-brand me-2"
+           accesskey="U"
+           href="#Top_Brick"
+           id="Top_Brick"
+           title="網頁上方為本站主選單">
+            :::
+        </a>
+
+        <!-- Toggler（BS5 必須，就算你桌機用不到） -->
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbar"
+                aria-controls="navbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu -->
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+
+                <li class="nav-item">
+                    <a class="navbar-brand nav-link px-2"
+                       href="/udata/Introduction"
+                       title="提供資訊分類、學校類別、學制班別簡介">
+                        <!-- TODO(BS5): 原使用 glyphicon-book -->
+                        <i class="fa fa-book"></i> 資訊介紹
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="navbar-brand nav-link px-2"
+                       href="/udata/ReportCategories"
+                       title="提供學生、教職、研究、校務、財務、教育統計類資訊查詢">
+                        <i class="fa fa-list-ul"></i> 資訊查詢
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="navbar-brand nav-link px-2"
+                       href="/udata/Historical"
+                       title="提供105學年度前的學校歷史資訊檔案下載">
+                        <i class="fa fa-archive"></i> 歷史資訊(105學年度以前)
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="navbar-brand nav-link px-2"
+                       href="/actgc"
+                       title="提供專案輔導學校資訊及檔案下載">
+                        <i class="fa fa-building"></i> 專案輔導學校
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="navbar-brand nav-link px-2"
+                       href="/termination"
+                       title="提供退場學校資訊及檔案下載">
+                        <i class="fa-regular fa-newspaper"></i> 退場學校
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="navbar-brand nav-link px-2"
+                       href="/udata/Notice"
+                       title="提供表冊或學校相關更新、設備維護等訊息公告">
+                        <i class="fa fa-bullhorn"></i> 訊息公告
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="navbar-brand nav-link px-2"
+                       href="/udata/RelationLink"
+                       title="提供入學前後相關連結">
+                        <i class="fa fa-link"></i> 相關連結
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+    <!-- Page Content -->
+    <div class="container">
+        <!-- Marketing Icons Section -->
+        
+<div class="container">
+    <div class="path">
+        <a accesskey="C" href="#Container_Brick" id="Container_Brick" title="中央內容區塊">
+            :::
+        </a>
+        網站尋覽列：
+        <a href="/udata/OpenData/udata/Index" title="移至首頁"><i class="fa fa-home" aria-hidden="true"></i> 首頁</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <a href="/udata/ReportCategories" title="移至資訊查詢"><i class="fa fa-list-ul"></i>資訊查詢</a>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <a href="/udata/DetailReportList/學生類" title=學生類> 學生類</a>
+        
+    </div>
+</div>
+<div class="card card-info">
+    <div class="card-header">學生類</div>
+    <div class="card-body">
+        
+
+<input name="__RequestVerificationToken" type="hidden" value="djKHlIZAfifvU8nGmS2XlHvbu3aouK7LbLzs_M3INjHMEwinxfRt7Q-y1RolKYgNjgvRETs6wEglOLFB5f1qA3U1FexLTXbQjJ9sIKQ-XU9y7fuSE1EiA_gU5wNjZlpG0" />
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTable no-footer dtr-inline">
+        <thead>
+            <tr>
+                <th class="text-center">表冊名稱</th>
+                
+                <th class="text-center">.xlsx</th>
+                <th class="text-center">.ods</th>
+                <th class="text-center">.csv (UTF-8)</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatStudent/Index" , title=學1-1.正式學籍在學學生人數-以「系(所)」統計>
+
+
+學1-1.正式學籍在學學生人數-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學1-1.正式學籍在學學生人數-以「系(所)」統計.xlsx" target="_blank" title="學1-1.正式學籍在學學生人數-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學1-1.正式學籍在學學生人數-以「系(所)」統計.ods" target="_blank" title="學1-1.正式學籍在學學生人數-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學1-1.正式學籍在學學生人數-以「系(所)」統計.csv" target="_blank" title="學1-1.正式學籍在學學生人數-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatUniversityStudent/Index" , title=學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計>
+
+
+學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計.xlsx" target="_blank" title="學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計.ods" target="_blank" title="學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計.csv" target="_blank" title="學1-2.正式學籍在學學生人數-以「校(含學制班別)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatGraduateStudent/Index" , title=學2-1.畢業生數及其取得輔系、雙主修資格人數-以「系(所)」統計>
+
+
+學2-1.畢業生數及其取得輔系、雙主修資格人數-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學2-1.畢業生數及其取得輔系、雙主修資格人數-以「系(所)」統計.xlsx" target="_blank" title="學2-1.畢業生數及其取得輔系、雙主修資格人數-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學2-1.畢業生數及其取得輔系、雙主修資格人數-以「系(所)」統計.ods" target="_blank" title="學2-1.畢業生數及其取得輔系、雙主修資格人數-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學2-1.畢業生數及其取得輔系、雙主修資格人數-以「系(所)」統計.csv" target="_blank" title="學2-1.畢業生數及其取得輔系、雙主修資格人數-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatUniversityGraduateStudent/Index" , title=學2-2.畢業生數及其取得輔系、雙主修資格人數-以「校(含學制班別)」統計>
+
+
+學2-2.畢業生數及其取得輔系、雙主修資格人數-以「校(含學制班別)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學2-2.畢業生數及其取得輔系、雙主修資格人數-以「校(含學制班別)」統計.xlsx" target="_blank" title="學2-2.畢業生數及其取得輔系、雙主修資格人數-以「校(含學制班別)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學2-2.畢業生數及其取得輔系、雙主修資格人數-以「校(含學制班別)」統計.ods" target="_blank" title="學2-2.畢業生數及其取得輔系、雙主修資格人數-以「校(含學制班別)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學2-2.畢業生數及其取得輔系、雙主修資格人數-以「校(含學制班別)」統計.csv" target="_blank" title="學2-2.畢業生數及其取得輔系、雙主修資格人數-以「校(含學制班別)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdCollegeGrandPeople/Index" , title=學2-3.畢業授予學位之中英文名稱及人數表-以「系(所)」統計>
+
+
+學2-3.畢業授予學位之中英文名稱及人數表-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學2-3.畢業授予學位之中英文名稱及人數表-以「系(所)」統計.xlsx" target="_blank" title="學2-3.畢業授予學位之中英文名稱及人數表-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學2-3.畢業授予學位之中英文名稱及人數表-以「系(所)」統計.ods" target="_blank" title="學2-3.畢業授予學位之中英文名稱及人數表-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學2-3.畢業授予學位之中英文名稱及人數表-以「系(所)」統計.csv" target="_blank" title="學2-3.畢業授予學位之中英文名稱及人數表-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdGraudatedMasterAndDoctorateThesis/Index" , title=學2-4.畢業碩、博士學位論文資料-以「系(所)」統計>
+
+
+學2-4.畢業碩、博士學位論文資料-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學2-4.畢業碩、博士學位論文資料-以「系(所)」統計.xlsx" target="_blank" title="學2-4.畢業碩、博士學位論文資料-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學2-4.畢業碩、博士學位論文資料-以「系(所)」統計.ods" target="_blank" title="學2-4.畢業碩、博士學位論文資料-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學2-4.畢業碩、博士學位論文資料-以「系(所)」統計.csv" target="_blank" title="學2-4.畢業碩、博士學位論文資料-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdUniversityGraudatedMasterAndDoctorateThesis/Index" , title=學2-5.畢業碩、博士學位論文資料-以「校(含學制班別)」統計>
+
+
+學2-5.畢業碩、博士學位論文資料-以「校(含學制班別)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學2-5.畢業碩、博士學位論文資料-以「校(含學制班別)」統計.xlsx" target="_blank" title="學2-5.畢業碩、博士學位論文資料-以「校(含學制班別)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學2-5.畢業碩、博士學位論文資料-以「校(含學制班別)」統計.ods" target="_blank" title="學2-5.畢業碩、博士學位論文資料-以「校(含學制班別)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學2-5.畢業碩、博士學位論文資料-以「校(含學制班別)」統計.csv" target="_blank" title="學2-5.畢業碩、博士學位論文資料-以「校(含學制班別)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatOutlandStudent/Index" , title=學3-1.境外學位生數及其在學比率-以「系(所)」統計>
+
+
+學3-1.境外學位生數及其在學比率-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學3-1.境外學位生數及其在學比率-以「系(所)」統計.xlsx" target="_blank" title="學3-1.境外學位生數及其在學比率-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學3-1.境外學位生數及其在學比率-以「系(所)」統計.ods" target="_blank" title="學3-1.境外學位生數及其在學比率-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學3-1.境外學位生數及其在學比率-以「系(所)」統計.csv" target="_blank" title="學3-1.境外學位生數及其在學比率-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatForeignStudent/Index" , title=學3-2.外國學生數及其在學比率-以「系(所)」統計>
+
+
+學3-2.外國學生數及其在學比率-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學3-2.外國學生數及其在學比率-以「系(所)」統計.xlsx" target="_blank" title="學3-2.外國學生數及其在學比率-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學3-2.外國學生數及其在學比率-以「系(所)」統計.ods" target="_blank" title="學3-2.外國學生數及其在學比率-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學3-2.外國學生數及其在學比率-以「系(所)」統計.csv" target="_blank" title="學3-2.外國學生數及其在學比率-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatStudentOverseasHK/Index" , title=學3-3.僑生、港澳生數及其在學比率-以「系(所)」統計>
+
+
+學3-3.僑生、港澳生數及其在學比率-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學3-3.僑生、港澳生數及其在學比率-以「系(所)」統計.xlsx" target="_blank" title="學3-3.僑生、港澳生數及其在學比率-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學3-3.僑生、港澳生數及其在學比率-以「系(所)」統計.ods" target="_blank" title="學3-3.僑生、港澳生數及其在學比率-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學3-3.僑生、港澳生數及其在學比率-以「系(所)」統計.csv" target="_blank" title="學3-3.僑生、港澳生數及其在學比率-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatStudentChina/Index" , title=學3-4.大陸地區來臺學位生數及其在學比率-以「系(所)」統計>
+
+
+學3-4.大陸地區來臺學位生數及其在學比率-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學3-4.大陸地區來臺學位生數及其在學比率-以「系(所)」統計.xlsx" target="_blank" title="學3-4.大陸地區來臺學位生數及其在學比率-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學3-4.大陸地區來臺學位生數及其在學比率-以「系(所)」統計.ods" target="_blank" title="學3-4.大陸地區來臺學位生數及其在學比率-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學3-4.大陸地區來臺學位生數及其在學比率-以「系(所)」統計.csv" target="_blank" title="學3-4.大陸地區來臺學位生數及其在學比率-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatForeignGraduateStudent108/Index" , title=學3-5.畢業境外生數-以「系(所)」統計>
+
+
+學3-5.畢業境外生數-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學3-5.畢業境外生數-以「系(所)」統計.xlsx" target="_blank" title="學3-5.畢業境外生數-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學3-5.畢業境外生數-以「系(所)」統計.ods" target="_blank" title="學3-5.畢業境外生數-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學3-5.畢業境外生數-以「系(所)」統計.csv" target="_blank" title="學3-5.畢業境外生數-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatUniversityForeignGraduateStudent108/Index" , title=學3-6.畢業境外生數-以「校(含學制班別)」統計>
+
+
+學3-6.畢業境外生數-以「校(含學制班別)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學3-6.畢業境外生數-以「校(含學制班別)」統計.xlsx" target="_blank" title="學3-6.畢業境外生數-以「校(含學制班別)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學3-6.畢業境外生數-以「校(含學制班別)」統計.ods" target="_blank" title="學3-6.畢業境外生數-以「校(含學制班別)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學3-6.畢業境外生數-以「校(含學制班別)」統計.csv" target="_blank" title="學3-6.畢業境外生數-以「校(含學制班別)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatForeignStudentGroupByIdentity/Index" , title=學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計>
+
+
+學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計.xlsx" target="_blank" title="學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計.ods" target="_blank" title="學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計.csv" target="_blank" title="學3-7.境外學位生數(依身分類別呈現)-以「校(含學制班別)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdProlongedStudyStudent/Index" , title=學4.日間學士班以下申請延長修業年限之延修生數-以「系(所)」統計>
+
+
+學4.日間學士班以下申請延長修業年限之延修生數-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學4.日間學士班以下申請延長修業年限之延修生數-以「系(所)」統計.xlsx" target="_blank" title="學4.日間學士班以下申請延長修業年限之延修生數-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學4.日間學士班以下申請延長修業年限之延修生數-以「系(所)」統計.ods" target="_blank" title="學4.日間學士班以下申請延長修業年限之延修生數-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學4.日間學士班以下申請延長修業年限之延修生數-以「系(所)」統計.csv" target="_blank" title="學4.日間學士班以下申請延長修業年限之延修生數-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdContinuingEducationAndExchangeStudent108/Index" , title=學5.日間學制本國學生出國進修交流人數-以「系(所)」統計>
+
+
+學5.日間學制本國學生出國進修交流人數-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學5.日間學制本國學生出國進修交流人數-以「系(所)」統計.xlsx" target="_blank" title="學5.日間學制本國學生出國進修交流人數-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學5.日間學制本國學生出國進修交流人數-以「系(所)」統計.ods" target="_blank" title="學5.日間學制本國學生出國進修交流人數-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學5.日間學制本國學生出國進修交流人數-以「系(所)」統計.csv" target="_blank" title="學5.日間學制本國學生出國進修交流人數-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdStudySituationInterscholastic/Index" , title=學6.修讀校際選課人次-以「系(所)」統計>
+
+
+學6.修讀校際選課人次-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學6.修讀校際選課人次-以「系(所)」統計.xlsx" target="_blank" title="學6.修讀校際選課人次-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學6.修讀校際選課人次-以「系(所)」統計.ods" target="_blank" title="學6.修讀校際選課人次-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學6.修讀校際選課人次-以「系(所)」統計.csv" target="_blank" title="學6.修讀校際選課人次-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdStudySituationMinor/Index" , title=學7.修讀輔系人次-以「系(所)」統計>
+
+
+學7.修讀輔系人次-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學7.修讀輔系人次-以「系(所)」統計.xlsx" target="_blank" title="學7.修讀輔系人次-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學7.修讀輔系人次-以「系(所)」統計.ods" target="_blank" title="學7.修讀輔系人次-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學7.修讀輔系人次-以「系(所)」統計.csv" target="_blank" title="學7.修讀輔系人次-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdStudySituationDoubleMajor/Index" , title=學8.修讀雙主修人次-以「系(所)」統計>
+
+
+學8.修讀雙主修人次-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學8.修讀雙主修人次-以「系(所)」統計.xlsx" target="_blank" title="學8.修讀雙主修人次-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學8.修讀雙主修人次-以「系(所)」統計.ods" target="_blank" title="學8.修讀雙主修人次-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學8.修讀雙主修人次-以「系(所)」統計.csv" target="_blank" title="學8.修讀雙主修人次-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdJointDualDegreeCase108/Index" , title=學9.學校雙聯合作案件數-以「系(所)」統計>
+
+
+學9.學校雙聯合作案件數-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學9.學校雙聯合作案件數-以「系(所)」統計.xlsx" target="_blank" title="學9.學校雙聯合作案件數-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學9.學校雙聯合作案件數-以「系(所)」統計.ods" target="_blank" title="學9.學校雙聯合作案件數-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學9.學校雙聯合作案件數-以「系(所)」統計.csv" target="_blank" title="學9.學校雙聯合作案件數-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdJointDualDegreeStudent108/Index" , title=學10.日間學制修讀雙聯學制學生數-以「系(所)」統計>
+
+
+學10.日間學制修讀雙聯學制學生數-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學10.日間學制修讀雙聯學制學生數-以「系(所)」統計.xlsx" target="_blank" title="學10.日間學制修讀雙聯學制學生數-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學10.日間學制修讀雙聯學制學生數-以「系(所)」統計.ods" target="_blank" title="學10.日間學制修讀雙聯學制學生數-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學10.日間學制修讀雙聯學制學生數-以「系(所)」統計.csv" target="_blank" title="學10.日間學制修讀雙聯學制學生數-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdJointDualTransnationalDegree108/Index" , title=學11.學校辦理國際合作與交流資料表-以「校」統計>
+
+
+學11.學校辦理國際合作與交流資料表-以「校」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學11.學校辦理國際合作與交流資料表-以「校」統計.xlsx" target="_blank" title="學11.學校辦理國際合作與交流資料表-以「校」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學11.學校辦理國際合作與交流資料表-以「校」統計.ods" target="_blank" title="學11.學校辦理國際合作與交流資料表-以「校」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學11.學校辦理國際合作與交流資料表-以「校」統計.csv" target="_blank" title="學11.學校辦理國際合作與交流資料表-以「校」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatDepartmentRegistrationRate/Index" , title=學12-1.新生(含境外生)註冊率-以「系(所)」統計>
+
+
+學12-1.新生(含境外生)註冊率-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學12-1.新生(含境外生)註冊率-以「系(所)」統計.xlsx" target="_blank" title="學12-1.新生(含境外生)註冊率-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學12-1.新生(含境外生)註冊率-以「系(所)」統計.ods" target="_blank" title="學12-1.新生(含境外生)註冊率-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學12-1.新生(含境外生)註冊率-以「系(所)」統計.csv" target="_blank" title="學12-1.新生(含境外生)註冊率-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatSystemRegistrationRate/Index" , title=學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計>
+
+
+學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計.xlsx" target="_blank" title="學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計.ods" target="_blank" title="學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計.csv" target="_blank" title="學12-2.新生(含境外生)註冊率-以「校(含學制班別)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatUniversityRegistrationRate/Index" , title=學12-3.新生(含境外生)註冊率-以「校」統計>
+
+
+學12-3.新生(含境外生)註冊率-以「校」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學12-3.新生(含境外生)註冊率-以「校」統計.xlsx" target="_blank" title="學12-3.新生(含境外生)註冊率-以「校」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學12-3.新生(含境外生)註冊率-以「校」統計.ods" target="_blank" title="學12-3.新生(含境外生)註冊率-以「校」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學12-3.新生(含境外生)註冊率-以「校」統計.csv" target="_blank" title="學12-3.新生(含境外生)註冊率-以「校」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatSuspendStudent/Index" , title=學13-1.於學年底處於休學狀態之人數-以「系(所)」統計#(110學年度以前)>
+
+
+學13-1.於學年底處於休學狀態之人數-以「系(所)」統計                        <br /> (110學年度以前)
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/un_update/學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(110學年度以前).xlsx" target="_blank" title="學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(110學年度以前).xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/un_update/學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(110學年度以前).ods" target="_blank" title="學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(110學年度以前).ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/un_update/學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(110學年度以前).csv" target="_blank" title="學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(110學年度以前).csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatSuspendStudent_New/Index" , title=學13-1.於學年底處於休學狀態之人數-以「系(所)」統計#(111學年度起)>
+
+
+學13-1.於學年底處於休學狀態之人數-以「系(所)」統計                        <br /> (111學年度起)
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起).xlsx" target="_blank" title="學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起).xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起).ods" target="_blank" title="學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起).ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起).csv" target="_blank" title="學13-1.於學年底處於休學狀態之人數-以「系(所)」統計(111學年度起).csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatUniversitySuspendStudent/Index" , title=學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計#(110學年度以前)>
+
+
+學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計                        <br /> (110學年度以前)
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/un_update/學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(110學年度以前).xlsx" target="_blank" title="學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(110學年度以前).xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/un_update/學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(110學年度以前).ods" target="_blank" title="學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(110學年度以前).ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/un_update/學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(110學年度以前).csv" target="_blank" title="學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(110學年度以前).csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatUniversitySuspendStudent_New/Index" , title=學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計#(111學年度起)>
+
+
+學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計                        <br /> (111學年度起)
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起).xlsx" target="_blank" title="學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起).xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起).ods" target="_blank" title="學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起).ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起).csv" target="_blank" title="學13-2.於學年底處於休學狀態之人數-以「校(含學制班別)」統計(111學年度起).csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatDropOutStudent/Index" , title=學14-1.退學人數-以「系(所)」統計#(110學年度以前)>
+
+
+學14-1.退學人數-以「系(所)」統計                        <br /> (110學年度以前)
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/un_update/學14-1.退學人數-以「系(所)」統計(110學年度以前).xlsx" target="_blank" title="學14-1.退學人數-以「系(所)」統計(110學年度以前).xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/un_update/學14-1.退學人數-以「系(所)」統計(110學年度以前).ods" target="_blank" title="學14-1.退學人數-以「系(所)」統計(110學年度以前).ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/un_update/學14-1.退學人數-以「系(所)」統計(110學年度以前).csv" target="_blank" title="學14-1.退學人數-以「系(所)」統計(110學年度以前).csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatDropOutStudent_New/Index" , title=學14-1.退學人數-以「系(所)」統計#(111學年度起)>
+
+
+學14-1.退學人數-以「系(所)」統計                        <br /> (111學年度起)
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學14-1.退學人數-以「系(所)」統計(111學年度起).xlsx" target="_blank" title="學14-1.退學人數-以「系(所)」統計(111學年度起).xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學14-1.退學人數-以「系(所)」統計(111學年度起).ods" target="_blank" title="學14-1.退學人數-以「系(所)」統計(111學年度起).ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學14-1.退學人數-以「系(所)」統計(111學年度起).csv" target="_blank" title="學14-1.退學人數-以「系(所)」統計(111學年度起).csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatUniversityDropOutStudent/Index" , title=學14-2.退學人數-以「校(含學制班別)」統計#(110學年度以前)>
+
+
+學14-2.退學人數-以「校(含學制班別)」統計                        <br /> (110學年度以前)
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/un_update/學14-2.退學人數-以「校(含學制班別)」統計(110學年度以前).xlsx" target="_blank" title="學14-2.退學人數-以「校(含學制班別)」統計(110學年度以前).xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/un_update/學14-2.退學人數-以「校(含學制班別)」統計(110學年度以前).ods" target="_blank" title="學14-2.退學人數-以「校(含學制班別)」統計(110學年度以前).ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/un_update/學14-2.退學人數-以「校(含學制班別)」統計(110學年度以前).csv" target="_blank" title="學14-2.退學人數-以「校(含學制班別)」統計(110學年度以前).csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StatUniversityDropOutStudent_New/Index" , title=學14-2.退學人數-以「校(含學制班別)」統計#(111學年度起)>
+
+
+學14-2.退學人數-以「校(含學制班別)」統計                        <br /> (111學年度起)
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學14-2.退學人數-以「校(含學制班別)」統計(111學年度起).xlsx" target="_blank" title="學14-2.退學人數-以「校(含學制班別)」統計(111學年度起).xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學14-2.退學人數-以「校(含學制班別)」統計(111學年度起).ods" target="_blank" title="學14-2.退學人數-以「校(含學制班別)」統計(111學年度起).ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學14-2.退學人數-以「校(含學制班別)」統計(111學年度起).csv" target="_blank" title="學14-2.退學人數-以「校(含學制班別)」統計(111學年度起).csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdUniversityParticipation/Index" , title=學15.在學學生參與競賽、論文出版等成效-以「校(含學制班別)」統計>
+
+
+學15.在學學生參與競賽、論文出版等成效-以「校(含學制班別)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學15.在學學生參與競賽、論文出版等成效-以「校(含學制班別)」統計.xlsx" target="_blank" title="學15.在學學生參與競賽、論文出版等成效-以「校(含學制班別)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學15.在學學生參與競賽、論文出版等成效-以「校(含學制班別)」統計.ods" target="_blank" title="學15.在學學生參與競賽、論文出版等成效-以「校(含學制班別)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學15.在學學生參與競賽、論文出版等成效-以「校(含學制班別)」統計.csv" target="_blank" title="學15.在學學生參與競賽、論文出版等成效-以「校(含學制班別)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/StudbUniversityStudentSchoolAttendanceRate/Index" , title=學16.學士班以下就學穩定率-以「校(含學制班別)」統計>
+
+
+學16.學士班以下就學穩定率-以「校(含學制班別)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學16.學士班以下就學穩定率-以「校(含學制班別)」統計.xlsx" target="_blank" title="學16.學士班以下就學穩定率-以「校(含學制班別)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學16.學士班以下就學穩定率-以「校(含學制班別)」統計.ods" target="_blank" title="學16.學士班以下就學穩定率-以「校(含學制班別)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學16.學士班以下就學穩定率-以「校(含學制班別)」統計.csv" target="_blank" title="學16.學士班以下就學穩定率-以「校(含學制班別)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdUniversityAdjunctAssistant/Index" , title=學17.獎助生及勞僱型學生兼任助理人數-以「校」統計>
+
+
+學17.獎助生及勞僱型學生兼任助理人數-以「校」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學17.獎助生及勞僱型學生兼任助理人數-以「校」統計.xlsx" target="_blank" title="學17.獎助生及勞僱型學生兼任助理人數-以「校」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學17.獎助生及勞僱型學生兼任助理人數-以「校」統計.ods" target="_blank" title="學17.獎助生及勞僱型學生兼任助理人數-以「校」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學17.獎助生及勞僱型學生兼任助理人數-以「校」統計.csv" target="_blank" title="學17.獎助生及勞僱型學生兼任助理人數-以「校」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdUniversityPartTimeStipendSituation/Index" , title=學18.學校執行工讀及生活助學金情形-以「校」統計>
+
+
+學18.學校執行工讀及生活助學金情形-以「校」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學18.學校執行工讀及生活助學金情形-以「校」統計.xlsx" target="_blank" title="學18.學校執行工讀及生活助學金情形-以「校」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學18.學校執行工讀及生活助學金情形-以「校」統計.ods" target="_blank" title="學18.學校執行工讀及生活助學金情形-以「校」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學18.學校執行工讀及生活助學金情形-以「校」統計.csv" target="_blank" title="學18.學校執行工讀及生活助學金情形-以「校」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdUniversityAdjunctAssistantPaymentAmount/Index" , title=學19.兼任助理平均每月支給金額人數統計表-以「校」統計>
+
+
+學19.兼任助理平均每月支給金額人數統計表-以「校」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學19.兼任助理平均每月支給金額人數統計表-以「校」統計.xlsx" target="_blank" title="學19.兼任助理平均每月支給金額人數統計表-以「校」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學19.兼任助理平均每月支給金額人數統計表-以「校」統計.ods" target="_blank" title="學19.兼任助理平均每月支給金額人數統計表-以「校」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學19.兼任助理平均每月支給金額人數統計表-以「校」統計.csv" target="_blank" title="學19.兼任助理平均每月支給金額人數統計表-以「校」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdInternshipSituation/Index" , title=學20.學生實習情形-以「系(所)」統計>
+
+
+學20.學生實習情形-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學20.學生實習情形-以「系(所)」統計.xlsx" target="_blank" title="學20.學生實習情形-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學20.學生實習情形-以「系(所)」統計.ods" target="_blank" title="學20.學生實習情形-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學20.學生實習情形-以「系(所)」統計.csv" target="_blank" title="學20.學生實習情形-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        <tr>
+            <td>
+                <a href="/udata/DetailReportList/%E5%AD%B8%E7%94%9F%E9%A1%9E/SirdInternshipRightsProtection/Index" , title=學21.學生實習機構及權益保障-以「系(所)」統計>
+
+
+學21.學生實習機構及權益保障-以「系(所)」統計
+                </a>
+            </td>
+            
+                <!--NEW_xlsx    /download/udata/static_file/-->
+                <td headers="xlsx" class="text-center">
+                    <a class="btn  btn-success" href="/download/udata/static_file/114/學21.學生實習機構及權益保障-以「系(所)」統計.xlsx" target="_blank" title="學21.學生實習機構及權益保障-以「系(所)」統計.xlsx [下載 匯出為EXCEL檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .xlsx
+                    </a>
+                </td>
+                <!--NEW_ods-->
+                <td headers="ods" class="text-center">
+                    <a class="btn  btn-primary" href="/download/udata/static_file/114/學21.學生實習機構及權益保障-以「系(所)」統計.ods" target="_blank" title="學21.學生實習機構及權益保障-以「系(所)」統計.ods [下載 匯出為ods檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .ods
+                    </a>
+                </td>
+                <!--NEW_csv-->
+                <td headers="csv" class="text-center">
+                    <a class="btn  btn-warning" href="/download/udata/static_file/114/學21.學生實習機構及權益保障-以「系(所)」統計.csv" target="_blank" title="學21.學生實習機構及權益保障-以「系(所)」統計.csv [下載 匯出為csv檔案格式]">
+                        <i class="fas fa-download" aria-hidden="true"></i> .csv
+                    </a>
+                </td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+    </div>
+</div>
+
+
+
+        <!-- Footer -->
+    </div>
+    <div class="modal fade" id="EditFormModal" role="dialog">
+        <div class="modal-dialog modal-lg" id="EditFormModalDialog">
+            <div class="modal-content" id='EditFormModalContent'>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <nav class="background-midnight col-12 px-0">
+            <div class="container-fluid px-0">
+                <div class="container py-3">
+                    <a accesskey="B" href="#Footer_Brick" id="Footer_Brick" class="text-white" title="網頁下方為網站版權聲明">
+                        :::
+                    </a>
+                </div>
+            </div>
+            <footer class="bg-midnight py-3">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-10">
+                            <div class="d-flex flex-column flex-md-row align-items-center gap-3 w-100">
+                                <span class="flex-grow-1 text-center">國立雲林科技大學&nbsp;教育部&nbsp;大專校院校務資訊公開平臺&nbsp;資訊網&nbsp;2017&nbsp;版權所有</span>
+                                <a href="https://accessibility.moda.gov.tw/Applications/Detail?category=20240415112604" title="無障礙網站" class="d-inline-flex justify-content-center justify-content-md-end ms-md-auto">
+                                    <img src="/Static/public/images/WCAG_2.0.png" border="0" width="88" height="31" alt="通過AA檢測等級無障礙網頁檢測" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </nav>
+    </div>
+    
+    
+    
+
+
+    <script type="text/javascript">
+        (function ($) {
+            if (typeof $ !== 'undefined' && $.fn && !$.fn.selectpicker) {
+                $.fn.selectpicker = function () {
+                    console.warn('bootstrap-select 未載入或不可用，略過 selectpicker 呼叫');
+                    return this;
+                };
+            }
+
+            window.initSelectPicker = function () {
+                if (typeof $ !== 'undefined' && $.fn && $.fn.selectpicker) {
+                    $('.selectpicker').selectpicker({
+                        selectAllText: '全選',
+                        deselectAllText: '取消重選',
+                        noneResultsText: '查無此結果'
+                    });
+                }
+            };
+
+            $(function () {
+                window.initSelectPicker();
+                $(document).ajaxSuccess(function () {
+                    if (typeof $ !== 'undefined' && $.fn && $.fn.selectpicker) {
+                        $('.selectpicker').selectpicker('refresh');
+                    }
+                });
+            });
+        })(window.jQuery);
+    </script>
+    <script type="text/javascript">
+        //目錄頁匯出
+        function CatalogExportFile(href) {
+            bsModal.show('#DataProcessModal');
+
+            var items = href.split("/");
+
+            $.ajax({
+                url: href,
+                type: "POST",
+                traditional: true,
+                async: true,
+                success: function (data) {
+                    bsModal.hide('#DataProcessModal');
+                    
+                    //檢查是否有錯誤
+                    if (data.success === false || !data.handle || !data.fileName) {
+                        alert(data.message || '匯出失敗，請稍後再試或聯絡管理員');
+                        return;
+                    }
+                    
+                    //執行下載
+                    if (data.handle && data.fileName) {
+                        //use window.location.href for redirect to download action for download the file
+                        window.location.href = "/udata" +"/" + items[1] + "/" + items[2] + "/" + items[3] + "/Download" + "/?fileGuid=" + data.handle + "&filename=" + data.fileName;
+                    }
+                },
+                error: function (jqXHR, exception) {
+                    bsModal.hide('#DataProcessModal');
+                    bsModal.show('#ErrorData');
+                }
+            });
+        }
+    </script>
+    <script src="../static/public/js/Scripts/stop_notice.js"></script>
+</body>
+
+</html>

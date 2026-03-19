@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>招生大數據與 AI 分析報告入口</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --paper: rgba(255,255,255,0.84);
+      --paper-strong: rgba(255,255,255,0.94);
+      --ink: #151a23;
+      --muted: #596170;
+      --line: rgba(21, 26, 35, 0.12);
+      --scarlet: #b2482f;
+      --teal: #1f6660;
+      --navy: #24395b;
+      --gold: #c59b45;
+      --shadow: 0 26px 60px rgba(31, 25, 18, 0.12);
+      --radius: 28px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font: 16px/1.75 "Noto Sans TC", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(197, 155, 69, 0.18), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(31, 102, 96, 0.16), transparent 28%),
+        linear-gradient(180deg, #f8f4ec 0%, var(--bg) 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(21,26,35,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21,26,35,0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.32), transparent 40%);
+    }
+    a { color: var(--scarlet); text-underline-offset: 3px; }
+    .shell {
+      width: min(1360px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 22px 0 64px;
+      position: relative;
+      z-index: 1;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .crumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(21,26,35,0.08);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+      border-radius: 34px;
+      color: #f9f5ee;
+      background:
+        linear-gradient(145deg, rgba(19, 24, 34, 0.98), rgba(35, 48, 66, 0.96)),
+        linear-gradient(90deg, rgba(197, 155, 69, 0.18), transparent);
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      right: -80px;
+      top: -60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(197, 155, 69, 0.26), transparent 70%);
+      filter: blur(14px);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    h1, h2, h3 {
+      margin: 0;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+    h1 {
+      margin-top: 18px;
+      max-width: 11ch;
+      font-size: clamp(42px, 5vw, 74px);
+    }
+    .hero-summary {
+      max-width: 68ch;
+      margin: 16px 0 0;
+      color: rgba(249, 245, 238, 0.84);
+    }
+    .source-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(249, 245, 238, 0.9);
+      font-size: 14px;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .metric-card {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.9);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .metric-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 34px;
+      line-height: 1.05;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+    }
+    .metric-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+    }
+    section {
+      margin-top: 18px;
+      padding: 28px;
+      border-radius: var(--radius);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+    .section-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 72ch;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+    }
+    .panel {
+      padding: 20px;
+      border-radius: 24px;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+    }
+    .chart-wrap {
+      height: 360px;
+    }
+    .callout {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(178,72,47,0.08), rgba(31,102,96,0.05));
+      border-left: 4px solid var(--scarlet);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 11px 10px;
+      border-bottom: 1px solid rgba(21,26,35,0.08);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .isu-row td {
+      background: rgba(178, 72, 47, 0.10);
+      font-weight: 700;
+    }
+    .focus-row td {
+      background: rgba(31, 102, 96, 0.10);
+      font-weight: 700;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .dept-card {
+      padding: 18px;
+      border-radius: 24px;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+    }
+    .dept-card h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .dept-card ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .dept-card li + li {
+      margin-top: 8px;
+    }
+    .footnote {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .link-card {
+      display: block;
+      padding: 22px;
+      border-radius: 24px;
+      text-decoration: none;
+      color: inherit;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .link-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px rgba(21,26,35,0.08);
+    }
+    .link-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 26px;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+      line-height: 1.1;
+    }
+    .link-card span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .link-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+    .main-link-card {
+      padding: 34px;
+      border-radius: 30px;
+      background:
+        linear-gradient(145deg, rgba(19, 24, 34, 0.98), rgba(35, 48, 66, 0.96)),
+        linear-gradient(90deg, rgba(197, 155, 69, 0.12), transparent);
+      color: #f9f5ee;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+    }
+    .main-link-card span,
+    .main-link-card p {
+      color: rgba(249, 245, 238, 0.82);
+    }
+    .main-link-card strong {
+      font-size: clamp(34px, 4vw, 56px);
+      color: #f9f5ee;
+      margin-top: 10px;
+    }
+    @media (max-width: 1080px) {
+      .metric-grid,
+      .dept-grid,
+      .link-grid,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .chart-wrap {
+        height: 320px;
+      }
+    }
+    @media (max-width: 720px) {
+      .shell { width: min(100vw - 18px, 100%); }
+      .hero, section { padding: 22px; border-radius: 24px; }
+      h1 { max-width: none; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    
+    <div class="topbar">
+      <div>招生大數據與 AI 分析報告入口</div>
+      <div>資料來源固定為教育部大專校院校務資訊公開平台 CSV</div>
+    </div>
+
+    
+    <header class="hero">
+      <div class="eyebrow">Admissions Research Hub</div>
+      <h1>招生大數據與 AI 分析報告入口</h1>
+      <p class="hero-summary">這個入口頁把總結報告與新的一頁式研究拆成兩條線管理。所有新頁面都只使用目前資料夾內的 CSV，且在頁首固定標示資料來源為教育部大專校院校務資訊公開平台，方便後續持續擴充。</p>
+      <div class="source-note">主要資料來源基礎：<a href="https://udb.moe.edu.tw/udata/ReportCategories" target="_blank" rel="noopener noreferrer">教育部大專校院校務資訊公開平台</a>。新報告目前使用該平台匯出的 CSV，包括 `stud_1_2_school`、`stud_3_7_identity_school`、`stud_12_3_registration_school`、`stud_16_attendance_school`、`stud_3_1_foreign_degree_department`、`moe_udb_foreign_students_by_department_national` 等檔案，年份範圍為 111 到 114 學年。</div>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>國家主體頁</span>
+          <strong>7</strong>
+          <small>固定納入越南、印尼、香港、日本、泰國、菲律賓、馬來西亞</small>
+        </article>
+        <article class="metric-card">
+          <span>學校主體頁</span>
+          <strong>5</strong>
+          <small>義守、靜宜、逢甲、文化、銘傳</small>
+        </article>
+        <article class="metric-card">
+          <span>總結報告</span>
+          <strong>1</strong>
+          <small>首頁直接保留一份總結報告主入口</small>
+        </article>
+        <article class="metric-card">
+          <span>研究基礎</span>
+          <strong>CSV</strong>
+          <small>全部數字來自本地 CSV，不用人工搬數</small>
+        </article>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Summary</div>
+          <h2>總結報告</h2>
+        </div>
+      </div>
+      <div class="link-grid">
+        <a class="link-card main-link-card" href="isu_foreign_student_report_site/index.html">
+          <span>Summary Report</span>
+          <strong>義守境外生整體評估報告</strong>
+          <p>直接進入義守境外生整體評估報告，查看成長、來源結構、競校位置與整體招生成效。</p>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Track A</div>
+          <h2>以國家為主體的研究</h2>
+          <p>固定納入越南、印尼、香港、日本、泰國、菲律賓、馬來西亞七個市場，先看該市場在臺灣由哪些學校承接，再觀察各校與全國的成長率，以及熱門系所代理輪廓。</p>
+        </div>
+      </div>
+      <div class="link-grid">
+        <a class="link-card" href="report_hub/country-vietnam.html">
+          <span>Country Report</span>
+          <strong>越南</strong>
+          <p>查看 越南 市場在臺灣前段學校的 111 到 114 變化、成長率與科系代理輪廓。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/country-indonesia.html">
+          <span>Country Report</span>
+          <strong>印尼</strong>
+          <p>查看 印尼 市場在臺灣前段學校的 111 到 114 變化、成長率與科系代理輪廓。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/country-hong-kong.html">
+          <span>Country Report</span>
+          <strong>香港</strong>
+          <p>查看 香港 市場在臺灣前段學校的 111 到 114 變化、成長率與科系代理輪廓。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/country-japan.html">
+          <span>Country Report</span>
+          <strong>日本</strong>
+          <p>查看 日本 市場在臺灣前段學校的 111 到 114 變化、成長率與科系代理輪廓。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/country-thailand.html">
+          <span>Country Report</span>
+          <strong>泰國</strong>
+          <p>查看 泰國 市場在臺灣前段學校的 111 到 114 變化、成長率與科系代理輪廓。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/country-philippines.html">
+          <span>Country Report</span>
+          <strong>菲律賓</strong>
+          <p>查看 菲律賓 市場在臺灣前段學校的 111 到 114 變化、成長率與科系代理輪廓。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/country-malaysia.html">
+          <span>Country Report</span>
+          <strong>馬來西亞</strong>
+          <p>查看 馬來西亞 市場在臺灣前段學校的 111 到 114 變化、成長率與科系代理輪廓。</p>
+        </a>
+        </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Track B</div>
+          <h2>以學校為主體的研究</h2>
+        </div>
+      </div>
+      <div class="link-grid">
+        <a class="link-card" href="report_hub/school-isu.html">
+          <span>School Report</span>
+          <strong>義守大學</strong>
+          <p>獨立查看 義守大學 的境外生規模、來源地、身份結構、註冊與系所承接面。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/school-pu.html">
+          <span>School Report</span>
+          <strong>靜宜大學</strong>
+          <p>獨立查看 靜宜大學 的境外生規模、來源地、身份結構、註冊與系所承接面。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/school-fcu.html">
+          <span>School Report</span>
+          <strong>逢甲大學</strong>
+          <p>獨立查看 逢甲大學 的境外生規模、來源地、身份結構、註冊與系所承接面。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/school-pccu.html">
+          <span>School Report</span>
+          <strong>中國文化大學</strong>
+          <p>獨立查看 中國文化大學 的境外生規模、來源地、身份結構、註冊與系所承接面。</p>
+        </a>
+        
+
+        <a class="link-card" href="report_hub/school-mcu.html">
+          <span>School Report</span>
+          <strong>銘傳大學</strong>
+          <p>獨立查看 銘傳大學 的境外生規模、來源地、身份結構、註冊與系所承接面。</p>
+        </a>
+        </div>
+    </section>
+    
+  </div>
+</body>
+</html>

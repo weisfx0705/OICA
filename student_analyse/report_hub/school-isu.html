@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>義守大學境外生整體評估</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --paper: rgba(255,255,255,0.84);
+      --paper-strong: rgba(255,255,255,0.94);
+      --ink: #151a23;
+      --muted: #596170;
+      --line: rgba(21, 26, 35, 0.12);
+      --scarlet: #b2482f;
+      --teal: #1f6660;
+      --navy: #24395b;
+      --gold: #c59b45;
+      --shadow: 0 26px 60px rgba(31, 25, 18, 0.12);
+      --radius: 28px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font: 16px/1.75 "Noto Sans TC", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(197, 155, 69, 0.18), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(31, 102, 96, 0.16), transparent 28%),
+        linear-gradient(180deg, #f8f4ec 0%, var(--bg) 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(21,26,35,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21,26,35,0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.32), transparent 40%);
+    }
+    a { color: var(--scarlet); text-underline-offset: 3px; }
+    .shell {
+      width: min(1360px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 22px 0 64px;
+      position: relative;
+      z-index: 1;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .crumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(21,26,35,0.08);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+      border-radius: 34px;
+      color: #f9f5ee;
+      background:
+        linear-gradient(145deg, rgba(19, 24, 34, 0.98), rgba(35, 48, 66, 0.96)),
+        linear-gradient(90deg, rgba(197, 155, 69, 0.18), transparent);
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      right: -80px;
+      top: -60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(197, 155, 69, 0.26), transparent 70%);
+      filter: blur(14px);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    h1, h2, h3 {
+      margin: 0;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+    h1 {
+      margin-top: 18px;
+      max-width: 11ch;
+      font-size: clamp(42px, 5vw, 74px);
+    }
+    .hero-summary {
+      max-width: 68ch;
+      margin: 16px 0 0;
+      color: rgba(249, 245, 238, 0.84);
+    }
+    .source-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(249, 245, 238, 0.9);
+      font-size: 14px;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .metric-card {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.9);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .metric-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 34px;
+      line-height: 1.05;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+    }
+    .metric-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+    }
+    section {
+      margin-top: 18px;
+      padding: 28px;
+      border-radius: var(--radius);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+    .section-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 72ch;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+    }
+    .panel {
+      padding: 20px;
+      border-radius: 24px;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+    }
+    .chart-wrap {
+      height: 360px;
+    }
+    .callout {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(178,72,47,0.08), rgba(31,102,96,0.05));
+      border-left: 4px solid var(--scarlet);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 11px 10px;
+      border-bottom: 1px solid rgba(21,26,35,0.08);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .isu-row td {
+      background: rgba(178, 72, 47, 0.10);
+      font-weight: 700;
+    }
+    .focus-row td {
+      background: rgba(31, 102, 96, 0.10);
+      font-weight: 700;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .dept-card {
+      padding: 18px;
+      border-radius: 24px;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+    }
+    .dept-card h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .dept-card ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .dept-card li + li {
+      margin-top: 8px;
+    }
+    .footnote {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .link-card {
+      display: block;
+      padding: 22px;
+      border-radius: 24px;
+      text-decoration: none;
+      color: inherit;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .link-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px rgba(21,26,35,0.08);
+    }
+    .link-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 26px;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+      line-height: 1.1;
+    }
+    .link-card span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .link-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+    @media (max-width: 1080px) {
+      .metric-grid,
+      .dept-grid,
+      .link-grid,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .chart-wrap {
+        height: 320px;
+      }
+    }
+    @media (max-width: 720px) {
+      .shell { width: min(100vw - 18px, 100%); }
+      .hero, section { padding: 22px; border-radius: 24px; }
+      h1 { max-width: none; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    
+    <div class="topbar">
+      <a class="crumb" href="../index.html">返回報告入口</a>
+      <div>資料來源固定為教育部大專校院校務資訊公開平台 CSV</div>
+    </div>
+
+    
+    <header class="hero">
+      <div class="eyebrow">School Research</div>
+      <h1>義守大學境外生整體評估</h1>
+      <p class="hero-summary">這一版把學校主體頁拉到和義守整體評估相近的深度，重點放在總盤變化、113→114 成長速度、114 比例與位置、來源前三國、外國學生主力科系變化，以及境外新生註冊與穩定表現。</p>
+      <div class="source-note">資料來源：教育部大專校院校務資訊公開平台 CSV。核心底表包括 `stud_1_2_school_111~114.csv`、`stud_3_7_identity_school_111~114.csv`、`stud_12_3_registration_school_111~114.csv`、`stud_16_attendance_school_111~114.csv`、`moe_udb_foreign_students_by_department_national_111~114.csv`、`stud_14_1_dropout_department_113.csv` 與 `stud_13_1_suspend_department_113.csv`。</div>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>114 境外生</span>
+          <strong>1,437</strong>
+          <small>校級境外學位生總數</small>
+        </article>
+        <article class="metric-card">
+          <span>111→114 境外生</span>
+          <strong>-4.14%</strong>
+          <small>四年間整體境外生規模變化</small>
+        </article>
+        <article class="metric-card">
+          <span>114 外國學生</span>
+          <strong>1,128</strong>
+          <small>純外國學生規模</small>
+        </article>
+        <article class="metric-card">
+          <span>111→114 外國生</span>
+          <strong>22.88%</strong>
+          <small>純外國學生規模變化</small>
+        </article>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">01 / Overview</div>
+          <h2>先看全國 111 到 114 的變化，再看自己的變化</h2>
+          <p>這裡先把全國境外學位生總盤與本校自身走勢放在同一個框架。因為全國整體向上，不代表單一學校一定同步吃到成長。</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel"><div class="chart-wrap"><canvas id="overview-isu"></canvas></div>
+<script>new Chart(document.getElementById("overview-isu"), {"type": "line", "data": {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "全國境外學位生指數(111=100)", "data": [100.0, 100.76, 118.04, 136.48], "borderColor": "#24395b", "backgroundColor": "#24395b22", "tension": 0.32, "fill": false}, {"label": "義守境外學位生指數(111=100)", "data": [100.0, 91.39, 92.6, 95.86], "borderColor": "#b2482f", "backgroundColor": "#b2482f22", "tension": 0.32, "fill": false}, {"label": "義守外國學生指數(111=100)", "data": [100.0, 95.32, 108.17, 122.88], "borderColor": "#1f6660", "backgroundColor": "#1f666022", "tension": 0.32, "fill": false}]}, "options": {"responsive": true, "maintainAspectRatio": false, "interaction": {"mode": "index", "intersect": false}, "plugins": {"legend": {"position": "bottom"}}, "scales": {"y": {"beginAtZero": false}}}});</script></div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>學年</th>
+                <th>全國境外生</th>
+                <th>義守大學</th>
+                <th>義守大學外國生</th>
+                <th>義守大學日間學生</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr>
+            <td>111</td>
+            <td>65,580</td>
+            <td>1,499</td>
+            <td>918</td>
+            <td>11,707</td>
+          </tr>
+        
+
+          <tr>
+            <td>112</td>
+            <td>66,078</td>
+            <td>1,370</td>
+            <td>875</td>
+            <td>10,675</td>
+          </tr>
+        
+
+          <tr>
+            <td>113</td>
+            <td>77,409</td>
+            <td>1,388</td>
+            <td>993</td>
+            <td>9,948</td>
+          </tr>
+        
+
+          <tr>
+            <td>114</td>
+            <td>89,505</td>
+            <td>1,437</td>
+            <td>1,128</td>
+            <td>9,360</td>
+          </tr>
+        </tbody>
+          </table>
+          <div class="callout">114 年全國境外學位生為 89,505 人；義守大學 自身為 1,437 人。若本校的指數斜率明顯低於全國，代表不是市場沒有長，而是學校承接得不夠快。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">02 / Growth</div>
+          <h2>113→114 五項變化中，成長速度與一般大學、私立一般大學比較</h2>
+          <p>這一段直接用五個身份結構指標比速度：境外學位生總數、外國學生、僑生、港澳生與陸生。</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel"><div class="chart-wrap"><canvas id="growth-isu"></canvas></div>
+<script>new Chart(document.getElementById("growth-isu"), {"type": "bar", "data": {"labels": ["境外學位生總數", "外國學生", "僑生", "港澳生", "陸生"], "datasets": [{"label": "義守大學", "data": [3.5302593659942363, 13.595166163141995, 0.9523809523809524, -30.985915492957744, 16.666666666666664], "backgroundColor": "#b2482f"}, {"label": "一般大學", "data": [6.3826002998196, 18.60140533256329, 3.2882925446470757, -19.299847792998477, -30.364656381486675], "backgroundColor": "#24395b"}, {"label": "私立一般大學", "data": [11.181021144920061, 25.21440823327616, 0.79155672823219, -24.352179034157835, -35.0], "backgroundColor": "#1f6660"}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"position": "bottom"}}, "scales": {"y": {"beginAtZero": true}}}});</script></div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>指標</th>
+                <th>義守大學</th>
+                <th>一般大學</th>
+                <th>私立一般大學</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr>
+            <td>境外學位生總數</td>
+            <td>3.53%</td>
+            <td>6.38%</td>
+            <td>11.18%</td>
+          </tr>
+        
+
+          <tr>
+            <td>外國學生</td>
+            <td>13.60%</td>
+            <td>18.60%</td>
+            <td>25.21%</td>
+          </tr>
+        
+
+          <tr>
+            <td>僑生</td>
+            <td>0.95%</td>
+            <td>3.29%</td>
+            <td>0.79%</td>
+          </tr>
+        
+
+          <tr>
+            <td>港澳生</td>
+            <td>-30.99%</td>
+            <td>-19.30%</td>
+            <td>-24.35%</td>
+          </tr>
+        
+
+          <tr>
+            <td>陸生</td>
+            <td>16.67%</td>
+            <td>-30.36%</td>
+            <td>-35.00%</td>
+          </tr>
+        </tbody>
+          </table>
+          <div class="callout">這裡看的不是規模，而是 113→114 的加速度。某校即使基礎盤大，如果五項指標的年增率全面慢於私立一般大學平均，競爭位置仍可能在鈍化。</div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">03 / Ratio</div>
+          <h2>114 學年，境外學位生占日間學制學生比例與全國排名</h2>
+          <p>比例要放在一般大學名單裡一起看，才能知道這個結構在全國算前段、中段，還是偏弱。</p>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>114 境外占比</span>
+          <strong>15.35%</strong>
+          <small>境外學位生占日間學制學生比例</small>
+        </article>
+        <article class="metric-card">
+          <span>一般大學排名</span>
+          <strong>#6</strong>
+          <small>114 年按占比排序</small>
+        </article>
+        <article class="metric-card">
+          <span>114 日間學生</span>
+          <strong>9,360</strong>
+          <small>分母採日間學制</small>
+        </article>
+        <article class="metric-card">
+          <span>114 境外生</span>
+          <strong>1,437</strong>
+          <small>分子採境外學位生總數</small>
+        </article>
+      </div>
+      <div class="grid-2" style="margin-top:18px;">
+        <div class="panel"><div class="chart-wrap"><canvas id="ratio-isu"></canvas></div>
+<script>new Chart(document.getElementById("ratio-isu"), {"type": "bar", "data": {"labels": ["開南", "中華大學學校財團法人中華大學", "玄奘大學", "真理", "法鼓學校財團法人法鼓文理學院", "義守", "大葉大學", "銘傳", "臺師大", "臺北醫學大學"], "datasets": [{"label": "114 境外學位生占日間學制學生比", "data": [48.32, 33.23, 30.47, 22.13, 19.94, 15.35, 15.03, 14.41, 13.39, 12.4], "backgroundColor": ["#24395bcc", "#24395bcc", "#24395bcc", "#24395bcc", "#24395bcc", "#1f6660", "#24395bcc", "#24395bcc", "#24395bcc", "#24395bcc"]}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}}, "scales": {"y": {"beginAtZero": true}}}});</script></div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>學校</th>
+                <th>占比</th>
+                <th>境外生</th>
+                <th>日間學生</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr class="">
+            <td>1</td>
+            <td>開南大學</td>
+            <td>48.32%</td>
+            <td>1,479</td>
+            <td>3,061</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>2</td>
+            <td>中華大學學校財團法人中華大學</td>
+            <td>33.23%</td>
+            <td>976</td>
+            <td>2,937</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>3</td>
+            <td>玄奘大學</td>
+            <td>30.47%</td>
+            <td>344</td>
+            <td>1,129</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>4</td>
+            <td>真理大學</td>
+            <td>22.13%</td>
+            <td>395</td>
+            <td>1,785</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>5</td>
+            <td>法鼓學校財團法人法鼓文理學院</td>
+            <td>19.94%</td>
+            <td>63</td>
+            <td>316</td>
+          </tr>
+        
+
+          <tr class="focus-row">
+            <td>6</td>
+            <td>義守大學</td>
+            <td>15.35%</td>
+            <td>1,437</td>
+            <td>9,360</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>7</td>
+            <td>大葉大學</td>
+            <td>15.03%</td>
+            <td>442</td>
+            <td>2,941</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>8</td>
+            <td>銘傳大學</td>
+            <td>14.41%</td>
+            <td>2,391</td>
+            <td>16,591</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>9</td>
+            <td>國立臺灣師範大學</td>
+            <td>13.39%</td>
+            <td>1,942</td>
+            <td>14,501</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>10</td>
+            <td>臺北醫學大學</td>
+            <td>12.40%</td>
+            <td>741</td>
+            <td>5,978</td>
+          </tr>
+        </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">04 / Position</div>
+          <h2>放在私立一般大學來看，114 學年的境外學位生規模位置</h2>
+          <p>這裡把私立一般大學當作主戰場，直接看本校在總量、外國學生、僑生、港澳生的相對名次。</p>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>境外學位生</span>
+          <strong>#3</strong>
+          <small>114 私立一般大學排名</small>
+        </article>
+        <article class="metric-card">
+          <span>外國學生</span>
+          <strong>#3</strong>
+          <small>114 私立一般大學排名</small>
+        </article>
+        <article class="metric-card">
+          <span>僑生</span>
+          <strong>#13</strong>
+          <small>114 私立一般大學排名</small>
+        </article>
+        <article class="metric-card">
+          <span>港澳生</span>
+          <strong>#3</strong>
+          <small>114 私立一般大學排名</small>
+        </article>
+      </div>
+      <div class="grid-2" style="margin-top:18px;">
+        <div class="panel"><div class="chart-wrap"><canvas id="position-isu"></canvas></div>
+<script>new Chart(document.getElementById("position-isu"), {"type": "bar", "data": {"labels": ["銘傳", "開南", "義守", "文化", "淡江大學學校財團法人淡江大學", "元智大學", "靜宜", "中華大學學校財團法人中華大學", "輔仁", "中原大學"], "datasets": [{"label": "114 境外學位生總數", "data": [2391, 1479, 1437, 1378, 1360, 1049, 1039, 976, 935, 935], "backgroundColor": ["#b2482fcc", "#b2482fcc", "#1f6660", "#b2482fcc", "#b2482fcc", "#b2482fcc", "#b2482fcc", "#b2482fcc", "#b2482fcc", "#b2482fcc"]}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"display": false}}, "scales": {"y": {"beginAtZero": true}}}});</script></div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>學校</th>
+                <th>114 境外生</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr class="">
+            <td>1</td>
+            <td>銘傳大學</td>
+            <td>2,391</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>2</td>
+            <td>開南大學</td>
+            <td>1,479</td>
+          </tr>
+        
+
+          <tr class="focus-row">
+            <td>3</td>
+            <td>義守大學</td>
+            <td>1,437</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>4</td>
+            <td>中國文化大學</td>
+            <td>1,378</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>5</td>
+            <td>淡江大學學校財團法人淡江大學</td>
+            <td>1,360</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>6</td>
+            <td>元智大學</td>
+            <td>1,049</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>7</td>
+            <td>靜宜大學</td>
+            <td>1,039</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>8</td>
+            <td>中華大學學校財團法人中華大學</td>
+            <td>976</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>9</td>
+            <td>輔仁大學</td>
+            <td>935</td>
+          </tr>
+        
+
+          <tr class="">
+            <td>10</td>
+            <td>中原大學</td>
+            <td>935</td>
+          </tr>
+        </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">05 / Source Mix</div>
+          <h2>114 學年國家來源前三名</h2>
+          <p>來源前三名決定招生重心；同時，本校外國學生主力科系 111 到 114 的走勢，能看出真正承接外國學生的是哪些學術單位。</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="chart-wrap"><canvas id="sources-isu"></canvas></div>
+<script>new Chart(document.getElementById("sources-isu"), {"type": "line", "data": {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "越南", "data": [177, 193, 378, 561], "borderColor": "#b2482f", "backgroundColor": "#b2482f22", "tension": 0.32, "fill": false}, {"label": "印尼", "data": [259, 236, 247, 268], "borderColor": "#1f6660", "backgroundColor": "#1f666022", "tension": 0.32, "fill": false}, {"label": "香港", "data": [397, 338, 257, 182], "borderColor": "#24395b", "backgroundColor": "#24395b22", "tension": 0.32, "fill": false}]}, "options": {"responsive": true, "maintainAspectRatio": false, "interaction": {"mode": "index", "intersect": false}, "plugins": {"legend": {"position": "bottom"}}, "scales": {"y": {"beginAtZero": true}}}});</script>
+          <table style="margin-top:14px;">
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>來源地</th>
+                <th>114 人數</th>
+                <th>111→114</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr>
+            <td>1</td>
+            <td>越南</td>
+            <td>561</td>
+            <td>216.95%</td>
+          </tr>
+        
+
+          <tr>
+            <td>2</td>
+            <td>印尼</td>
+            <td>268</td>
+            <td>3.47%</td>
+          </tr>
+        
+
+          <tr>
+            <td>3</td>
+            <td>香港</td>
+            <td>182</td>
+            <td>-54.16%</td>
+          </tr>
+        </tbody>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="chart-wrap"><canvas id="foreign-dept-isu"></canvas></div>
+<script>new Chart(document.getElementById("foreign-dept-isu"), {"type": "line", "data": {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "餐旅管理學系", "data": [54, 42, 116, 202], "borderColor": "#b2482f", "backgroundColor": "#b2482f22", "tension": 0.32, "fill": false}, {"label": "智慧科技英語學士學位學程", "data": [66, 68, 69, 89], "borderColor": "#1f6660", "backgroundColor": "#1f666022", "tension": 0.32, "fill": false}, {"label": "國際企業經營英語學士學位學程", "data": [0, 22, 50, 76], "borderColor": "#24395b", "backgroundColor": "#24395b22", "tension": 0.32, "fill": false}, {"label": "廚藝暨美食學學系", "data": [0, 39, 44, 61], "borderColor": "#c59b45", "backgroundColor": "#c59b4522", "tension": 0.32, "fill": false}]}, "options": {"responsive": true, "maintainAspectRatio": false, "interaction": {"mode": "index", "intersect": false}, "plugins": {"legend": {"position": "bottom"}}, "scales": {"y": {"beginAtZero": true}}}});</script>
+          <table style="margin-top:14px;">
+            <thead>
+              <tr>
+                <th>外國學生主力科系</th>
+                <th>111</th>
+                <th>114</th>
+                <th>111→114</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr>
+            <td>餐旅管理學系</td>
+            <td>54</td>
+            <td>202</td>
+            <td>274.07%</td>
+          </tr>
+        
+
+          <tr>
+            <td>智慧科技英語學士學位學程</td>
+            <td>66</td>
+            <td>89</td>
+            <td>34.85%</td>
+          </tr>
+        
+
+          <tr>
+            <td>國際企業經營英語學士學位學程</td>
+            <td>0</td>
+            <td>76</td>
+            <td>n/a</td>
+          </tr>
+        
+
+          <tr>
+            <td>廚藝暨美食學學系</td>
+            <td>0</td>
+            <td>61</td>
+            <td>n/a</td>
+          </tr>
+        </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">06 / Enrollment</div>
+          <h2>境外新生實際註冊率與在學穩定</h2>
+          <p>除了看境外新生進來多少，也要一起看全校註冊率、學士班穩定率，以及 113 年主力科系的退學與休學風險。</p>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel"><div class="chart-wrap"><canvas id="enrollment-isu"></canvas></div>
+<script>new Chart(document.getElementById("enrollment-isu"), {"type": "bar", "data": {"labels": ["111", "112", "113", "114"], "datasets": [{"label": "境外新生實際註冊人數", "data": [368, 260, 279, 286], "backgroundColor": "#b2482f", "yAxisID": "y"}, {"type": "line", "label": "全校註冊率", "data": [64.97, 71.27, 80.71, 86.84], "borderColor": "#1f6660", "backgroundColor": "#1f666022", "yAxisID": "y1", "tension": 0.32}, {"type": "line", "label": "學士班穩定率", "data": [89.53, 87.66, 88.73, 88.81], "borderColor": "#24395b", "backgroundColor": "#24395b22", "yAxisID": "y1", "tension": 0.32}]}, "options": {"responsive": true, "maintainAspectRatio": false, "plugins": {"legend": {"position": "bottom"}}, "scales": {"y": {"beginAtZero": true, "position": "left"}, "y1": {"beginAtZero": true, "position": "right", "grid": {"drawOnChartArea": false}}}}});</script></div>
+        <div class="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>學年</th>
+                <th>境外新生</th>
+                <th>全校註冊率</th>
+                <th>學士班穩定率</th>
+              </tr>
+            </thead>
+            <tbody>
+          <tr>
+            <td>111</td>
+            <td>368</td>
+            <td>64.97%</td>
+            <td>89.53%</td>
+          </tr>
+        
+
+          <tr>
+            <td>112</td>
+            <td>260</td>
+            <td>71.27%</td>
+            <td>87.66%</td>
+          </tr>
+        
+
+          <tr>
+            <td>113</td>
+            <td>279</td>
+            <td>80.71%</td>
+            <td>88.73%</td>
+          </tr>
+        
+
+          <tr>
+            <td>114</td>
+            <td>286</td>
+            <td>86.84%</td>
+            <td>88.81%</td>
+          </tr>
+        </tbody>
+          </table>
+          <div class="footnote">註冊率採 `stud_12_3_registration_school`；穩定率採 `stud_16_attendance_school` 的學士班(日間)。</div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:18px;">
+        <h3>113 主力科系退學率與休學率</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>系所</th>
+              <th>退學率</th>
+              <th>休學率</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>餐旅管理學系</td>
+            <td>3.31%</td>
+            <td>2.09%</td>
+          </tr>
+        
+
+          <tr>
+            <td>智慧科技英語學士學位學程</td>
+            <td>3.98%</td>
+            <td>0.00%</td>
+          </tr>
+        
+
+          <tr>
+            <td>國際企業經營英語學士學位學程</td>
+            <td>1.85%</td>
+            <td>0.00%</td>
+          </tr>
+        
+
+          <tr>
+            <td>廚藝暨美食學學系</td>
+            <td>4.17%</td>
+            <td>1.98%</td>
+          </tr>
+        </tbody>
+        </table>
+        <div class="footnote">這裡的大系所以本校外國學生主力科系為主；退學率用 `stud_14_1_dropout_department_113.csv` 的學期資料加總換算，休學率用 `stud_13_1_suspend_department_113.csv` 的學年資料換算。</div>
+      </div>
+    </section>
+    
+  </div>
+</body>
+</html>
