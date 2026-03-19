@@ -451,7 +451,7 @@ def html_page(title: str, body: str, nav_link: str | None = "../index.html") -> 
         if nav_link
         else """
     <div class="topbar">
-      <div>招生大數據與 AI 分析報告入口</div>
+      <div>境外生大數據分析報告入口</div>
       <div>資料來源固定為教育部大專校院校務資訊公開平台 CSV</div>
     </div>
 """
@@ -1734,6 +1734,115 @@ def render_school_report(school: str) -> str:
     return html_page(f"{school}境外生整體評估", body)
 
 
+def render_sources_page() -> str:
+    site_root = ROOT / "isu_foreign_student_report_site"
+    csv_files = sorted(site_root.rglob("*.csv"))
+    grouped: Dict[str, List[Path]] = defaultdict(list)
+    for path in csv_files:
+        if path.name.startswith("download_manifest"):
+            continue
+        grouped[path.name].append(path)
+    source_rows_data = [
+        {
+            "index": index,
+            "name": name,
+            "paths": [p.relative_to(ROOT).as_posix() for p in paths],
+            "bytes": paths[0].stat().st_size,
+        }
+        for index, (name, paths) in enumerate(sorted(grouped.items()), start=1)
+    ]
+    for row in source_rows_data:
+        row["path_links"] = "<br>".join(
+            f'<a href="{html.escape(path)}">{html.escape(path)}</a>'
+            for path in row["paths"]
+        )
+    source_rows = "\n".join(
+        f"""
+          <tr>
+            <td>{row['index']}</td>
+            <td>{html.escape(row['name'])}</td>
+            <td>{row['path_links']}</td>
+            <td>{len(row['paths'])}</td>
+            <td>{fmt_int(row['bytes'])}</td>
+          </tr>
+        """
+        for row in source_rows_data
+    )
+
+    body = f"""
+    <header class="hero">
+      <div class="eyebrow">Sources</div>
+      <h1>資料來源與下載清單</h1>
+      <p class="hero-summary">這一頁集中放置本專案使用的主要資料來源、平台連結，以及 `isu_foreign_student_report_site` 內目前作為研究基礎的 CSV 清單，方便後續追溯與再利用。</p>
+      <div class="source-note">主要資料來源基礎：<a href="https://udb.moe.edu.tw/udata/ReportCategories" target="_blank" rel="noopener noreferrer">教育部大專校院校務資訊公開平台</a>。本頁主清單以 `/Users/weisfx/Desktop/國際處/4 嘉暐notes/20260319_wei/student_analyse/isu_foreign_student_report_site` 內的 CSV 為準。</div>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>主要平台</span>
+          <strong>1</strong>
+          <small>教育部大專校院校務資訊公開平台</small>
+        </article>
+        <article class="metric-card">
+          <span>主清單 CSV</span>
+          <strong>{len(source_rows_data)}</strong>
+          <small>以檔名去重後的 76 份 CSV</small>
+        </article>
+        <article class="metric-card">
+          <span>來源資料夾</span>
+          <strong>1</strong>
+          <small>`isu_foreign_student_report_site`</small>
+        </article>
+        <article class="metric-card">
+          <span>實體 CSV</span>
+          <strong>{len(csv_files)}</strong>
+          <small>含重複檔名與 manifest 共 {len(csv_files)} 份</small>
+        </article>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Main Source</div>
+          <h2>主要資料來源</h2>
+          <p>本專案的校務公開資料主要來自教育部大專校院校務資訊公開平台的資訊查詢頁與學生類表冊下載頁。</p>
+        </div>
+      </div>
+      <div class="link-grid">
+        <a class="link-card main-link-card" href="https://udb.moe.edu.tw/udata/ReportCategories" target="_blank" rel="noopener noreferrer">
+          <span>Official Source</span>
+          <strong>教育部大專校院校務資訊公開平台</strong>
+          <p>直接前往平台主查詢頁，查看資訊分類與各表冊下載入口。</p>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">CSV List</div>
+          <h2>`isu_foreign_student_report_site` 內的 76 份 CSV 清單</h2>
+          <p>以下清單以檔名去重後呈現；若同名檔案同時存在於不同子目錄，會一起列在同一列中。</p>
+        </div>
+      </div>
+      <div class="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>檔名</th>
+              <th>本地路徑</th>
+              <th>份數</th>
+              <th>Bytes</th>
+            </tr>
+          </thead>
+          <tbody>{source_rows}</tbody>
+        </table>
+      </div>
+    </section>
+    """
+    return html_page("資料來源與下載清單", body, nav_link="index.html")
+
+
 def render_index() -> str:
     country_cards = "\n".join(
         f"""
@@ -1758,7 +1867,7 @@ def render_index() -> str:
     body = f"""
     <header class="hero">
       <div class="eyebrow">Admissions Research Hub</div>
-      <h1>招生大數據與 AI 分析報告入口</h1>
+      <h1>境外生大數據分析報告入口</h1>
       <p class="hero-summary">這個入口頁把總結報告與新的一頁式研究拆成兩條線管理。所有新頁面都只使用目前資料夾內的 CSV，且在頁首固定標示資料來源為教育部大專校院校務資訊公開平台，方便後續持續擴充。</p>
       <div class="source-note">主要資料來源基礎：<a href="https://udb.moe.edu.tw/udata/ReportCategories" target="_blank" rel="noopener noreferrer">教育部大專校院校務資訊公開平台</a>。新報告目前使用該平台匯出的 CSV，包括 `stud_1_2_school`、`stud_3_7_identity_school`、`stud_12_3_registration_school`、`stud_16_attendance_school`、`stud_3_1_foreign_degree_department`、`moe_udb_foreign_students_by_department_national` 等檔案，年份範圍為 111 到 114 學年。</div>
       <div class="metric-grid">
@@ -1806,7 +1915,6 @@ def render_index() -> str:
         <div>
           <div class="eyebrow">Track A</div>
           <h2>以國家為主體的研究</h2>
-          <p>固定納入越南、印尼、香港、日本、泰國、菲律賓、馬來西亞七個市場，先看該市場在臺灣由哪些學校承接，再觀察各校與全國的成長率，以及熱門系所代理輪廓。</p>
         </div>
       </div>
       <div class="link-grid">{country_cards}</div>
@@ -1821,13 +1929,30 @@ def render_index() -> str:
       </div>
       <div class="link-grid">{school_cards}</div>
     </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Sources</div>
+          <h2>資料來源</h2>
+        </div>
+      </div>
+      <div class="link-grid">
+        <a class="link-card" href="sources.html">
+          <span>Data Sources</span>
+          <strong>資料來源與下載清單</strong>
+          <p>查看主要來源平台連結，以及 `isu_foreign_student_report_site` 內 76 份 CSV 的主清單。</p>
+        </a>
+      </div>
+    </section>
     """
-    return html_page("招生大數據與 AI 分析報告入口", body, nav_link=None)
+    return html_page("境外生大數據分析報告入口", body, nav_link=None)
 
 
 def write_output() -> None:
     REPORT_DIR.mkdir(exist_ok=True)
     (ROOT / "index.html").write_text(render_index(), encoding="utf-8")
+    (ROOT / "sources.html").write_text(render_sources_page(), encoding="utf-8")
     target_country_files = {
         REPORT_DIR / f"country-{slugify(country)}.html"
         for country in COUNTRY_TARGETS

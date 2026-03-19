@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>資料來源與下載清單</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f3efe6;
+      --paper: rgba(255,255,255,0.84);
+      --paper-strong: rgba(255,255,255,0.94);
+      --ink: #151a23;
+      --muted: #596170;
+      --line: rgba(21, 26, 35, 0.12);
+      --scarlet: #b2482f;
+      --teal: #1f6660;
+      --navy: #24395b;
+      --gold: #c59b45;
+      --shadow: 0 26px 60px rgba(31, 25, 18, 0.12);
+      --radius: 28px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font: 16px/1.75 "Noto Sans TC", sans-serif;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(197, 155, 69, 0.18), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(31, 102, 96, 0.16), transparent 28%),
+        linear-gradient(180deg, #f8f4ec 0%, var(--bg) 100%);
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(rgba(21,26,35,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(21,26,35,0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.32), transparent 40%);
+    }
+    a { color: var(--scarlet); text-underline-offset: 3px; }
+    .shell {
+      width: min(1360px, calc(100vw - 28px));
+      margin: 0 auto;
+      padding: 22px 0 64px;
+      position: relative;
+      z-index: 1;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .crumb {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(21,26,35,0.08);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 42px;
+      border-radius: 34px;
+      color: #f9f5ee;
+      background:
+        linear-gradient(145deg, rgba(19, 24, 34, 0.98), rgba(35, 48, 66, 0.96)),
+        linear-gradient(90deg, rgba(197, 155, 69, 0.18), transparent);
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      right: -80px;
+      top: -60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(197, 155, 69, 0.26), transparent 70%);
+      filter: blur(14px);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    h1, h2, h3 {
+      margin: 0;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+    h1 {
+      margin-top: 18px;
+      max-width: 11ch;
+      font-size: clamp(42px, 5vw, 74px);
+    }
+    .hero-summary {
+      max-width: 68ch;
+      margin: 16px 0 0;
+      color: rgba(249, 245, 238, 0.84);
+    }
+    .source-note {
+      margin-top: 18px;
+      padding: 16px 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(249, 245, 238, 0.9);
+      font-size: 14px;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .metric-card {
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.9);
+      color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .metric-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .metric-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 34px;
+      line-height: 1.05;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+    }
+    .metric-card small {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+    }
+    section {
+      margin-top: 18px;
+      padding: 28px;
+      border-radius: var(--radius);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+    .section-head p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      max-width: 72ch;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+    }
+    .panel {
+      padding: 20px;
+      border-radius: 24px;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+    }
+    .chart-wrap {
+      height: 360px;
+    }
+    .callout {
+      margin-top: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(178,72,47,0.08), rgba(31,102,96,0.05));
+      border-left: 4px solid var(--scarlet);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 11px 10px;
+      border-bottom: 1px solid rgba(21,26,35,0.08);
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .isu-row td {
+      background: rgba(178, 72, 47, 0.10);
+      font-weight: 700;
+    }
+    .focus-row td {
+      background: rgba(31, 102, 96, 0.10);
+      font-weight: 700;
+    }
+    tr:last-child td { border-bottom: 0; }
+    .dept-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .dept-card {
+      padding: 18px;
+      border-radius: 24px;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+    }
+    .dept-card h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .dept-card ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+    .dept-card li + li {
+      margin-top: 8px;
+    }
+    .footnote {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .link-card {
+      display: block;
+      padding: 22px;
+      border-radius: 24px;
+      text-decoration: none;
+      color: inherit;
+      background: var(--paper-strong);
+      border: 1px solid rgba(21,26,35,0.08);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .link-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 30px rgba(21,26,35,0.08);
+    }
+    .link-card strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 26px;
+      font-family: "Fraunces", "Noto Sans TC", serif;
+      line-height: 1.1;
+    }
+    .link-card span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .link-card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+    }
+    .main-link-card {
+      padding: 34px;
+      border-radius: 30px;
+      background:
+        linear-gradient(145deg, rgba(19, 24, 34, 0.98), rgba(35, 48, 66, 0.96)),
+        linear-gradient(90deg, rgba(197, 155, 69, 0.12), transparent);
+      color: #f9f5ee;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: var(--shadow);
+    }
+    .main-link-card span,
+    .main-link-card p {
+      color: rgba(249, 245, 238, 0.82);
+    }
+    .main-link-card strong {
+      font-size: clamp(34px, 4vw, 56px);
+      color: #f9f5ee;
+      margin-top: 10px;
+    }
+    @media (max-width: 1080px) {
+      .metric-grid,
+      .dept-grid,
+      .link-grid,
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      .chart-wrap {
+        height: 320px;
+      }
+    }
+    @media (max-width: 720px) {
+      .shell { width: min(100vw - 18px, 100%); }
+      .hero, section { padding: 22px; border-radius: 24px; }
+      h1 { max-width: none; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    
+    <div class="topbar">
+      <a class="crumb" href="index.html">返回報告入口</a>
+      <div>資料來源固定為教育部大專校院校務資訊公開平台 CSV</div>
+    </div>
+
+    
+    <header class="hero">
+      <div class="eyebrow">Sources</div>
+      <h1>資料來源與下載清單</h1>
+      <p class="hero-summary">這一頁集中放置本專案使用的主要資料來源、平台連結，以及 `isu_foreign_student_report_site` 內目前作為研究基礎的 CSV 清單，方便後續追溯與再利用。</p>
+      <div class="source-note">主要資料來源基礎：<a href="https://udb.moe.edu.tw/udata/ReportCategories" target="_blank" rel="noopener noreferrer">教育部大專校院校務資訊公開平台</a>。本頁主清單以 `/Users/weisfx/Desktop/國際處/4 嘉暐notes/20260319_wei/student_analyse/isu_foreign_student_report_site` 內的 CSV 為準。</div>
+      <div class="metric-grid">
+        <article class="metric-card">
+          <span>主要平台</span>
+          <strong>1</strong>
+          <small>教育部大專校院校務資訊公開平台</small>
+        </article>
+        <article class="metric-card">
+          <span>主清單 CSV</span>
+          <strong>76</strong>
+          <small>以檔名去重後的 76 份 CSV</small>
+        </article>
+        <article class="metric-card">
+          <span>來源資料夾</span>
+          <strong>1</strong>
+          <small>`isu_foreign_student_report_site`</small>
+        </article>
+        <article class="metric-card">
+          <span>實體 CSV</span>
+          <strong>103</strong>
+          <small>含重複檔名與 manifest 共 103 份</small>
+        </article>
+      </div>
+    </header>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Main Source</div>
+          <h2>主要資料來源</h2>
+          <p>本專案的校務公開資料主要來自教育部大專校院校務資訊公開平台的資訊查詢頁與學生類表冊下載頁。</p>
+        </div>
+      </div>
+      <div class="link-grid">
+        <a class="link-card main-link-card" href="https://udb.moe.edu.tw/udata/ReportCategories" target="_blank" rel="noopener noreferrer">
+          <span>Official Source</span>
+          <strong>教育部大專校院校務資訊公開平台</strong>
+          <p>直接前往平台主查詢頁，查看資訊分類與各表冊下載入口。</p>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">CSV List</div>
+          <h2>`isu_foreign_student_report_site` 內的 76 份 CSV 清單</h2>
+          <p>以下清單以檔名去重後呈現；若同名檔案同時存在於不同子目錄，會一起列在同一列中。</p>
+        </div>
+      </div>
+      <div class="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>檔名</th>
+              <th>本地路徑</th>
+              <th>份數</th>
+              <th>Bytes</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>1</td>
+            <td>moe_udb_foreign_by_identity_isu_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_isu_111.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_isu_111.csv</a></td>
+            <td>1</td>
+            <td>6,662</td>
+          </tr>
+        
+
+          <tr>
+            <td>2</td>
+            <td>moe_udb_foreign_by_identity_isu_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_isu_112.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_isu_112.csv</a></td>
+            <td>1</td>
+            <td>7,004</td>
+          </tr>
+        
+
+          <tr>
+            <td>3</td>
+            <td>moe_udb_foreign_by_identity_isu_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_isu_113.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_isu_113.csv</a></td>
+            <td>1</td>
+            <td>6,731</td>
+          </tr>
+        
+
+          <tr>
+            <td>4</td>
+            <td>moe_udb_foreign_by_identity_isu_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_isu_114.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_isu_114.csv</a></td>
+            <td>1</td>
+            <td>6,462</td>
+          </tr>
+        
+
+          <tr>
+            <td>5</td>
+            <td>moe_udb_foreign_by_identity_national_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_national_111.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_national_111.csv</a></td>
+            <td>1</td>
+            <td>589,406</td>
+          </tr>
+        
+
+          <tr>
+            <td>6</td>
+            <td>moe_udb_foreign_by_identity_national_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_national_112.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_national_112.csv</a></td>
+            <td>1</td>
+            <td>584,756</td>
+          </tr>
+        
+
+          <tr>
+            <td>7</td>
+            <td>moe_udb_foreign_by_identity_national_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_national_113.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_national_113.csv</a></td>
+            <td>1</td>
+            <td>577,215</td>
+          </tr>
+        
+
+          <tr>
+            <td>8</td>
+            <td>moe_udb_foreign_by_identity_national_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_national_114.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_by_identity_national_114.csv</a></td>
+            <td>1</td>
+            <td>566,979</td>
+          </tr>
+        
+
+          <tr>
+            <td>9</td>
+            <td>moe_udb_foreign_students_by_department_isu_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_isu_111.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_isu_111.csv</a></td>
+            <td>1</td>
+            <td>4,546</td>
+          </tr>
+        
+
+          <tr>
+            <td>10</td>
+            <td>moe_udb_foreign_students_by_department_isu_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_isu_112.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_isu_112.csv</a></td>
+            <td>1</td>
+            <td>5,022</td>
+          </tr>
+        
+
+          <tr>
+            <td>11</td>
+            <td>moe_udb_foreign_students_by_department_isu_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_isu_113.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_isu_113.csv</a></td>
+            <td>1</td>
+            <td>5,252</td>
+          </tr>
+        
+
+          <tr>
+            <td>12</td>
+            <td>moe_udb_foreign_students_by_department_isu_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_isu_114.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_isu_114.csv</a></td>
+            <td>1</td>
+            <td>5,529</td>
+          </tr>
+        
+
+          <tr>
+            <td>13</td>
+            <td>moe_udb_foreign_students_by_department_national_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_national_111.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_national_111.csv</a></td>
+            <td>1</td>
+            <td>424,136</td>
+          </tr>
+        
+
+          <tr>
+            <td>14</td>
+            <td>moe_udb_foreign_students_by_department_national_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_national_112.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_national_112.csv</a></td>
+            <td>1</td>
+            <td>422,314</td>
+          </tr>
+        
+
+          <tr>
+            <td>15</td>
+            <td>moe_udb_foreign_students_by_department_national_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_national_113.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_national_113.csv</a></td>
+            <td>1</td>
+            <td>451,632</td>
+          </tr>
+        
+
+          <tr>
+            <td>16</td>
+            <td>moe_udb_foreign_students_by_department_national_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_national_114.csv">isu_foreign_student_report_site/downloads/foreign-student/moe_udb_foreign_students_by_department_national_114.csv</a></td>
+            <td>1</td>
+            <td>465,565</td>
+          </tr>
+        
+
+          <tr>
+            <td>17</td>
+            <td>stud_11_international_coop_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_11_international_coop_school_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_11_international_coop_school_111.csv</a></td>
+            <td>1</td>
+            <td>187,311</td>
+          </tr>
+        
+
+          <tr>
+            <td>18</td>
+            <td>stud_11_international_coop_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_11_international_coop_school_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_11_international_coop_school_112.csv</a></td>
+            <td>1</td>
+            <td>190,077</td>
+          </tr>
+        
+
+          <tr>
+            <td>19</td>
+            <td>stud_11_international_coop_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_11_international_coop_school_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_11_international_coop_school_113.csv</a></td>
+            <td>1</td>
+            <td>182,711</td>
+          </tr>
+        
+
+          <tr>
+            <td>20</td>
+            <td>stud_11_international_coop_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_11_international_coop_school_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_11_international_coop_school_114.csv</a></td>
+            <td>1</td>
+            <td>23</td>
+          </tr>
+        
+
+          <tr>
+            <td>21</td>
+            <td>stud_12_1_registration_department_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_1_registration_department_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_1_registration_department_111.csv</a></td>
+            <td>1</td>
+            <td>7,693,860</td>
+          </tr>
+        
+
+          <tr>
+            <td>22</td>
+            <td>stud_12_1_registration_department_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_1_registration_department_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_1_registration_department_112.csv</a></td>
+            <td>1</td>
+            <td>7,385,626</td>
+          </tr>
+        
+
+          <tr>
+            <td>23</td>
+            <td>stud_12_1_registration_department_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_1_registration_department_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_1_registration_department_113.csv</a></td>
+            <td>1</td>
+            <td>7,292,033</td>
+          </tr>
+        
+
+          <tr>
+            <td>24</td>
+            <td>stud_12_1_registration_department_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_1_registration_department_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_1_registration_department_114.csv</a></td>
+            <td>1</td>
+            <td>7,252,828</td>
+          </tr>
+        
+
+          <tr>
+            <td>25</td>
+            <td>stud_12_2_registration_system_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_12_2_registration_system_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_12_2_registration_system_111.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_2_registration_system_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_2_registration_system_111.csv</a></td>
+            <td>2</td>
+            <td>626,925</td>
+          </tr>
+        
+
+          <tr>
+            <td>26</td>
+            <td>stud_12_2_registration_system_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_12_2_registration_system_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_12_2_registration_system_112.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_2_registration_system_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_2_registration_system_112.csv</a></td>
+            <td>2</td>
+            <td>595,685</td>
+          </tr>
+        
+
+          <tr>
+            <td>27</td>
+            <td>stud_12_2_registration_system_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_12_2_registration_system_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_12_2_registration_system_113.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_2_registration_system_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_2_registration_system_113.csv</a></td>
+            <td>2</td>
+            <td>586,592</td>
+          </tr>
+        
+
+          <tr>
+            <td>28</td>
+            <td>stud_12_2_registration_system_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_12_2_registration_system_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_12_2_registration_system_114.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_2_registration_system_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_2_registration_system_114.csv</a></td>
+            <td>2</td>
+            <td>593,239</td>
+          </tr>
+        
+
+          <tr>
+            <td>29</td>
+            <td>stud_12_3_registration_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_12_3_registration_school_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_12_3_registration_school_111.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_3_registration_school_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_3_registration_school_111.csv</a></td>
+            <td>2</td>
+            <td>158,633</td>
+          </tr>
+        
+
+          <tr>
+            <td>30</td>
+            <td>stud_12_3_registration_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_12_3_registration_school_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_12_3_registration_school_112.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_3_registration_school_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_3_registration_school_112.csv</a></td>
+            <td>2</td>
+            <td>153,334</td>
+          </tr>
+        
+
+          <tr>
+            <td>31</td>
+            <td>stud_12_3_registration_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_12_3_registration_school_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_12_3_registration_school_113.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_3_registration_school_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_3_registration_school_113.csv</a></td>
+            <td>2</td>
+            <td>145,498</td>
+          </tr>
+        
+
+          <tr>
+            <td>32</td>
+            <td>stud_12_3_registration_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_12_3_registration_school_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_12_3_registration_school_114.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_12_3_registration_school_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_12_3_registration_school_114.csv</a></td>
+            <td>2</td>
+            <td>149,511</td>
+          </tr>
+        
+
+          <tr>
+            <td>33</td>
+            <td>stud_13_1_suspend_department_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_13_1_suspend_department_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_13_1_suspend_department_111.csv</a></td>
+            <td>1</td>
+            <td>2,833,460</td>
+          </tr>
+        
+
+          <tr>
+            <td>34</td>
+            <td>stud_13_1_suspend_department_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_13_1_suspend_department_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_13_1_suspend_department_112.csv</a></td>
+            <td>1</td>
+            <td>2,802,591</td>
+          </tr>
+        
+
+          <tr>
+            <td>35</td>
+            <td>stud_13_1_suspend_department_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_13_1_suspend_department_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_13_1_suspend_department_113.csv</a></td>
+            <td>1</td>
+            <td>2,815,858</td>
+          </tr>
+        
+
+          <tr>
+            <td>36</td>
+            <td>stud_13_1_suspend_department_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_13_1_suspend_department_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_13_1_suspend_department_114.csv</a></td>
+            <td>1</td>
+            <td>23</td>
+          </tr>
+        
+
+          <tr>
+            <td>37</td>
+            <td>stud_13_2_suspend_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_13_2_suspend_school_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_13_2_suspend_school_111.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_13_2_suspend_school_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_13_2_suspend_school_111.csv</a></td>
+            <td>2</td>
+            <td>171,078</td>
+          </tr>
+        
+
+          <tr>
+            <td>38</td>
+            <td>stud_13_2_suspend_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_13_2_suspend_school_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_13_2_suspend_school_112.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_13_2_suspend_school_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_13_2_suspend_school_112.csv</a></td>
+            <td>2</td>
+            <td>168,158</td>
+          </tr>
+        
+
+          <tr>
+            <td>39</td>
+            <td>stud_13_2_suspend_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_13_2_suspend_school_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_13_2_suspend_school_113.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_13_2_suspend_school_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_13_2_suspend_school_113.csv</a></td>
+            <td>2</td>
+            <td>162,020</td>
+          </tr>
+        
+
+          <tr>
+            <td>40</td>
+            <td>stud_13_2_suspend_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_13_2_suspend_school_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_13_2_suspend_school_114.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_13_2_suspend_school_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_13_2_suspend_school_114.csv</a></td>
+            <td>2</td>
+            <td>23</td>
+          </tr>
+        
+
+          <tr>
+            <td>41</td>
+            <td>stud_14_1_dropout_department_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_14_1_dropout_department_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_14_1_dropout_department_111.csv</a></td>
+            <td>1</td>
+            <td>5,602,633</td>
+          </tr>
+        
+
+          <tr>
+            <td>42</td>
+            <td>stud_14_1_dropout_department_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_14_1_dropout_department_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_14_1_dropout_department_112.csv</a></td>
+            <td>1</td>
+            <td>5,552,570</td>
+          </tr>
+        
+
+          <tr>
+            <td>43</td>
+            <td>stud_14_1_dropout_department_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_14_1_dropout_department_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_14_1_dropout_department_113.csv</a></td>
+            <td>1</td>
+            <td>5,552,536</td>
+          </tr>
+        
+
+          <tr>
+            <td>44</td>
+            <td>stud_14_1_dropout_department_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_14_1_dropout_department_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_14_1_dropout_department_114.csv</a></td>
+            <td>1</td>
+            <td>23</td>
+          </tr>
+        
+
+          <tr>
+            <td>45</td>
+            <td>stud_14_2_dropout_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_14_2_dropout_school_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_14_2_dropout_school_111.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_14_2_dropout_school_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_14_2_dropout_school_111.csv</a></td>
+            <td>2</td>
+            <td>322,065</td>
+          </tr>
+        
+
+          <tr>
+            <td>46</td>
+            <td>stud_14_2_dropout_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_14_2_dropout_school_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_14_2_dropout_school_112.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_14_2_dropout_school_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_14_2_dropout_school_112.csv</a></td>
+            <td>2</td>
+            <td>316,306</td>
+          </tr>
+        
+
+          <tr>
+            <td>47</td>
+            <td>stud_14_2_dropout_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_14_2_dropout_school_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_14_2_dropout_school_113.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_14_2_dropout_school_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_14_2_dropout_school_113.csv</a></td>
+            <td>2</td>
+            <td>304,619</td>
+          </tr>
+        
+
+          <tr>
+            <td>48</td>
+            <td>stud_14_2_dropout_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_14_2_dropout_school_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_14_2_dropout_school_114.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_14_2_dropout_school_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_14_2_dropout_school_114.csv</a></td>
+            <td>2</td>
+            <td>23</td>
+          </tr>
+        
+
+          <tr>
+            <td>49</td>
+            <td>stud_16_attendance_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_16_attendance_school_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_16_attendance_school_111.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_16_attendance_school_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_16_attendance_school_111.csv</a></td>
+            <td>2</td>
+            <td>29,312</td>
+          </tr>
+        
+
+          <tr>
+            <td>50</td>
+            <td>stud_16_attendance_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_16_attendance_school_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_16_attendance_school_112.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_16_attendance_school_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_16_attendance_school_112.csv</a></td>
+            <td>2</td>
+            <td>28,511</td>
+          </tr>
+        
+
+          <tr>
+            <td>51</td>
+            <td>stud_16_attendance_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_16_attendance_school_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_16_attendance_school_113.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_16_attendance_school_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_16_attendance_school_113.csv</a></td>
+            <td>2</td>
+            <td>26,855</td>
+          </tr>
+        
+
+          <tr>
+            <td>52</td>
+            <td>stud_16_attendance_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_16_attendance_school_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_16_attendance_school_114.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_16_attendance_school_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_16_attendance_school_114.csv</a></td>
+            <td>2</td>
+            <td>26,867</td>
+          </tr>
+        
+
+          <tr>
+            <td>53</td>
+            <td>stud_1_1_student_department_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_1_1_student_department_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_1_1_student_department_111.csv</a></td>
+            <td>1</td>
+            <td>1,103,447</td>
+          </tr>
+        
+
+          <tr>
+            <td>54</td>
+            <td>stud_1_1_student_department_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_1_1_student_department_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_1_1_student_department_112.csv</a></td>
+            <td>1</td>
+            <td>1,090,943</td>
+          </tr>
+        
+
+          <tr>
+            <td>55</td>
+            <td>stud_1_1_student_department_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_1_1_student_department_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_1_1_student_department_113.csv</a></td>
+            <td>1</td>
+            <td>1,098,263</td>
+          </tr>
+        
+
+          <tr>
+            <td>56</td>
+            <td>stud_1_1_student_department_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_1_1_student_department_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_1_1_student_department_114.csv</a></td>
+            <td>1</td>
+            <td>1,096,030</td>
+          </tr>
+        
+
+          <tr>
+            <td>57</td>
+            <td>stud_1_2_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_1_2_school_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_1_2_school_111.csv</a></td>
+            <td>1</td>
+            <td>59,578</td>
+          </tr>
+        
+
+          <tr>
+            <td>58</td>
+            <td>stud_1_2_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_1_2_school_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_1_2_school_112.csv</a></td>
+            <td>1</td>
+            <td>58,360</td>
+          </tr>
+        
+
+          <tr>
+            <td>59</td>
+            <td>stud_1_2_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_1_2_school_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_1_2_school_113.csv</a></td>
+            <td>1</td>
+            <td>56,133</td>
+          </tr>
+        
+
+          <tr>
+            <td>60</td>
+            <td>stud_1_2_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_1_2_school_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_1_2_school_114.csv</a></td>
+            <td>1</td>
+            <td>55,706</td>
+          </tr>
+        
+
+          <tr>
+            <td>61</td>
+            <td>stud_1_2_student_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_1_2_student_school_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_1_2_student_school_111.csv</a></td>
+            <td>1</td>
+            <td>59,578</td>
+          </tr>
+        
+
+          <tr>
+            <td>62</td>
+            <td>stud_1_2_student_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_1_2_student_school_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_1_2_student_school_112.csv</a></td>
+            <td>1</td>
+            <td>58,360</td>
+          </tr>
+        
+
+          <tr>
+            <td>63</td>
+            <td>stud_1_2_student_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_1_2_student_school_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_1_2_student_school_113.csv</a></td>
+            <td>1</td>
+            <td>56,133</td>
+          </tr>
+        
+
+          <tr>
+            <td>64</td>
+            <td>stud_1_2_student_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_1_2_student_school_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_1_2_student_school_114.csv</a></td>
+            <td>1</td>
+            <td>55,706</td>
+          </tr>
+        
+
+          <tr>
+            <td>65</td>
+            <td>stud_3_1_foreign_degree_department_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_3_1_foreign_degree_department_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_3_1_foreign_degree_department_111.csv</a></td>
+            <td>1</td>
+            <td>830,028</td>
+          </tr>
+        
+
+          <tr>
+            <td>66</td>
+            <td>stud_3_1_foreign_degree_department_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_3_1_foreign_degree_department_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_3_1_foreign_degree_department_112.csv</a></td>
+            <td>1</td>
+            <td>829,043</td>
+          </tr>
+        
+
+          <tr>
+            <td>67</td>
+            <td>stud_3_1_foreign_degree_department_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_3_1_foreign_degree_department_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_3_1_foreign_degree_department_113.csv</a></td>
+            <td>1</td>
+            <td>848,926</td>
+          </tr>
+        
+
+          <tr>
+            <td>68</td>
+            <td>stud_3_1_foreign_degree_department_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_3_1_foreign_degree_department_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_3_1_foreign_degree_department_114.csv</a></td>
+            <td>1</td>
+            <td>856,847</td>
+          </tr>
+        
+
+          <tr>
+            <td>69</td>
+            <td>stud_3_6_graduate_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_3_6_graduate_school_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_3_6_graduate_school_111.csv</a></td>
+            <td>1</td>
+            <td>290,880</td>
+          </tr>
+        
+
+          <tr>
+            <td>70</td>
+            <td>stud_3_6_graduate_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_3_6_graduate_school_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_3_6_graduate_school_112.csv</a></td>
+            <td>1</td>
+            <td>0</td>
+          </tr>
+        
+
+          <tr>
+            <td>71</td>
+            <td>stud_3_6_graduate_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_3_6_graduate_school_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_3_6_graduate_school_113.csv</a></td>
+            <td>1</td>
+            <td>287,305</td>
+          </tr>
+        
+
+          <tr>
+            <td>72</td>
+            <td>stud_3_6_graduate_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_3_6_graduate_school_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_3_6_graduate_school_114.csv</a></td>
+            <td>1</td>
+            <td>23</td>
+          </tr>
+        
+
+          <tr>
+            <td>73</td>
+            <td>stud_3_7_identity_school_111.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_3_7_identity_school_111.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_3_7_identity_school_111.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_3_7_identity_school_111.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_3_7_identity_school_111.csv</a></td>
+            <td>2</td>
+            <td>589,406</td>
+          </tr>
+        
+
+          <tr>
+            <td>74</td>
+            <td>stud_3_7_identity_school_112.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_3_7_identity_school_112.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_3_7_identity_school_112.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_3_7_identity_school_112.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_3_7_identity_school_112.csv</a></td>
+            <td>2</td>
+            <td>584,756</td>
+          </tr>
+        
+
+          <tr>
+            <td>75</td>
+            <td>stud_3_7_identity_school_113.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_3_7_identity_school_113.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_3_7_identity_school_113.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_3_7_identity_school_113.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_3_7_identity_school_113.csv</a></td>
+            <td>2</td>
+            <td>577,215</td>
+          </tr>
+        
+
+          <tr>
+            <td>76</td>
+            <td>stud_3_7_identity_school_114.csv</td>
+            <td><a href="isu_foreign_student_report_site/downloads/growth-rank/stud_3_7_identity_school_114.csv">isu_foreign_student_report_site/downloads/growth-rank/stud_3_7_identity_school_114.csv</a><br><a href="isu_foreign_student_report_site/downloads/registration-dropout/stud_3_7_identity_school_114.csv">isu_foreign_student_report_site/downloads/registration-dropout/stud_3_7_identity_school_114.csv</a></td>
+            <td>2</td>
+            <td>566,979</td>
+          </tr>
+        </tbody>
+        </table>
+      </div>
+    </section>
+    
+  </div>
+</body>
+</html>
