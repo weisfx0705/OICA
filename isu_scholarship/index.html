@@ -564,6 +564,44 @@
       color: rgba(24, 32, 45, 0.72);
     }
 
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .source-card {
+      border-radius: 20px;
+      padding: 18px 20px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(24, 32, 45, 0.08);
+    }
+
+    .source-card h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .source-list {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.8;
+      font-size: 14px;
+      color: rgba(24, 32, 45, 0.8);
+    }
+
+    .source-list li+li {
+      margin-top: 6px;
+    }
+
+    .source-list a {
+      color: var(--teal);
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 3px;
+      word-break: break-word;
+    }
+
     @media print {
       @page {
         size: A4 portrait;
@@ -630,7 +668,8 @@
       .summary-grid,
       .policy-grid,
       .detail-columns,
-      .compare-grid {
+      .compare-grid,
+      .source-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1552,6 +1591,59 @@
         3. 分析範圍限定為 <strong>111-114 學年度、私立一般大學、日間學士班</strong>。<br />
         4. 本報告的重點是比較各校不同來源市場的量體變化，並將其對讀到公開可見的獎助制度方向。
       </p>
+      <div class="source-grid">
+        <article class="source-card">
+          <h3>銘傳大學</h3>
+          <ul class="source-list">
+            <li><a href="https://iee.mcu.edu.tw/%e7%8d%8e%e5%8a%a9%e5%ad%b8%e9%87%91/" target="_blank" rel="noreferrer">國際教育交流處獎助學金專區</a></li>
+            <li><a href="https://www.scribd.com/document/816344550/%E9%8A%98%E5%82%B3%E5%A4%A7%E5%AD%B8%E7%A0%94%E7%A9%B6%E6%89%80%E5%84%AA%E7%A7%80%E5%83%91%E7%94%9F%E7%8D%8E%E5%AD%B8%E9%87%91%E8%BE%A6%E6%B3%95" target="_blank" rel="noreferrer">研究所優秀僑生獎學金辦法</a></li>
+            <li><a href="https://student.mcu.edu.tw/home/%E5%AD%B8%E5%8B%99%E5%B0%88%E5%8D%80-2/%E5%B0%B1%E5%AD%B8%E8%A3%9C%E5%8A%A9%E6%8E%AA%E6%96%BD_%E6%A0%A1%E5%85%A7%E7%8D%8E%E5%8A%A9%E5%AD%B8%E9%87%91/" target="_blank" rel="noreferrer">學務處就學補助措施專區</a></li>
+          </ul>
+        </article>
+        <article class="source-card">
+          <h3>淡江大學</h3>
+          <ul class="source-list">
+            <li><a href="https://www.oieie.tku.edu.tw/oieie/?page_id=19289" target="_blank" rel="noreferrer">國際處境外生獎助學金主頁</a></li>
+            <li><a href="https://www.oieie.tku.edu.tw/oieie/?page_id=20917" target="_blank" rel="noreferrer">境外生入學獎學金主頁</a></li>
+            <li><a href="https://oieie.tku.edu.tw/oieie/wp-content/uploads/2025/05/114-1%E6%B7%A1%E6%B1%9F%E5%A4%A7%E5%AD%B8%E5%A4%96%E5%9C%8B%E5%AD%B8%E7%94%9F%E5%84%AA%E7%A7%80%E7%8D%8E%E5%AD%B8%E9%87%91%E8%BE%A6%E6%B3%95114.02.11.pdf" target="_blank" rel="noreferrer">外國學生優秀獎學金實施要點</a></li>
+            <li><a href="https://www.oieie.tku.edu.tw/oieie/wp-content/uploads/2025/01/%E7%B6%B2%E7%AB%99_%E6%B7%A1%E6%B1%9F%E5%A4%A7%E5%AD%B8%E5%A2%83%E5%A4%96%E7%94%9F%E6%B8%85%E5%AF%92%E7%8D%8E%E5%AD%B8%E9%87%91%E5%AF%A6%E6%96%BD%E8%BE%A6%E6%B3%95.pdf" target="_blank" rel="noreferrer">境外生清寒獎學金實施辦法</a></li>
+            <li><a href="https://www.oieie.tku.edu.tw/oieie/wp-content/uploads/2025/03/%E6%B7%A1%E6%B1%9F%E5%A4%A7%E5%AD%B8%E5%A4%96%E5%9C%8B%E5%AD%B8%E7%94%9F%E5%8A%A9%E5%AD%B8%E9%87%91%E5%AF%A6%E6%96%BD%E8%A6%81%E9%BB%9E.pdf" target="_blank" rel="noreferrer">外國學生助學金實施要點</a></li>
+          </ul>
+        </article>
+        <article class="source-card">
+          <h3>靜宜大學</h3>
+          <ul class="source-list">
+            <li><a href="https://oia.pu.edu.tw/var/file/48/1048/img/554091664.pdf" target="_blank" rel="noreferrer">學生獎助學金實施辦法總則</a></li>
+            <li><a href="https://oia.pu.edu.tw/var/file/48/1048/img/324/647418679.pdf" target="_blank" rel="noreferrer">外籍生校內實習獎助學金辦法</a></li>
+            <li><a href="https://oia.pu.edu.tw/var/file/48/1048/img/324/841500385.pdf" target="_blank" rel="noreferrer">外國學生菁英獎助學金辦法</a></li>
+            <li><a href="https://cmn-hant.overseas.ncnu.edu.tw/about-us/university-introduction/university-introduction-logo/pu/" target="_blank" rel="noreferrer">海外聯招會靜宜大學專區</a></li>
+          </ul>
+        </article>
+        <article class="source-card">
+          <h3>中國文化大學</h3>
+          <ul class="source-list">
+            <li><a href="https://secretariat.pccu.edu.tw/var/file/10/1010/img/437/rules_1810-07.pdf" target="_blank" rel="noreferrer">僑港澳生暨外國學生入學及在學獎助學金設置要點</a></li>
+            <li><a href="https://secretariat.pccu.edu.tw/var/file/10/1010/img/437/rules_1808-03.pdf" target="_blank" rel="noreferrer">境外生學伴獎學金辦法</a></li>
+            <li><a href="https://oima.pccu.edu.tw/wp-content/uploads/%E4%B8%AD%E5%9C%8B%E6%96%87%E5%8C%96%E5%A4%A7%E5%AD%B8%E5%A2%83%E5%A4%96%E7%94%9F%E5%AD%B8%E4%BC%B4%E7%8D%8E%E5%AD%B8%E9%87%91.pdf" target="_blank" rel="noreferrer">境外生學伴獎學金輔導紀錄表格式</a></li>
+          </ul>
+        </article>
+        <article class="source-card">
+          <h3>逢甲大學</h3>
+          <ul class="source-list">
+            <li><a href="https://oia.fcu.edu.tw/overseas-students/scholarship/" target="_blank" rel="noreferrer">國際處境外生獎學金專區</a></li>
+            <li><a href="https://osra.fcu.edu.tw/newstudent_scholarship/" target="_blank" rel="noreferrer">招生處境外生入學獎學金及發放規定說明</a></li>
+            <li><a href="https://myfcu.fcu.edu.tw/main/S6800/S680004_Out_Download.aspx?originfilename=%E9%80%A2%E7%94%B2%E5%A4%A7%E5%AD%B8%E6%B5%B7%E5%A4%96%E8%8F%AF%E8%A3%94%E5%AD%B8%E7%94%9F%E6%9A%A8%E5%A4%96%E5%9C%8B%E5%AD%B8%E7%94%9F%E7%8D%8E%E5%8A%A9%E5%AD%B8%E9%87%91%E8%A8%AD%E7%BD%AE%E8%A6%81%E9%BB%9E_114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E8%B5%B7%E7%8D%B2%E7%8D%8E%E5%AD%B8%E7%94%9F%E9%81%A9%E7%94%A8.pdf&newfilename=9aa467b3c791471f8c4a137a82c41efa_2_1.pdf" target="_blank" rel="noreferrer">海外華裔學生暨外國學生獎助學金設置要點</a></li>
+            <li><a href="https://cmn-hant.overseas.ncnu.edu.tw/wp-content/uploads/schools-regulation/%E9%80%A2%E7%94%B2%E5%A4%A7%E5%AD%B8114%E5%AD%B8%E5%B9%B4%E5%BA%A6%E6%98%A5%E5%AD%A3%E5%85%A5%E5%AD%B8%E7%B0%A1%E7%AB%A0%E4%B8%8B%E8%BC%89.pdf" target="_blank" rel="noreferrer">春季入學招生簡章與居留註冊規範</a></li>
+          </ul>
+        </article>
+        <article class="source-card">
+          <h3>義守大學</h3>
+          <ul class="source-list">
+            <li><a href="https://oica.isu.edu.tw/page/%E5%A4%96%E5%9C%8B%E5%AD%B8%E7%94%9F%E7%8D%8E%E5%8A%A9%E5%AD%B8%E9%87%91-9ZlB2nGYkCrw" target="_blank" rel="noreferrer">國際及兩岸事務處外國學生獎助學金首頁</a></li>
+            <li><a href="https://oica.isu.edu.tw/storage/files/mB4xqNHn4mZQUPlmycdOZqONZjOAWYXeGMCc4yFH.pdf" target="_blank" rel="noreferrer">義守大學外國學生獎助學金實施辦法完整條文</a></li>
+          </ul>
+        </article>
+      </div>
     </section>
   </main>
 </body>
