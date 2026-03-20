@@ -831,7 +831,7 @@ def render_country_report(country: str) -> str:
     isu_history = country_counts.get("義守大學", {})
     isu_latest = isu_history.get("114", 0)
     isu_growth = calc_growth(isu_history.get("111", 0), isu_latest)
-    latest_top = sorted(
+    full_ranked = sorted(
         (
             {
                 "school": school,
@@ -845,7 +845,10 @@ def render_country_report(country: str) -> str:
         ),
         key=lambda item: item["latest"],
         reverse=True,
-    )[:10]
+    )
+    for index, item in enumerate(full_ranked, start=1):
+        item["rank"] = index
+    latest_top = full_ranked[:10]
     top_schools = [item["school"] for item in latest_top]
     profile_schools: List[str] = []
     for school_name in top_schools[:6] + ["義守大學"]:
@@ -855,28 +858,26 @@ def render_country_report(country: str) -> str:
         (
             index + 1
             for index, item in enumerate(
-                sorted(
-                    (
-                        {
-                            "school": school,
-                            "latest": year_data.get("114", 0),
-                        }
-                        for school, year_data in country_counts.items()
-                        if year_data.get("114", 0) > 0
-                    ),
-                    key=lambda item: item["latest"],
-                    reverse=True,
-                )
+                full_ranked
             )
             if item["school"] == "義守大學"
         ),
         None,
     )
 
+    table_items = latest_top.copy()
+    for focus_school in SCHOOL_TARGETS:
+        if focus_school in [item["school"] for item in table_items]:
+            continue
+        match = next((item for item in full_ranked if item["school"] == focus_school), None)
+        if match:
+            table_items.append(match)
+    table_items = sorted(table_items, key=lambda item: item["rank"])
+
     table_rows = "\n".join(
         f"""
-          <tr class="{'isu-row' if item['school'] == '義守大學' else ''}">
-            <td>{index}</td>
+          <tr class="{'focus-row' if item['school'] in SCHOOL_TARGETS else ''}">
+            <td>{item['rank']}</td>
             <td>{html.escape(item['school'])}</td>
             <td>{fmt_int(item['latest'])}</td>
             <td>{fmt_int(item['latest'] - item['history'][0])}</td>
@@ -884,19 +885,8 @@ def render_country_report(country: str) -> str:
             <td>{fmt_pct(item['growth_113_114'], 2)}</td>
           </tr>
         """
-        for index, item in enumerate(latest_top, start=1)
+        for item in table_items
     )
-    if isu_latest and "義守大學" not in top_schools:
-        table_rows += f"""
-          <tr class="isu-row">
-            <td>義守</td>
-            <td>義守大學</td>
-            <td>{fmt_int(isu_latest)}</td>
-            <td>{fmt_int(isu_latest - isu_history.get('111', 0))}</td>
-            <td>{fmt_pct(isu_growth, 2)}</td>
-            <td>{fmt_pct(calc_growth(isu_history.get('113', 0), isu_latest), 2)}</td>
-          </tr>
-        """
     trend_chart = chart_block(
         f"trend-{slugify(country)}",
         "line",
@@ -1037,7 +1027,7 @@ def render_country_report(country: str) -> str:
             </thead>
             <tbody>{table_rows}</tbody>
           </table>
-          <div class="callout">114 年 {shorten_country(country)} 市場前五校合計已有 {fmt_int(sum(item['latest'] for item in latest_top[:5]))} 人。若前段學校的增量與成長率長期都高於義守，就代表競爭對手正在更快地吃下新增量。</div>
+          <div class="callout">114 年 {shorten_country(country)} 市場前五校合計已有 {fmt_int(sum(item['latest'] for item in latest_top[:5]))} 人。表格先列整體前十，再補列五所關注校（義守、靜宜、逢甲、文化、銘傳），避免重要競校因為不在前十而被忽略。</div>
         </div>
       </div>
     </section>
