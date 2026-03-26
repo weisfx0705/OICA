@@ -181,10 +181,10 @@
     .hn-card:hover .hn-arrow { transform: translateY(4px); color:rgba(255,255,255,.9); }
 
     @media(max-width:760px) {
-      .hero-nav { grid-template-columns: repeat(3,1fr); }
-      .hero-nav .hn-card:nth-child(4),
-      .hero-nav .hn-card:nth-child(5) { grid-column: span 1; }
-      .hero-nav .hn-card:nth-child(4) { margin-left:auto; }
+      .hero-nav { grid-template-columns: repeat(6, 1fr); }
+      .hero-nav .hn-card { grid-column: span 2; }
+      .hero-nav .hn-card:nth-child(4) { grid-column: 2 / span 2; grid-row: 2; }
+      .hero-nav .hn-card:nth-child(5) { grid-column: 4 / span 2; grid-row: 2; }
     }
     @media(max-width:480px) {
       .hero-nav { grid-template-columns: 1fr 1fr; }
