@@ -182,12 +182,21 @@
 
     @media(max-width:760px) {
       .hero-nav { grid-template-columns: repeat(6, 1fr); }
-      .hero-nav .hn-card { grid-column: span 2; }
+      .hero-nav .hn-card            { grid-column: span 2; grid-row: auto; }
       .hero-nav .hn-card:nth-child(4) { grid-column: 2 / span 2; grid-row: 2; }
       .hero-nav .hn-card:nth-child(5) { grid-column: 4 / span 2; grid-row: 2; }
     }
     @media(max-width:480px) {
-      .hero-nav { grid-template-columns: 1fr 1fr; }
+      .hero-nav { grid-template-columns: 1fr 1fr; gap: 12px; }
+      /* 完全重置所有卡片，回到正常 auto-flow */
+      .hero-nav .hn-card            { grid-column: span 1 !important; grid-row: auto !important; }
+      /* 第 5 張卡（生活須知）佔滿整行，視覺寬度限制在 50% 並置中 */
+      .hero-nav .hn-card:nth-child(5) {
+        grid-column: 1 / -1 !important;
+        grid-row: auto !important;
+        justify-self: center;
+        width: calc(50% - 6px);
+      }
     }
 
     /* ══════════════ STICKY NAV ══════════════ */
