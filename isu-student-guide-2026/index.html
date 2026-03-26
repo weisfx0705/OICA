@@ -3,367 +3,459 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>義守大學國際專修部 · Hướng dẫn sinh viên · Student Guide 2026</title>
+  <title>義守大學國際專修部 · 2026 新生手冊</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Sans:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <style>
+    /* ══════════════ TOKENS ══════════════ */
     :root {
-      --primary: #c0392b;
-      --primary-dark: #922b21;
-      --accent: #2471a3;
-      --accent-light: #d6eaf8;
-      --gold: #d4ac0d;
-      --green: #1e8449;
-      --green-light: #d5f5e3;
-      --orange: #ca6f1e;
-      --orange-light: #fdebd0;
-      --bg: #f5f6f8;
-      --card: #ffffff;
-      --text: #1c2b33;
-      --text-muted: #5d6d7e;
-      --border: #e5e8ec;
-      --shadow: 0 2px 16px rgba(0,0,0,0.08);
-      --radius: 12px;
+      --red:        #c0392b;
+      --red-dark:   #922b21;
+      --red-light:  #fdf1f0;
+      --blue:       #1a5fa8;
+      --blue-dark:  #154e8f;
+      --blue-light: #dbeafe;
+      --green:      #1a7a40;
+      --green-light:#d1fae5;
+      --gold:       #b7860b;
+      --gold-light: #fef3c7;
+      --purple:     #6d28d9;
+      --purple-light:#ede9fe;
+      --bg:         #f0f2f5;
+      --surface:    #ffffff;
+      --text:       #0f1c26;
+      --muted:      #5a6a7a;
+      --border:     #dde1e7;
+      --radius-sm:  8px;
+      --radius:     16px;
+      --radius-lg:  24px;
+      --shadow-sm:  0 2px 8px rgba(0,0,0,.07);
+      --shadow:     0 4px 20px rgba(0,0,0,.10);
+      --shadow-lg:  0 12px 40px rgba(0,0,0,.14);
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ══════════════ RESET ══════════════ */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Noto Sans TC', 'Noto Sans', sans-serif;
+      font-family: 'Noto Sans TC','Noto Sans',sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.7;
+      line-height: 1.75;
+      font-size: 17px;
     }
 
-    /* ── OICA TOPBAR ── */
-    .oica-bar {
-      background: #1a1a2e;
-      padding: 0 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      min-height: 56px;
-      flex-wrap: wrap;
+    /* ══════════════ SCROLL PROGRESS ══════════════ */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 4px;
+      background: linear-gradient(90deg,var(--red),#e74c3c,#f39c12);
+      width: 0%; z-index: 9999; transition: width .1s linear;
+    }
+
+    /* ══════════════ TOPBAR ══════════════ */
+    .topbar {
+      background: #0f1c26;
+      padding: 0 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; min-height: 54px; flex-wrap: wrap;
+      position: relative; z-index: 200;
     }
     .oica-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 12px;
       text-decoration: none;
     }
-    .oica-logo-wrap {
-      width: 42px; height: 42px;
-      background: #fff;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      flex-shrink: 0;
+    .oica-logo {
+      width: 40px; height: 40px; background:#fff;
+      border-radius: 8px; display:flex; align-items:center; justify-content:center;
+      overflow:hidden; flex-shrink:0;
     }
-    .oica-logo-wrap img {
-      width: 38px; height: 38px;
-      object-fit: contain;
-    }
-    .oica-logo-text {
-      display: flex;
-      flex-direction: column;
-    }
-    .oica-logo-text .name-zh {
-      font-size: 13px;
-      font-weight: 700;
-      color: #fff;
-      line-height: 1.3;
-    }
-    .oica-logo-text .name-en {
-      font-size: 10px;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.3;
-    }
-    .oica-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 0;
-    }
+    .oica-logo img { width:36px; height:36px; object-fit:contain; }
+    .brand-text { display:flex; flex-direction:column; }
+    .brand-text .b1 { font-size:13px; font-weight:800; color:#fff; line-height:1.25; }
+    .brand-text .b2 { font-size:10px; color:rgba(255,255,255,.5); line-height:1.3; }
+    .topbar-right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; padding:6px 0; }
     .oica-link {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 12px;
-      padding: 4px 10px;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 14px;
-      transition: all .2s;
-      white-space: nowrap;
+      color:rgba(255,255,255,.7); text-decoration:none;
+      font-size:12px; font-weight:600;
+      padding:4px 12px; border:1px solid rgba(255,255,255,.2);
+      border-radius:20px; transition:all .2s; white-space:nowrap;
     }
-    .oica-link:hover { background: rgba(255,255,255,0.15); color: #fff; }
-    .lang-sep { color: rgba(255,255,255,0.3); font-size: 11px; }
+    .oica-link:hover { background:rgba(255,255,255,.15); color:#fff; }
+    .sep { color:rgba(255,255,255,.25); font-size:11px; }
     .lang-btn {
-      background: transparent;
-      border: 1.5px solid rgba(255,255,255,0.35);
-      color: rgba(255,255,255,0.8);
-      padding: 4px 12px;
-      border-radius: 18px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      transition: all .2s;
+      background:transparent; border:1.5px solid rgba(255,255,255,.3);
+      color:rgba(255,255,255,.75); padding:4px 13px;
+      border-radius:20px; cursor:pointer; font-size:12px; font-weight:700;
+      transition:all .2s;
     }
     .lang-btn.active, .lang-btn:hover {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
+      background:var(--red); color:#fff; border-color:var(--red);
     }
 
-    /* ── HERO ── */
+    /* ══════════════ HERO ══════════════ */
     .hero {
-      background: linear-gradient(140deg, #1a1a2e 0%, var(--primary-dark) 40%, var(--primary) 80%, #e74c3c 100%);
-      color: #fff;
-      padding: 56px 24px 48px;
+      background: linear-gradient(145deg, #0f1c26 0%, #1b2e40 40%, #922b21 80%, #c0392b 100%);
+      padding: 72px 28px 60px;
       text-align: center;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
-    .hero::before {
-      content: '';
-      position: absolute; top: -80px; right: -60px;
-      width: 380px; height: 380px;
-      background: rgba(255,255,255,0.05); border-radius: 50%;
+    .hero-circles span {
+      position:absolute; border-radius:50%;
+      background:rgba(255,255,255,.05);
+      pointer-events:none;
     }
-    .hero::after {
-      content: '';
-      position: absolute; bottom: -80px; left: -50px;
-      width: 280px; height: 280px;
-      background: rgba(255,255,255,0.04); border-radius: 50%;
-    }
-    .hero-badge {
-      display: inline-block;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.35);
-      border-radius: 20px;
-      padding: 5px 18px;
-      font-size: 13px;
-      letter-spacing: .5px;
-      margin-bottom: 18px;
-      position: relative; z-index: 1;
+    .hero-circles span:nth-child(1) { width:500px;height:500px; top:-180px;right:-120px; }
+    .hero-circles span:nth-child(2) { width:300px;height:300px; bottom:-100px;left:-80px; }
+    .hero-circles span:nth-child(3) { width:180px;height:180px; top:40%;left:10%; }
+    .hero-eyebrow {
+      display:inline-flex; align-items:center; gap:8px;
+      background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);
+      border-radius:30px; padding:7px 20px;
+      font-size:14px; color:rgba(255,255,255,.9); font-weight:600;
+      margin-bottom:24px; position:relative; z-index:1;
     }
     .hero h1 {
-      font-size: clamp(1.8rem, 4vw, 2.9rem);
-      font-weight: 700;
-      line-height: 1.3;
-      margin-bottom: 14px;
-      position: relative; z-index: 1;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      position:relative; z-index:1;
+      letter-spacing: -0.02em;
     }
-    .hero p {
-      font-size: 1rem;
-      opacity: .88;
-      max-width: 580px;
-      margin: 0 auto 28px;
-      position: relative; z-index: 1;
-    }
-    .hero-tags {
-      display: flex; flex-wrap: wrap;
-      gap: 8px; justify-content: center;
-      position: relative; z-index: 1;
-    }
-    .hero-tag {
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.28);
-      border-radius: 8px; padding: 6px 14px; font-size: 13px;
+    .hero h1 em { font-style:normal; color:#f9ca24; }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: rgba(255,255,255,.82);
+      max-width: 600px; margin: 0 auto 48px;
+      position:relative; z-index:1;
+      line-height: 1.8;
     }
 
-    /* ── NAV ── */
+    /* ── HERO QUICK-NAV CARDS ── */
+    .hero-nav {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+    .hn-card {
+      background: rgba(255,255,255,.10);
+      border: 1.5px solid rgba(255,255,255,.22);
+      border-radius: var(--radius);
+      padding: 22px 14px;
+      text-decoration: none;
+      color: #fff;
+      cursor: pointer;
+      transition: background .25s, transform .25s, border-color .25s, box-shadow .25s;
+      display: flex; flex-direction:column;
+      align-items:center; gap:10px;
+      backdrop-filter: blur(6px);
+    }
+    .hn-card:hover {
+      background: rgba(255,255,255,.22);
+      border-color: rgba(255,255,255,.6);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,.25);
+    }
+    .hn-card:active { transform: translateY(-2px); }
+    .hn-icon { font-size: 2.6rem; line-height:1; }
+    .hn-label {
+      font-size: clamp(.8rem,1.6vw,1rem);
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.35;
+    }
+    .hn-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,.6);
+      text-align:center;
+      line-height:1.4;
+    }
+    .hn-arrow {
+      font-size: 18px; color:rgba(255,255,255,.5);
+      transition: transform .2s;
+    }
+    .hn-card:hover .hn-arrow { transform: translateY(4px); color:rgba(255,255,255,.9); }
+
+    @media(max-width:760px) {
+      .hero-nav { grid-template-columns: repeat(3,1fr); }
+      .hero-nav .hn-card:nth-child(4),
+      .hero-nav .hn-card:nth-child(5) { grid-column: span 1; }
+      .hero-nav .hn-card:nth-child(4) { margin-left:auto; }
+    }
+    @media(max-width:480px) {
+      .hero-nav { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ══════════════ STICKY NAV ══════════════ */
     nav {
-      background: var(--card);
+      background: var(--surface);
       border-bottom: 2px solid var(--border);
-      position: sticky; top: 0; z-index: 100;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: sticky; top: 0; z-index: 150;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
     }
     .nav-inner {
-      max-width: 1120px; margin: 0 auto; padding: 0 16px;
-      display: flex; overflow-x: auto; scrollbar-width: none;
+      max-width: 1100px; margin:0 auto;
+      display:flex; overflow-x:auto; scrollbar-width:none;
+      padding: 0 16px;
     }
-    .nav-inner::-webkit-scrollbar { display: none; }
+    .nav-inner::-webkit-scrollbar { display:none; }
     .nav-link {
-      white-space: nowrap; padding: 15px 16px;
-      font-size: 13.5px; font-weight: 600;
-      color: var(--text-muted); text-decoration: none;
+      white-space:nowrap; padding:15px 18px;
+      font-size: 14px; font-weight: 700;
+      color: var(--muted); text-decoration:none;
       border-bottom: 3px solid transparent;
-      transition: all .2s; display: flex; align-items: center; gap: 5px;
+      transition: color .2s, border-color .2s;
+      display:flex; align-items:center; gap:6px;
     }
-    .nav-link:hover, .nav-link.active {
-      color: var(--primary); border-bottom-color: var(--primary);
+    .nav-link:hover { color:var(--red); }
+    .nav-link.active { color:var(--red); border-bottom-color:var(--red); }
+
+    /* ══════════════ MAIN ══════════════ */
+    main { max-width: 1100px; margin:0 auto; padding: 56px 24px 80px; }
+    section { margin-bottom: 80px; }
+
+    /* ══════════════ SECTION HEADER ══════════════ */
+    .sec-head {
+      display:flex; align-items:flex-start; gap:20px;
+      margin-bottom: 36px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+    }
+    .sec-num {
+      font-size: .75rem; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 2px;
+      color: var(--red); margin-bottom: 4px;
+    }
+    .sec-icon-box {
+      font-size: 2.8rem; line-height:1;
+      width:72px; height:72px;
+      border-radius: 20px;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .sec-head-text h2 {
+      font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      margin-bottom: 6px;
+    }
+    .sec-head-text .sub {
+      font-size: 1rem; color: var(--muted); font-weight: 500;
     }
 
-    /* ── MAIN ── */
-    main { max-width: 1120px; margin: 0 auto; padding: 40px 20px 64px; }
-    section { margin-bottom: 64px; }
-
-    /* ── SECTION HEADER ── */
-    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; }
-    .section-icon {
-      width: 52px; height: 52px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; flex-shrink: 0;
+    /* ══════════════ INFO BOX ══════════════ */
+    .info-box {
+      border-radius: var(--radius);
+      padding: 22px 26px; margin-bottom: 22px;
+      border-left: 6px solid;
     }
-    .section-title h2 { font-size: 1.5rem; font-weight: 700; }
-    .section-title p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-
-    /* ── LINK BUTTON ── */
-    .link-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: var(--accent-light); color: var(--accent);
-      border: 1px solid #aed6f1; border-radius: 8px;
-      padding: 6px 14px; font-size: 13px; font-weight: 600;
-      text-decoration: none; transition: all .2s; margin: 3px 4px 3px 0;
+    .info-box.green  { background:var(--green-light); border-color:var(--green); }
+    .info-box.blue   { background:var(--blue-light);  border-color:var(--blue); }
+    .info-box.red    { background:var(--red-light);   border-color:var(--red); }
+    .info-box.gold   { background:var(--gold-light);  border-color:var(--gold); }
+    .info-box.purple { background:var(--purple-light);border-color:var(--purple); }
+    .info-box h4 {
+      font-size: 1.1rem; font-weight: 800; margin-bottom: 12px;
     }
-    .link-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .link-btn.red { background: #fdf1f0; color: var(--primary); border-color: #f5b7b1; }
-    .link-btn.red:hover { background: var(--primary); color: #fff; }
-    .link-btn.green { background: var(--green-light); color: var(--green); border-color: #a9dfbf; }
-    .link-btn.green:hover { background: var(--green); color: #fff; }
-    .link-btn.gold { background: #fef9e7; color: #9a7d0a; border-color: #f9e79f; }
-    .link-btn.gold:hover { background: var(--gold); color: #fff; }
-    .link-btn.dark { background: #eaecee; color: #2c3e50; border-color: #ccd1d5; }
-    .link-btn.dark:hover { background: #2c3e50; color: #fff; }
-    .links-row { margin: 14px 0 4px; display: flex; flex-wrap: wrap; gap: 0; }
+    .info-box p, .info-box li {
+      font-size: .95rem; line-height: 1.8;
+    }
+    .info-box ul { padding-left: 20px; }
+    .info-box li { margin-bottom: 6px; }
+    .info-box strong { font-weight: 800; }
 
-    /* ── CARDS ── */
+    /* ══════════════ CARDS GRID ══════════════ */
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
     }
     .card {
-      background: var(--card); border-radius: var(--radius);
-      padding: 22px; border: 1px solid var(--border);
-      box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s;
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 26px;
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      opacity: 0; transform: translateY(24px);
     }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.11); }
-    .card-icon { font-size: 26px; margin-bottom: 10px; }
-    .card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-    .card p, .card li { font-size: .875rem; color: var(--text-muted); line-height: 1.75; }
+    .card.visible {
+      opacity:1; transform:translateY(0);
+      transition: opacity .5s ease, transform .5s ease, box-shadow .25s, border-color .25s;
+    }
+    .card:hover {
+      transform: translateY(-5px) !important;
+      box-shadow: var(--shadow-lg);
+      border-color: var(--blue);
+    }
+    .card-icon { font-size: 2.2rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 12px; }
+    .card p, .card li { font-size: .9rem; color: var(--muted); line-height: 1.8; }
     .card ul { padding-left: 18px; }
-    .card li { margin-bottom: 4px; }
-    .card .card-links { margin-top: 12px; }
+    .card li { margin-bottom: 5px; }
+    .card li strong { color: var(--text); font-weight: 700; }
+    .card .card-links { margin-top: 16px; display:flex; flex-wrap:wrap; gap:6px; }
 
-    /* ── INFO BOX ── */
-    .info-box {
-      border-radius: var(--radius); padding: 18px 22px;
-      margin-bottom: 18px; border-left: 5px solid;
+    /* ══════════════ LINK BUTTON ══════════════ */
+    .btn {
+      display:inline-flex; align-items:center; gap:5px;
+      padding: 7px 15px; border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 700;
+      text-decoration: none; border: 1.5px solid;
+      transition: all .2s; cursor:pointer;
     }
-    .info-box.blue { background: #eaf4fb; border-color: var(--accent); }
-    .info-box.red { background: #fdf1f0; border-color: var(--primary); }
-    .info-box.green { background: var(--green-light); border-color: var(--green); }
-    .info-box.orange { background: var(--orange-light); border-color: var(--orange); }
-    .info-box.gold { background: #fef9e7; border-color: var(--gold); }
-    .info-box h4 { font-size: .95rem; font-weight: 700; margin-bottom: 8px; }
-    .info-box p, .info-box li { font-size: .875rem; line-height: 1.75; }
-    .info-box ul { padding-left: 18px; }
-    .info-box li { margin-bottom: 4px; }
+    .btn-blue   { background:var(--blue-light);  color:var(--blue);  border-color:#93c5fd; }
+    .btn-blue:hover   { background:var(--blue);   color:#fff; border-color:var(--blue); }
+    .btn-green  { background:var(--green-light); color:var(--green); border-color:#6ee7b7; }
+    .btn-green:hover  { background:var(--green);  color:#fff; border-color:var(--green); }
+    .btn-red    { background:var(--red-light);   color:var(--red);   border-color:#fca5a5; }
+    .btn-red:hover    { background:var(--red);    color:#fff; border-color:var(--red); }
+    .btn-gold   { background:var(--gold-light);  color:var(--gold);  border-color:#fcd34d; }
+    .btn-gold:hover   { background:var(--gold);   color:#fff; border-color:var(--gold); }
+    .btn-dark   { background:#f1f3f5; color:#2c3e50; border-color:#d0d7de; }
+    .btn-dark:hover   { background:#2c3e50; color:#fff; border-color:#2c3e50; }
+    .btn-purple { background:var(--purple-light);color:var(--purple);border-color:#c4b5fd; }
+    .btn-purple:hover { background:var(--purple); color:#fff; border-color:var(--purple); }
+    .links-row { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
 
-    /* ── TIMELINE ── */
-    .timeline { position: relative; padding-left: 34px; }
+    /* ══════════════ ALERT ══════════════ */
+    .alert {
+      display:flex; gap:14px; align-items:flex-start;
+      background:var(--red-light); border:1.5px solid #fca5a5;
+      border-radius: var(--radius); padding:18px 22px; margin:18px 0;
+    }
+    .alert-icon { font-size:1.8rem; flex-shrink:0; margin-top:2px; }
+    .alert-body h4 { font-size:1rem; font-weight:800; color:var(--red); margin-bottom:6px; }
+    .alert-body p { font-size:.9rem; color:#7f1d1d; line-height:1.75; }
+    .alert-body strong { font-weight:800; }
+
+    /* ══════════════ TIMELINE ══════════════ */
+    .timeline { padding-left: 40px; position:relative; }
     .timeline::before {
-      content: ''; position: absolute; left: 11px; top: 8px; bottom: 8px;
-      width: 2px; background: linear-gradient(to bottom, var(--primary), var(--accent));
+      content:''; position:absolute; left:14px; top:10px; bottom:10px;
+      width:3px; border-radius:3px;
+      background: linear-gradient(to bottom, var(--red), var(--blue));
     }
     .tl-item {
-      position: relative; margin-bottom: 20px;
-      background: var(--card); border-radius: var(--radius);
-      padding: 18px 20px; border: 1px solid var(--border); box-shadow: var(--shadow);
+      position:relative; margin-bottom:22px;
+      background:var(--surface); border-radius:var(--radius);
+      padding:22px 24px; border:1.5px solid var(--border);
+      box-shadow:var(--shadow-sm);
+      transition: transform .2s, box-shadow .2s;
     }
+    .tl-item:hover { transform:translateX(4px); box-shadow:var(--shadow); }
     .tl-item::before {
-      content: ''; position: absolute; left: -28px; top: 20px;
-      width: 14px; height: 14px; border-radius: 50%;
-      background: var(--primary); border: 2px solid #fff;
-      box-shadow: 0 0 0 2px var(--primary);
+      content:''; position:absolute; left:-31px; top:24px;
+      width:16px; height:16px; border-radius:50%;
+      background:var(--red); border:3px solid #fff;
+      box-shadow:0 0 0 2px var(--red);
     }
-    .tl-step { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--primary); margin-bottom: 4px; }
-    .tl-item h3 { font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
-    .tl-item p { font-size: .875rem; color: var(--text-muted); }
+    .tl-step { font-size:.75rem; font-weight:900; text-transform:uppercase; letter-spacing:1px; color:var(--red); margin-bottom:6px; }
+    .tl-item h3 { font-size:1.1rem; font-weight:800; margin-bottom:8px; }
+    .tl-item p { font-size:.9rem; color:var(--muted); line-height:1.75; }
 
-    /* ── TABLE ── */
-    .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); }
-    table { width: 100%; border-collapse: collapse; background: var(--card); }
-    th { background: var(--primary); color: #fff; padding: 12px 16px; font-size: .875rem; font-weight: 600; text-align: left; }
-    td { padding: 11px 16px; font-size: .875rem; border-top: 1px solid var(--border); }
-    tr:hover td { background: #fafafa; }
-    .badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
-    .badge-green { background: #d5f5e3; color: var(--green); }
-    .badge-red { background: #fdf1f0; color: var(--primary); }
-    .badge-blue { background: var(--accent-light); color: var(--accent); }
-    .badge-gold { background: #fef9e7; color: #9a7d0a; }
-
-    /* ── ALERT ── */
-    .alert {
-      display: flex; gap: 12px; align-items: flex-start;
-      background: #fdf1f0; border: 1px solid #f1948a;
-      border-radius: 10px; padding: 14px 18px; margin-top: 14px;
+    /* ══════════════ TABLE ══════════════ */
+    .table-wrap { overflow-x:auto; border-radius:var(--radius); border:1.5px solid var(--border); box-shadow:var(--shadow-sm); margin-bottom:22px; }
+    table { width:100%; border-collapse:collapse; background:var(--surface); }
+    th {
+      background:var(--red); color:#fff;
+      padding:14px 18px; font-size:.9rem; font-weight:800; text-align:left;
     }
-    .alert-icon { font-size: 20px; flex-shrink: 0; }
-    .alert p { font-size: .875rem; color: #922b21; }
+    td { padding:13px 18px; font-size:.9rem; border-top:1px solid var(--border); }
+    tr:hover td { background:#fafafa; }
+    .badge { display:inline-block; padding:3px 12px; border-radius:20px; font-size:12.5px; font-weight:700; }
+    .badge-green  { background:var(--green-light); color:var(--green); }
+    .badge-red    { background:var(--red-light);   color:var(--red); }
+    .badge-blue   { background:var(--blue-light);  color:var(--blue); }
+    .badge-gold   { background:var(--gold-light);  color:var(--gold); }
 
-    /* ── CONTACT ── */
-    .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    /* ══════════════ SECTION DIVIDER ══════════════ */
+    .sec-divider {
+      height:6px; border-radius:3px;
+      margin-bottom: 38px;
+      background: linear-gradient(90deg, var(--col-a), var(--col-b));
+    }
+
+    /* ══════════════ CONTACT GRID ══════════════ */
+    .contact-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:18px; }
     .contact-card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 22px 20px;
-      box-shadow: var(--shadow); transition: transform .2s, box-shadow .2s;
+      background:var(--surface); border:1.5px solid var(--border);
+      border-radius:var(--radius); padding:24px 22px;
+      box-shadow:var(--shadow-sm);
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      opacity: 0; transform: translateY(20px);
     }
-    .contact-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
-    .contact-card .c-icon { font-size: 30px; margin-bottom: 10px; }
-    .contact-card h4 { font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
-    .contact-card p { font-size: .85rem; color: var(--text-muted); margin-bottom: 10px; line-height: 1.6; }
+    .contact-card.visible {
+      opacity:1; transform:translateY(0);
+      transition: opacity .5s ease, transform .5s ease, box-shadow .25s, border-color .25s;
+    }
+    .contact-card:hover { transform:translateY(-4px)!important; box-shadow:var(--shadow-lg); border-color:var(--blue); }
+    .contact-card .c-icon { font-size:2.2rem; margin-bottom:12px; }
+    .contact-card h4 { font-size:1.05rem; font-weight:800; margin-bottom:8px; }
+    .contact-card p { font-size:.87rem; color:var(--muted); margin-bottom:14px; line-height:1.7; }
 
-    /* ── FOOTER ── */
+    /* ══════════════ SUB HEADING ══════════════ */
+    .sub-heading {
+      font-size: 1.25rem; font-weight: 800; color: var(--blue);
+      margin: 32px 0 16px;
+      display:flex; align-items:center; gap:8px;
+    }
+
+    /* ══════════════ FOOTER ══════════════ */
     footer {
-      background: #1a1a2e; color: rgba(255,255,255,0.65);
-      text-align: center; padding: 28px 20px; font-size: .85rem;
+      background:#0f1c26; color:rgba(255,255,255,.55);
+      text-align:center; padding:30px 24px; font-size:.875rem;
     }
-    footer a { color: rgba(255,255,255,0.55); text-decoration: underline; }
+    footer a { color:rgba(255,255,255,.5); text-decoration:underline; }
 
-    /* ── LANG ── */
-    [data-lang] { display: none; }
-    .lang-zh [data-lang="zh"] { display: revert; }
-    .lang-vi [data-lang="vi"] { display: revert; }
-    .lang-en [data-lang="en"] { display: revert; }
+    /* ══════════════ LANG TOGGLE ══════════════ */
+    [data-lang] { display:none; }
+    .lang-zh [data-lang="zh"] { display:revert; }
+    .lang-vi [data-lang="vi"] { display:revert; }
+    .lang-en [data-lang="en"] { display:revert; }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 680px) {
-      .hero { padding: 36px 16px 32px; }
-      .cards { grid-template-columns: 1fr; }
-      .oica-bar { padding: 6px 14px; }
-      .oica-right { gap: 6px; }
+    /* ══════════════ RESPONSIVE ══════════════ */
+    @media(max-width:640px) {
+      body { font-size:16px; }
+      .hero { padding:48px 18px 44px; }
+      .cards { grid-template-columns:1fr; }
+      .sec-head { gap:14px; }
+      .sec-icon-box { width:56px; height:56px; font-size:2.2rem; }
+      main { padding:36px 16px 60px; }
     }
   </style>
 </head>
 <body class="lang-zh">
 
+<!-- ── SCROLL PROGRESS ── -->
+<div id="progress-bar"></div>
+
 <!-- ══════════════════════════════════════════
-     OICA TOPBAR
+     TOPBAR
 ══════════════════════════════════════════ -->
-<div class="oica-bar">
+<div class="topbar">
   <a class="oica-brand" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener">
-    <div class="oica-logo-wrap">
-      <img
-        src="https://www.isu.edu.tw/isu_logo.png"
-        alt="ISU Logo"
-        onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:20px;font-weight:900;color:#c0392b;\'>ISU</span>';"
-      />
+    <div class="oica-logo">
+      <img src="https://www.isu.edu.tw/isu_logo.png" alt="ISU"
+           onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:17px;font-weight:900;color:#c0392b\'>ISU</span>';" />
     </div>
-    <div class="oica-logo-text">
-      <span class="name-zh" data-lang="zh">義守大學 國際及兩岸事務處</span>
-      <span class="name-vi" data-lang="vi" style="font-size:12px;font-weight:700;color:#fff;line-height:1.3;">ĐH I-Shou – Văn phòng Quốc tế (OICA)</span>
-      <span class="name-en" data-lang="en" style="font-size:12px;font-weight:700;color:#fff;line-height:1.3;">I-Shou University – Office of Int'l Affairs (OICA)</span>
-      <span class="name-en">Office of International &amp; Cross-Strait Affairs</span>
+    <div class="brand-text">
+      <span class="b1" data-lang="zh">義守大學 國際及兩岸事務處</span>
+      <span class="b1" data-lang="vi">ĐH I-Shou – Văn phòng Quốc tế (OICA)</span>
+      <span class="b1" data-lang="en">I-Shou University – Office of Int'l Affairs</span>
+      <span class="b2">oica.isu.edu.tw</span>
     </div>
   </a>
-  <div class="oica-right">
+  <div class="topbar-right">
     <a class="oica-link" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">OICA 官網</a>
     <a class="oica-link" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="en">OICA English</a>
     <a class="oica-link" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="vi">OICA English</a>
-    <span class="lang-sep">|</span>
+    <span class="sep">|</span>
     <button class="lang-btn active" onclick="setLang('zh',this)">中文</button>
     <button class="lang-btn" onclick="setLang('vi',this)">Tiếng Việt</button>
     <button class="lang-btn" onclick="setLang('en',this)">English</button>
@@ -374,39 +466,101 @@
      HERO
 ══════════════════════════════════════════ -->
 <header class="hero">
-  <div class="hero-badge">
-    <span data-lang="zh">🎓 2026 秋季班 · 國際專修部新生手冊</span>
-    <span data-lang="vi">🎓 Kỳ Thu 2026 · Sổ tay Tân Sinh viên Chương trình Dự bị</span>
-    <span data-lang="en">🎓 Fall 2026 · International Preparatory Program Orientation</span>
+  <div class="hero-circles" aria-hidden="true">
+    <span></span><span></span><span></span>
   </div>
+
+  <div class="hero-eyebrow">
+    🎓
+    <span data-lang="zh">2026 秋季班 · 義守大學國際專修部</span>
+    <span data-lang="vi">Kỳ Thu 2026 · Chương trình Dự bị Quốc tế ISU</span>
+    <span data-lang="en">Fall 2026 · I-Shou University International Preparatory Program</span>
+  </div>
+
   <h1>
-    <span data-lang="zh">就學須知<br>歡迎來到義守！</span>
-    <span data-lang="vi">Hướng Dẫn Nhập Học<br>Chào mừng đến I-Shou!</span>
-    <span data-lang="en">Student Orientation Guide<br>Welcome to I-Shou!</span>
+    <span data-lang="zh">新生<em>就學須知</em><br>歡迎來到義守！</span>
+    <span data-lang="vi">Hướng Dẫn<br><em>Tân Sinh Viên</em><br>Chào mừng đến ISU!</span>
+    <span data-lang="en">New Student<br><em>Orientation Guide</em><br>Welcome to I-Shou!</span>
   </h1>
-  <p>
-    <span data-lang="zh">涵蓋華語課程、獎助學金、台灣生活、居留證、合法打工等完整資訊，助您順利展開留台學習之旅。</span>
-    <span data-lang="vi">Bao gồm thông tin về khóa học tiếng Trung, học bổng, cuộc sống tại Đài Loan, giấy cư trú và quy định làm thêm hợp pháp.</span>
-    <span data-lang="en">Covering Chinese courses, scholarships, life in Taiwan, ARC, and legal work — everything you need to succeed at ISU.</span>
+
+  <p class="hero-sub">
+    <span data-lang="zh">點擊下方任一主題，立即跳轉至詳細說明 ↓</span>
+    <span data-lang="vi">Nhấp vào chủ đề bên dưới để chuyển đến nội dung chi tiết ↓</span>
+    <span data-lang="en">Click any topic below to jump directly to that section ↓</span>
   </p>
-  <div class="hero-tags">
-    <span class="hero-tag" data-lang="zh">📚 華語課程</span>
-    <span class="hero-tag" data-lang="zh">🎓 獎助學金</span>
-    <span class="hero-tag" data-lang="zh">🏠 生活須知</span>
-    <span class="hero-tag" data-lang="zh">📋 居留證</span>
-    <span class="hero-tag" data-lang="zh">💼 合法打工</span>
 
-    <span class="hero-tag" data-lang="vi">📚 Tiếng Trung</span>
-    <span class="hero-tag" data-lang="vi">🎓 Học Bổng</span>
-    <span class="hero-tag" data-lang="vi">🏠 Cuộc Sống</span>
-    <span class="hero-tag" data-lang="vi">📋 Giấy Cư Trú</span>
-    <span class="hero-tag" data-lang="vi">💼 Làm Thêm</span>
-
-    <span class="hero-tag" data-lang="en">📚 Chinese Courses</span>
-    <span class="hero-tag" data-lang="en">🎓 Scholarships</span>
-    <span class="hero-tag" data-lang="en">🏠 Daily Life</span>
-    <span class="hero-tag" data-lang="en">📋 ARC</span>
-    <span class="hero-tag" data-lang="en">💼 Legal Work</span>
+  <!-- QUICK NAV CARDS -->
+  <div class="hero-nav">
+    <a class="hn-card" href="#chinese">
+      <div class="hn-icon">📚</div>
+      <div class="hn-label">
+        <span data-lang="zh">華語課程</span>
+        <span data-lang="vi">Tiếng Trung</span>
+        <span data-lang="en">Chinese Courses</span>
+      </div>
+      <div class="hn-sub">
+        <span data-lang="zh">720 小時 · TOCFL</span>
+        <span data-lang="vi">720 giờ · TOCFL</span>
+        <span data-lang="en">720 hrs · TOCFL</span>
+      </div>
+      <div class="hn-arrow">↓</div>
+    </a>
+    <a class="hn-card" href="#scholarship">
+      <div class="hn-icon">🎓</div>
+      <div class="hn-label">
+        <span data-lang="zh">獎助學金</span>
+        <span data-lang="vi">Học Bổng</span>
+        <span data-lang="en">Scholarships</span>
+      </div>
+      <div class="hn-sub">
+        <span data-lang="zh">出席率 · TOCFL 等級</span>
+        <span data-lang="vi">Điểm danh · TOCFL</span>
+        <span data-lang="en">Attendance · TOCFL</span>
+      </div>
+      <div class="hn-arrow">↓</div>
+    </a>
+    <a class="hn-card" href="#life">
+      <div class="hn-icon">🏠</div>
+      <div class="hn-label">
+        <span data-lang="zh">生活須知</span>
+        <span data-lang="vi">Cuộc Sống</span>
+        <span data-lang="en">Daily Life</span>
+      </div>
+      <div class="hn-sub">
+        <span data-lang="zh">住宿 · 交通 · 健保</span>
+        <span data-lang="vi">Ký túc · Giao thông</span>
+        <span data-lang="en">Dorm · Transport · NHI</span>
+      </div>
+      <div class="hn-arrow">↓</div>
+    </a>
+    <a class="hn-card" href="#arc">
+      <div class="hn-icon">📋</div>
+      <div class="hn-label">
+        <span data-lang="zh">居留證</span>
+        <span data-lang="vi">Giấy Cư Trú</span>
+        <span data-lang="en">ARC</span>
+      </div>
+      <div class="hn-sub">
+        <span data-lang="zh">入境 15 天內申辦</span>
+        <span data-lang="vi">Trong 15 ngày nhập cảnh</span>
+        <span data-lang="en">Within 15 days of entry</span>
+      </div>
+      <div class="hn-arrow">↓</div>
+    </a>
+    <a class="hn-card" href="#work">
+      <div class="hn-icon">💼</div>
+      <div class="hn-label">
+        <span data-lang="zh">合法打工</span>
+        <span data-lang="vi">Làm Thêm</span>
+        <span data-lang="en">Legal Work</span>
+      </div>
+      <div class="hn-sub">
+        <span data-lang="zh">工作許可 · 每週 20 時</span>
+        <span data-lang="vi">Giấy phép · 20h/tuần</span>
+        <span data-lang="en">Work Permit · 20h/wk</span>
+      </div>
+      <div class="hn-arrow">↓</div>
+    </a>
   </div>
 </header>
 
@@ -448,210 +602,208 @@
   </div>
 </nav>
 
+<!-- ══════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════ -->
 <main>
 
-<!-- ══════════════════════════════
-     SECTION 1 · CHINESE COURSES
-══════════════════════════════ -->
+<!-- ══════════════ § 1 · CHINESE COURSES ══════════════ -->
 <section id="chinese">
-  <div class="section-header">
-    <div class="section-icon" style="background:#d5f5e3;">📚</div>
-    <div class="section-title">
+  <div style="--col-a:#1a7a40;--col-b:#1a5fa8;" class="sec-divider"></div>
+  <div class="sec-head">
+    <div class="sec-icon-box" style="background:var(--green-light);">📚</div>
+    <div class="sec-head-text">
+      <div class="sec-num">
+        <span data-lang="zh">01 · 華語先修課程</span>
+        <span data-lang="vi">01 · Khóa Tiếng Trung Dự Bị</span>
+        <span data-lang="en">01 · Chinese Preparatory Program</span>
+      </div>
       <h2>
-        <span data-lang="zh">華語先修課程</span>
-        <span data-lang="vi">Khóa Học Tiếng Trung Dự Bị</span>
-        <span data-lang="en">Chinese Language Preparatory Program</span>
+        <span data-lang="zh">修完 720 小時，<br>通過 TOCFL 才能升大一</span>
+        <span data-lang="vi">720 giờ học + TOCFL A2<br>mới được lên Năm 1</span>
+        <span data-lang="en">Complete 720 Hours &amp;<br>Pass TOCFL to Advance</span>
       </h2>
-      <p>
-        <span data-lang="zh">全年 720 小時 · 通過後升讀大一</span>
-        <span data-lang="vi">720 giờ/năm · Vượt qua để vào Năm 1 Đại học</span>
-        <span data-lang="en">720 hours/year · Pass to advance to Year 1</span>
+      <p class="sub">
+        <span data-lang="zh">先修期間不得轉系或轉學，出席率直接決定獎學金</span>
+        <span data-lang="vi">Không được chuyển ngành trong năm dự bị. Điểm danh quyết định học bổng.</span>
+        <span data-lang="en">No transfers during prep year. Attendance determines your scholarship.</span>
       </p>
     </div>
   </div>
 
   <div class="info-box green">
     <h4>
-      <span data-lang="zh">🎯 升學條件（兩項缺一不可）</span>
-      <span data-lang="vi">🎯 Điều kiện thăng cấp (cần ĐỦ CẢ HAI)</span>
-      <span data-lang="en">🎯 Advancement Requirements (Both Are Required)</span>
+      <span data-lang="zh">🎯 升學條件 — 兩項缺一不可</span>
+      <span data-lang="vi">🎯 Điều kiện thăng cấp — CẦN ĐỦ CẢ HAI</span>
+      <span data-lang="en">🎯 Advancement Requirements — Both Are Mandatory</span>
     </h4>
     <ul>
-      <li data-lang="zh"><strong>①</strong> 取得「華語先修課程結業證書」：每學期成績及格，且出席率達 <strong>2/3 以上</strong>。</li>
-      <li data-lang="zh"><strong>②</strong> 通過 <strong>TOCFL 華語文能力測驗聽力與閱讀基礎級 A2（含以上）</strong>。</li>
-      <li data-lang="zh">未達條件者將予退學並安排離境，請認真學習！</li>
-      <li data-lang="vi"><strong>①</strong> Hoàn thành "Chứng chỉ Khóa học Tiếng Trung Dự bị": Điểm đạt mỗi học kỳ, tỷ lệ điểm danh <strong>từ 2/3 trở lên</strong>.</li>
-      <li data-lang="vi"><strong>②</strong> Đạt kết quả <strong>TOCFL Nghe và Đọc cấp độ A2 trở lên</strong>.</li>
-      <li data-lang="vi">Không đáp ứng sẽ bị buộc thôi học và phải về nước. Hãy học thật chăm chỉ!</li>
-      <li data-lang="en"><strong>①</strong> Obtain the "Chinese Language Preparatory Completion Certificate": Pass all courses with <strong>at least 2/3 attendance</strong> each semester.</li>
-      <li data-lang="en"><strong>②</strong> Pass the <strong>TOCFL Listening &amp; Reading test at Foundation Level A2 or above</strong>.</li>
-      <li data-lang="en">Failure to meet requirements results in expulsion. Study diligently!</li>
+      <li data-lang="zh"><strong>① 結業證書</strong>：每學期成績及格，且整體出席率達 <strong>2/3 以上</strong>。</li>
+      <li data-lang="zh"><strong>② TOCFL A2</strong>：通過華語文能力測驗聽力與閱讀<strong>基礎級 A2（含以上）</strong>。</li>
+      <li data-lang="zh">⛔ 未達條件者將予退學並安排離境，請認真備考！</li>
+      <li data-lang="vi"><strong>① Chứng chỉ hoàn thành</strong>: Điểm đạt mỗi học kỳ, tỷ lệ điểm danh <strong>từ 2/3 trở lên</strong>.</li>
+      <li data-lang="vi"><strong>② TOCFL A2</strong>: Đạt kết quả <strong>TOCFL Nghe &amp; Đọc cấp độ A2 trở lên</strong>.</li>
+      <li data-lang="vi">⛔ Không đáp ứng → bị đuổi học và phải về nước. Hãy học thật chăm!</li>
+      <li data-lang="en"><strong>① Completion Certificate</strong>: Pass all courses with at least <strong>2/3 overall attendance</strong> each semester.</li>
+      <li data-lang="en"><strong>② TOCFL A2</strong>: Pass the <strong>TOCFL Listening &amp; Reading at Foundation Level A2 or above</strong>.</li>
+      <li data-lang="en">⛔ Failure to meet requirements = expulsion. Study hard!</li>
     </ul>
     <div class="links-row">
-      <a class="link-btn green" href="https://tocfl.edu.tw/" target="_blank" rel="noopener">🔗 TOCFL 官網</a>
-      <a class="link-btn green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener">📝 TOCFL 線上報名</a>
-      <a class="link-btn green" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener">🏫 OICA 英文官網</a>
+      <a class="btn btn-green" href="https://tocfl.edu.tw/" target="_blank" rel="noopener">🌐 TOCFL 官網</a>
+      <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="zh">📝 線上報名</a>
+      <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="vi">📝 Đăng ký thi</a>
+      <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="en">📝 Register TOCFL</a>
     </div>
   </div>
 
   <div class="cards">
     <div class="card">
       <div class="card-icon">📅</div>
-      <h3>
-        <span data-lang="zh">課程概要</span>
-        <span data-lang="vi">Tổng quan Chương trình</span>
-        <span data-lang="en">Program Overview</span>
-      </h3>
+      <h3><span data-lang="zh">課程概要</span><span data-lang="vi">Tổng quan</span><span data-lang="en">Program Overview</span></h3>
       <ul>
         <li data-lang="zh">修業年限：<strong>1 學年（2 學期）</strong></li>
         <li data-lang="zh">總時數：<strong>720 小時</strong></li>
-        <li data-lang="zh">課程內容：聽說讀寫全方位華語訓練，兼含台灣文化課程。</li>
-        <li data-lang="zh">先修期間<strong>不得轉系或轉學</strong>。</li>
-        <li data-lang="vi">Thời gian học: <strong>1 năm học (2 học kỳ)</strong></li>
-        <li data-lang="vi">Tổng số giờ: <strong>720 giờ</strong></li>
-        <li data-lang="vi">Nội dung: 4 kỹ năng nghe, nói, đọc, viết + văn hóa Đài Loan.</li>
-        <li data-lang="vi">Không được <strong>chuyển ngành hoặc chuyển trường</strong> trong thời gian dự bị.</li>
+        <li data-lang="zh">聽說讀寫全方位訓練 + 台灣文化課程</li>
+        <li data-lang="zh">先修期間<strong>不得轉系或轉學</strong></li>
+        <li data-lang="vi">Thời gian: <strong>1 năm (2 học kỳ)</strong></li>
+        <li data-lang="vi">Tổng giờ: <strong>720 giờ</strong></li>
+        <li data-lang="vi">4 kỹ năng nghe, nói, đọc, viết + văn hóa Đài Loan</li>
+        <li data-lang="vi">Không được <strong>chuyển ngành hoặc chuyển trường</strong></li>
         <li data-lang="en">Duration: <strong>1 academic year (2 semesters)</strong></li>
-        <li data-lang="en">Total hours: <strong>720 hours</strong></li>
-        <li data-lang="en">Content: Listening, speaking, reading, writing + Taiwanese culture.</li>
-        <li data-lang="en"><strong>No transfers</strong> allowed during the preparatory year.</li>
+        <li data-lang="en">Total: <strong>720 hours</strong></li>
+        <li data-lang="en">Full listening, speaking, reading, writing + Taiwanese culture</li>
+        <li data-lang="en"><strong>No transfers</strong> to other programs during prep year</li>
       </ul>
       <div class="card-links">
-        <a class="link-btn" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 OICA 中文官網</a>
-        <a class="link-btn" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="vi">🔗 Trang web OICA</a>
-        <a class="link-btn" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="en">🔗 OICA Website</a>
+        <a class="btn btn-blue" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 OICA 官網</a>
+        <a class="btn btn-blue" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="en">🔗 OICA Website</a>
+        <a class="btn btn-blue" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="vi">🔗 Trang OICA</a>
       </div>
     </div>
 
     <div class="card">
       <div class="card-icon">📊</div>
-      <h3>
-        <span data-lang="zh">出缺勤規定</span>
-        <span data-lang="vi">Quy định Điểm danh</span>
-        <span data-lang="en">Attendance Rules</span>
-      </h3>
+      <h3><span data-lang="zh">出缺勤規定</span><span data-lang="vi">Quy định Điểm danh</span><span data-lang="en">Attendance Rules</span></h3>
       <ul>
-        <li data-lang="zh">未請假缺席視為<strong>曠課</strong>。</li>
-        <li data-lang="zh">任一科目累計缺(曠)課達 <strong>1/3 總時數</strong>，取消期末考資格。</li>
-        <li data-lang="zh">每學期整體出席率需達 <strong>2/3 以上</strong>方可取得結業證書。</li>
-        <li data-lang="zh">出席率直接影響大一獎助學金，請特別重視！</li>
-        <li data-lang="vi">Vắng mặt không phép tính là <strong>vắng học không có lý do</strong>.</li>
-        <li data-lang="vi">Vắng quá <strong>1/3 tổng số giờ</strong> của một môn → bị hủy thi cuối kỳ.</li>
-        <li data-lang="vi">Tỷ lệ điểm danh toàn học kỳ phải <strong>từ 2/3 trở lên</strong> để được nhận chứng chỉ.</li>
-        <li data-lang="vi">Tỷ lệ điểm danh ảnh hưởng trực tiếp đến học bổng năm nhất!</li>
-        <li data-lang="en">Absence without leave = <strong>truancy</strong>.</li>
-        <li data-lang="en">Absences exceeding <strong>1/3 of a course's hours</strong> → disqualified from final exam.</li>
-        <li data-lang="en">Overall attendance must be <strong>2/3 or above</strong> for the completion certificate.</li>
-        <li data-lang="en">Attendance directly affects Year 1 scholarships — take it seriously!</li>
+        <li data-lang="zh">未請假缺席 = <strong>曠課</strong></li>
+        <li data-lang="zh">單科缺(曠)課 ≥ <strong>1/3 總時數</strong> → 取消期末考資格</li>
+        <li data-lang="zh">整體出席率 &lt; <strong>2/3</strong> → 無法取得結業證書</li>
+        <li data-lang="zh">⚠️ 出席率也直接影響大一獎學金！</li>
+        <li data-lang="vi">Vắng không phép = <strong>vắng học không lý do</strong></li>
+        <li data-lang="vi">Vắng ≥ <strong>1/3 tổng giờ</strong> của một môn → hủy thi cuối kỳ</li>
+        <li data-lang="vi">Điểm danh toàn kỳ &lt; <strong>2/3</strong> → không được nhận chứng chỉ</li>
+        <li data-lang="vi">⚠️ Điểm danh cũng ảnh hưởng trực tiếp học bổng năm 1!</li>
+        <li data-lang="en">Absence without leave = <strong>truancy</strong></li>
+        <li data-lang="en">≥ <strong>1/3 absences</strong> in any course → final exam disqualified</li>
+        <li data-lang="en">Overall attendance &lt; <strong>2/3</strong> → no completion certificate</li>
+        <li data-lang="en">⚠️ Attendance directly affects Year 1 scholarships!</li>
       </ul>
       <div class="card-links">
-        <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="zh">💻 應用資訊系統（請假）</a>
-        <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="vi">💻 Hệ thống xin nghỉ phép</a>
-        <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="en">💻 Leave Application System</a>
+        <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="zh">💻 應用資訊系統（請假）</a>
+        <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="vi">💻 Hệ thống xin phép</a>
+        <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="en">💻 Leave Application</a>
       </div>
     </div>
 
     <div class="card">
       <div class="card-icon">🏆</div>
-      <h3>
-        <span data-lang="zh">TOCFL 考試資訊</span>
-        <span data-lang="vi">Thông tin Kỳ thi TOCFL</span>
-        <span data-lang="en">TOCFL Exam Information</span>
-      </h3>
+      <h3><span data-lang="zh">TOCFL 考試資訊</span><span data-lang="vi">Kỳ thi TOCFL</span><span data-lang="en">TOCFL Exam Info</span></h3>
       <ul>
-        <li data-lang="zh">TOCFL 由台師大主辦，每年多場，可靈活選擇紙本或線上考試。</li>
-        <li data-lang="zh">最低門檻：<strong>A2</strong>；建議目標 <strong>B1 以上</strong>（可享更高住宿補助）。</li>
-        <li data-lang="zh">2026 起成績單全面改為<strong>數位版</strong>，可線上下載。</li>
-        <li data-lang="zh">考前需上傳大頭照，審核需 2 個工作日，請提早準備。</li>
-        <li data-lang="vi">TOCFL do ĐH Sư phạm Quốc gia Đài Loan tổ chức, nhiều đợt mỗi năm, có thi giấy và thi máy.</li>
-        <li data-lang="vi">Yêu cầu tối thiểu: <strong>A2</strong>; Khuyến khích đạt <strong>B1 trở lên</strong> (nhận hỗ trợ ký túc xá cao hơn).</li>
-        <li data-lang="vi">Từ 2026, bằng điểm TOCFL chuyển sang <strong>bản điện tử</strong>, tải về trực tuyến.</li>
-        <li data-lang="vi">Cần tải ảnh thẻ trước khi đăng ký, duyệt mất 2 ngày làm việc.</li>
-        <li data-lang="en">TOCFL is held multiple times a year by NTNU — paper-based and computer-based options.</li>
-        <li data-lang="en">Minimum: <strong>A2</strong>; Aim for <strong>B1 or above</strong> to get higher housing subsidies.</li>
-        <li data-lang="en">From 2026, all TOCFL score reports are <strong>digital only</strong>, downloadable online.</li>
-        <li data-lang="en">Upload a headshot before registering — approval takes ~2 working days.</li>
+        <li data-lang="zh">台師大主辦，每年多場，可選紙本或電腦考試</li>
+        <li data-lang="zh">最低門檻：<strong>A2</strong>；建議目標 <strong>B1 以上</strong>（更高住宿補助）</li>
+        <li data-lang="zh">2026 起成績單全面改為<strong>數位版</strong></li>
+        <li data-lang="zh">報名前需上傳大頭照，審核約 2 個工作日</li>
+        <li data-lang="vi">Do ĐHSP Quốc gia tổ chức, nhiều đợt/năm, có cả thi giấy và thi máy</li>
+        <li data-lang="vi">Tối thiểu: <strong>A2</strong>; Khuyến khích đạt <strong>B1 trở lên</strong></li>
+        <li data-lang="vi">Từ 2026, chứng chỉ TOCFL chuyển sang <strong>bản điện tử</strong></li>
+        <li data-lang="vi">Cần tải ảnh trước khi đăng ký, duyệt ~2 ngày làm việc</li>
+        <li data-lang="en">Organized by NTNU, multiple times/year, paper &amp; computer-based</li>
+        <li data-lang="en">Minimum: <strong>A2</strong>; Aim for <strong>B1 or above</strong> for higher housing subsidy</li>
+        <li data-lang="en">From 2026, all score reports are <strong>digital only</strong></li>
+        <li data-lang="en">Upload headshot before registering — ~2 working day approval</li>
       </ul>
       <div class="card-links">
-        <a class="link-btn green" href="https://tocfl.edu.tw/" target="_blank" rel="noopener">🌐 TOCFL 官網</a>
-        <a class="link-btn green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="zh">📝 線上報名</a>
-        <a class="link-btn green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="vi">📝 Đăng ký thi</a>
-        <a class="link-btn green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="en">📝 Register Online</a>
+        <a class="btn btn-green" href="https://tocfl.edu.tw/" target="_blank" rel="noopener">🌐 TOCFL 官網</a>
+        <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="zh">📝 報名系統</a>
+        <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="vi">📝 Đăng ký</a>
+        <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="en">📝 Register</a>
       </div>
     </div>
 
     <div class="card">
       <div class="card-icon">💻</div>
-      <h3>
-        <span data-lang="zh">校園線上系統</span>
-        <span data-lang="vi">Hệ thống Trực tuyến của Trường</span>
-        <span data-lang="en">Campus Online Systems</span>
-      </h3>
+      <h3><span data-lang="zh">校園線上系統</span><span data-lang="vi">Hệ thống Trực tuyến</span><span data-lang="en">Campus Online Systems</span></h3>
       <ul>
-        <li data-lang="zh"><strong>應用資訊系統</strong>：選課、繳費、請假、成績查詢。</li>
-        <li data-lang="zh"><strong>Moodle 平台</strong>：繳交作業、下載講義、線上學習。</li>
-        <li data-lang="zh">入學後由學校提供帳號，密碼更新後需 10–15 分鐘同步。</li>
-        <li data-lang="vi"><strong>Hệ thống thông tin ứng dụng</strong>: Đăng ký môn, nộp học phí, xin phép, xem điểm.</li>
-        <li data-lang="vi"><strong>Moodle</strong>: Nộp bài tập, tải tài liệu, học trực tuyến.</li>
-        <li data-lang="vi">Tài khoản cấp sau nhập học. Đổi mật khẩu cần 10–15 phút đồng bộ.</li>
-        <li data-lang="en"><strong>Information System</strong>: Course selection, fee payment, leave, grades.</li>
-        <li data-lang="en"><strong>Moodle</strong>: Submit assignments, download materials, e-learning.</li>
-        <li data-lang="en">Accounts issued upon enrollment. Password changes sync in 10–15 minutes.</li>
+        <li data-lang="zh"><strong>應用資訊系統</strong>：選課・繳費・請假・成績查詢</li>
+        <li data-lang="zh"><strong>Moodle 平台</strong>：繳交作業・下載講義・線上學習</li>
+        <li data-lang="zh">密碼更新後需約 10–15 分鐘同步</li>
+        <li data-lang="vi"><strong>Hệ thống thông tin</strong>: Đăng ký môn, nộp phí, xin phép, xem điểm</li>
+        <li data-lang="vi"><strong>Moodle</strong>: Nộp bài tập, tải tài liệu, học trực tuyến</li>
+        <li data-lang="vi">Sau khi đổi mật khẩu cần 10–15 phút đồng bộ</li>
+        <li data-lang="en"><strong>Info System</strong>: Course selection, fee payment, leave, grades</li>
+        <li data-lang="en"><strong>Moodle</strong>: Submit assignments, download materials, e-learning</li>
+        <li data-lang="en">Password changes sync in ~10–15 minutes</li>
       </ul>
       <div class="card-links">
-        <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="zh">💻 應用資訊系統</a>
-        <a class="link-btn dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">📖 Moodle 平台</a>
-        <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="vi">💻 Hệ thống thông tin</a>
-        <a class="link-btn dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="vi">📖 Moodle</a>
-        <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="en">💻 Info System</a>
-        <a class="link-btn dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="en">📖 Moodle</a>
+        <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="zh">💻 應用資訊系統</a>
+        <a class="btn btn-dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">📖 Moodle</a>
+        <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="vi">💻 Hệ thống TT</a>
+        <a class="btn btn-dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="vi">📖 Moodle</a>
+        <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="en">💻 Info System</a>
+        <a class="btn btn-dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="en">📖 Moodle</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     SECTION 2 · SCHOLARSHIPS
-══════════════════════════════ -->
+<!-- ══════════════ § 2 · SCHOLARSHIPS ══════════════ -->
 <section id="scholarship">
-  <div class="section-header">
-    <div class="section-icon" style="background:#fef9e7;">🎓</div>
-    <div class="section-title">
+  <div style="--col-a:#b7860b;--col-b:#6d28d9;" class="sec-divider"></div>
+  <div class="sec-head">
+    <div class="sec-icon-box" style="background:var(--gold-light);">🎓</div>
+    <div class="sec-head-text">
+      <div class="sec-num">
+        <span data-lang="zh">02 · 獎助學金</span>
+        <span data-lang="vi">02 · Học Bổng</span>
+        <span data-lang="en">02 · Scholarships</span>
+      </div>
       <h2>
-        <span data-lang="zh">獎助學金</span>
-        <span data-lang="vi">Học Bổng</span>
-        <span data-lang="en">Scholarships</span>
+        <span data-lang="zh">先修期無獎學金<br>但出席率決定未來</span>
+        <span data-lang="vi">Không có học bổng<br>trong năm dự bị</span>
+        <span data-lang="en">No Scholarships<br>During Prep Year</span>
       </h2>
-      <p>
-        <span data-lang="zh">先修期無獎學金；升大一後依出席率與TOCFL成績核發</span>
-        <span data-lang="vi">Không có học bổng trong năm dự bị; Năm 1 cấp theo điểm danh và TOCFL</span>
-        <span data-lang="en">No scholarships during prep year; awarded in Year 1 based on attendance and TOCFL</span>
+      <p class="sub">
+        <span data-lang="zh">先修期的出席紀錄與 TOCFL 成績，直接決定大一的獎學金與住宿補助金額</span>
+        <span data-lang="vi">Điểm danh và TOCFL trong năm dự bị quyết định học bổng và hỗ trợ ký túc xá năm 1</span>
+        <span data-lang="en">Prep year attendance and TOCFL score determine Year 1 tuition scholarships and housing subsidies</span>
       </p>
     </div>
   </div>
 
-  <div class="info-box orange">
+  <div class="info-box gold">
     <h4>
-      <span data-lang="zh">📌 先修期間無獎助學金</span>
-      <span data-lang="vi">📌 Không có học bổng trong năm dự bị</span>
-      <span data-lang="en">📌 No Scholarships During the Preparatory Year</span>
+      <span data-lang="zh">📌 先修期間無獎助學金 — 但這一年決定你的大一補助！</span>
+      <span data-lang="vi">📌 Không có học bổng năm dự bị — nhưng năm này quyết định hỗ trợ năm 1!</span>
+      <span data-lang="en">📌 No Scholarships During Prep Year — But It Determines Your Year 1 Support!</span>
     </h4>
-    <p data-lang="zh">義守大學不提供先修期間的獎助學金。但您在先修期間的<strong>出席紀錄</strong>與 <strong>TOCFL 成績</strong>，將直接決定大一的獎學金額度。把握這一年！</p>
-    <p data-lang="vi">I-Shou không cấp học bổng trong năm dự bị. Nhưng <strong>kỷ lục điểm danh</strong> và <strong>điểm TOCFL</strong> của bạn sẽ quyết định học bổng năm đầu đại học. Hãy nắm lấy cơ hội này!</p>
-    <p data-lang="en">I-Shou does not offer scholarships during the preparatory year. However, your <strong>attendance record</strong> and <strong>TOCFL score</strong> directly determine Year 1 scholarship amounts. Make every day count!</p>
+    <p data-lang="zh">您在先修期間的<strong>出席紀錄</strong>與 <strong>TOCFL 成績</strong>，將直接決定大一的學雜費獎學金與住宿費補助。把握這一年，就等於拿到更多獎學金！</p>
+    <p data-lang="vi"><strong>Kỷ lục điểm danh</strong> và <strong>điểm TOCFL</strong> trong năm dự bị sẽ quyết định học bổng học phí và hỗ trợ ký túc xá năm 1. Nắm bắt năm này = nhận được nhiều học bổng hơn!</p>
+    <p data-lang="en">Your <strong>attendance record</strong> and <strong>TOCFL score</strong> during the prep year directly determine Year 1 tuition scholarships and housing subsidies. A strong prep year = more financial support!</p>
     <div class="links-row">
-      <a class="link-btn gold" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 OICA 獎學金資訊</a>
-      <a class="link-btn gold" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="en">🔗 OICA Scholarship Info</a>
-      <a class="link-btn gold" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="vi">🔗 Thông tin học bổng OICA</a>
+      <a class="btn btn-gold" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 OICA 獎學金資訊</a>
+      <a class="btn btn-gold" href="https://www.studyintaiwan.org/university/scholarship/112" target="_blank" rel="noopener" data-lang="zh">🌐 Study in Taiwan</a>
+      <a class="btn btn-gold" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="en">🔗 OICA Scholarship Info</a>
+      <a class="btn btn-gold" href="https://www.studyintaiwan.org/university/scholarship/112" target="_blank" rel="noopener" data-lang="en">🌐 Study in Taiwan</a>
+      <a class="btn btn-gold" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="vi">🔗 Thông tin học bổng</a>
+      <a class="btn btn-gold" href="https://www.studyintaiwan.org/university/scholarship/112" target="_blank" rel="noopener" data-lang="vi">🌐 Study in Taiwan</a>
     </div>
   </div>
 
-  <br>
-  <h3 style="margin-bottom:14px; font-size:1.05rem; color:var(--accent);">
-    <span data-lang="zh">📘 大一新生獎學金 — 學雜費減免（依先修出席率）</span>
-    <span data-lang="vi">📘 Học bổng học phí Năm 1 (theo tỷ lệ điểm danh năm dự bị)</span>
-    <span data-lang="en">📘 Year 1 Tuition Scholarship (based on prep year attendance)</span>
-  </h3>
+  <p class="sub-heading">
+    <span data-lang="zh">📘 大一學雜費獎學金（依先修期出席率）</span>
+    <span data-lang="vi">📘 Học bổng học phí Năm 1 (theo tỷ lệ điểm danh)</span>
+    <span data-lang="en">📘 Year 1 Tuition Scholarship (by Prep Year Attendance)</span>
+  </p>
   <div class="table-wrap">
     <table>
       <thead>
@@ -662,8 +814,8 @@
       </thead>
       <tbody>
         <tr>
-          <td data-lang="zh">90% 以上</td><td data-lang="vi">Từ 90% trở lên</td><td data-lang="en">90% or above</td>
-          <td data-lang="zh"><span class="badge badge-green">全額（100%）</span></td><td data-lang="vi"><span class="badge badge-green">Toàn phần (100%)</span></td><td data-lang="en"><span class="badge badge-green">Full (100%)</span></td>
+          <td data-lang="zh"><strong>90% 以上</strong></td><td data-lang="vi"><strong>Từ 90% trở lên</strong></td><td data-lang="en"><strong>90% or above</strong></td>
+          <td data-lang="zh"><span class="badge badge-green">✅ 全額（100%）</span></td><td data-lang="vi"><span class="badge badge-green">✅ Toàn phần 100%</span></td><td data-lang="en"><span class="badge badge-green">✅ Full — 100%</span></td>
         </tr>
         <tr>
           <td data-lang="zh">80% – 89%</td><td data-lang="vi">80% – 89%</td><td data-lang="en">80% – 89%</td>
@@ -671,42 +823,41 @@
         </tr>
         <tr>
           <td data-lang="zh">未達 80%</td><td data-lang="vi">Dưới 80%</td><td data-lang="en">Below 80%</td>
-          <td data-lang="zh"><span class="badge badge-red">不予核發</span></td><td data-lang="vi"><span class="badge badge-red">Không được cấp</span></td><td data-lang="en"><span class="badge badge-red">Not Awarded</span></td>
+          <td data-lang="zh"><span class="badge badge-red">❌ 不予核發</span></td><td data-lang="vi"><span class="badge badge-red">❌ Không được cấp</span></td><td data-lang="en"><span class="badge badge-red">❌ Not Awarded</span></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <br>
-  <h3 style="margin-bottom:14px; font-size:1.05rem; color:var(--accent);">
+  <p class="sub-heading">
     <span data-lang="zh">🏠 大一住宿費補助（依 TOCFL 等級）</span>
     <span data-lang="vi">🏠 Hỗ trợ ký túc xá Năm 1 (theo trình độ TOCFL)</span>
     <span data-lang="en">🏠 Year 1 Housing Subsidy (by TOCFL Level)</span>
-  </h3>
+  </p>
   <div class="table-wrap">
     <table>
       <thead>
         <tr>
           <th data-lang="zh">TOCFL 等級</th><th data-lang="vi">Trình độ TOCFL</th><th data-lang="en">TOCFL Level</th>
-          <th data-lang="zh">住宿補助（每學年）</th><th data-lang="vi">Hỗ trợ (mỗi năm học)</th><th data-lang="en">Subsidy (per year)</th>
+          <th data-lang="zh">年度住宿補助</th><th data-lang="vi">Hỗ trợ mỗi năm</th><th data-lang="en">Annual Housing Subsidy</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td data-lang="zh">A2（基礎級）</td><td data-lang="vi">A2 (Cơ bản)</td><td data-lang="en">A2 (Foundation)</td>
+          <td data-lang="zh">A2（基礎）</td><td data-lang="vi">A2 (Cơ bản)</td><td data-lang="en">A2 (Foundation)</td>
           <td data-lang="zh"><span class="badge badge-blue">NT$10,000</span></td><td data-lang="vi"><span class="badge badge-blue">NT$10,000</span></td><td data-lang="en"><span class="badge badge-blue">NT$10,000</span></td>
         </tr>
         <tr>
-          <td data-lang="zh">B1（進階級）</td><td data-lang="vi">B1 (Trung cấp)</td><td data-lang="en">B1 (Intermediate)</td>
+          <td data-lang="zh">B1（進階）</td><td data-lang="vi">B1 (Trung cấp)</td><td data-lang="en">B1 (Intermediate)</td>
           <td data-lang="zh"><span class="badge badge-green">NT$15,000</span></td><td data-lang="vi"><span class="badge badge-green">NT$15,000</span></td><td data-lang="en"><span class="badge badge-green">NT$15,000</span></td>
         </tr>
         <tr>
-          <td data-lang="zh">B2（高階級）</td><td data-lang="vi">B2 (Cao cấp)</td><td data-lang="en">B2 (Advanced)</td>
-          <td data-lang="zh"><span class="badge badge-gold">NT$20,000</span></td><td data-lang="vi"><span class="badge badge-gold">NT$20,000</span></td><td data-lang="en"><span class="badge badge-gold">NT$20,000</span></td>
+          <td data-lang="zh">B2（高階）</td><td data-lang="vi">B2 (Cao cấp)</td><td data-lang="en">B2 (Advanced)</td>
+          <td data-lang="zh"><span class="badge badge-gold">NT$20,000 🏅</span></td><td data-lang="vi"><span class="badge badge-gold">NT$20,000 🏅</span></td><td data-lang="en"><span class="badge badge-gold">NT$20,000 🏅</span></td>
         </tr>
         <tr>
-          <td data-lang="zh">取消條件</td><td data-lang="vi">Hủy tư cách</td><td data-lang="en">Disqualification</td>
-          <td data-lang="zh"><span class="badge badge-red">宿舍點名缺席 ≥ 5 次 → 取消</span></td>
+          <td data-lang="zh" colspan="2">⚠️ 取消條件</td><td data-lang="en">⚠️ Disqualification</td><td data-lang="vi" colspan="2">⚠️ Điều kiện hủy</td>
+          <td data-lang="zh"><span class="badge badge-red">宿舍點名缺席 ≥ 5 次 → 取消補助</span></td>
           <td data-lang="vi"><span class="badge badge-red">Vắng điểm danh KTX ≥ 5 lần → mất hỗ trợ</span></td>
           <td data-lang="en"><span class="badge badge-red">≥ 5 missed dorm roll calls → cancelled</span></td>
         </tr>
@@ -714,57 +865,49 @@
     </table>
   </div>
 
-  <br>
-  <div class="info-box gold">
+  <div class="info-box purple">
     <h4>
-      <span data-lang="zh">📗 大二以上在校生獎助學金（第三學期起，需主動申請）</span>
-      <span data-lang="vi">📗 Học bổng từ Năm 2 (học kỳ 3 trở đi — phải tự đăng ký)</span>
-      <span data-lang="en">📗 Continuing Student Scholarships (from 3rd Semester / Year 2 — must reapply)</span>
+      <span data-lang="zh">📗 大二以上在校生獎助學金（第三學期起，每學期主動申請）</span>
+      <span data-lang="vi">📗 Học bổng từ Năm 2 (học kỳ 3 trở đi — tự đăng ký mỗi kỳ)</span>
+      <span data-lang="en">📗 Continuing Student Scholarships (from Semester 3 — must reapply each term)</span>
     </h4>
     <ul>
       <li data-lang="zh">前一學期<strong>班級排名前 40%</strong></li>
-      <li data-lang="zh">操行成績 <strong>85 分以上</strong></li>
-      <li data-lang="zh">無懲處紀錄</li>
+      <li data-lang="zh">操行成績 <strong>85 分以上</strong>，無懲處紀錄</li>
       <li data-lang="zh">完成指定<strong>服務學習時數</strong></li>
       <li data-lang="zh">每學期<strong>主動重新申請</strong>，非自動延續</li>
-      <li data-lang="vi">Xếp hạng lớp <strong>top 40%</strong> học kỳ trước</li>
-      <li data-lang="vi">Điểm hạnh kiểm <strong>từ 85 trở lên</strong></li>
-      <li data-lang="vi">Không có kỷ luật</li>
-      <li data-lang="vi">Hoàn thành <strong>giờ phục vụ cộng đồng</strong> quy định</li>
-      <li data-lang="vi">Phải <strong>tự đăng ký lại</strong> mỗi học kỳ — không tự động gia hạn</li>
-      <li data-lang="en">Ranked in the <strong>top 40% of the class</strong> in the previous semester</li>
-      <li data-lang="en">Conduct score <strong>85 or above</strong></li>
-      <li data-lang="en">No disciplinary records</li>
+      <li data-lang="vi">Xếp hạng <strong>top 40%</strong> trong lớp học kỳ trước</li>
+      <li data-lang="vi">Điểm hạnh kiểm <strong>từ 85 trở lên</strong>, không có kỷ luật</li>
+      <li data-lang="vi">Hoàn thành <strong>giờ phục vụ cộng đồng</strong></li>
+      <li data-lang="vi"><strong>Tự đăng ký lại</strong> mỗi học kỳ — không tự động gia hạn</li>
+      <li data-lang="en">Top <strong>40% class ranking</strong> in the previous semester</li>
+      <li data-lang="en">Conduct score <strong>85+</strong>, no disciplinary records</li>
       <li data-lang="en">Completed required <strong>service learning hours</strong></li>
-      <li data-lang="en">Must <strong>reapply each semester</strong> — not automatically renewed</li>
+      <li data-lang="en">Must <strong>reapply every semester</strong> — not automatic</li>
     </ul>
-    <div class="links-row">
-      <a class="link-btn gold" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🎓 OICA 獎學金申請</a>
-      <a class="link-btn gold" href="https://www.studyintaiwan.org/university/scholarship/112" target="_blank" rel="noopener" data-lang="zh">🌐 Study in Taiwan 獎學金</a>
-      <a class="link-btn gold" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="en">🎓 OICA Scholarship Apply</a>
-      <a class="link-btn gold" href="https://www.studyintaiwan.org/university/scholarship/112" target="_blank" rel="noopener" data-lang="en">🌐 Study in Taiwan</a>
-      <a class="link-btn gold" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener" data-lang="vi">🎓 Đăng ký học bổng OICA</a>
-      <a class="link-btn gold" href="https://www.studyintaiwan.org/university/scholarship/112" target="_blank" rel="noopener" data-lang="vi">🌐 Study in Taiwan</a>
-    </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     SECTION 3 · LIFE IN TAIWAN
-══════════════════════════════ -->
+<!-- ══════════════ § 3 · LIFE IN TAIWAN ══════════════ -->
 <section id="life">
-  <div class="section-header">
-    <div class="section-icon" style="background:#fdf1f0;">🏠</div>
-    <div class="section-title">
+  <div style="--col-a:#1a5fa8;--col-b:#ca6f1e;" class="sec-divider"></div>
+  <div class="sec-head">
+    <div class="sec-icon-box" style="background:var(--blue-light);">🏠</div>
+    <div class="sec-head-text">
+      <div class="sec-num">
+        <span data-lang="zh">03 · 台灣生活須知</span>
+        <span data-lang="vi">03 · Cuộc Sống tại Đài Loan</span>
+        <span data-lang="en">03 · Life in Taiwan</span>
+      </div>
       <h2>
-        <span data-lang="zh">台灣生活須知</span>
-        <span data-lang="vi">Cuộc Sống tại Đài Loan</span>
-        <span data-lang="en">Life in Taiwan</span>
+        <span data-lang="zh">住宿、交通、醫療<br>銀行、手機一次搞定</span>
+        <span data-lang="vi">Ký túc xá, Giao thông,<br>Y tế, Ngân hàng</span>
+        <span data-lang="en">Dorm, Transport,<br>Healthcare &amp; More</span>
       </h2>
-      <p>
-        <span data-lang="zh">食衣住行育樂，一次了解</span>
-        <span data-lang="vi">Những điều cần biết khi sống tại Đài Loan</span>
-        <span data-lang="en">Everything you need to know about daily life</span>
+      <p class="sub">
+        <span data-lang="zh">第一年必須住宿舍，每週日至四晚間 10:30 點名</span>
+        <span data-lang="vi">Năm đầu bắt buộc ở ký túc xá; điểm danh 10:30 tối CN–T5</span>
+        <span data-lang="en">Year 1 dorm is mandatory; roll call Sun–Thu at 10:30 PM</span>
       </p>
     </div>
   </div>
@@ -776,217 +919,173 @@
       <span data-lang="en">🏢 Dormitory Rules (MUST READ!)</span>
     </h4>
     <ul>
-      <li data-lang="zh">先修生第一年<strong>必須住校</strong>，未經核准擅自搬離者，將面臨退學處分。</li>
-      <li data-lang="zh">每週<strong>週日至週四晚間 10:30</strong> 進行宿舍點名，請務必在寢室出現。</li>
-      <li data-lang="zh">假日外宿必須事先向學校請假，未請假外宿算違規。</li>
-      <li data-lang="vi">Sinh viên dự bị <strong>bắt buộc ở ký túc xá</strong> trong năm đầu. Tự ý chuyển ra ngoài sẽ bị đuổi học.</li>
-      <li data-lang="vi">Điểm danh KTX <strong>10:30 tối từ Chủ Nhật đến Thứ Năm</strong>. Phải có mặt trong phòng.</li>
-      <li data-lang="vi">Muốn ngủ ngoài vào cuối tuần phải xin phép trước.</li>
-      <li data-lang="en">Preparatory students <strong>must live on campus</strong>. Unauthorized move-out = expulsion.</li>
-      <li data-lang="en">Dormitory roll call: <strong>Sun–Thu at 10:30 PM</strong>. You must be in your room.</li>
-      <li data-lang="en">Staying off-campus on weekends requires advance leave application.</li>
+      <li data-lang="zh">先修生第一年<strong>必須住校</strong>，未核准擅自搬離 → <strong>退學處分</strong></li>
+      <li data-lang="zh">每週<strong>週日至週四晚間 10:30</strong> 進行宿舍點名，請務必在寢室</li>
+      <li data-lang="zh">假日外宿必須事先請假，未請假外宿算違規</li>
+      <li data-lang="vi">Sinh viên dự bị <strong>bắt buộc ở KTX</strong> năm đầu. Tự ý chuyển ra → <strong>bị đuổi học</strong></li>
+      <li data-lang="vi">Điểm danh <strong>10:30 tối CN–T5</strong>. Phải có mặt trong phòng.</li>
+      <li data-lang="vi">Muốn ngủ ngoài cuối tuần → phải xin phép trước</li>
+      <li data-lang="en">Prep students <strong>must live on campus</strong>. Unauthorized move-out = <strong>expulsion</strong></li>
+      <li data-lang="en">Roll call <strong>Sun–Thu at 10:30 PM</strong>. You must be in your room.</li>
+      <li data-lang="en">Off-campus stays on weekends require advance leave application</li>
     </ul>
   </div>
 
   <div class="cards">
     <div class="card">
       <div class="card-icon">🏥</div>
-      <h3>
-        <span data-lang="zh">醫療保險與全民健保</span>
-        <span data-lang="vi">Bảo hiểm Y tế & NHI</span>
-        <span data-lang="en">Health Insurance & NHI</span>
-      </h3>
+      <h3><span data-lang="zh">醫療保險與健保</span><span data-lang="vi">Bảo hiểm Y tế & NHI</span><span data-lang="en">Health Insurance & NHI</span></h3>
       <ul>
-        <li data-lang="zh">報到時須持有效期 <strong>6 個月以上</strong>的醫療保險。</li>
-        <li data-lang="zh">在台連續居留 <strong>180 天</strong>後，可申請加入<strong>全民健康保險（NHI）</strong>，月費約 NT$826。</li>
-        <li data-lang="zh">NHI 看病費用低廉，全台最完整的醫療保障。</li>
-        <li data-lang="vi">Khi nhập học cần bảo hiểm y tế còn hiệu lực <strong>ít nhất 6 tháng</strong>.</li>
-        <li data-lang="vi">Sau <strong>180 ngày</strong> cư trú liên tục, có thể tham gia <strong>NHI</strong>, phí khoảng NT$826/tháng.</li>
-        <li data-lang="vi">NHI cung cấp dịch vụ y tế chi phí thấp trên toàn quốc.</li>
-        <li data-lang="en">Medical insurance valid for at least <strong>6 months</strong> required at enrollment.</li>
-        <li data-lang="en">After <strong>180 continuous days</strong>, join <strong>NHI</strong> — approximately NT$826/month.</li>
-        <li data-lang="en">NHI offers affordable medical care at clinics and hospitals nationwide.</li>
+        <li data-lang="zh">報到時須持效期 <strong>6 個月以上</strong>的醫療保險</li>
+        <li data-lang="zh">連續居留 <strong>180 天</strong>後可加入<strong>全民健保 (NHI)</strong>，月費約 NT$826</li>
+        <li data-lang="zh">全台最完整醫療保障，看診費用低廉</li>
+        <li data-lang="vi">Cần bảo hiểm y tế hiệu lực <strong>ít nhất 6 tháng</strong> khi nhập học</li>
+        <li data-lang="vi">Sau <strong>180 ngày</strong> liên tục có thể tham gia <strong>NHI</strong>, phí ~NT$826/tháng</li>
+        <li data-lang="vi">Chi phí khám bệnh rất thấp trên toàn quốc</li>
+        <li data-lang="en">Medical insurance valid <strong>≥ 6 months</strong> required at enrollment</li>
+        <li data-lang="en">After <strong>180 consecutive days</strong> join <strong>NHI</strong>, ~NT$826/month</li>
+        <li data-lang="en">Affordable nationwide medical care at clinics and hospitals</li>
       </ul>
       <div class="card-links">
-        <a class="link-btn" href="https://www.nhi.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🏥 全民健保官網</a>
-        <a class="link-btn" href="https://www.nhi.gov.tw/en/mp-2.html" target="_blank" rel="noopener" data-lang="en">🏥 NHI English</a>
-        <a class="link-btn" href="https://www.nhi.gov.tw/en/mp-2.html" target="_blank" rel="noopener" data-lang="vi">🏥 NHI (English)</a>
+        <a class="btn btn-blue" href="https://www.nhi.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🏥 全民健保官網</a>
+        <a class="btn btn-blue" href="https://www.nhi.gov.tw/en/mp-2.html" target="_blank" rel="noopener" data-lang="en">🏥 NHI English</a>
+        <a class="btn btn-blue" href="https://www.nhi.gov.tw/en/mp-2.html" target="_blank" rel="noopener" data-lang="vi">🏥 NHI (English)</a>
       </div>
     </div>
 
     <div class="card">
       <div class="card-icon">🚌</div>
-      <h3>
-        <span data-lang="zh">校內交通</span>
-        <span data-lang="vi">Giao thông Nội trường</span>
-        <span data-lang="en">Campus Transportation</span>
-      </h3>
+      <h3><span data-lang="zh">校內交通</span><span data-lang="vi">Giao thông Nội trường</span><span data-lang="en">Campus Transportation</span></h3>
       <ul>
-        <li data-lang="zh">義守大學設有<strong>義大客運</strong>，往返校本部、醫學院區及高鐵左營站。</li>
-        <li data-lang="zh">高鐵左營站可連接全台主要城市，車程至台北約 1.5 小時。</li>
-        <li data-lang="zh">EasyCard（悠遊卡）為全台通用交通儲值卡，可搭捷運、公車。</li>
-        <li data-lang="vi">Xe buýt <strong>Yida Bus</strong> kết nối khu học chính, khu Y khoa và ga HSR Zuoying.</li>
-        <li data-lang="vi">Ga Zuoying kết nối các thành phố lớn, đi Đài Bắc khoảng 1.5 tiếng.</li>
-        <li data-lang="vi">EasyCard (Thẻ Youyou) dùng được cho MRT, xe buýt toàn quốc.</li>
-        <li data-lang="en">The <strong>Yida Bus</strong> connects main campus, medical campus, and HSR Zuoying station.</li>
-        <li data-lang="en">HSR Zuoying links to Taipei (~1.5 hrs) and all major west-coast cities.</li>
-        <li data-lang="en">EasyCard is a rechargeable card for MRT, buses, and convenience stores.</li>
+        <li data-lang="zh"><strong>義大客運</strong>：校本部 ↔ 醫學院 ↔ 高鐵左營站</li>
+        <li data-lang="zh">高鐵左營至台北約 <strong>1.5 小時</strong></li>
+        <li data-lang="zh"><strong>EasyCard（悠遊卡）</strong>：全台捷運、公車通用</li>
+        <li data-lang="vi"><strong>Xe buýt Yida</strong>: Khu học chính ↔ Y khoa ↔ Ga HSR Zuoying</li>
+        <li data-lang="vi">HSR Zuoying → Đài Bắc: khoảng <strong>1.5 tiếng</strong></li>
+        <li data-lang="vi"><strong>EasyCard</strong>: Dùng cho MRT và xe buýt toàn quốc</li>
+        <li data-lang="en"><strong>Yida Bus</strong>: Main campus ↔ Medical campus ↔ HSR Zuoying</li>
+        <li data-lang="en">HSR Zuoying → Taipei: ~<strong>1.5 hours</strong></li>
+        <li data-lang="en"><strong>EasyCard</strong>: Universal card for MRT and buses nationwide</li>
       </ul>
       <div class="card-links">
-        <a class="link-btn" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="zh">🚌 義大客運官網</a>
-        <a class="link-btn dark" href="https://oga.isu.edu.tw/page/%E4%BA%A4%E9%80%9A%E8%BB%8A%E7%B0%A1%E4%BB%8B-NPxEPNbd4cCM" target="_blank" rel="noopener" data-lang="zh">📋 校內交通車資訊</a>
-        <a class="link-btn" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="vi">🚌 Trang web Yida Bus</a>
-        <a class="link-btn dark" href="https://oga.isu.edu.tw/page/%E4%BA%A4%E9%80%9A%E8%BB%8A%E7%B0%A1%E4%BB%8B-NPxEPNbd4cCM" target="_blank" rel="noopener" data-lang="vi">📋 Thông tin xe buýt trường</a>
-        <a class="link-btn" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="en">🚌 Yida Bus Website</a>
-        <a class="link-btn dark" href="https://oga.isu.edu.tw/page/%E4%BA%A4%E9%80%9A%E8%BB%8A%E7%B0%A1%E4%BB%8B-NPxEPNbd4cCM" target="_blank" rel="noopener" data-lang="en">📋 Campus Bus Info</a>
+        <a class="btn btn-blue" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="zh">🚌 義大客運</a>
+        <a class="btn btn-dark" href="https://oga.isu.edu.tw/page/%E4%BA%A4%E9%80%9A%E8%BB%8A%E7%B0%A1%E4%BB%8B-NPxEPNbd4cCM" target="_blank" rel="noopener" data-lang="zh">📋 校內交通車</a>
+        <a class="btn btn-blue" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="vi">🚌 Yida Bus</a>
+        <a class="btn btn-blue" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="en">🚌 E-Da Bus</a>
+        <a class="btn btn-dark" href="https://oga.isu.edu.tw/page/%E4%BA%A4%E9%80%9A%E8%BB%8A%E7%B0%A1%E4%BB%8B-NPxEPNbd4cCM" target="_blank" rel="noopener" data-lang="en">📋 Campus Bus Info</a>
       </div>
     </div>
 
     <div class="card">
       <div class="card-icon">📱</div>
-      <h3>
-        <span data-lang="zh">手機門號</span>
-        <span data-lang="vi">SIM điện thoại</span>
-        <span data-lang="en">SIM Card & Phone Plan</span>
-      </h3>
+      <h3><span data-lang="zh">手機門號</span><span data-lang="vi">SIM Điện thoại</span><span data-lang="en">SIM Card & Phone</span></h3>
       <ul>
-        <li data-lang="zh">持居留證後可至<strong>中華電信、台灣大哥大、遠傳</strong>辦理月租門號。</li>
-        <li data-lang="zh">需攜帶護照與居留證，OICA 志工可協助辦理。</li>
-        <li data-lang="zh">月租方案約 NT$299–599，含通話與吃到飽網路。</li>
-        <li data-lang="vi">Sau khi có giấy cư trú, đăng ký SIM tại <strong>Chunghwa Telecom, Taiwan Mobile, FarEasTone</strong>.</li>
-        <li data-lang="vi">Cần mang hộ chiếu và giấy cư trú. Tình nguyện viên OICA có thể hỗ trợ.</li>
-        <li data-lang="vi">Gói tháng khoảng NT$299–599, bao gồm gọi và data không giới hạn.</li>
-        <li data-lang="en">After your ARC, register a monthly plan at <strong>Chunghwa Telecom, TWM, or FET</strong>.</li>
-        <li data-lang="en">Bring passport and ARC. OICA volunteers can assist you.</li>
-        <li data-lang="en">Monthly plans ~NT$299–599 with calls and unlimited data.</li>
+        <li data-lang="zh">持居留證後可至<strong>中華電信、台灣大哥大、遠傳</strong>辦理月租</li>
+        <li data-lang="zh">需攜帶護照 + 居留證，OICA 志工可陪同協助</li>
+        <li data-lang="zh">月租約 <strong>NT$299–599</strong>，含通話與無限流量</li>
+        <li data-lang="vi">Sau khi có ARC: đăng ký tại <strong>Chunghwa, TWM, FarEasTone</strong></li>
+        <li data-lang="vi">Cần: hộ chiếu + giấy cư trú. Tình nguyện viên OICA hỗ trợ</li>
+        <li data-lang="vi">Gói tháng ~<strong>NT$299–599</strong>, bao gồm gọi + data không giới hạn</li>
+        <li data-lang="en">After ARC, register at <strong>Chunghwa Telecom, TWM, or FET</strong></li>
+        <li data-lang="en">Bring passport + ARC. OICA volunteers can assist</li>
+        <li data-lang="en">Monthly plans ~<strong>NT$299–599</strong> with unlimited data</li>
       </ul>
     </div>
 
     <div class="card">
       <div class="card-icon">🏦</div>
-      <h3>
-        <span data-lang="zh">銀行開戶</span>
-        <span data-lang="vi">Mở tài khoản ngân hàng</span>
-        <span data-lang="en">Opening a Bank Account</span>
-      </h3>
+      <h3><span data-lang="zh">銀行開戶</span><span data-lang="vi">Mở Tài khoản Ngân hàng</span><span data-lang="en">Opening a Bank Account</span></h3>
       <ul>
-        <li data-lang="zh">取得居留證後，至<strong>中華郵政（郵局）</strong>或台灣銀行開立存款帳戶。</li>
-        <li data-lang="zh">需攜帶：護照、居留證、學生證（在學證明）。</li>
-        <li data-lang="zh">郵局 ATM 全台最多，轉帳手續費也最低，推薦首選。</li>
-        <li data-lang="vi">Sau khi có giấy cư trú, mở tài khoản tại <strong>Bưu điện Chunghwa Post</strong> hoặc Bank of Taiwan.</li>
-        <li data-lang="vi">Cần mang: hộ chiếu, giấy cư trú, thẻ sinh viên.</li>
-        <li data-lang="vi">ATM bưu điện phổ biến nhất toàn quốc, phí chuyển khoản thấp nhất.</li>
-        <li data-lang="en">After your ARC, open an account at <strong>Chunghwa Post</strong> or Bank of Taiwan.</li>
-        <li data-lang="en">Bring: passport, ARC, and student ID.</li>
-        <li data-lang="en">Chunghwa Post has the most ATMs nationwide and lowest transfer fees.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">🍜</div>
-      <h3>
-        <span data-lang="zh">飲食與氣候</span>
-        <span data-lang="vi">Ẩm thực & Thời tiết</span>
-        <span data-lang="en">Food & Climate</span>
-      </h3>
-      <ul>
-        <li data-lang="zh">高雄屬熱帶氣候，夏季炎熱，需備防曬與雨具；冬季仍溫暖，少需厚重外套。</li>
-        <li data-lang="zh">校內及附近有多種餐廳、7-11 / 全家、義大世界購物中心、夜市小吃。</li>
-        <li data-lang="zh">台灣飲食多元，有豐富素食與清真友善（Halal）選項。</li>
-        <li data-lang="vi">Cao Hùng có khí hậu nhiệt đới: mùa hè nóng ẩm, mùa đông ấm áp, ít cần áo dày.</li>
-        <li data-lang="vi">Khu trường và lân cận có nhà hàng, 7-11/FamilyMart, E-Da World Mall, chợ đêm.</li>
-        <li data-lang="vi">Ẩm thực đa dạng, có nhiều lựa chọn ăn chay và thực phẩm Halal.</li>
-        <li data-lang="en">Kaohsiung has a tropical climate — hot humid summers, warm winters (little need for heavy coats).</li>
-        <li data-lang="en">Campus area has restaurants, 7-11/FamilyMart, E-Da World Mall, and night markets.</li>
-        <li data-lang="en">Diverse cuisine available with vegetarian and Halal-friendly options.</li>
+        <li data-lang="zh">取得居留證後至<strong>中華郵政（郵局）</strong>或台灣銀行開戶</li>
+        <li data-lang="zh">需攜帶：護照・居留證・學生證</li>
+        <li data-lang="zh">郵局 ATM 全台最多，轉帳手續費低廉，推薦首選</li>
+        <li data-lang="vi">Mở tài khoản tại <strong>Bưu điện Chunghwa Post</strong> hoặc Bank of Taiwan sau khi có ARC</li>
+        <li data-lang="vi">Cần: hộ chiếu, giấy cư trú, thẻ sinh viên</li>
+        <li data-lang="vi">ATM Bưu điện phổ biến nhất, phí chuyển khoản thấp nhất</li>
+        <li data-lang="en">Open account at <strong>Chunghwa Post</strong> or Bank of Taiwan after ARC</li>
+        <li data-lang="en">Bring: passport, ARC, student ID</li>
+        <li data-lang="en">Chunghwa Post has the most ATMs and lowest transfer fees</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     SECTION 4 · ARC
-══════════════════════════════ -->
+<!-- ══════════════ § 4 · ARC ══════════════ -->
 <section id="arc">
-  <div class="section-header">
-    <div class="section-icon" style="background:#d6eaf8;">📋</div>
-    <div class="section-title">
+  <div style="--col-a:#1a5fa8;--col-b:#1a7a40;" class="sec-divider"></div>
+  <div class="sec-head">
+    <div class="sec-icon-box" style="background:var(--blue-light);">📋</div>
+    <div class="sec-head-text">
+      <div class="sec-num">
+        <span data-lang="zh">04 · 外僑居留證（ARC）</span>
+        <span data-lang="vi">04 · Giấy Phép Cư Trú (ARC)</span>
+        <span data-lang="en">04 · Alien Resident Certificate (ARC)</span>
+      </div>
       <h2>
-        <span data-lang="zh">外僑居留證（ARC）</span>
-        <span data-lang="vi">Giấy Phép Cư Trú (ARC)</span>
-        <span data-lang="en">Alien Resident Certificate (ARC)</span>
+        <span data-lang="zh">入境後<em style="color:#f9ca24;font-style:normal;">15 天內</em><br>必須完成申辦</span>
+        <span data-lang="vi">Phải hoàn thành<br>trong <em style="color:#f9ca24;font-style:normal;">15 ngày</em> nhập cảnh</span>
+        <span data-lang="en">Must Apply Within<br><em style="color:#f9ca24;font-style:normal;">15 Days</em> of Entry</span>
       </h2>
-      <p>
-        <span data-lang="zh">入境後 15 天內必須完成申辦</span>
-        <span data-lang="vi">Phải hoàn thành trong vòng 15 ngày sau khi nhập cảnh</span>
-        <span data-lang="en">Must be completed within 15 days of entry</span>
+      <p class="sub">
+        <span data-lang="zh">OICA 將協助新生統一線上申辦，費用 NT$1,000 / 年</span>
+        <span data-lang="vi">OICA hỗ trợ nộp đơn tập thể. Lệ phí NT$1,000 / năm</span>
+        <span data-lang="en">OICA assists with group online application. Fee NT$1,000 / year</span>
       </p>
     </div>
   </div>
 
   <div class="alert">
     <div class="alert-icon">⚠️</div>
-    <p>
-      <span data-lang="zh"><strong>重要提醒：</strong>持居留簽證入境者，必須在入境後 <strong>15 天內</strong>向移民署申辦外僑居留證。未按時申辦可能影響在台居留資格，請務必配合 OICA 辦理。</span>
-      <span data-lang="vi"><strong>Lưu ý quan trọng:</strong> Người nhập cảnh bằng thị thực cư trú phải nộp đơn xin ARC tại Cục Quản lý Xuất Nhập cảnh trong vòng <strong>15 ngày</strong> kể từ ngày nhập cảnh.</span>
-      <span data-lang="en"><strong>Important:</strong> Students entering with a Resident Visa must apply for their ARC at the National Immigration Agency within <strong>15 days</strong> of arrival. Always coordinate with OICA.</span>
-    </p>
+    <div class="alert-body">
+      <h4>
+        <span data-lang="zh">逾期未辦將影響在台居留資格！</span>
+        <span data-lang="vi">Trễ hạn sẽ ảnh hưởng đến quyền cư trú tại Đài Loan!</span>
+        <span data-lang="en">Missing the deadline may affect your residency status!</span>
+      </h4>
+      <p>
+        <span data-lang="zh">持「居留簽證」入境者，<strong>入境後 15 天內</strong>必須向移民署申辦外僑居留證。請配合 OICA 統一辦理，切勿拖延。</span>
+        <span data-lang="vi">Người nhập cảnh bằng Visa cư trú phải nộp đơn ARC tại NIA trong <strong>15 ngày</strong>. Hãy phối hợp với OICA, không được trì hoãn.</span>
+        <span data-lang="en">Students entering with a Resident Visa must apply for ARC at the NIA within <strong>15 days</strong>. Coordinate with OICA immediately — do not delay.</span>
+      </p>
+    </div>
   </div>
 
-  <div class="links-row" style="margin-top:16px;">
-    <a class="link-btn" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=zh" target="_blank" rel="noopener" data-lang="zh">🔗 學生線上申辦系統（中文）</a>
-    <a class="link-btn" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=en" target="_blank" rel="noopener" data-lang="en">🔗 Student ARC Online Application</a>
-    <a class="link-btn" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=en" target="_blank" rel="noopener" data-lang="vi">🔗 Nộp đơn ARC trực tuyến</a>
-    <a class="link-btn dark" href="https://www.immigration.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🏛️ 移民署官網</a>
-    <a class="link-btn dark" href="https://www.immigration.gov.tw/7120/" target="_blank" rel="noopener" data-lang="en">🏛️ NIA Official Website</a>
-    <a class="link-btn dark" href="https://www.immigration.gov.tw/7120/" target="_blank" rel="noopener" data-lang="vi">🏛️ Website NIA</a>
+  <div class="links-row" style="margin-top:0;">
+    <a class="btn btn-blue" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=zh" target="_blank" rel="noopener" data-lang="zh">🔗 學生 ARC 線上申辦</a>
+    <a class="btn btn-dark" href="https://www.immigration.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🏛️ 移民署官網</a>
+    <a class="btn btn-blue" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=en" target="_blank" rel="noopener" data-lang="en">🔗 Student ARC Online</a>
+    <a class="btn btn-dark" href="https://www.immigration.gov.tw/7120/" target="_blank" rel="noopener" data-lang="en">🏛️ NIA Website</a>
+    <a class="btn btn-blue" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=en" target="_blank" rel="noopener" data-lang="vi">🔗 Nộp đơn ARC</a>
+    <a class="btn btn-dark" href="https://www.immigration.gov.tw/7120/" target="_blank" rel="noopener" data-lang="vi">🏛️ Website NIA</a>
   </div>
 
   <br>
   <div class="timeline">
     <div class="tl-item">
-      <div class="tl-step" data-lang="zh">步驟 1</div>
-      <div class="tl-step" data-lang="vi">Bước 1</div>
-      <div class="tl-step" data-lang="en">Step 1</div>
-      <h3>
-        <span data-lang="zh">確認簽證類型</span>
-        <span data-lang="vi">Xác nhận loại thị thực</span>
-        <span data-lang="en">Confirm Your Visa Type</span>
-      </h3>
+      <div class="tl-step" data-lang="zh">步驟 1</div><div class="tl-step" data-lang="vi">Bước 1</div><div class="tl-step" data-lang="en">Step 1</div>
+      <h3><span data-lang="zh">確認入境簽證類型</span><span data-lang="vi">Xác nhận loại thị thực</span><span data-lang="en">Confirm Your Visa Type</span></h3>
       <p>
-        <span data-lang="zh">持「居留簽證」入境者可直接辦理居留證。持「停留簽證」者須先至移民署申請換發居留簽證，再辦居留證。</span>
-        <span data-lang="vi">Nhập cảnh bằng Visa cư trú → nộp đơn trực tiếp. Visa du lịch → phải đổi sang Visa cư trú trước tại Cục Xuất Nhập cảnh.</span>
-        <span data-lang="en">Resident Visa → apply directly. Visitor Visa → convert to Resident Visa at NIA first, then apply for ARC.</span>
+        <span data-lang="zh">持「居留簽證」可直接申辦居留證；持「停留簽證」須先換發居留簽證再辦居留證。</span>
+        <span data-lang="vi">Visa cư trú → nộp đơn trực tiếp. Visa du lịch → đổi sang Visa cư trú trước tại NIA.</span>
+        <span data-lang="en">Resident Visa → apply directly. Visitor Visa → convert to Resident Visa at NIA first.</span>
       </p>
     </div>
     <div class="tl-item">
-      <div class="tl-step" data-lang="zh">步驟 2</div>
-      <div class="tl-step" data-lang="vi">Bước 2</div>
-      <div class="tl-step" data-lang="en">Step 2</div>
-      <h3>
-        <span data-lang="zh">OICA 協助線上統一申請</span>
-        <span data-lang="vi">OICA hỗ trợ nộp đơn tập thể trực tuyến</span>
-        <span data-lang="en">OICA Assists with Group Online Application</span>
-      </h3>
+      <div class="tl-step" data-lang="zh">步驟 2</div><div class="tl-step" data-lang="vi">Bước 2</div><div class="tl-step" data-lang="en">Step 2</div>
+      <h3><span data-lang="zh">OICA 協助統一線上申請</span><span data-lang="vi">OICA hỗ trợ nộp đơn tập thể</span><span data-lang="en">OICA Group Online Application</span></h3>
       <p>
-        <span data-lang="zh">新生報到時，OICA 將協助統一進行線上申請，請攜帶護照、居留簽證、2 吋照片、在學證明等文件。</span>
-        <span data-lang="vi">Trong buổi đăng ký nhập học, OICA hỗ trợ nộp đơn tập thể. Chuẩn bị: hộ chiếu, visa cư trú, ảnh 2 inch, giấy xác nhận nhập học.</span>
-        <span data-lang="en">During orientation, OICA will assist with the group online application. Prepare: passport, resident visa, 2-inch photo, and enrollment certificate.</span>
+        <span data-lang="zh">新生報到時，OICA 將統一線上代辦。請備好：護照、居留簽證、2 吋照片、在學證明。</span>
+        <span data-lang="vi">Trong buổi nhập học, OICA hỗ trợ tập thể. Chuẩn bị: hộ chiếu, visa, ảnh 2 inch, giấy nhập học.</span>
+        <span data-lang="en">During orientation, OICA handles the group application. Prepare: passport, visa, 2-inch photo, enrollment certificate.</span>
       </p>
     </div>
     <div class="tl-item">
-      <div class="tl-step" data-lang="zh">步驟 3</div>
-      <div class="tl-step" data-lang="vi">Bước 3</div>
-      <div class="tl-step" data-lang="en">Step 3</div>
-      <h3>
-        <span data-lang="zh">繳費與領件</span>
-        <span data-lang="vi">Nộp phí và nhận giấy cư trú</span>
-        <span data-lang="en">Pay Fee & Receive Your ARC</span>
-      </h3>
+      <div class="tl-step" data-lang="zh">步驟 3</div><div class="tl-step" data-lang="vi">Bước 3</div><div class="tl-step" data-lang="en">Step 3</div>
+      <h3><span data-lang="zh">繳費（NT$1,000）與領取居留證</span><span data-lang="vi">Nộp phí NT$1,000 và nhận ARC</span><span data-lang="en">Pay NT$1,000 Fee & Receive ARC</span></h3>
       <p>
-        <span data-lang="zh">審核通過後，在 <strong>5 個工作天</strong>內完成繳費（1 年 NT$1,000）。審核共約需 <strong>10 個工作天</strong>。</span>
-        <span data-lang="vi">Sau khi duyệt, thanh toán trong <strong>5 ngày làm việc</strong> (1 năm NT$1,000). Thời gian xét duyệt khoảng <strong>10 ngày làm việc</strong>.</span>
-        <span data-lang="en">After approval, pay the fee within <strong>5 working days</strong> (1 year = NT$1,000). Processing takes ~<strong>10 working days</strong>.</span>
+        <span data-lang="zh">審核通過後，5 個工作天內完成繳費；審核共需約 10 個工作天；拿到後請隨身攜帶。</span>
+        <span data-lang="vi">Sau khi duyệt, thanh toán trong 5 ngày làm việc. Xét duyệt ~10 ngày. Mang theo ARC khi ra ngoài.</span>
+        <span data-lang="en">After approval, pay within 5 working days. Processing ~10 working days. Always carry your ARC.</span>
       </p>
     </div>
   </div>
@@ -1002,31 +1101,25 @@
       </thead>
       <tbody>
         <tr>
-          <td data-lang="zh">申請期限</td><td data-lang="vi">Hạn nộp đơn</td><td data-lang="en">Application Deadline</td>
+          <td data-lang="zh">申請期限</td><td data-lang="vi">Hạn nộp đơn</td><td data-lang="en">Deadline</td>
           <td data-lang="zh"><span class="badge badge-red">入境後 15 天內</span></td>
           <td data-lang="vi"><span class="badge badge-red">Trong 15 ngày nhập cảnh</span></td>
           <td data-lang="en"><span class="badge badge-red">Within 15 days of entry</span></td>
         </tr>
         <tr>
           <td data-lang="zh">費用（1 年）</td><td data-lang="vi">Lệ phí (1 năm)</td><td data-lang="en">Fee (1 year)</td>
-          <td data-lang="zh">NT$1,000</td><td data-lang="vi">NT$1,000</td><td data-lang="en">NT$1,000</td>
-        </tr>
-        <tr>
-          <td data-lang="zh">辦理機構</td><td data-lang="vi">Cơ quan cấp phép</td><td data-lang="en">Issuing Authority</td>
-          <td data-lang="zh">移民署（OICA 協助線上辦理）</td>
-          <td data-lang="vi">Cục Xuất Nhập cảnh (OICA hỗ trợ nộp đơn)</td>
-          <td data-lang="en">National Immigration Agency (OICA assists online)</td>
+          <td>NT$1,000</td><td>NT$1,000</td><td>NT$1,000</td>
         </tr>
         <tr>
           <td data-lang="zh">展延申請</td><td data-lang="vi">Gia hạn</td><td data-lang="en">Extension</td>
-          <td data-lang="zh">到期前 <strong>3 個月</strong>至 <strong>4 週</strong>內自行線上申請</td>
-          <td data-lang="vi">Nộp đơn gia hạn trong khoảng <strong>3 tháng đến 4 tuần</strong> trước khi hết hạn</td>
-          <td data-lang="en">Apply online between <strong>3 months</strong> and <strong>4 weeks</strong> before expiry</td>
+          <td data-lang="zh">到期前 <strong>3 個月</strong>至 <strong>4 週</strong>內線上申請</td>
+          <td data-lang="vi"><strong>3 tháng đến 4 tuần</strong> trước khi hết hạn</td>
+          <td data-lang="en">Apply online <strong>3 months to 4 weeks</strong> before expiry</td>
         </tr>
         <tr>
-          <td data-lang="zh">外出必備</td><td data-lang="vi">Mang theo người</td><td data-lang="en">Carry At All Times</td>
+          <td data-lang="zh">外出必備</td><td data-lang="vi">Mang theo người</td><td data-lang="en">Always Carry</td>
           <td data-lang="zh"><span class="badge badge-blue">出門須隨身攜帶居留證</span></td>
-          <td data-lang="vi"><span class="badge badge-blue">Luôn mang theo giấy cư trú khi ra ngoài</span></td>
+          <td data-lang="vi"><span class="badge badge-blue">Luôn mang theo ARC khi ra ngoài</span></td>
           <td data-lang="en"><span class="badge badge-blue">Always carry your ARC when going out</span></td>
         </tr>
       </tbody>
@@ -1034,316 +1127,302 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     SECTION 5 · LEGAL WORK
-══════════════════════════════ -->
+<!-- ══════════════ § 5 · LEGAL WORK ══════════════ -->
 <section id="work">
-  <div class="section-header">
-    <div class="section-icon" style="background:#fef9e7;">💼</div>
-    <div class="section-title">
+  <div style="--col-a:#b7860b;--col-b:#c0392b;" class="sec-divider"></div>
+  <div class="sec-head">
+    <div class="sec-icon-box" style="background:var(--gold-light);">💼</div>
+    <div class="sec-head-text">
+      <div class="sec-num">
+        <span data-lang="zh">05 · 合法打工</span>
+        <span data-lang="vi">05 · Làm Thêm Hợp Pháp</span>
+        <span data-lang="en">05 · Legal Part-Time Work</span>
+      </div>
       <h2>
-        <span data-lang="zh">合法打工</span>
-        <span data-lang="vi">Làm Thêm Hợp Pháp</span>
-        <span data-lang="en">Legal Part-Time Work</span>
+        <span data-lang="zh">先取得工作許可<br>才能合法打工</span>
+        <span data-lang="vi">Phải có giấy phép<br>trước khi làm việc</span>
+        <span data-lang="en">Get a Work Permit<br>Before Starting Any Job</span>
       </h2>
-      <p>
-        <span data-lang="zh">在台打工必須事先取得工作許可</span>
-        <span data-lang="vi">Phải xin giấy phép lao động trước khi làm việc</span>
-        <span data-lang="en">You must obtain a work permit before starting any job</span>
+      <p class="sub">
+        <span data-lang="zh">學期中每週最多 20 小時；違法最高罰款 NT$150,000</span>
+        <span data-lang="vi">Trong học kỳ tối đa 20 giờ/tuần; vi phạm phạt tới NT$150,000</span>
+        <span data-lang="en">Max 20 hours/week during semester; illegal work fined up to NT$150,000</span>
       </p>
     </div>
   </div>
 
   <div class="alert">
-    <div class="alert-icon">⚠️</div>
-    <p>
-      <span data-lang="zh"><strong>嚴重警告：</strong>未取得工作許可即打工屬違法，罰款高達 <strong>NT$30,000 至 NT$150,000</strong>，情節嚴重者可能遭強制出境並永久喪失在台居留資格。</span>
-      <span data-lang="vi"><strong>Cảnh báo nghiêm trọng:</strong> Làm việc không có giấy phép là vi phạm pháp luật. Mức phạt từ <strong>NT$30,000 đến NT$150,000</strong>. Có thể bị trục xuất và mất quyền cư trú vĩnh viễn.</span>
-      <span data-lang="en"><strong>Serious Warning:</strong> Working without a permit is illegal. Fines range from <strong>NT$30,000 to NT$150,000</strong>. Serious violations may result in deportation and permanent loss of residency.</span>
-    </p>
+    <div class="alert-icon">🚨</div>
+    <div class="alert-body">
+      <h4>
+        <span data-lang="zh">未取得工作許可即打工 = 違法！</span>
+        <span data-lang="vi">Làm việc không có giấy phép = Vi phạm pháp luật!</span>
+        <span data-lang="en">Working Without a Permit = Illegal!</span>
+      </h4>
+      <p>
+        <span data-lang="zh">罰款高達 <strong>NT$30,000 – NT$150,000</strong>，情節嚴重者可能遭強制出境並<strong>永久喪失在台居留資格</strong>。</span>
+        <span data-lang="vi">Phạt tiền từ <strong>NT$30,000 – NT$150,000</strong>. Nghiêm trọng có thể bị trục xuất và <strong>mất quyền cư trú vĩnh viễn</strong>.</span>
+        <span data-lang="en">Fines range from <strong>NT$30,000 – NT$150,000</strong>. Serious violations may result in deportation and <strong>permanent loss of residency rights</strong>.</span>
+      </p>
+    </div>
   </div>
 
-  <div class="links-row" style="margin-top:16px;">
-    <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="zh">📝 工作許可線上申請（勞動部）</a>
-    <a class="link-btn dark" href="https://ezworktaiwan.wda.gov.tw/cp.aspx?n=99329239A3FBA2BB" target="_blank" rel="noopener" data-lang="zh">📖 在台求學期間工讀說明</a>
-    <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">📝 Work Permit Online Application</a>
-    <a class="link-btn dark" href="https://ezworktaiwan.wda.gov.tw/cp.aspx?n=99329239A3FBA2BB" target="_blank" rel="noopener" data-lang="en">📖 Part-time Work Info</a>
-    <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">📝 Nộp đơn giấy phép lao động</a>
-    <a class="link-btn dark" href="https://ezworktaiwan.wda.gov.tw/cp.aspx?n=99329239A3FBA2BB" target="_blank" rel="noopener" data-lang="vi">📖 Thông tin làm thêm</a>
+  <div class="links-row">
+    <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="zh">📝 工作許可線上申請</a>
+    <a class="btn btn-dark" href="https://ezworktaiwan.wda.gov.tw/cp.aspx?n=99329239A3FBA2BB" target="_blank" rel="noopener" data-lang="zh">📖 在台求學工讀說明</a>
+    <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">📝 Apply Work Permit</a>
+    <a class="btn btn-dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">📖 Work in Taiwan Portal</a>
+    <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">📝 Nộp đơn giấy phép</a>
+    <a class="btn btn-dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">📖 Work in Taiwan</a>
   </div>
 
   <br>
   <div class="cards">
     <div class="card">
       <div class="card-icon">📝</div>
-      <h3>
-        <span data-lang="zh">申請工作許可</span>
-        <span data-lang="vi">Xin Giấy phép Lao động</span>
-        <span data-lang="en">Applying for a Work Permit</span>
-      </h3>
+      <h3><span data-lang="zh">申請工作許可</span><span data-lang="vi">Xin Giấy phép Lao động</span><span data-lang="en">Applying for Work Permit</span></h3>
       <ul>
-        <li data-lang="zh">向<strong>勞動部勞動力發展署</strong>申請「僑外生工讀許可」，OICA 可協助。</li>
-        <li data-lang="zh">申請費：<strong>NT$100</strong>；許可效期：最長 <strong>6 個月</strong>，須定期續辦。</li>
-        <li data-lang="zh">語言先修生（未正式入學）<strong>須修業滿 6 個月</strong>後方可申請。</li>
-        <li data-lang="zh">正式修習科系課程的外國學生，入學後即可申請。</li>
-        <li data-lang="vi">Nộp đơn xin "Giấy phép làm thêm cho sinh viên nước ngoài" tại <strong>WDA - Bộ Lao động</strong>. OICA hỗ trợ.</li>
-        <li data-lang="vi">Lệ phí: <strong>NT$100</strong>; Hiệu lực: tối đa <strong>6 tháng</strong>, cần gia hạn định kỳ.</li>
-        <li data-lang="vi">Sinh viên học ngôn ngữ (chưa chính thức nhập học đại học) cần học <strong>đủ 6 tháng</strong> mới được nộp đơn.</li>
-        <li data-lang="en">Apply for "Part-time Work Permit for Overseas Students" at the <strong>WDA Ministry of Labor</strong>. OICA can help.</li>
-        <li data-lang="en">Fee: <strong>NT$100</strong>; Validity: up to <strong>6 months</strong>, must be renewed regularly.</li>
-        <li data-lang="en">Language preparatory students must complete <strong>6 months of study</strong> before they can apply.</li>
+        <li data-lang="zh">向<strong>勞動部勞動力發展署</strong>申請「僑外生工讀許可」</li>
+        <li data-lang="zh">申請費：<strong>NT$100</strong>；效期：最長 <strong>6 個月</strong></li>
+        <li data-lang="zh">語言先修生須修業 <strong>滿 6 個月</strong> 後方可申請</li>
+        <li data-lang="zh">校內與校外打工都需要申請</li>
+        <li data-lang="vi">Nộp đơn "Giấy phép làm thêm cho sinh viên" tại <strong>WDA Bộ Lao động</strong></li>
+        <li data-lang="vi">Lệ phí: <strong>NT$100</strong>; Hiệu lực tối đa <strong>6 tháng</strong></li>
+        <li data-lang="vi">Sinh viên học ngôn ngữ cần <strong>học đủ 6 tháng</strong> mới được nộp đơn</li>
+        <li data-lang="vi">Cả việc làm trong và ngoài trường đều cần giấy phép</li>
+        <li data-lang="en">Apply "Part-time Work Permit" at <strong>WDA Ministry of Labor</strong></li>
+        <li data-lang="en">Fee: <strong>NT$100</strong>; Valid for up to <strong>6 months</strong></li>
+        <li data-lang="en">Language prep students must complete <strong>6 months of study</strong> first</li>
+        <li data-lang="en">Both on-campus and off-campus jobs require a permit</li>
       </ul>
       <div class="card-links">
-        <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 線上申辦</a>
-        <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">🔗 Nộp đơn online</a>
-        <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">🔗 Apply Online</a>
+        <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 線上申辦</a>
+        <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">🔗 Nộp đơn</a>
+        <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">🔗 Apply Online</a>
       </div>
     </div>
 
     <div class="card">
       <div class="card-icon">⏰</div>
-      <h3>
-        <span data-lang="zh">工時限制</span>
-        <span data-lang="vi">Giới hạn Giờ làm việc</span>
-        <span data-lang="en">Working Hours Limits</span>
-      </h3>
+      <h3><span data-lang="zh">工時限制</span><span data-lang="vi">Giới hạn Giờ làm việc</span><span data-lang="en">Working Hours Limits</span></h3>
       <ul>
-        <li data-lang="zh">學期中（上課期間）：每週最多 <strong>20 小時</strong>。</li>
-        <li data-lang="zh">寒暑假期間：<strong>無工時限制</strong>，可全職工作。</li>
-        <li data-lang="zh">違反工時規定同屬違法，雇主與員工均須負責。</li>
-        <li data-lang="vi">Trong học kỳ: tối đa <strong>20 giờ/tuần</strong>.</li>
-        <li data-lang="vi">Kỳ nghỉ hè/đông: <strong>Không giới hạn</strong> giờ làm, có thể làm toàn thời gian.</li>
-        <li data-lang="vi">Vi phạm giới hạn giờ làm cũng là hành vi bất hợp pháp.</li>
-        <li data-lang="en">During the semester: max <strong>20 hours per week</strong>.</li>
-        <li data-lang="en">During winter/summer vacation: <strong>No hour restriction</strong>, full-time allowed.</li>
-        <li data-lang="en">Exceeding hour limits is also a legal violation.</li>
+        <li data-lang="zh">學期中：每週最多 <strong>20 小時</strong></li>
+        <li data-lang="zh">寒暑假：<strong>無限制</strong>，可全職工作</li>
+        <li data-lang="zh">超時工作同樣違法，雇主與員工均需負責</li>
+        <li data-lang="vi">Học kỳ: tối đa <strong>20 giờ/tuần</strong></li>
+        <li data-lang="vi">Nghỉ hè/đông: <strong>Không giới hạn</strong>, có thể làm toàn thời gian</li>
+        <li data-lang="vi">Làm quá giờ cũng là vi phạm pháp luật</li>
+        <li data-lang="en">During semester: max <strong>20 hours per week</strong></li>
+        <li data-lang="en">Winter/summer vacation: <strong>No limit</strong>, full-time allowed</li>
+        <li data-lang="en">Exceeding hour limits is also a legal violation</li>
       </ul>
     </div>
 
     <div class="card">
       <div class="card-icon">💰</div>
-      <h3>
-        <span data-lang="zh">薪資與勞工權益</span>
-        <span data-lang="vi">Lương & Quyền lợi Lao động</span>
-        <span data-lang="en">Wages & Worker Rights</span>
-      </h3>
+      <h3><span data-lang="zh">薪資與勞工權益</span><span data-lang="vi">Lương & Quyền lợi</span><span data-lang="en">Wages & Worker Rights</span></h3>
       <ul>
-        <li data-lang="zh">2026 年台灣基本時薪：<strong>NT$183 / 小時</strong>（以勞動部公告為準）。</li>
-        <li data-lang="zh">雇主應依法為打工者投保勞工保險。</li>
-        <li data-lang="zh">如遭勞資糾紛，可向高雄市政府勞工局申訴，提供多語諮詢。</li>
-        <li data-lang="vi">Lương tối thiểu theo giờ năm 2026: <strong>NT$183/giờ</strong> (theo công bố Bộ Lao động).</li>
-        <li data-lang="vi">Người sử dụng lao động phải tham gia bảo hiểm lao động cho bạn.</li>
-        <li data-lang="vi">Tranh chấp lao động → khiếu nại Sở Lao động TP. Cao Hùng, tư vấn đa ngôn ngữ miễn phí.</li>
-        <li data-lang="en">Taiwan's minimum hourly wage (2026): <strong>NT$183/hour</strong> (subject to MOL announcement).</li>
-        <li data-lang="en">Employers must enroll you in labor insurance.</li>
-        <li data-lang="en">For labor disputes, contact Kaohsiung City Labor Bureau — free multilingual service.</li>
+        <li data-lang="zh">2026 年基本時薪：<strong>NT$183 / 小時</strong></li>
+        <li data-lang="zh">雇主應為打工者投保<strong>勞工保險</strong></li>
+        <li data-lang="zh">勞資糾紛可向<strong>高雄市政府勞工局</strong>申訴，提供多語服務</li>
+        <li data-lang="vi">Lương tối thiểu 2026: <strong>NT$183/giờ</strong></li>
+        <li data-lang="vi">Người sử dụng lao động phải đăng ký <strong>bảo hiểm lao động</strong></li>
+        <li data-lang="vi">Tranh chấp → khiếu nại <strong>Sở Lao động TP. Cao Hùng</strong>, tư vấn đa ngôn ngữ</li>
+        <li data-lang="en">2026 minimum hourly wage: <strong>NT$183/hour</strong></li>
+        <li data-lang="en">Employer must enroll you in <strong>Labor Insurance</strong></li>
+        <li data-lang="en">Disputes → <strong>Kaohsiung City Labor Bureau</strong>, multilingual service</li>
       </ul>
       <div class="card-links">
-        <a class="link-btn dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 外國人在台工作服務網</a>
-        <a class="link-btn dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">🔗 Trang dịch vụ lao động</a>
-        <a class="link-btn dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">🔗 Work in Taiwan Portal</a>
+        <a class="btn btn-dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 外國人在台工作服務網</a>
+        <a class="btn btn-dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">🔗 Work in Taiwan</a>
+        <a class="btn btn-dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">🔗 Work in Taiwan Portal</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ══════════════════════════════
-     SECTION 6 · CONTACT
-══════════════════════════════ -->
+<!-- ══════════════ § 6 · CONTACT ══════════════ -->
 <section id="contact">
-  <div class="section-header">
-    <div class="section-icon" style="background:#eaf4fb;">📞</div>
-    <div class="section-title">
+  <div style="--col-a:#0f1c26;--col-b:#c0392b;" class="sec-divider"></div>
+  <div class="sec-head">
+    <div class="sec-icon-box" style="background:#f1f3f5;">📞</div>
+    <div class="sec-head-text">
+      <div class="sec-num">
+        <span data-lang="zh">06 · 重要聯絡資訊</span>
+        <span data-lang="vi">06 · Liên hệ Quan trọng</span>
+        <span data-lang="en">06 · Important Contacts</span>
+      </div>
       <h2>
-        <span data-lang="zh">重要聯絡資訊</span>
-        <span data-lang="vi">Thông tin Liên hệ Quan trọng</span>
-        <span data-lang="en">Important Contacts & Links</span>
+        <span data-lang="zh">各機構官方網站<br>與聯絡方式</span>
+        <span data-lang="vi">Website & Liên hệ<br>Các cơ quan</span>
+        <span data-lang="en">Official Websites &amp;<br>Contact Details</span>
       </h2>
-      <p>
-        <span data-lang="zh">各機構官方網站與聯絡方式</span>
-        <span data-lang="vi">Website chính thức và thông tin liên hệ các cơ quan</span>
-        <span data-lang="en">Official websites and contact details for key offices</span>
-      </p>
     </div>
   </div>
 
   <div class="contact-grid">
-    <!-- OICA -->
     <div class="contact-card">
       <div class="c-icon">🏛️</div>
-      <h4>
-        <span data-lang="zh">義守大學 OICA<br>國際及兩岸事務處</span>
-        <span data-lang="vi">Văn phòng Quốc tế ISU (OICA)</span>
-        <span data-lang="en">I-Shou University OICA</span>
-      </h4>
-      <p data-lang="zh">居留證、打工許可、獎學金、生活輔導等各項協助。</p>
-      <p data-lang="vi">Hỗ trợ giấy cư trú, giấy phép lao động, học bổng, tư vấn đời sống.</p>
-      <p data-lang="en">ARC, work permit, scholarships, and general student support.</p>
-      <a class="link-btn" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 中文官網</a>
-      <a class="link-btn dark" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener">🔗 English Site</a>
-      <a class="link-btn dark" href="https://www.facebook.com/ISUOICA/" target="_blank" rel="noopener">📘 Facebook</a>
+      <h4><span data-lang="zh">義守大學 OICA</span><span data-lang="vi">OICA – ĐH I-Shou</span><span data-lang="en">I-Shou University OICA</span></h4>
+      <p data-lang="zh">居留證、打工許可、獎學金、生活輔導等各項協助</p>
+      <p data-lang="vi">Hỗ trợ ARC, giấy phép lao động, học bổng, tư vấn đời sống</p>
+      <p data-lang="en">ARC, work permit, scholarships, and student support</p>
+      <a class="btn btn-red" href="https://oica.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 中文官網</a>
+      <a class="btn btn-dark" href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener">🔗 English</a>
+      <a class="btn btn-dark" href="https://www.facebook.com/ISUOICA/" target="_blank" rel="noopener">📘 FB</a>
     </div>
 
-    <!-- ISU Main -->
     <div class="contact-card">
       <div class="c-icon">🎓</div>
-      <h4>
-        <span data-lang="zh">義守大學 官方網站</span>
-        <span data-lang="vi">Trang chính thức ĐH I-Shou</span>
-        <span data-lang="en">I-Shou University Main Website</span>
-      </h4>
-      <p data-lang="zh">學校最新公告、行事曆與各學院資訊。</p>
-      <p data-lang="vi">Thông báo mới nhất, lịch học và thông tin các khoa.</p>
-      <p data-lang="en">Latest announcements, academic calendar, and faculty info.</p>
-      <a class="link-btn" href="https://www.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 義守大學官網</a>
-      <a class="link-btn" href="https://www.isu.edu.tw/en-US" target="_blank" rel="noopener" data-lang="en">🔗 ISU English</a>
-      <a class="link-btn" href="https://www.isu.edu.tw/en-US" target="_blank" rel="noopener" data-lang="vi">🔗 ISU (tiếng Anh)</a>
+      <h4><span data-lang="zh">義守大學官網</span><span data-lang="vi">Website chính thức ISU</span><span data-lang="en">I-Shou University</span></h4>
+      <p data-lang="zh">學校公告、行事曆與各學院資訊</p>
+      <p data-lang="vi">Thông báo, lịch học, thông tin khoa</p>
+      <p data-lang="en">Announcements, academic calendar, faculty info</p>
+      <a class="btn btn-red" href="https://www.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 義守大學</a>
+      <a class="btn btn-dark" href="https://www.isu.edu.tw/en-US" target="_blank" rel="noopener" data-lang="en">🔗 ISU English</a>
+      <a class="btn btn-dark" href="https://www.isu.edu.tw/en-US" target="_blank" rel="noopener" data-lang="vi">🔗 ISU (En)</a>
     </div>
 
-    <!-- NIA -->
     <div class="contact-card">
       <div class="c-icon">🏢</div>
-      <h4>
-        <span data-lang="zh">移民署 (NIA)<br>外僑居留證申辦</span>
-        <span data-lang="vi">Cục Quản lý Xuất Nhập cảnh (NIA)</span>
-        <span data-lang="en">National Immigration Agency (NIA)</span>
-      </h4>
-      <p data-lang="zh">居留證申請、展延、簽證轉換相關業務。電話：02-2388-9393</p>
-      <p data-lang="vi">Đăng ký, gia hạn ARC, chuyển đổi thị thực. ĐT: 02-2388-9393</p>
-      <p data-lang="en">ARC application, extension, and visa conversion. Tel: 02-2388-9393</p>
-      <a class="link-btn" href="https://www.immigration.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 移民署官網</a>
-      <a class="link-btn" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=en" target="_blank" rel="noopener" data-lang="en">🔗 Student ARC Online</a>
-      <a class="link-btn" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=en" target="_blank" rel="noopener" data-lang="vi">🔗 Nộp đơn ARC</a>
-      <a class="link-btn dark" href="https://www.immigration.gov.tw/7120/" target="_blank" rel="noopener" data-lang="zh">🌐 英文版官網</a>
+      <h4><span data-lang="zh">移民署 (NIA)</span><span data-lang="vi">Cục Xuất Nhập cảnh (NIA)</span><span data-lang="en">National Immigration Agency</span></h4>
+      <p data-lang="zh">居留證申請・展延・簽證。☎ 02-2388-9393</p>
+      <p data-lang="vi">Đăng ký, gia hạn ARC, thị thực. ☎ 02-2388-9393</p>
+      <p data-lang="en">ARC, extension, visa services. ☎ 02-2388-9393</p>
+      <a class="btn btn-blue" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=zh" target="_blank" rel="noopener" data-lang="zh">🔗 學生申辦</a>
+      <a class="btn btn-dark" href="https://www.immigration.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🏛️ 移民署</a>
+      <a class="btn btn-blue" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=en" target="_blank" rel="noopener" data-lang="en">🔗 ARC Online</a>
+      <a class="btn btn-dark" href="https://www.immigration.gov.tw/7120/" target="_blank" rel="noopener" data-lang="en">🏛️ NIA</a>
+      <a class="btn btn-blue" href="https://coa.immigration.gov.tw/coa-frontend/student/entry?lang=en" target="_blank" rel="noopener" data-lang="vi">🔗 Nộp đơn</a>
+      <a class="btn btn-dark" href="https://www.immigration.gov.tw/7120/" target="_blank" rel="noopener" data-lang="vi">🏛️ NIA</a>
     </div>
 
-    <!-- MOL Work Permit -->
     <div class="contact-card">
       <div class="c-icon">💼</div>
-      <h4>
-        <span data-lang="zh">勞動部 · 工作許可申請</span>
-        <span data-lang="vi">Bộ Lao động – Giấy phép Lao động</span>
-        <span data-lang="en">Ministry of Labor – Work Permit</span>
-      </h4>
-      <p data-lang="zh">外國學生工讀許可線上申請。客服電話：0800-881-339</p>
-      <p data-lang="vi">Nộp đơn xin giấy phép làm thêm trực tuyến. Hotline: 0800-881-339</p>
-      <p data-lang="en">Online work permit application for foreign students. Hotline: 0800-881-339</p>
-      <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 線上申辦（僑外生工讀）</a>
-      <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">🔗 Apply Work Permit</a>
-      <a class="link-btn" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">🔗 Nộp đơn giấy phép</a>
-      <a class="link-btn dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener">📖 Work in Taiwan</a>
+      <h4><span data-lang="zh">勞動部 · 工作許可</span><span data-lang="vi">Bộ Lao động</span><span data-lang="en">Ministry of Labor</span></h4>
+      <p data-lang="zh">外國學生工讀許可申請。☎ 0800-881-339</p>
+      <p data-lang="vi">Giấy phép làm thêm cho sinh viên. ☎ 0800-881-339</p>
+      <p data-lang="en">Part-time work permit for students. ☎ 0800-881-339</p>
+      <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="zh">📝 線上申辦</a>
+      <a class="btn btn-dark" href="https://ezworktaiwan.wda.gov.tw/" target="_blank" rel="noopener">🌐 Work in TW</a>
+      <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="en">📝 Apply</a>
+      <a class="btn btn-gold" href="https://ezwp.wda.gov.tw/" target="_blank" rel="noopener" data-lang="vi">📝 Nộp đơn</a>
     </div>
 
-    <!-- TOCFL -->
     <div class="contact-card">
       <div class="c-icon">📝</div>
-      <h4>
-        <span data-lang="zh">TOCFL 華語文能力測驗</span>
-        <span data-lang="vi">Kỳ thi TOCFL</span>
-        <span data-lang="en">TOCFL – Chinese Proficiency Test</span>
-      </h4>
-      <p data-lang="zh">由台師大主辦。報名後需 2 個工作日審核照片，請提早準備。</p>
-      <p data-lang="vi">Do ĐHSP Quốc gia Đài Loan tổ chức. Sau đăng ký, ảnh duyệt mất 2 ngày làm việc.</p>
-      <p data-lang="en">Organized by NTNU. Photo verification takes ~2 working days after registration.</p>
-      <a class="link-btn green" href="https://tocfl.edu.tw/" target="_blank" rel="noopener">🌐 TOCFL 官網</a>
-      <a class="link-btn green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="zh">📝 線上報名</a>
-      <a class="link-btn green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="vi">📝 Đăng ký thi</a>
-      <a class="link-btn green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="en">📝 Register</a>
+      <h4>TOCFL 華語文能力測驗</h4>
+      <p data-lang="zh">台師大主辦。報名前上傳大頭照，審核約 2 個工作日。</p>
+      <p data-lang="vi">Do ĐHSP Quốc gia tổ chức. Tải ảnh trước khi đăng ký.</p>
+      <p data-lang="en">Organized by NTNU. Upload headshot ~2 working days for approval.</p>
+      <a class="btn btn-green" href="https://tocfl.edu.tw/" target="_blank" rel="noopener">🌐 TOCFL 官網</a>
+      <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="zh">📝 線上報名</a>
+      <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="vi">📝 Đăng ký</a>
+      <a class="btn btn-green" href="https://reg.sc-top.org.tw/" target="_blank" rel="noopener" data-lang="en">📝 Register</a>
     </div>
 
-    <!-- NHI -->
     <div class="contact-card">
       <div class="c-icon">🏥</div>
-      <h4>
-        <span data-lang="zh">全民健康保險 (NHI)</span>
-        <span data-lang="vi">Bảo hiểm Y tế Toàn dân (NHI)</span>
-        <span data-lang="en">National Health Insurance (NHI)</span>
-      </h4>
-      <p data-lang="zh">居台滿 180 天後加入，月費約 NT$826，享全台低廉就醫。健保署電話：02-2706-8080</p>
-      <p data-lang="vi">Tham gia sau 180 ngày. Phí ~NT$826/tháng. Khám bệnh giá thấp trên toàn quốc. ĐT: 02-2706-8080</p>
-      <p data-lang="en">Join after 180 days. ~NT$826/month. Affordable care nationwide. Tel: 02-2706-8080</p>
-      <a class="link-btn" href="https://www.nhi.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 健保署中文</a>
-      <a class="link-btn" href="https://www.nhi.gov.tw/en/mp-2.html" target="_blank" rel="noopener" data-lang="en">🔗 NHI English</a>
-      <a class="link-btn" href="https://www.nhi.gov.tw/en/mp-2.html" target="_blank" rel="noopener" data-lang="vi">🔗 NHI English</a>
+      <h4><span data-lang="zh">全民健保 (NHI)</span><span data-lang="vi">Bảo hiểm Y tế (NHI)</span><span data-lang="en">National Health Insurance</span></h4>
+      <p data-lang="zh">居台滿 180 天後加入，月費約 NT$826。☎ 02-2706-8080</p>
+      <p data-lang="vi">Tham gia sau 180 ngày, ~NT$826/tháng. ☎ 02-2706-8080</p>
+      <p data-lang="en">Join after 180 days, ~NT$826/month. ☎ 02-2706-8080</p>
+      <a class="btn btn-blue" href="https://www.nhi.gov.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 健保署</a>
+      <a class="btn btn-blue" href="https://www.nhi.gov.tw/en/mp-2.html" target="_blank" rel="noopener" data-lang="en">🔗 NHI EN</a>
+      <a class="btn btn-blue" href="https://www.nhi.gov.tw/en/mp-2.html" target="_blank" rel="noopener" data-lang="vi">🔗 NHI EN</a>
     </div>
 
-    <!-- Yida Bus -->
     <div class="contact-card">
       <div class="c-icon">🚌</div>
-      <h4>
-        <span data-lang="zh">義大客運</span>
-        <span data-lang="vi">Xe buýt Yida (E-Da Bus)</span>
-        <span data-lang="en">Yida Bus (E-Da Bus)</span>
-      </h4>
-      <p data-lang="zh">校本部 ↔ 醫學院區 ↔ 高鐵左營站，並連結高雄市區各景點。</p>
-      <p data-lang="vi">Khu học chính ↔ Khu Y khoa ↔ Ga HSR Zuoying và các điểm du lịch Cao Hùng.</p>
-      <p data-lang="en">Main campus ↔ Medical campus ↔ HSR Zuoying and Kaohsiung city attractions.</p>
-      <a class="link-btn" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="zh">🔗 義大客運官網</a>
-      <a class="link-btn" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="vi">🔗 Trang web E-Da Bus</a>
-      <a class="link-btn" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="en">🔗 E-Da Bus Website</a>
-      <a class="link-btn dark" href="https://oga.isu.edu.tw/page/%E4%BA%A4%E9%80%9A%E8%BB%8A%E7%B0%A1%E4%BB%8B-NPxEPNbd4cCM" target="_blank" rel="noopener" data-lang="zh">📋 校內交通車時刻</a>
+      <h4><span data-lang="zh">義大客運</span><span data-lang="vi">Xe buýt Yida (E-Da Bus)</span><span data-lang="en">Yida Bus (E-Da Bus)</span></h4>
+      <p data-lang="zh">校本部 ↔ 醫學院 ↔ 高鐵左營站，及高雄市區路線</p>
+      <p data-lang="vi">Khu học chính ↔ Y khoa ↔ Ga HSR Zuoying và các điểm Cao Hùng</p>
+      <p data-lang="en">Main campus ↔ Medical campus ↔ HSR Zuoying + city routes</p>
+      <a class="btn btn-blue" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="zh">🚌 義大客運</a>
+      <a class="btn btn-dark" href="https://oga.isu.edu.tw/page/%E4%BA%A4%E9%80%9A%E8%BB%8A%E7%B0%A1%E4%BB%8B-NPxEPNbd4cCM" target="_blank" rel="noopener" data-lang="zh">📋 校內交通車</a>
+      <a class="btn btn-blue" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="en">🚌 E-Da Bus</a>
+      <a class="btn btn-blue" href="https://www.edabus.com.tw/" target="_blank" rel="noopener" data-lang="vi">🚌 Yida Bus</a>
     </div>
 
-    <!-- Campus Systems -->
     <div class="contact-card">
       <div class="c-icon">💻</div>
-      <h4>
-        <span data-lang="zh">義守大學 校園系統</span>
-        <span data-lang="vi">Hệ thống trực tuyến ISU</span>
-        <span data-lang="en">ISU Campus Online Systems</span>
-      </h4>
-      <p data-lang="zh">應用資訊系統（選課/請假/成績）、Moodle（線上課程平台）。</p>
-      <p data-lang="vi">Hệ thống thông tin (đăng ký môn/xin phép/điểm số) và Moodle (nền tảng học trực tuyến).</p>
-      <p data-lang="en">Information System (courses/leave/grades) and Moodle (e-learning platform).</p>
-      <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="zh">💻 應用資訊系統</a>
-      <a class="link-btn dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">📖 Moodle 平台</a>
-      <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="vi">💻 Hệ thống thông tin</a>
-      <a class="link-btn dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="vi">📖 Moodle</a>
-      <a class="link-btn dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="en">💻 Info System</a>
-      <a class="link-btn dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="en">📖 Moodle</a>
+      <h4><span data-lang="zh">義守大學 校園系統</span><span data-lang="vi">Hệ thống ISU</span><span data-lang="en">ISU Campus Systems</span></h4>
+      <p data-lang="zh">應用資訊系統（選課/請假）+ Moodle（作業/講義）</p>
+      <p data-lang="vi">Hệ thống TT (đăng ký/xin phép) + Moodle (bài tập/tài liệu)</p>
+      <p data-lang="en">Info System (courses/leave) + Moodle (assignments/materials)</p>
+      <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="zh">💻 應用資訊系統</a>
+      <a class="btn btn-dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="zh">📖 Moodle</a>
+      <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="vi">💻 Hệ thống TT</a>
+      <a class="btn btn-dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="vi">📖 Moodle</a>
+      <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="en">💻 Info System</a>
+      <a class="btn btn-dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="en">📖 Moodle</a>
     </div>
   </div>
 </section>
 
 </main>
 
-<!-- FOOTER -->
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
 <footer>
   <p>
     <span data-lang="zh">© 2026 義守大學 國際及兩岸事務處（OICA）·
       <a href="https://oica.isu.edu.tw/" target="_blank" rel="noopener">oica.isu.edu.tw</a> ·
       本頁資訊僅供參考，詳細規定以學校正式公告為準。
     </span>
-    <span data-lang="vi">© 2026 Văn phòng Quốc tế và Eo biển Đài Loan (OICA) – Đại học I-Shou ·
+    <span data-lang="vi">© 2026 Văn phòng Quốc tế OICA – Đại học I-Shou ·
       <a href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener">oica.ishouuniversity.com</a> ·
-      Thông tin mang tính tham khảo; quy định chính thức theo thông báo nhà trường.
+      Thông tin chỉ mang tính tham khảo.
     </span>
     <span data-lang="en">© 2026 Office of International & Cross-Strait Affairs (OICA) – I-Shou University ·
       <a href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener">oica.ishouuniversity.com</a> ·
-      This page is for reference only; official rules are subject to university announcements.
+      For reference only; official rules subject to university announcements.
     </span>
   </p>
 </footer>
 
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
 <script>
+  /* ── Scroll Progress Bar ── */
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progress-bar').style.width = (window.scrollY / docH * 100) + '%';
+  });
+
+  /* ── Language Switcher ── */
   function setLang(lang, btn) {
     document.body.className = 'lang-' + lang;
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.documentElement.lang = lang === 'zh' ? 'zh-TW' : lang === 'vi' ? 'vi' : 'en';
+    document.documentElement.lang = ({zh:'zh-TW', vi:'vi', en:'en'})[lang];
   }
 
-  // Active nav on scroll
+  /* ── Active Nav on Scroll ── */
   const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link');
-  const observer = new IntersectionObserver((entries) => {
+  const navLinks = document.querySelectorAll('nav .nav-link');
+  const navObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
       }
     });
-  }, { rootMargin: '-25% 0px -65% 0px' });
-  sections.forEach(s => observer.observe(s));
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => navObs.observe(s));
+
+  /* ── Scroll-Reveal Animation ── */
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.card, .contact-card').forEach(el => revealObs.observe(el));
 </script>
 </body>
 </html>
