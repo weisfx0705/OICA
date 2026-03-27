@@ -237,6 +237,25 @@
       padding-bottom: 24px;
       border-bottom: 2px solid var(--border);
     }
+    .lang-inline {
+      margin-left:auto; flex-shrink:0;
+      display:flex; flex-direction:column; gap:6px;
+      align-items:flex-end; padding-top:4px;
+    }
+    .lang-inline-btn {
+      background:transparent;
+      border:1.5px solid var(--border);
+      color:var(--muted);
+      padding:4px 12px;
+      border-radius:20px;
+      font-size:.72rem; font-weight:800;
+      letter-spacing:.04em;
+      cursor:pointer;
+      transition:all .18s;
+      white-space:nowrap;
+    }
+    .lang-inline-btn:hover { border-color:var(--red); color:var(--red); }
+    .lang-inline-btn.active { background:var(--red); color:#fff; border-color:var(--red); }
     .sec-num {
       font-size: .75rem; font-weight: 900;
       text-transform: uppercase; letter-spacing: 2px;
@@ -457,9 +476,9 @@
            onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'font-size:17px;font-weight:900;color:#c0392b\'>ISU</span>';" />
     </div>
     <div class="brand-text">
-      <span class="b1" data-lang="zh">義守大學 國際及兩岸事務處</span>
-      <span class="b1" data-lang="vi">ĐH I-Shou – Văn phòng Quốc tế (OICA)</span>
-      <span class="b1" data-lang="en">I-Shou University – Office of Int'l Affairs</span>
+      <span class="b1" data-lang="zh">義守大學國際及兩岸事務處</span>
+      <span class="b1" data-lang="vi">ĐH I-Shou – Văn phòng Quốc tế &amp; Quan hệ Hai bờ (OICA)</span>
+      <span class="b1" data-lang="en">I-Shou University's Office of International &amp; Cross-strait Affairs (OICA)</span>
       <span class="b2">oica.isu.edu.tw</span>
     </div>
   </a>
@@ -641,6 +660,11 @@
         <span data-lang="en">No transfers during prep year. Attendance determines your scholarship.</span>
       </p>
     </div>
+    <div class="lang-inline">
+      <button class="lang-inline-btn active" data-setlang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-inline-btn" data-setlang="vi" onclick="setLang('vi')">Việt</button>
+      <button class="lang-inline-btn" data-setlang="en" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 
   <div class="info-box green">
@@ -769,6 +793,11 @@
         <span data-lang="vi">Điểm danh và TOCFL trong năm dự bị quyết định học bổng và hỗ trợ ký túc xá năm 1</span>
         <span data-lang="en">Prep year attendance and TOCFL score determine Year 1 tuition scholarships and housing subsidies</span>
       </p>
+    </div>
+    <div class="lang-inline">
+      <button class="lang-inline-btn active" data-setlang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-inline-btn" data-setlang="vi" onclick="setLang('vi')">Việt</button>
+      <button class="lang-inline-btn" data-setlang="en" onclick="setLang('en')">EN</button>
     </div>
   </div>
 
@@ -902,6 +931,11 @@
         <span data-lang="en">Year 1 dorm is mandatory; roll call Sun–Thu at 10:30 PM</span>
       </p>
     </div>
+    <div class="lang-inline">
+      <button class="lang-inline-btn active" data-setlang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-inline-btn" data-setlang="vi" onclick="setLang('vi')">Việt</button>
+      <button class="lang-inline-btn" data-setlang="en" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 
   <div class="info-box blue">
@@ -1024,6 +1058,11 @@
         <span data-lang="en">OICA assists with group online application. Fee NT$1,000 / year</span>
       </p>
     </div>
+    <div class="lang-inline">
+      <button class="lang-inline-btn active" data-setlang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-inline-btn" data-setlang="vi" onclick="setLang('vi')">Việt</button>
+      <button class="lang-inline-btn" data-setlang="en" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 
   <div class="alert">
@@ -1141,6 +1180,11 @@
         <span data-lang="en">Max 20 hours/week during semester; illegal work fined up to NT$150,000</span>
       </p>
     </div>
+    <div class="lang-inline">
+      <button class="lang-inline-btn active" data-setlang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-inline-btn" data-setlang="vi" onclick="setLang('vi')">Việt</button>
+      <button class="lang-inline-btn" data-setlang="en" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 
   <div class="alert">
@@ -1250,6 +1294,11 @@
         <span data-lang="en">Official Websites &amp;<br>Contact Details</span>
       </h2>
     </div>
+    <div class="lang-inline">
+      <button class="lang-inline-btn active" data-setlang="zh" onclick="setLang('zh')">中文</button>
+      <button class="lang-inline-btn" data-setlang="vi" onclick="setLang('vi')">Việt</button>
+      <button class="lang-inline-btn" data-setlang="en" onclick="setLang('en')">EN</button>
+    </div>
   </div>
 
   <div class="contact-grid">
@@ -1349,6 +1398,53 @@
       <a class="btn btn-dark" href="https://netreg.isu.edu.tw/wapp/" target="_blank" rel="noopener" data-lang="en">💻 Info System</a>
       <a class="btn btn-dark" href="https://apm4.isu.edu.tw/" target="_blank" rel="noopener" data-lang="en">📖 Moodle</a>
     </div>
+
+    <div class="contact-card">
+      <div class="c-icon">🌏</div>
+      <h4>
+        <span data-lang="zh">國際及兩岸事務處 · 學生事務聯繫窗口</span>
+        <span data-lang="vi">Phòng Quốc tế &amp; Quan hệ Hai bờ · Tư vấn viên Ngoại ngữ</span>
+        <span data-lang="en">Office of International &amp; Cross-strait Affairs (OICA) · Foreign Language Counselors</span>
+      </h4>
+      <p data-lang="zh">外語輔導員 / 本處協作窗口</p>
+      <p data-lang="vi">Tư vấn viên ngoại ngữ / Cửa sổ liên lạc</p>
+      <p data-lang="en">Foreign Language Counselors / IFP Collaborative Contact</p>
+      <p style="font-size:.85rem; line-height:1.9;">
+        <span data-lang="zh">
+          <strong>阮秋芳</strong>（越語專業）<br>
+          📧 celia@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2086<br><br>
+          <strong>阮玉翠</strong>（越語專業）<br>
+          📧 mia1005@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2644<br><br>
+          <strong>胡美佳</strong>（印尼語專業）<br>
+          📧 meganagnes@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2088
+        </span>
+        <span data-lang="vi">
+          <strong>阮秋芳</strong>（Tiếng Việt）<br>
+          📧 celia@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2086<br><br>
+          <strong>阮玉翠</strong>（Tiếng Việt）<br>
+          📧 mia1005@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2644<br><br>
+          <strong>胡美佳</strong>（Tiếng Indonesia）<br>
+          📧 meganagnes@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2088
+        </span>
+        <span data-lang="en">
+          <strong>Celia (阮秋芳)</strong> — Vietnamese<br>
+          📧 celia@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2086<br><br>
+          <strong>Mia (阮玉翠)</strong> — Vietnamese<br>
+          📧 mia1005@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2644<br><br>
+          <strong>Megan (胡美佳)</strong> — Indonesian<br>
+          📧 meganagnes@isu.edu.tw<br>
+          ☎ 07-6577711 Ext. 2088
+        </span>
+      </p>
+    </div>
   </div>
 </section>
 
@@ -1367,7 +1463,7 @@
       <a href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener">oica.ishouuniversity.com</a> ·
       Thông tin chỉ mang tính tham khảo.
     </span>
-    <span data-lang="en">© 2026 Office of International & Cross-Strait Affairs (OICA) – I-Shou University ·
+    <span data-lang="en">© 2026 Office of International & Cross-strait Affairs (OICA) – I-Shou University ·
       <a href="https://oica.ishouuniversity.com/" target="_blank" rel="noopener">oica.ishouuniversity.com</a> ·
       For reference only; official rules subject to university announcements.
     </span>
@@ -1388,7 +1484,10 @@
   function setLang(lang, btn) {
     document.body.className = 'lang-' + lang;
     document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    if (btn) btn.classList.add('active');
+    document.querySelectorAll('.lang-inline-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.setlang === lang);
+    });
     document.documentElement.lang = ({zh:'zh-TW', vi:'vi', en:'en'})[lang];
   }
 
