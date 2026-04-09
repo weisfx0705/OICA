@@ -678,6 +678,157 @@
     .cover { padding: 50px 40px 40px; }
     .content { padding: 40px; }
   }
+
+  /* ══════════════════════════════
+     響應式設計 — 平板（768px 以下）
+  ══════════════════════════════ */
+  @media (max-width: 768px) {
+    body { font-size: 15px; }
+
+    /* 封面 */
+    .cover { padding: 48px 24px 36px; }
+    .cover-title { font-size: 34px; }
+    .cover-sub { font-size: 16px; margin-bottom: 32px; }
+    .cover-meta {
+      flex-wrap: wrap;
+      gap: 20px 32px;
+    }
+
+    /* 摘要 */
+    .exec-summary { padding: 28px 24px; }
+    .exec-summary-inner {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .exec-label { font-size: 13px; }
+    .exec-text { font-size: 15px; }
+
+    /* 主內容 */
+    .content { padding: 32px 20px; }
+    .section { margin-bottom: 48px; }
+
+    /* 章節標題 */
+    .section-num { font-size: 48px; min-width: 48px; }
+    .section-title { font-size: 22px; }
+    .section-header { gap: 14px; padding-bottom: 16px; }
+
+    /* 類型卡片 header */
+    .type-card-header {
+      grid-template-columns: auto 1fr;
+      gap: 14px;
+      padding: 16px 18px;
+    }
+    /* budget 區塊移到第二列 */
+    .type-card-header > div:last-child {
+      grid-column: 1 / -1;
+      text-align: left;
+    }
+    .type-budget-label { text-align: left; }
+    .type-budget { text-align: left; font-size: 22px; }
+
+    /* 類型卡片 body */
+    .type-card-body {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 16px 18px;
+    }
+    .type-card-body ul li { font-size: 14px; }
+
+    /* 類型卡片 footer stats */
+    .type-card-footer {
+      grid-template-columns: repeat(3, 1fr);
+      padding: 12px 18px;
+      gap: 8px;
+    }
+    .stat-block .stat-val { font-size: 20px; }
+    .stat-block .stat-label { font-size: 10px; }
+
+    /* 費用拆解列：允許換行，縮短 padding */
+    .cost-breakdown {
+      padding: 14px 18px !important;
+      gap: 8px 16px !important;
+    }
+    .cost-breakdown > div { flex: 1 1 120px; }
+
+    /* 業界行情格子 */
+    .benchmark-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .benchmark-val { font-size: 26px; }
+    .benchmark-desc { font-size: 12px; }
+
+    /* 影片縮圖 grid */
+    .video-tags {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 8px;
+    }
+    .video-examples { padding: 12px 18px 16px; }
+
+    /* 表格：允許橫向滾動，鎖定第一欄 */
+    .cost-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { font-size: 13px; min-width: 560px; }
+    thead th { padding: 10px 10px; font-size: 10px; }
+    tbody td { padding: 8px 10px; }
+
+    /* highlight band */
+    .highlight-band {
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 18px;
+    }
+    .highlight-band .icon { font-size: 28px; }
+    .highlight-band p { font-size: 14px; }
+
+    /* footer */
+    .footer { padding: 20px 20px; }
+    .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
+
+    /* callout */
+    .callout { padding: 16px 18px; font-size: 14px; }
+
+    /* 說明色塊（三欄 → 單欄）*/
+    div[style*="grid-template-columns:1fr 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+  }
+
+  /* ══════════════════════════════
+     響應式設計 — 手機（480px 以下）
+  ══════════════════════════════ */
+  @media (max-width: 480px) {
+    body { font-size: 14px; }
+
+    .cover { padding: 36px 16px 28px; }
+    .cover-title { font-size: 26px; }
+    .cover-sub { font-size: 14px; }
+    .cover-meta { gap: 16px; }
+    .cover-meta-item span { font-size: 13px; }
+
+    .exec-summary { padding: 20px 16px; }
+    .content { padding: 24px 16px; }
+
+    .section-num { font-size: 40px; min-width: 40px; }
+    .section-title { font-size: 19px; }
+    .section-header { gap: 10px; }
+
+    .type-card-header { padding: 14px 14px; }
+    .type-budget { font-size: 20px; }
+    .type-card-body { padding: 14px 14px; }
+    .type-card-footer { padding: 10px 14px; gap: 6px; }
+    .stat-block .stat-val { font-size: 18px; }
+
+    .benchmark-grid { grid-template-columns: 1fr; gap: 8px; }
+    .benchmark-val { font-size: 28px; }
+    .benchmark-card { padding: 14px; }
+
+    .video-tags { grid-template-columns: 1fr 1fr; }
+
+    table { font-size: 12px; min-width: 500px; }
+
+    .footer { padding: 16px; }
+    .print-band { font-size: 11px; padding: 6px 12px; }
+  }
 </style>
 </head>
 <body>
@@ -812,7 +963,7 @@
             <span class="stat-label">估計總工時（人次）</span>
           </div>
         </div>
-        <div style="background:#e8f4ee; padding:14px 28px; border-top:1px solid #b8d8c8; display:flex; align-items:center; gap:0; flex-wrap:wrap;">
+        <div class="cost-breakdown" style="background:#e8f4ee; padding:14px 28px; border-top:1px solid #b8d8c8; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
           <div style="margin-right:20px;">
             <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type1);font-weight:700;margin-bottom:2px;">工讀金（1人，依工讀金費率計算）</div>
             <div style="font-size:17px;font-weight:700;color:var(--ink);">$5,000 以內</div>
@@ -892,7 +1043,7 @@
             <span class="stat-label">後製剪輯（建議預留）</span>
           </div>
         </div>
-        <div style="background:#e8eef6; padding:14px 28px; border-top:1px solid #b0c4dc; display:flex; align-items:center; gap:0; flex-wrap:wrap;">
+        <div class="cost-breakdown" style="background:#e8eef6; padding:14px 28px; border-top:1px solid #b0c4dc; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
           <div style="margin-right:20px;">
             <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type2);font-weight:700;margin-bottom:2px;">工讀金合計（2～3人，依工讀金費率計算）</div>
             <div style="font-size:17px;font-weight:700;color:var(--ink);">約 $10,000</div>
