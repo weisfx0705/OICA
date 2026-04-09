@@ -22,7 +22,8 @@
     --blue: #2a5c8a;
     --type1: #3a7a5a;
     --type2: #2a5c8a;
-    --type3: #8a2a4a;
+    --type3: #8a6a2a;
+    --type4: #8a2a4a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -258,10 +259,12 @@
   .type-card.t1 .type-badge { background: var(--type1); }
   .type-card.t2 .type-badge { background: var(--type2); }
   .type-card.t3 .type-badge { background: var(--type3); }
+  .type-card.t4 .type-badge { background: var(--type4); }
 
   .type-card.t1 .type-card-header { background: #f0f7f4; border-left: 4px solid var(--type1); }
   .type-card.t2 .type-card-header { background: #f0f4f9; border-left: 4px solid var(--type2); }
-  .type-card.t3 .type-card-header { background: #f9f0f3; border-left: 4px solid var(--type3); }
+  .type-card.t3 .type-card-header { background: #fcf7ec; border-left: 4px solid var(--type3); }
+  .type-card.t4 .type-card-header { background: #f9f0f3; border-left: 4px solid var(--type4); }
 
   .type-title {
     font-family: 'Noto Serif TC', serif;
@@ -294,6 +297,7 @@
   .type-card.t1 .type-budget { color: var(--type1); }
   .type-card.t2 .type-budget { color: var(--type2); }
   .type-card.t3 .type-budget { color: var(--type3); }
+  .type-card.t4 .type-budget { color: var(--type4); }
 
   .type-card-body {
     padding: 24px 28px;
@@ -354,6 +358,7 @@
   .type-card.t1 .stat-val { color: var(--type1); }
   .type-card.t2 .stat-val { color: var(--type2); }
   .type-card.t3 .stat-val { color: var(--type3); }
+  .type-card.t4 .stat-val { color: var(--type4); }
 
   .stat-block .stat-label {
     font-size: 11px;
@@ -510,6 +515,7 @@
   .tag-t1 { color: var(--type1); font-weight: 700; }
   .tag-t2 { color: var(--type2); font-weight: 700; }
   .tag-t3 { color: var(--type3); font-weight: 700; }
+  .tag-t4 { color: var(--type4); font-weight: 700; }
 
   /* ── INDUSTRY BENCHMARK ── */
   .benchmark-grid {
@@ -872,7 +878,7 @@
   <div class="exec-summary-inner">
     <div class="exec-label">報告摘要</div>
     <p class="exec-text">
-      本報告旨在建立一套以<strong>影片內容類型</strong>為核心的工時與預算分級標準，以解決現行依「影片長度」計費所產生的認知落差。媒體行銷組長期使用工讀生執行影像製作業務，而影片製作的實際成本與複雜度，絕非單憑片長可以衡量——一支一分鐘的訪談影片，其所需的工時可能遠超一支五分鐘的活動紀錄。本文提出三種類型分級，並附具體工時與預算建議，供長官參考。
+      本報告旨在建立一套以<strong>影片內容類型</strong>為核心的工時與預算分級標準，以解決現行依「影片長度」計費所產生的認知落差。媒體行銷組長期使用工讀生執行影像製作業務，而影片製作的實際成本與複雜度，絕非單憑片長可以衡量——一支一分鐘的訪談影片，其所需的工時可能遠超一支五分鐘的活動紀錄。本文提出四種類型分級，並附具體工時與預算建議，供長官參考。
     </p>
   </div>
 </div>
@@ -902,13 +908,13 @@
     </div>
   </div>
 
-  <!-- SECTION 2: THREE TYPES -->
+  <!-- SECTION 2: FOUR TYPES -->
   <div class="section">
     <div class="section-header">
       <div class="section-num">02</div>
       <div>
         <div class="section-title">影片類型分級說明</div>
-        <div class="section-desc">三種類型對應不同的製作規格、人員配置與預算範圍</div>
+        <div class="section-desc">四種類型對應不同的製作規格、人員配置與預算範圍</div>
       </div>
     </div>
 
@@ -1068,8 +1074,8 @@
         <div class="video-examples">
           <h4>參考影片範例</h4>
           <div class="video-tags">
-            <a class="video-tag" href="https://www.youtube.com/watch?v=m8M2Rg2bvsA" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/m8M2Rg2bvsA/mqdefault.jpg" alt="訪談型範例一">
+            <a class="video-tag" href="https://youtu.be/kovhdWt4wUQ?si=pAVYYD-d-13W5sl" target="_blank">
+              <img class="video-thumb" src="https://img.youtube.com/vi/kovhdWt4wUQ/mqdefault.jpg" alt="訪談型範例一">
               <span class="video-tag-label">訪談型範例一</span>
             </a>
             <a class="video-tag" href="https://www.youtube.com/watch?v=quBJ71nMgT0" target="_blank">
@@ -1097,13 +1103,102 @@
         <div class="type-card-header">
           <div class="type-badge">III</div>
           <div>
+            <div class="type-title">學生創意專案拍攝</div>
+            <div class="type-subtitle">Student Creative Project ／ 主題敘述＋多活動素材整合</div>
+          </div>
+          <div>
+            <div class="type-budget-label">學校製作費估算</div>
+            <div class="type-budget">$30,000 – $50,000</div>
+            <div style="font-size:11px;color:var(--type3);margin-top:2px;text-align:right;">工讀金 + 器材費</div>
+          </div>
+        </div>
+        <div class="type-card-body">
+          <div>
+            <h4>製作特性</h4>
+            <ul>
+              <li>以主題敘述串接多場活動素材</li>
+              <li>常見成品長度約 <strong>10 分鐘</strong></li>
+              <li>需跨不同活動時段蒐集可用畫面</li>
+              <li>常搭配訪談、旁白或主題文字建立主軸</li>
+              <li>後製需整理大量素材並重建敘事節奏</li>
+            </ul>
+          </div>
+          <div>
+            <h4>人員配置</h4>
+            <ul>
+              <li>攝影／剪輯 × 1</li>
+              <li>企劃／採訪 × 1</li>
+              <li>協拍／燈光 × 1～2</li>
+              <li>收音／場控 × 1</li>
+              <li>主持／旁白／受訪串接 × 1</li>
+              <li>素材整理／剪輯助理 × 1～2</li>
+              <li>合計：<strong>5～8 人</strong></li>
+            </ul>
+          </div>
+        </div>
+        <div class="type-card-footer">
+          <div class="stat-block">
+            <span class="stat-val">2–3天</span>
+            <span class="stat-label">前製（主題、腳本、訪綱）</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-val">2–4天</span>
+            <span class="stat-label">拍攝／素材蒐集</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-val">3–4天</span>
+            <span class="stat-label">後製剪輯（長版敘事）</span>
+          </div>
+        </div>
+        <div class="cost-breakdown" style="background:#fcf7ec; padding:14px 28px; border-top:1px solid #d8c39b; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
+          <div style="margin-right:20px;">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type3);font-weight:700;margin-bottom:2px;">工讀金合計（5～8人，依工讀金費率計算）</div>
+            <div style="font-size:17px;font-weight:700;color:var(--ink);">$15,000 – $20,000</div>
+            <div style="font-size:11px;color:var(--muted);">含前製發想、多次拍攝出班、長版剪輯與整理素材</div>
+          </div>
+          <div style="color:var(--muted);font-size:20px;margin-right:20px;">＋</div>
+          <div style="margin-right:20px;">
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px;">器材費（多次出班、收音／燈光）</div>
+            <div style="font-size:17px;font-weight:700;color:var(--ink);">$15,000 – $30,000</div>
+          </div>
+          <div style="color:var(--muted);font-size:20px;margin-right:20px;">＝</div>
+          <div>
+            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:2px;">學校製作費合計</div>
+            <div style="font-size:20px;font-weight:900;color:var(--amber);">$30,000 – $50,000</div>
+          </div>
+        </div>
+        <div style="background:#fdf8ef; padding:12px 28px; border-top:1px solid var(--border);">
+          <p style="font-size:13px; color:var(--type3); font-weight:500;">
+            📌 此類型重點不在單次拍攝，而在跨活動累積素材後重新建立主題線；約 10 分鐘成品通常需預留 <strong>40～64 工時以上</strong>。
+          </p>
+        </div>
+        <div class="video-examples">
+          <h4>參考影片範例</h4>
+          <div class="video-tags">
+            <a class="video-tag" href="https://youtu.be/m8M2Rg2bvsA?si=fWnJf3HPK_3XiGr2" target="_blank">
+              <img class="video-thumb" src="https://img.youtube.com/vi/m8M2Rg2bvsA/mqdefault.jpg" alt="Hero Maker">
+              <span class="video-tag-label">Hero Maker</span>
+            </a>
+            <a class="video-tag" href="https://youtu.be/LSbjZrwaIBk?si=EK77q9GqDWIDbdWm" target="_blank">
+              <img class="video-thumb" src="https://img.youtube.com/vi/LSbjZrwaIBk/mqdefault.jpg" alt="IMAGINE your LIFE at I-Shou University, Taiwan">
+              <span class="video-tag-label">IMAGINE your LIFE at I-Shou University, Taiwan</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TYPE 4 -->
+      <div class="type-card t4">
+        <div class="type-card-header">
+          <div class="type-badge">IV</div>
+          <div>
             <div class="type-title">劇情廣告型</div>
             <div class="type-subtitle">Short Film ／ Commercial ／ 高規格影片製作</div>
           </div>
           <div>
             <div class="type-budget-label">學校製作費估算</div>
             <div class="type-budget">$150,000 – $500,000+</div>
-            <div style="font-size:11px;color:var(--type3);margin-top:2px;text-align:right;">回歸學系製作預算</div>
+            <div style="font-size:11px;color:var(--type4);margin-top:2px;text-align:right;">回歸學系製作預算</div>
           </div>
         </div>
         <div class="type-card-body">
@@ -1145,7 +1240,7 @@
           </div>
         </div>
         <div style="background:#f9f0f3; padding:12px 28px; border-top:1px solid var(--border);">
-          <p style="font-size:13px; color:var(--type3); font-weight:500;">
+          <p style="font-size:13px; color:var(--type4); font-weight:500;">
             📌 此類型通常來自電影電視學系製作預算，工作模式以鏡頭為單位逐一製作，不適合工讀生單獨執行。
           </p>
         </div>
@@ -1181,7 +1276,8 @@
     <div style="background:#fff8ec; border:1px solid var(--amber); border-radius:2px; padding:14px 18px; margin-bottom:16px; font-size:13px; line-height:1.8;">
       📌 <strong>工讀金欄位說明：</strong>下表中的「工讀金」均為<strong>全體工讀人員費用總合</strong>，並非單一學生所得，實際給付依工讀金費率標準核算。<br>
       ・類型 I（1 人執行）：工讀金為該 1 人的工時費用合計。<br>
-      ・類型 II（2～3 人）：工讀金為各人費用之加總，含前製企劃、拍攝出班、後製剪輯各階段。
+      ・類型 II（2～3 人）：工讀金為各人費用之加總，含前製企劃、拍攝出班、後製剪輯各階段。<br>
+      ・類型 III（5～8 人）：工讀金為跨多次拍攝與長版後製之加總，會高於一般單日訪談型專案。
     </div>
 
     <!-- 三欄費用說明 -->
@@ -1245,13 +1341,21 @@
             <td style="color:var(--type2); font-weight:600;">依工讀金費率合計<br>估算 $10,000～$15,000</td>
             <td style="color:var(--amber); font-weight:600;">$15,000<br>～$30,000</td>
           </tr>
+          <tr style="background:#fcf7ec;">
+            <td><span class="tag-t3">III 學生創意專案拍攝</span><br><small style="color:#888">約 10 分鐘</small></td>
+            <td>5～8人</td>
+            <td><strong>48～64h（人次）</strong></td>
+            <td style="color:#555;">$9,408<br>～$12,544</td>
+            <td style="color:var(--type3); font-weight:600;">依工讀金費率合計<br>估算 $15,000～$20,000</td>
+            <td style="color:var(--amber); font-weight:600;">$30,000<br>～$50,000</td>
+          </tr>
           <tr style="background:#fdf0f3;">
-            <td><span class="tag-t3">III 劇情廣告型</span><br><small style="color:#888">任意長度</small></td>
+            <td><span class="tag-t4">IV 劇情廣告型</span><br><small style="color:#888">任意長度</small></td>
             <td>15～20人</td>
             <td><strong>依專案計</strong></td>
             <td style="color:#aaa; font-style:italic;">不適用</td>
             <td style="color:#aaa; font-style:italic;">回歸學系製作預算</td>
-            <td style="color:var(--type3); font-weight:600;">$150,000<br>～$500,000+</td>
+            <td style="color:var(--type4); font-weight:600;">$150,000<br>～$500,000+</td>
           </tr>
         </tbody>
       </table>
@@ -1261,7 +1365,7 @@
       ※ <strong>❶ 人力底價</strong>：以 2026 年法定基本時薪 NT$196/h 直接計算，是「最低法定成本」，不代表實際給付金額。<br>
       ※ <strong>❷ 實際給付</strong>：以現行活動出班費 NT$5,000/天為基準（含加班補貼，約等效於 $570/h），依各類型比例推算，<strong>此欄即為本單位實際支付的人力成本</strong>。<br>
       ※ <strong>❸ 完整預算</strong>：於實際給付上加計攝影器材（$2,000～$5,000/天）、燈光設備（$1,000～$3,000/天）、後製軟體等硬體成本，反映執行一支完整影片的<strong>真實總支出</strong>。<br>
-      ※ 類型 III 回歸電影電視學系製作預算框架，工讀費用結構不適用。
+      ※ 類型 IV 回歸電影電視學系製作預算框架，工讀費用結構不適用。
     </p>
 
   </div>
