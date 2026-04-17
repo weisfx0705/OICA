@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 泰國曼谷出差完整指南</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<style>
+  :root {
+    --bg: #0b1020;
+    --bg-soft: #141a32;
+    --bg-softer: #1a2140;
+    --text: #e8ecf8;
+    --muted: #8a93b3;
+    --muted-2: #6b7495;
+    --accent: #f5c451;
+    --hotel: #f5c451;
+    --bitec: #4ade80;
+    --fyi: #60a5fa;
+    --mrt: #4a90e2;
+    --bts: #4ade80;
+    --flight: #f472b6;
+    --airport: #f472b6;
+    --arl: #c084fc;
+    --border: rgba(255,255,255,0.08);
+    --food: #fb923c;
+    --spot: #c084fc;
+    --zone-a: #f5c451;
+    --zone-b: #4ade80;
+    --zone-c: #60a5fa;
+    --muted2: var(--muted-2);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Noto Sans TC", "PingFang TC", -apple-system, BlinkMacSystemFont, sans-serif;
+    background: radial-gradient(ellipse at top, #1a2244 0%, var(--bg) 60%);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ====== HEADER ====== */
+  header {
+    padding: 40px 40px 24px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(245,196,81,0.08) 0%, transparent 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "";
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(245,196,81,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  header h1 {
+    margin: 0 0 10px;
+    font-size: 32px;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+  header .sub {
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  /* ====== NAV ====== */
+  nav {
+    display: flex;
+    gap: 6px;
+    padding: 12px 40px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(11,16,32,0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: all 0.2s;
+  }
+  nav a:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+  /* ====== LAYOUT ====== */
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 28px 40px 80px;
+  }
+  section { margin-bottom: 48px; }
+  h2 {
+    font-size: 20px;
+    margin: 0 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .num {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+
+  /* ====== OVERVIEW CARDS ====== */
+  .overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .kpi {
+    background: var(--bg-soft);
+    border-radius: 14px;
+    padding: 18px 20px;
+    border-left: 3px solid var(--muted);
+  }
+  .kpi .k-label { font-size: 11px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; }
+  .kpi .k-value { font-size: 18px; font-weight: 600; margin-top: 4px; }
+  .kpi .k-sub { font-size: 12px; color: var(--muted-2); margin-top: 2px; }
+  .kpi.flight { border-left-color: var(--flight); }
+  .kpi.hotel { border-left-color: var(--hotel); }
+  .kpi.bitec { border-left-color: var(--bitec); }
+  .kpi.fyi { border-left-color: var(--fyi); }
+
+  /* ====== GENERIC TABLE ====== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-soft);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--bg-softer);
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  tr:last-child td { border-bottom: none; }
+  td.time { color: var(--accent); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  /* ====== MAP LAYOUT ====== */
+  .map-wrap {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 20px;
+  }
+  @media (max-width: 960px) {
+    .map-wrap { grid-template-columns: 1fr; }
+    header, nav, .container { padding-left: 20px; padding-right: 20px; }
+    #bkk-map { height: 480px; }
+  }
+
+  /* ===== Tablet / small laptop ===== */
+  @media (max-width: 720px) {
+    header { padding: 28px 18px 18px; }
+    header::before { width: 180px; height: 180px; top: -40px; right: -40px; }
+    header h1 { font-size: 22px; letter-spacing: 0.5px; }
+    header .sub { font-size: 13px; }
+    .eyebrow { font-size: 10px; letter-spacing: 2px; }
+
+    nav { padding: 10px 14px; gap: 2px; }
+    nav a { padding: 7px 10px; font-size: 12px; }
+
+    .container { padding: 20px 16px 60px; }
+
+    h2 { font-size: 17px; margin-bottom: 14px; gap: 8px; }
+    h2 .num { font-size: 11px; }
+
+    /* KPI stack nicely */
+    .overview { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .kpi { padding: 14px 14px; }
+    .kpi .k-value { font-size: 15px; }
+    .kpi .k-sub { font-size: 11px; }
+
+    /* Make any wide table horizontally scrollable */
+    section > table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+      border-radius: 10px;
+    }
+    section > table thead,
+    section > table tbody { display: table; width: 100%; min-width: 520px; }
+    th, td { padding: 10px 12px; font-size: 12.5px; }
+    th { font-size: 11px; letter-spacing: 0.5px; }
+
+    /* Matrix already scrollable — tighten */
+    table.matrix { min-width: 560px; }
+    table.matrix th, table.matrix td { padding: 8px 10px; }
+    .cell-time { font-size: 13px; }
+    .cell-mode { font-size: 10.5px; }
+
+    /* Map */
+    #bkk-map { height: 420px; }
+    .map-card { padding: 14px; }
+    .map-card h3 { font-size: 12px; margin-bottom: 12px; }
+    .legend { padding: 8px 10px; font-size: 11px; gap: 10px; }
+
+    /* Detail + routes + checklist all 1 col */
+    .detail-grid, .routes, .check-grid { grid-template-columns: 1fr; gap: 12px; }
+    .detail { padding: 18px; }
+    .detail h3 { font-size: 15px; }
+    .detail p, .detail li { font-size: 13px; }
+
+    /* Cards on sidebar */
+    .card { padding: 14px 16px; }
+    .card h4 { font-size: 14px; }
+    .card .route { font-size: 12.5px; }
+
+    /* Timeline */
+    .timeline { padding-left: 24px; }
+    .timeline::before { left: 6px; }
+    .t-item::before { left: -24px; width: 12px; height: 12px; border-width: 2px; }
+    .t-item { padding: 8px 0 8px 12px; }
+    .t-title { font-size: 14px; }
+    .t-desc { font-size: 12.5px; }
+
+    /* Marker labels: show only name on small screens to avoid crowding */
+    .marker-label .sub { display: none; }
+    .marker-label { font-size: 11px; padding: 2px 6px; }
+
+    /* Popup sizing */
+    .leaflet-popup-content { margin: 10px 12px !important; font-size: 12.5px; }
+
+    footer { padding: 20px 16px; font-size: 11px; }
+  }
+
+  /* ===== Phone ===== */
+  @media (max-width: 480px) {
+    header { padding: 22px 14px 14px; }
+    header h1 { font-size: 19px; }
+    header .sub { font-size: 12px; line-height: 1.5; }
+
+    nav a { padding: 6px 8px; font-size: 11.5px; }
+
+    .container { padding: 16px 12px 48px; }
+
+    /* KPI single column on very small screens */
+    .overview { grid-template-columns: 1fr; }
+
+    /* Tighter tables */
+    th, td { padding: 8px 10px; font-size: 12px; }
+    section > table thead,
+    section > table tbody { min-width: 460px; }
+
+    #bkk-map { height: 360px; }
+
+    /* Disable hover-to-fly on phones (tap instead) */
+    .card:hover { transform: none; box-shadow: none; }
+
+    .route-card { padding: 14px 16px; }
+    .route-card .duration { font-size: 19px; }
+
+    .leaflet-popup-content .pop-title { font-size: 13px; }
+    .leaflet-popup-content a.gmap-link { padding: 8px 12px; font-size: 12px; }
+  }
+
+  /* Better touch scrollbar styling for iOS/Android */
+  section > table::-webkit-scrollbar,
+  .matrix-wrap::-webkit-scrollbar { height: 6px; }
+  section > table::-webkit-scrollbar-thumb,
+  .matrix-wrap::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+  }
+
+  .map-card {
+    background: var(--bg-soft);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+  .map-card h3 {
+    margin: 0 0 16px;
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  svg.map { width: 100%; height: auto; display: block; }
+
+  /* ===== Leaflet Bangkok Map ===== */
+  #bkk-map {
+    width: 100%;
+    height: 560px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0f1428;
+    position: relative;
+    z-index: 0;
+  }
+  .leaflet-container {
+    background: #0f1428 !important;
+    font-family: inherit;
+  }
+  .leaflet-control-attribution {
+    background: rgba(11,16,32,0.7) !important;
+    color: var(--muted-2) !important;
+    font-size: 10px !important;
+  }
+  .leaflet-control-attribution a { color: var(--muted) !important; }
+  .leaflet-control-zoom a {
+    background: var(--bg-soft) !important;
+    color: var(--text) !important;
+    border-color: rgba(255,255,255,0.1) !important;
+  }
+  .leaflet-control-zoom a:hover { background: var(--bg-softer) !important; }
+
+  /* Custom pulsing marker */
+  .custom-marker {
+    position: relative;
+    cursor: pointer;
+  }
+  .pulse-dot {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--c, #fff);
+    border: 3px solid rgba(255,255,255,0.9);
+    box-shadow: 0 0 12px var(--c, #fff);
+    z-index: 2;
+  }
+  .pulse-dot::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: var(--c, #fff);
+    opacity: 0.4;
+    animation: ring-pulse 2s ease-out infinite;
+    z-index: -1;
+  }
+  @keyframes ring-pulse {
+    0% { transform: scale(0.6); opacity: 0.6; }
+    100% { transform: scale(2.4); opacity: 0; }
+  }
+  .marker-label {
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    background: rgba(11,16,32,0.85);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.1);
+    pointer-events: none;
+  }
+  .marker-label.left { left: auto; right: 24px; top: 0; transform: none; }
+  .marker-label.right { left: 24px; top: 0; transform: none; }
+  .marker-label .sub {
+    display: block;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  /* Animated flowing metro lines */
+  .flowing-line {
+    stroke-dasharray: 12 18;
+    animation: dash-flow 1.4s linear infinite;
+  }
+  @keyframes dash-flow {
+    to { stroke-dashoffset: -60; }
+  }
+
+  /* Popup */
+  .leaflet-popup-content-wrapper {
+    background: var(--bg-soft) !important;
+    color: var(--text) !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+  }
+  .leaflet-popup-tip { background: var(--bg-soft) !important; }
+  .leaflet-popup-content { margin: 12px 14px !important; font-size: 13px; line-height: 1.6; }
+  .leaflet-popup-content .pop-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .leaflet-popup-content .pop-sub { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  .leaflet-popup-content a.gmap-link {
+    display: inline-block;
+    padding: 6px 10px;
+    background: var(--accent);
+    color: #1a1a1a !important;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 12px;
+  }
+  .leaflet-popup-content a.gmap-link:hover { filter: brightness(1.1); }
+
+  .station { fill: #1f2a4a; stroke: rgba(255,255,255,0.25); stroke-width: 1.5; }
+  .label {
+    fill: var(--text); font-size: 13px; font-weight: 500;
+    paint-order: stroke; stroke: var(--bg-soft); stroke-width: 4;
+  }
+  .label-sub {
+    fill: var(--muted); font-size: 11px;
+    paint-order: stroke; stroke: var(--bg-soft); stroke-width: 3;
+  }
+  .poi { stroke-width: 3; filter: drop-shadow(0 0 8px currentColor); cursor: pointer; transition: transform 0.3s; }
+  .poi.hotel { fill: var(--hotel); color: var(--hotel); stroke: #fff3cf; }
+  .poi.bitec { fill: var(--bitec); color: var(--bitec); stroke: #c7f9d6; }
+  .poi.fyi { fill: var(--fyi); color: var(--fyi); stroke: #cfe2ff; }
+
+  .line-bts { stroke: var(--bts); stroke-width: 5; stroke-linecap: round; fill: none; opacity: 0.85; }
+  .line-mrt { stroke: var(--mrt); stroke-width: 5; stroke-linecap: round; fill: none; opacity: 0.85; }
+  .line-walk {
+    stroke: #fff; stroke-width: 2; stroke-dasharray: 4 6;
+    stroke-linecap: round; fill: none; opacity: 0.6;
+  }
+
+  @keyframes dash { to { stroke-dashoffset: -60; } }
+  .flowing { stroke-dasharray: 10 18; animation: dash 1.4s linear infinite; }
+
+  @keyframes pulse {
+    0%, 100% { r: 10; opacity: 1; }
+    50% { r: 16; opacity: 0.55; }
+  }
+  .pulse { animation: pulse 2.2s ease-in-out infinite; }
+  .train { fill: #fff; filter: drop-shadow(0 0 6px rgba(255,255,255,0.8)); }
+
+  /* ====== SIDEBAR CARDS ====== */
+  .panel { display: flex; flex-direction: column; gap: 12px; }
+  .card {
+    background: var(--bg-soft);
+    border-radius: 14px;
+    padding: 16px 18px;
+    border-left: 4px solid var(--muted);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateX(-4px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+  }
+  .card.hotel { border-left-color: var(--hotel); }
+  .card.bitec { border-left-color: var(--bitec); }
+  .card.fyi { border-left-color: var(--fyi); }
+  .card h4 {
+    margin: 0 0 6px;
+    font-size: 15px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    display: inline-block; box-shadow: 0 0 8px currentColor;
+  }
+  .dot.hotel { background: var(--hotel); color: var(--hotel); }
+  .dot.bitec { background: var(--bitec); color: var(--bitec); }
+  .dot.fyi { background: var(--fyi); color: var(--fyi); }
+  .card .when { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  .card .route { font-size: 13px; line-height: 1.7; color: #cbd2ea; }
+
+  .chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .chip.bts { background: rgba(74,222,128,0.18); color: #86efac; }
+  .chip.mrt { background: rgba(74,144,226,0.18); color: #93c5fd; }
+  .chip.walk { background: rgba(255,255,255,0.08); color: #d1d5e4; }
+  .chip.flight { background: rgba(244,114,182,0.18); color: #f9a8d4; }
+  .chip.arl { background: rgba(192,132,252,0.18); color: #d8b4fe; }
+  .chip.taxi { background: rgba(245,196,81,0.18); color: #fde68a; }
+
+  /* ====== AIRPORT & TIME MATRIX ====== */
+  .poi.airport { fill: var(--airport); color: var(--airport); stroke: #fbcfe8; }
+  .dot.airport { background: var(--airport); color: var(--airport); }
+  .line-arl { stroke: var(--arl); stroke-width: 5; stroke-linecap: round; fill: none; opacity: 0.85; }
+  .card.airport { border-left-color: var(--airport); }
+  .detail.airport { border-top-color: var(--airport); }
+  .kpi.airport { border-left-color: var(--airport); }
+  .t-item.airport::before { border-color: var(--airport); box-shadow: 0 0 10px var(--airport); }
+
+  .matrix-wrap { overflow-x: auto; }
+  table.matrix { font-size: 13px; min-width: 720px; }
+  table.matrix th, table.matrix td {
+    text-align: center; vertical-align: middle;
+    padding: 10px 12px;
+  }
+  table.matrix th.origin {
+    background: var(--bg-softer);
+    text-align: left;
+    font-size: 12px;
+  }
+  table.matrix td.same {
+    background: rgba(255,255,255,0.02);
+    color: var(--muted-2);
+  }
+  .cell-time {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .cell-mode {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .corner-label {
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 600;
+  }
+
+  /* Option cards for airport routes */
+  .routes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin-top: 14px;
+  }
+  .route-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 16px 18px;
+    border-left: 3px solid var(--arl);
+    position: relative;
+  }
+  .route-card.taxi { border-left-color: var(--accent); }
+  .route-card.bus { border-left-color: var(--bitec); }
+  .route-card h4 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .route-card .price {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .route-card .duration {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 4px 0 6px;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
+  .route-card p {
+    font-size: 12.5px;
+    color: #cbd2ea;
+    margin: 6px 0 0;
+    line-height: 1.6;
+  }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    padding: 10px 14px; margin-top: 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    font-size: 12px; color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend .sw { width: 20px; height: 3px; border-radius: 2px; }
+
+  /* ====== DETAIL BLOCKS ====== */
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .detail {
+    background: var(--bg-soft);
+    border-radius: 14px;
+    padding: 22px;
+    border-top: 3px solid var(--muted);
+  }
+  .detail.hotel { border-top-color: var(--hotel); }
+  .detail.bitec { border-top-color: var(--bitec); }
+  .detail.fyi { border-top-color: var(--fyi); }
+  .detail h3 {
+    margin: 0 0 4px;
+    font-size: 17px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .detail .addr {
+    color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 14px;
+  }
+  .detail h5 {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 16px 0 6px;
+    font-weight: 600;
+  }
+  .detail p, .detail li { font-size: 13.5px; line-height: 1.75; color: #cbd2ea; margin: 0; }
+  .detail ul { padding-left: 18px; margin: 4px 0; }
+  .detail ul li + li { margin-top: 4px; }
+
+  /* ====== TIMELINE ====== */
+  .timeline {
+    position: relative;
+    padding-left: 28px;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 8px; top: 6px; bottom: 6px;
+    width: 2px;
+    background: linear-gradient(180deg, var(--flight), var(--hotel), var(--bitec), var(--fyi), var(--flight));
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+  .t-item {
+    position: relative;
+    padding: 10px 0 10px 16px;
+    border-bottom: 1px dashed var(--border);
+  }
+  .t-item:last-child { border-bottom: none; }
+  .t-item::before {
+    content: "";
+    position: absolute;
+    left: -26px; top: 16px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 3px solid var(--muted);
+  }
+  .t-item.flight::before { border-color: var(--flight); box-shadow: 0 0 10px var(--flight); }
+  .t-item.hotel::before { border-color: var(--hotel); box-shadow: 0 0 10px var(--hotel); }
+  .t-item.bitec::before { border-color: var(--bitec); box-shadow: 0 0 10px var(--bitec); }
+  .t-item.fyi::before { border-color: var(--fyi); box-shadow: 0 0 10px var(--fyi); }
+  .t-date { font-size: 12px; color: var(--accent); letter-spacing: 1px; font-variant-numeric: tabular-nums; }
+  .t-title { font-size: 15px; font-weight: 600; margin: 2px 0 4px; }
+  .t-desc { font-size: 13px; color: #cbd2ea; }
+
+  /* ====== CHECKLIST ====== */
+  .check-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .check {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .check h4 { margin: 0 0 10px; font-size: 14px; color: var(--accent); }
+  .check ul { margin: 0; padding-left: 18px; font-size: 13px; color: #cbd2ea; }
+  .check li { padding: 3px 0; }
+
+  footer {
+    text-align: center;
+    padding: 30px 20px;
+    color: var(--muted-2);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ====== FOOD MAP SECTION ====== */
+  #foodmap {
+    margin-bottom: 0;
+  }
+  #foodmap > .container {
+    padding-bottom: 20px;
+  }
+
+  /* === File B CSS — prefixed with .food-wrap to avoid conflicts === */
+
+  /* filter bar inside food-wrap */
+  .food-wrap .filterbar {
+    display:flex; flex-wrap:wrap; gap:8px; padding:14px 40px;
+    border-bottom:1px solid var(--border);
+    background:rgba(11,16,32,.9); backdrop-filter:blur(10px);
+    /* removed position:sticky; top:0; z-index:100 — File A has sticky nav */
+  }
+  .filter-group { display:flex; gap:6px; align-items:center; }
+  .filter-divider { width:1px; height:28px; background:var(--border); margin:0 4px; }
+  .food-wrap .fbtn {
+    padding:6px 14px; border-radius:999px; border:1px solid var(--border);
+    background:transparent; color:var(--muted); font-size:12px; font-weight:600;
+    cursor:pointer; transition:all .2s; white-space:nowrap;
+    font-family:inherit;
+  }
+  .food-wrap .fbtn:hover { background:rgba(255,255,255,.06); color:var(--text); }
+  .food-wrap .fbtn.active { color:#0b1020; border-color:transparent; }
+  .food-wrap .fbtn.f-all.active  { background:var(--text); }
+  .food-wrap .fbtn.f-food.active { background:var(--food); }
+  .food-wrap .fbtn.f-spot.active { background:var(--spot); }
+  .food-wrap .fbtn.f-a.active { background:var(--zone-a); }
+  .food-wrap .fbtn.f-b.active { background:var(--zone-b); }
+  .food-wrap .fbtn.f-c.active { background:var(--zone-c); }
+
+  /* map inside food-wrap */
+  .food-wrap .map-wrap { padding:20px 40px 0; display:block; }
+  #food-map {
+    height:580px; border-radius:16px; overflow:hidden;
+    background:#0f1428;
+  }
+
+  /* custom markers — global (Leaflet popup internals) */
+  .m-icon {
+    width:32px; height:32px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:15px; border:2px solid rgba(255,255,255,.7);
+    box-shadow:0 0 14px var(--mc,#fff);
+    cursor:pointer; position:relative;
+    transition:transform .2s;
+  }
+  .m-icon::after {
+    content:"";
+    position:absolute; inset:-7px; border-radius:50%;
+    background:var(--mc,#fff); opacity:.25;
+    animation:ring 2.2s ease-out infinite;
+  }
+  @keyframes ring {
+    0%  { transform:scale(.7); opacity:.4; }
+    100%{ transform:scale(2);  opacity:0; }
+  }
+  .m-anchor { --mc:var(--hotel); }
+  .m-anchor.zone-b { --mc:var(--bitec); }
+  .m-anchor.zone-c { --mc:var(--fyi); }
+  .m-food  { --mc:var(--food);  background:rgba(251,146,60,.18); }
+  .m-spot  { --mc:var(--spot);  background:rgba(192,132,252,.18); }
+
+  /* popup — global (Leaflet popup internals) */
+  .pop-cat { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:4px; }
+  .pop-sub   { font-size:12px; color:var(--muted); margin-bottom:6px; }
+  .pop-desc  { font-size:12.5px; color:#cbd2ea; margin-bottom:10px; line-height:1.55; }
+  .pop-meta  { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .pop-tag {
+    font-size:11px; padding:2px 8px; border-radius:999px;
+    background:rgba(255,255,255,.07); color:var(--muted);
+  }
+  .pop-tag.rating { color:#fbbf24; background:rgba(251,191,36,.12); }
+  .gmap-btn {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:7px 12px; background:var(--food); color:#1a1a1a!important;
+    font-weight:700; border-radius:8px; text-decoration:none; font-size:12px;
+    transition:filter .2s;
+  }
+  .gmap-btn:hover { filter:brightness(1.1); }
+  .gmap-btn.spot { background:var(--spot); }
+
+  /* legend bar */
+  .food-wrap .legend-bar {
+    display:flex; flex-wrap:wrap; gap:12px; padding:10px 40px;
+    font-size:12px; color:var(--muted);
+    border-bottom:1px solid var(--border);
+    margin-top:10px;
+  }
+  .food-wrap .legend-bar span { display:inline-flex; align-items:center; gap:6px; }
+  .ldot { width:12px; height:12px; border-radius:50%; }
+
+  /* zone sections */
+  .food-wrap .zone-section { margin-bottom:44px; }
+  .food-wrap .zone-header {
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:16px; padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+  }
+  .food-wrap .zone-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .food-wrap .zone-header h2 { font-size:18px; font-weight:700; border-bottom:none; padding-bottom:0; margin-bottom:0; }
+  .food-wrap .zone-header p  { font-size:13px; color:var(--muted); }
+
+  /* food cards grid — wide layout (overrides sidebar .card) */
+  .food-wrap .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+  .food-wrap .card {
+    background:var(--bg-soft); border-radius:14px; padding:16px 18px;
+    border-left:4px solid var(--border); cursor:pointer;
+    transition:transform .2s, box-shadow .2s;
+    text-decoration:none; color:inherit; display:block;
+  }
+  .food-wrap .card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,.45); }
+  .food-wrap .card.food { border-left-color:var(--food); }
+  .food-wrap .card.spot { border-left-color:var(--spot); }
+  .food-wrap .card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:6px; }
+  .food-wrap .card-title  { font-size:15px; font-weight:600; }
+  .food-wrap .card-badge  {
+    font-size:10px; padding:2px 8px; border-radius:999px; font-weight:600;
+    white-space:nowrap; margin-left:8px; flex-shrink:0;
+  }
+  .food-wrap .card-badge.food { background:rgba(251,146,60,.18); color:#fb923c; }
+  .food-wrap .card-badge.spot { background:rgba(192,132,252,.18); color:#c084fc; }
+  .food-wrap .card-type  { font-size:11px; color:var(--muted); letter-spacing:1px; margin-bottom:6px; }
+  .food-wrap .card-desc  { font-size:13px; color:#cbd2ea; line-height:1.6; margin-bottom:10px; }
+  .food-wrap .card-foot  { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .food-wrap .star { color:#fbbf24; font-size:12px; }
+  .food-wrap .tag {
+    font-size:11px; padding:2px 7px; border-radius:999px;
+    background:rgba(255,255,255,.06); color:var(--muted);
+  }
+  .food-wrap .gmap-link {
+    margin-left:auto; font-size:11px; color:var(--food);
+    text-decoration:none; font-weight:600; white-space:nowrap;
+  }
+  .food-wrap .gmap-link.spot { color:var(--spot); }
+  .food-wrap .gmap-link:hover { text-decoration:underline; }
+
+  /* food-wrap responsive */
+  @media (max-width:768px) {
+    .food-wrap .filterbar,
+    .food-wrap .map-wrap,
+    .food-wrap .legend-bar { padding-left:16px; padding-right:16px; }
+    .food-wrap .filterbar { padding-top:10px; padding-bottom:10px; gap:6px; }
+    .food-wrap .fbtn { padding:5px 10px; font-size:11.5px; }
+    #food-map { height:420px; }
+    .food-wrap .cards { grid-template-columns:1fr; }
+    .food-wrap .map-wrap { padding-top:14px; }
+  }
+  @media (max-width:480px) {
+    #food-map { height:360px; }
+    .filter-divider { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Bangkok Business Trip · 2026</div>
+  <h1>2026 泰國曼谷出差完整指南</h1>
+  <p class="sub">4/24（五） – 4/28（二）　·　Thrive Hotel · BITEC · FYI Center　·　整理日期：2026/04/17　·　美食 &amp; 景點地圖</p>
+</header>
+
+<nav>
+  <a href="#overview">一、行程總覽</a>
+  <a href="#map">二、定點交通關係圖</a>
+  <a href="#airport">三、機場交通</a>
+  <a href="#matrix">四、通勤時間矩陣</a>
+  <a href="#places">五、地點詳情</a>
+  <a href="#timeline">六、時間軸</a>
+  <a href="#dining">七、飲食指南</a>
+  <a href="#checklist">八、行前檢核</a>
+  <a href="#foodmap">九、美食景點</a>
+</nav>
+
+<div class="container">
+
+  <!-- ====== 1. OVERVIEW ====== -->
+  <section id="overview">
+    <h2><span class="num">01</span> 行程總覽</h2>
+
+    <div class="overview">
+      <div class="kpi flight">
+        <div class="k-label">去程航班</div>
+        <div class="k-value">泰國航空 TG631</div>
+        <div class="k-sub">4/24（五）17:15 · KHH → BKK</div>
+      </div>
+      <div class="kpi flight">
+        <div class="k-label">回程航班</div>
+        <div class="k-value">泰國航空 TG630</div>
+        <div class="k-sub">4/28（二）11:45 · BKK → KHH</div>
+      </div>
+      <div class="kpi hotel">
+        <div class="k-label">住宿</div>
+        <div class="k-value">Thrive Hotel</div>
+        <div class="k-sub">共 4 晚 · 不含早餐</div>
+      </div>
+      <div class="kpi bitec">
+        <div class="k-label">任務一</div>
+        <div class="k-value">Dek-D 教育展</div>
+        <div class="k-sub">4/25–4/26 · 08:00–18:00</div>
+      </div>
+      <div class="kpi fyi">
+        <div class="k-label">任務二</div>
+        <div class="k-value">JNJ Session</div>
+        <div class="k-sub">4/27 · 10:00–17:00</div>
+      </div>
+      <div class="kpi airport">
+        <div class="k-label">抵達機場</div>
+        <div class="k-value">BKK 蘇凡納布</div>
+        <div class="k-sub">Airport Rail Link 直通市區</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th style="width:120px">項目</th><th>詳細資訊</th><th style="width:260px">備註 / 時間</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>去程航班</td>
+          <td>泰國航空 TG631</td>
+          <td class="time">4/24（五）17:15　高雄 (KHH) 出發</td>
+        </tr>
+        <tr>
+          <td>回程航班</td>
+          <td>泰國航空 TG630</td>
+          <td class="time">4/28（二）11:45　曼谷 (BKK) 出發</td>
+        </tr>
+        <tr>
+          <td>住宿安排</td>
+          <td>Thrive Hotel（Soi Sukhumvit 19 Yeak 2）</td>
+          <td class="time">共計 4 晚（4/24 – 4/28），不含早餐</td>
+        </tr>
+        <tr>
+          <td>任務一</td>
+          <td>2026 泰國曼谷 Dek-D 教育展</td>
+          <td class="time">4/25（六）– 4/26（日）08:00–18:00<br>（週六 07:00 場佈）</td>
+        </tr>
+        <tr>
+          <td>任務二</td>
+          <td>JNJ Information &amp; Interview Session</td>
+          <td class="time">4/27（一）10:00–17:00</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ====== 2. MAP ====== -->
+  <section id="map">
+    <h2><span class="num">02</span> 定點交通關係圖</h2>
+
+    <div class="map-wrap">
+      <div class="map-card">
+        <h3>三點定位與動線　·　以真實曼谷地圖為底</h3>
+        <div id="bkk-map" aria-label="曼谷真實地圖（點擊地標開啟 Google Maps）"></div>
+        <div style="display:none"><svg class="map" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg" aria-label="備用動線圖">
+          <defs>
+            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+            </pattern>
+            <radialGradient id="glowHotel" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#f5c451" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#f5c451" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glowBitec" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#4ade80" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#4ade80" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glowFyi" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/>
+            </radialGradient>
+            <radialGradient id="glowAirport" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#f472b6" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#f472b6" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="800" height="560" fill="url(#grid)"/>
+
+          <!-- BTS path -->
+          <path id="btsPath" d="M 260 180 Q 380 200 500 260 T 680 450" class="line-bts"/>
+          <path d="M 260 180 Q 380 200 500 260 T 680 450" class="line-bts flowing" style="opacity:0.9"/>
+
+          <!-- MRT path -->
+          <path id="mrtPath" d="M 260 180 Q 220 260 210 340 T 240 460" class="line-mrt"/>
+          <path d="M 260 180 Q 220 260 210 340 T 240 460" class="line-mrt flowing" style="opacity:0.9"/>
+
+          <!-- Walks -->
+          <path d="M 300 170 L 260 180" class="line-walk"/>
+          <path d="M 680 450 L 735 470" class="line-walk"/>
+          <path d="M 240 460 L 200 490" class="line-walk"/>
+
+          <!-- Stations -->
+          <circle cx="260" cy="180" r="11" class="station"/>
+          <text x="275" y="170" class="label">Asok / Sukhumvit</text>
+          <text x="275" y="188" class="label-sub">BTS × MRT 轉乘樞紐</text>
+
+          <circle cx="680" cy="450" r="9" class="station"/>
+          <text x="608" y="440" class="label" text-anchor="end">Bang Na 挽那站</text>
+          <text x="608" y="456" class="label-sub" text-anchor="end">BTS 1 號出口 · Skywalk</text>
+
+          <circle cx="240" cy="460" r="9" class="station"/>
+          <text x="256" y="455" class="label">Queen Sirikit</text>
+          <text x="256" y="472" class="label-sub">MRT 詩麗吉王后</text>
+
+          <!-- Glows -->
+          <circle cx="300" cy="170" r="70" fill="url(#glowHotel)"/>
+          <circle cx="735" cy="470" r="70" fill="url(#glowBitec)"/>
+          <circle cx="200" cy="490" r="70" fill="url(#glowFyi)"/>
+
+          <!-- POIs -->
+          <circle cx="300" cy="170" r="10" class="poi hotel pulse" data-poi="hotel"/>
+          <text x="315" y="148" class="label">Thrive Hotel</text>
+          <text x="315" y="132" class="label-sub">住宿 · Sukhumvit 19</text>
+
+          <circle cx="735" cy="470" r="10" class="poi bitec pulse" data-poi="bitec"/>
+          <text x="735" y="500" class="label" text-anchor="middle">BITEC</text>
+          <text x="735" y="516" class="label-sub" text-anchor="middle">Dek-D 教育展 · 4/25–4/26</text>
+
+          <circle cx="200" cy="490" r="10" class="poi fyi pulse" data-poi="fyi"/>
+          <text x="200" y="520" class="label" text-anchor="middle">FYI Center</text>
+          <text x="200" y="536" class="label-sub" text-anchor="middle">JNJ Session · 4/27</text>
+
+          <!-- ARL path: Makkasan (near Asok) → BKK Airport (top-right) -->
+          <path id="arlPath" d="M 280 150 Q 450 100 600 95 T 740 90" class="line-arl"/>
+          <path d="M 280 150 Q 450 100 600 95 T 740 90" class="line-arl flowing" style="opacity:0.9"/>
+
+          <!-- Makkasan interchange (implicit near Asok) -->
+          <circle cx="280" cy="150" r="7" class="station"/>
+          <text x="290" y="140" class="label-sub">Makkasan / Phaya Thai</text>
+
+          <!-- Airport glow + POI -->
+          <circle cx="740" cy="90" r="70" fill="url(#glowAirport)"/>
+          <circle cx="740" cy="90" r="10" class="poi airport pulse" data-poi="airport"/>
+          <text x="740" y="62" class="label" text-anchor="middle">BKK Airport</text>
+          <text x="740" y="46" class="label-sub" text-anchor="middle">蘇凡納布國際機場</text>
+
+          <!-- Trains -->
+          <circle r="6" class="train">
+            <animateMotion dur="4.8s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#btsPath"/>
+            </animateMotion>
+          </circle>
+          <circle r="6" class="train">
+            <animateMotion dur="4.2s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#mrtPath"/>
+            </animateMotion>
+          </circle>
+          <circle r="6" class="train">
+            <animateMotion dur="5.6s" repeatCount="indefinite" rotate="auto">
+              <mpath href="#arlPath"/>
+            </animateMotion>
+          </circle>
+        </svg></div>
+
+        <div class="legend">
+          <span><span class="sw" style="background: var(--bts)"></span>BTS Sukhumvit Line（淺綠線）</span>
+          <span><span class="sw" style="background: var(--mrt)"></span>MRT Blue Line（藍線）</span>
+          <span><span class="sw" style="background: var(--arl)"></span>Airport Rail Link（機場快線）</span>
+          <span><span class="sw" style="background: #fff; opacity:0.5"></span>步行 / Skywalk</span>
+          <span>· 白點＝列車行進方向</span>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="card airport">
+          <h4><span class="dot airport"></span>BKK Suvarnabhumi（蘇凡納布機場）</h4>
+          <div class="when">4/24 抵達 · 4/28 返程（TG630 11:45）</div>
+          <div class="route">
+            <span class="chip arl">ARL</span>Airport Rail Link → Phaya Thai / Makkasan
+            <span class="chip taxi">Taxi</span>高速公路直達住宿<br>
+            往 Thrive Hotel 約 30–45 分鐘。
+          </div>
+        </div>
+        <div class="card hotel">
+          <h4><span class="dot hotel"></span>Thrive Hotel（住宿基地）</h4>
+          <div class="when">4/24（五）– 4/28（二）　共 4 晚 · 無早餐</div>
+          <div class="route">
+            Soi Sukhumvit 19 Yeak 2<br>
+            步行可達 BTS Asok / MRT Sukhumvit 雙捷運，旁有 7-11、Terminal 21、Pier 21 美食街。
+          </div>
+        </div>
+        <div class="card bitec">
+          <h4><span class="dot bitec"></span>BITEC｜Dek-D 教育展</h4>
+          <div class="when">4/25（六）07:00 場佈 · 08:00–18:00（兩天）</div>
+          <div class="route">
+            <span class="chip bts">BTS</span>Asok → Bang Na
+            <span class="chip walk">步行</span>1 號出口 Skywalk ~10 分鐘<br>
+            館內有 Food Court、SAMA Garden、Beef Express。
+          </div>
+        </div>
+        <div class="card fyi">
+          <h4><span class="dot fyi"></span>FYI Center｜JNJ Session</h4>
+          <div class="when">4/27（一）10:00–17:00</div>
+          <div class="route">
+            <span class="chip mrt">MRT</span>Sukhumvit → Queen Sirikit
+            <span class="chip walk">步行</span>緊鄰捷運出口<br>
+            一樓 Dean &amp; DeLuca；鄰 Khlong Toei 傳統市場。
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ====== 3. AIRPORT TRANSPORT ====== -->
+  <section id="airport">
+    <h2><span class="num">03</span> 機場 → 飯店 交通方案</h2>
+
+    <div class="detail airport">
+      <h3><span class="dot airport"></span>BKK Suvarnabhumi（蘇凡納布國際機場） → Thrive Hotel</h3>
+      <div class="addr">機場位於曼谷東郊，距市區 Sukhumvit 約 30 公里。</div>
+      <p>4/24 抵達後由機場進入 Sukhumvit 19 住宿，建議比較下列三種方式後擇優選用；若行李多、抵達已晚，直接搭計程車（含 50 THB 機場排隊費 + 高速過路費）為最省力。</p>
+
+      <div class="routes">
+        <div class="route-card">
+          <h4>① Airport Rail Link (ARL)<span class="price">45 THB</span></h4>
+          <div class="duration">約 45 分</div>
+          <p>
+            機場 B1 搭 ARL → <b>Phaya Thai</b>（26 分） → 轉 <b>BTS Sukhumvit Line</b> → <b>Asok</b>（約 15 分） → 步行入住。<br>
+            最經濟、不塞車；首末班車約 06:00–24:00。
+          </p>
+        </div>
+        <div class="route-card taxi">
+          <h4>② 計程車 / Grab<span class="price">~350–450 THB</span></h4>
+          <div class="duration">30–45 分</div>
+          <p>
+            1 樓排班計程車招呼站（+50 THB 排班費）或 Grab App 叫車。<br>
+            走高速公路（過路費約 75 THB 由乘客負擔）直達 Sukhumvit 19；尖峰時段可能延長 15–20 分。
+          </p>
+        </div>
+        <div class="route-card bus">
+          <h4>③ ARL + MRT<span class="price">~60 THB</span></h4>
+          <div class="duration">約 50 分</div>
+          <p>
+            ARL → <b>Makkasan</b> → 步行至 <b>MRT Phetchaburi</b> → MRT 藍線 → <b>Sukhumvit</b> → 步行入住。<br>
+            適合行李較少、避開 BTS 顛峰時段。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 4. TIME MATRIX ====== -->
+  <section id="matrix">
+    <h2><span class="num">04</span> 四定點 · 通勤時間矩陣</h2>
+    <p style="color: var(--muted); font-size: 13px; margin: 0 0 14px">
+      單位：分鐘。同一格列出<b>大眾運輸</b>與<b>計程車 / Grab</b>兩種選項，尖峰（07:30–09:30、17:00–19:30）請視路況加乘 1.3–1.5 倍。
+    </p>
+
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th class="origin">起點　＼　終點</th>
+            <th><span class="corner-label"><span class="dot airport"></span>BKK Airport</span></th>
+            <th><span class="corner-label"><span class="dot hotel"></span>Thrive Hotel</span></th>
+            <th><span class="corner-label"><span class="dot bitec"></span>BITEC</span></th>
+            <th><span class="corner-label"><span class="dot fyi"></span>FYI Center</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="origin"><span class="corner-label"><span class="dot airport"></span>BKK Airport</span></th>
+            <td class="same">—</td>
+            <td>
+              <div class="cell-time">45′ / 35′</div>
+              <div class="cell-mode"><span class="chip arl">ARL</span>+ BTS Asok<br><span class="chip taxi">Taxi</span>~400 THB</div>
+            </td>
+            <td>
+              <div class="cell-time">50′ / 25′</div>
+              <div class="cell-mode"><span class="chip arl">ARL</span>+ BTS Bang Na<br><span class="chip taxi">Taxi</span>~250 THB</div>
+            </td>
+            <td>
+              <div class="cell-time">45′ / 35′</div>
+              <div class="cell-mode"><span class="chip arl">ARL</span>+ MRT Queen Sirikit<br><span class="chip taxi">Taxi</span>~350 THB</div>
+            </td>
+          </tr>
+          <tr>
+            <th class="origin"><span class="corner-label"><span class="dot hotel"></span>Thrive Hotel</span></th>
+            <td>
+              <div class="cell-time">45′ / 40′</div>
+              <div class="cell-mode"><span class="chip bts">BTS</span>+ ARL Phaya Thai<br><span class="chip taxi">Taxi</span>尖峰 60′+</div>
+            </td>
+            <td class="same">—</td>
+            <td>
+              <div class="cell-time">30′ / 30–50′</div>
+              <div class="cell-mode"><span class="chip bts">BTS</span>Asok → Bang Na + Skywalk<br><span class="chip taxi">Taxi</span>塞車風險高</div>
+            </td>
+            <td>
+              <div class="cell-time">10′ / 10–20′</div>
+              <div class="cell-mode"><span class="chip mrt">MRT</span>Sukhumvit → Queen Sirikit（3 站）<br><span class="chip taxi">Taxi</span>~80 THB</div>
+            </td>
+          </tr>
+          <tr>
+            <th class="origin"><span class="corner-label"><span class="dot bitec"></span>BITEC</span></th>
+            <td>
+              <div class="cell-time">50′ / 25′</div>
+              <div class="cell-mode"><span class="chip bts">BTS</span>+ ARL<br><span class="chip taxi">Taxi</span>最快（同東郊）</div>
+            </td>
+            <td>
+              <div class="cell-time">30′ / 30–50′</div>
+              <div class="cell-mode"><span class="chip bts">BTS</span>Bang Na → Asok<br><span class="chip taxi">Taxi</span>建議避尖峰</div>
+            </td>
+            <td class="same">—</td>
+            <td>
+              <div class="cell-time">50′ / 35′</div>
+              <div class="cell-mode"><span class="chip bts">BTS</span>+ 轉 MRT Asok<br><span class="chip taxi">Taxi</span>~250 THB</div>
+            </td>
+          </tr>
+          <tr>
+            <th class="origin"><span class="corner-label"><span class="dot fyi"></span>FYI Center</span></th>
+            <td>
+              <div class="cell-time">45′ / 35′</div>
+              <div class="cell-mode"><span class="chip mrt">MRT</span>+ ARL Makkasan<br><span class="chip taxi">Taxi</span>~350 THB</div>
+            </td>
+            <td>
+              <div class="cell-time">10′ / 10–20′</div>
+              <div class="cell-mode"><span class="chip mrt">MRT</span>Queen Sirikit → Sukhumvit<br><span class="chip taxi">Taxi</span>~80 THB</div>
+            </td>
+            <td>
+              <div class="cell-time">50′ / 35′</div>
+              <div class="cell-mode"><span class="chip mrt">MRT</span>+ 轉 BTS Asok<br><span class="chip taxi">Taxi</span>~250 THB</div>
+            </td>
+            <td class="same">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ====== 5. PLACES DETAIL ====== -->
+  <section id="places">
+    <h2><span class="num">05</span> 地點、交通與飲食指南</h2>
+
+    <div class="detail-grid">
+      <!-- Hotel -->
+      <div class="detail hotel">
+        <h3><span class="dot hotel"></span>1. 住宿地點：Thrive Hotel</h3>
+        <div class="addr">Soi Sukhumvit 19 Yeak 2 · 曼谷市中心</div>
+
+        <h5>位置</h5>
+        <p>位於曼谷市中心繁華地段，Sukhumvit 19 巷內。</p>
+
+        <h5>交通資訊</h5>
+        <p>距離轉乘樞紐 <b>BTS Asok（阿索克站）</b> 與 <b>MRT Sukhumvit（素坤逸站）</b> 非常近。無論前往展場或市區拜訪，大眾運輸皆極為便利。</p>
+
+        <h5>飲食資訊</h5>
+        <ul>
+          <li>飯店旁即有 <b>7-11</b> 便利商店，解決無供應早餐空檔非常方便。</li>
+          <li>步行即可抵達 <b>Terminal 21 購物中心</b>，頂樓「Pier 21」美食街以平價且道地的泰式小吃聞名。</li>
+          <li>周邊 Sukhumvit 19 巷內亦有多家異國餐廳與咖啡廳。</li>
+        </ul>
+      </div>
+
+      <!-- BITEC -->
+      <div class="detail bitec">
+        <h3><span class="dot bitec"></span>2. Dek-D 教育展：BITEC</h3>
+        <div class="addr">Bang Na 區 · 曼谷國際貿易展覽中心</div>
+
+        <h5>位置</h5>
+        <p>位於 Bang Na 區，是曼谷指標性的大型展場。</p>
+
+        <h5>交通資訊</h5>
+        <p>從住宿出發，搭 <b>BTS 淺綠線（Sukhumvit Line）</b>直達 <b>Bang Na（挽那站）</b>。從 1 號出口出站後，有專屬 <b>Skywalk 空橋</b>連通，步行約 <b>10 分鐘</b>即可直達展場 Welcome Hall，可避開曼谷平面道路的塞車問題。</p>
+
+        <h5>飲食資訊</h5>
+        <ul>
+          <li>館內基礎設施完善：大型 Food Court、SAMA Garden、咖啡店、吃到飽餐廳（如 Beef Express）。</li>
+          <li>午餐可直接在展場內解決。</li>
+          <li>展後聚餐：計程車或接駁車不遠即可抵達 <b>Mega Bangna</b> 或 <b>Central Plaza Bangna</b> 等巨型商場。</li>
+        </ul>
+      </div>
+
+      <!-- FYI -->
+      <div class="detail fyi">
+        <h3><span class="dot fyi"></span>3. JNJ 拜訪：FYI Center（Victor Club）</h3>
+        <div class="addr">Khlong Toei 區 · Rama 4 路商辦大樓</div>
+
+        <h5>位置</h5>
+        <p>位於曼谷 <b>孔堤區（Khlong Toei）Rama 4 路</b>的商辦大樓內。</p>
+
+        <h5>交通資訊</h5>
+        <p>從住宿出發，搭 <b>MRT 藍線</b>至 <b>Queen Sirikit National Convention Centre（詩麗吉王后國家會議中心站）</b>。FYI Center 緊鄰捷運站出口，步行即可快速抵達辦公大樓。</p>
+
+        <h5>飲食資訊</h5>
+        <ul>
+          <li>FYI Center 為現代化綠建築商辦，一樓與周邊有 <b>Dean &amp; DeLuca</b> 等咖啡連鎖店與商務簡餐，適合面試活動中間短暫休息用餐。</li>
+          <li>活動結束後可體驗在地文化：附近有曼谷最大的傳統市場 <b>Khlong Toei Market</b>。</li>
+          <li>搭 MRT 一站即可回到 Asok 站周邊商圈。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 4. TIMELINE ====== -->
+  <section id="timeline">
+    <h2><span class="num">06</span> 完整時間軸</h2>
+
+    <div class="timeline">
+      <div class="t-item flight">
+        <div class="t-date">2026-04-24 · 五</div>
+        <div class="t-title">17:15　高雄起飛</div>
+        <div class="t-desc"><span class="chip flight">TG631</span> KHH → BKK（飛行約 3h30m）</div>
+      </div>
+      <div class="t-item airport">
+        <div class="t-date">2026-04-24 · 五　約 20:45（當地）</div>
+        <div class="t-title">抵達 BKK Suvarnabhumi</div>
+        <div class="t-desc">出關 / 領行李 / 換匯 ~45 分。推薦 <span class="chip taxi">Taxi</span> 或 <span class="chip arl">ARL</span> → Asok。</div>
+      </div>
+      <div class="t-item hotel">
+        <div class="t-date">2026-04-24 · 五　晚間</div>
+        <div class="t-title">抵達 Thrive Hotel 入住</div>
+        <div class="t-desc">Check-in 後可利用飯店旁 7-11 或 Terminal 21 解決晚餐。</div>
+      </div>
+      <div class="t-item bitec">
+        <div class="t-date">2026-04-25 · 六　07:00</div>
+        <div class="t-title">BITEC 場佈</div>
+        <div class="t-desc"><span class="chip bts">BTS</span>Asok → Bang Na（1 號出口 Skywalk）</div>
+      </div>
+      <div class="t-item bitec">
+        <div class="t-date">2026-04-25 · 六　08:00–18:00</div>
+        <div class="t-title">Dek-D 教育展　Day 1</div>
+        <div class="t-desc">午餐可利用館內 Food Court / SAMA Garden。</div>
+      </div>
+      <div class="t-item bitec">
+        <div class="t-date">2026-04-26 · 日　08:00–18:00</div>
+        <div class="t-title">Dek-D 教育展　Day 2</div>
+        <div class="t-desc">展後可聚餐於 Mega Bangna / Central Plaza Bangna。</div>
+      </div>
+      <div class="t-item fyi">
+        <div class="t-date">2026-04-27 · 一　10:00–17:00</div>
+        <div class="t-title">JNJ Information &amp; Interview Session</div>
+        <div class="t-desc"><span class="chip mrt">MRT</span>Sukhumvit → Queen Sirikit（FYI Center）</div>
+      </div>
+      <div class="t-item airport">
+        <div class="t-date">2026-04-28 · 二　08:30 前</div>
+        <div class="t-title">抵達機場辦理報到</div>
+        <div class="t-desc">由 Thrive Hotel 出發建議 07:00 搭 <span class="chip taxi">Taxi</span>（~40 分）或 06:30 搭 <span class="chip bts">BTS</span>+<span class="chip arl">ARL</span>（~50 分）。</div>
+      </div>
+      <div class="t-item flight">
+        <div class="t-date">2026-04-28 · 二　11:45</div>
+        <div class="t-title">曼谷返程</div>
+        <div class="t-desc"><span class="chip flight">TG630</span> BKK → KHH</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 5. DINING ====== -->
+  <section id="dining">
+    <h2><span class="num">07</span> 飲食速查</h2>
+
+    <div class="detail-grid">
+      <div class="detail hotel">
+        <h3><span class="dot hotel"></span>住宿周邊 · Sukhumvit 19</h3>
+        <ul>
+          <li><b>7-11</b>：飯店旁，解決早餐空檔。</li>
+          <li><b>Terminal 21 · Pier 21 美食街</b>：頂樓，平價道地泰式小吃。</li>
+          <li>Sukhumvit 19 巷內多家異國餐廳、咖啡廳。</li>
+        </ul>
+      </div>
+      <div class="detail bitec">
+        <h3><span class="dot bitec"></span>BITEC 展場區</h3>
+        <ul>
+          <li>館內 <b>大型 Food Court</b>（午餐首選）</li>
+          <li><b>SAMA Garden</b></li>
+          <li><b>Beef Express</b>（吃到飽）</li>
+          <li>各式咖啡店</li>
+          <li>展後：<b>Mega Bangna</b> / <b>Central Plaza Bangna</b>（計程車或接駁車）</li>
+        </ul>
+      </div>
+      <div class="detail fyi">
+        <h3><span class="dot fyi"></span>FYI Center 周邊</h3>
+        <ul>
+          <li>一樓：<b>Dean &amp; DeLuca</b> 等咖啡連鎖店與商務簡餐。</li>
+          <li><b>Khlong Toei Market</b>：曼谷最大傳統市場（在地體驗）。</li>
+          <li>搭 MRT 一站即可回 Asok 站商圈。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 6. CHECKLIST ====== -->
+  <section id="checklist">
+    <h2><span class="num">08</span> 行前檢核清單</h2>
+
+    <div class="check-grid">
+      <div class="check">
+        <h4>證件與文件</h4>
+        <ul>
+          <li>護照（效期 6 個月以上）</li>
+          <li>電子機票 TG631 / TG630</li>
+          <li>Thrive Hotel 訂房確認單</li>
+          <li>Dek-D 教育展參展證件</li>
+          <li>JNJ Session 邀請函 / 名片</li>
+        </ul>
+      </div>
+      <div class="check">
+        <h4>金融與通訊</h4>
+        <ul>
+          <li>泰銖現金 / 外幣卡</li>
+          <li>信用卡（可刷海外）</li>
+          <li>泰國上網卡或漫遊方案</li>
+          <li>行動電源</li>
+          <li>萬用轉接插頭</li>
+        </ul>
+      </div>
+      <div class="check">
+        <h4>商務與展務</h4>
+        <ul>
+          <li>名片（中英雙語）</li>
+          <li>展場工作人員服裝</li>
+          <li>筆電 / 簡報備份</li>
+          <li>JNJ Session 個人資料</li>
+          <li>文件袋 / 宣傳資料</li>
+        </ul>
+      </div>
+      <div class="check">
+        <h4>生活與備品</h4>
+        <ul>
+          <li>輕便衣物（曼谷 4 月炎熱）</li>
+          <li>展場久站舒適鞋</li>
+          <li>雨具（防曬陽傘兼用）</li>
+          <li>常備藥品（腸胃 / 防蚊）</li>
+          <li>洗漱用品（飯店未必齊全）</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ====== 9. FOOD MAP SECTION ====== -->
+<section id="foodmap">
+  <div class="container">
+    <h2 style="margin-bottom:20px"><span class="num">09</span> 美食 &amp; 景點地圖</h2>
+  </div>
+  <div class="food-wrap">
+    <!-- File B body content here, minus File B's own header/footer -->
+
+    <div class="filterbar">
+      <div class="filter-group">
+        <button class="fbtn f-all active" onclick="filterMap('all',this)">全部</button>
+        <button class="fbtn f-food" onclick="filterMap('food',this)">🍽️ 美食</button>
+        <button class="fbtn f-spot" onclick="filterMap('spot',this)">⭐ 景點</button>
+      </div>
+      <div class="filter-divider"></div>
+      <div class="filter-group">
+        <button class="fbtn f-a" onclick="filterMap('a',this)">🟡 Asok 區</button>
+        <button class="fbtn f-b" onclick="filterMap('b',this)">🟢 Bangna 區</button>
+        <button class="fbtn f-c" onclick="filterMap('c',this)">🔵 Queen Sirikit 區</button>
+      </div>
+    </div>
+
+    <div class="map-wrap">
+      <div id="food-map" aria-label="曼谷美食景點地圖"></div>
+    </div>
+
+    <div class="legend-bar">
+      <span><span class="ldot" style="background:var(--hotel);box-shadow:0 0 6px var(--hotel)"></span>🟡 Asok 住宿區</span>
+      <span><span class="ldot" style="background:var(--bitec);box-shadow:0 0 6px var(--bitec)"></span>🟢 Bangna 展場區</span>
+      <span><span class="ldot" style="background:var(--fyi);box-shadow:0 0 6px var(--fyi)"></span>🔵 Queen Sirikit 會議區</span>
+      <span><span class="ldot" style="background:var(--food);box-shadow:0 0 6px var(--food)"></span>🍽️ 餐廳美食</span>
+      <span><span class="ldot" style="background:var(--spot);box-shadow:0 0 6px var(--spot)"></span>⭐ 景點</span>
+      <span style="margin-left:auto; color:var(--muted2); font-size:11px">點擊地標 → 開啟 Google Maps</span>
+    </div>
+
+    <div class="container">
+
+      <!-- ===== ZONE A ===== -->
+      <div class="zone-section" id="zone-a">
+        <div class="zone-header">
+          <span class="zone-dot" style="background:var(--zone-a);box-shadow:0 0 8px var(--zone-a)"></span>
+          <div>
+            <h2>Asok / Sukhumvit 19 周邊</h2>
+            <p>Thrive Hotel 步行可達範圍　·　BTS Asok / MRT Sukhumvit</p>
+          </div>
+        </div>
+        <div class="cards" id="cards-a"></div>
+      </div>
+
+      <!-- ===== ZONE B ===== -->
+      <div class="zone-section" id="zone-b">
+        <div class="zone-header">
+          <span class="zone-dot" style="background:var(--zone-b);box-shadow:0 0 8px var(--zone-b)"></span>
+          <div>
+            <h2>Bangna / BITEC 周邊</h2>
+            <p>展場內外 &amp; Mega Bangna 商圈　·　BTS Bang Na</p>
+          </div>
+        </div>
+        <div class="cards" id="cards-b"></div>
+      </div>
+
+      <!-- ===== ZONE C ===== -->
+      <div class="zone-section" id="zone-c">
+        <div class="zone-header">
+          <span class="zone-dot" style="background:var(--zone-c);box-shadow:0 0 8px var(--zone-c)"></span>
+          <div>
+            <h2>Queen Sirikit / Khlong Toei 周邊</h2>
+            <p>FYI Center 步行範圍　·　MRT Queen Sirikit</p>
+          </div>
+        </div>
+        <div class="cards" id="cards-c"></div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  2026 泰國曼谷出差完整指南　·　R/報告　·　生成於 2026-04-17
+</footer>
+
+<script>
+  /* ============ Leaflet · Bangkok Real Map ============ */
+  const POIS = [
+    {
+      key: 'hotel', name: 'Thrive Hotel', sub: '住宿 · Sukhumvit 19',
+      coords: [13.7393, 100.5594], color: '#f5c451',
+      gmap: 'https://www.google.com/maps/search/?api=1&query=Thrive+Hotel+Sukhumvit+19+Bangkok',
+      labelPos: 'bottom'
+    },
+    {
+      key: 'bitec', name: 'BITEC', sub: 'Dek-D 教育展 · 4/25–4/26',
+      coords: [13.6683, 100.6098], color: '#4ade80',
+      gmap: 'https://www.google.com/maps/search/?api=1&query=BITEC+Bangna+Bangkok',
+      labelPos: 'bottom'
+    },
+    {
+      key: 'fyi', name: 'FYI Center', sub: 'JNJ Session · 4/27',
+      coords: [13.7247, 100.5603], color: '#60a5fa',
+      gmap: 'https://www.google.com/maps/search/?api=1&query=FYI+Center+Rama+4+Bangkok',
+      labelPos: 'bottom'
+    },
+    {
+      key: 'airport', name: 'BKK Suvarnabhumi', sub: '蘇凡納布國際機場',
+      coords: [13.6900, 100.7501], color: '#f472b6',
+      gmap: 'https://www.google.com/maps/search/?api=1&query=Suvarnabhumi+Airport+Bangkok',
+      labelPos: 'left'
+    }
+  ];
+
+  const bmap = L.map('bkk-map', {
+    zoomControl: true,
+    scrollWheelZoom: false,
+    attributionControl: true
+  }).setView([13.705, 100.63], 11);
+
+  // Dark theme basemap (Carto dark)
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(bmap);
+
+  // Route polylines (simplified coordinates following approximate metro alignment)
+  const btsRoute = [
+    [13.7393, 100.5603], [13.7300, 100.5700], [13.7200, 100.5830],
+    [13.7050, 100.5970], [13.6950, 100.6050], [13.6683, 100.6098]
+  ];
+  const mrtRoute = [
+    [13.7393, 100.5603], [13.7360, 100.5600], [13.7300, 100.5600],
+    [13.7247, 100.5603]
+  ];
+  const arlRoute = [
+    [13.7480, 100.5613], [13.7450, 100.6100], [13.7380, 100.6500],
+    [13.7220, 100.6900], [13.7050, 100.7200], [13.6900, 100.7501]
+  ];
+
+  L.polyline(btsRoute, { color: '#4ade80', weight: 5, opacity: 0.9, className: 'flowing-line', lineCap: 'round' })
+    .bindTooltip('BTS Sukhumvit Line', { sticky: true })
+    .addTo(bmap);
+  L.polyline(mrtRoute, { color: '#4a90e2', weight: 5, opacity: 0.9, className: 'flowing-line', lineCap: 'round' })
+    .bindTooltip('MRT Blue Line', { sticky: true })
+    .addTo(bmap);
+  L.polyline(arlRoute, { color: '#c084fc', weight: 5, opacity: 0.9, className: 'flowing-line', lineCap: 'round' })
+    .bindTooltip('Airport Rail Link', { sticky: true })
+    .addTo(bmap);
+
+  // POI markers
+  POIS.forEach(poi => {
+    const icon = L.divIcon({
+      className: 'custom-marker',
+      html: `
+        <div class="pulse-dot" style="--c:${poi.color}"></div>
+        <div class="marker-label ${poi.labelPos === 'left' ? 'left' : ''}">${poi.name}<span class="sub">${poi.sub}</span></div>
+      `,
+      iconSize: [18, 18],
+      iconAnchor: [9, 9]
+    });
+    const marker = L.marker(poi.coords, { icon, riseOnHover: true }).addTo(bmap);
+    marker.bindPopup(`
+      <div class="pop-title" style="color:${poi.color}">${poi.name}</div>
+      <div class="pop-sub">${poi.sub}</div>
+      <a class="gmap-link" href="${poi.gmap}" target="_blank" rel="noopener">在 Google Maps 開啟 →</a>
+    `);
+    marker.on('click', () => marker.openPopup());
+  });
+
+  // Fit all points
+  bmap.fitBounds([
+    [13.6500, 100.5500],
+    [13.7550, 100.7600]
+  ], { padding: [40, 40] });
+
+  // Toggle scrollWheel zoom only when focused
+  bmap.on('focus', () => bmap.scrollWheelZoom.enable());
+  bmap.on('blur', () => bmap.scrollWheelZoom.disable());
+
+  /* ============ Sidebar ↔ Leaflet markers sync ============ */
+  const poiByKey = {};
+  POIS.forEach(p => { poiByKey[p.key] = p; });
+
+  document.querySelectorAll('.card').forEach(card => {
+    const cls = [...card.classList].find(c => ['hotel','bitec','fyi','airport'].includes(c));
+    if (!cls || !poiByKey[cls]) return;
+    card.style.cursor = 'pointer';
+    card.addEventListener('mouseenter', () => {
+      bmap.flyTo(poiByKey[cls].coords, 14, { duration: 0.8 });
+    });
+    card.addEventListener('click', () => {
+      window.open(poiByKey[cls].gmap, '_blank', 'noopener');
+    });
+  });
+</script>
+
+<script>
+/* ================================================
+   DATA (File B)
+   ================================================ */
+const ANCHORS = [
+  { name:'Thrive Hotel', sub:'住宿基地 · 4 晚', zone:'a', emoji:'🏨',
+    coords:[13.7393,100.5594], color:'var(--hotel)',
+    gmap:'https://www.google.com/maps/search/?api=1&query=Thrive+Hotel+Sukhumvit+19+Bangkok' },
+  { name:'BITEC', sub:'Dek-D 教育展 4/25–4/26', zone:'b', emoji:'🏛️',
+    coords:[13.6683,100.6098], color:'var(--bitec)',
+    gmap:'https://www.google.com/maps/search/?api=1&query=BITEC+Bangna+Bangkok' },
+  { name:'FYI Center', sub:'JNJ Session 4/27', zone:'c', emoji:'🏢',
+    coords:[13.7247,100.5603], color:'var(--fyi)',
+    gmap:'https://www.google.com/maps/search/?api=1&query=FYI+Center+Rama+4+Bangkok' },
+];
+
+const PLACES = [
+  /* ===== ZONE A · 美食 ===== */
+  { zone:'a', type:'food', name:'Gigi Eatery & Café', sub:'義式料理 · 4.7 ★',
+    coords:[13.7397,100.5615], rating:'4.7',
+    desc:'曼谷人氣義式早午餐，位於 Sukhumvit 19 巷內，份量大、義大利麵現做。週末建議提前訂位。',
+    tags:['義大利料理','早午餐','$$$'],
+    gmap:'https://www.google.com/maps?q=13.7397,100.5615' },
+  { zone:'a', type:'food', name:'Mariga Thai Restaurant', sub:'泰式料理 · 4.9 ★',
+    coords:[13.7405,100.5572], rating:'4.9',
+    desc:'Asok 周邊評分最高的泰式餐廳之一，道地家常菜，份量大、價格實惠。',
+    tags:['泰式料理','道地','$$'],
+    gmap:'https://www.google.com/maps?q=13.7405,100.5572' },
+  { zone:'a', type:'food', name:'The Local Bangkok', sub:'精緻泰菜 · 4.6 ★',
+    coords:[13.7352,100.5652], rating:'4.6',
+    desc:'百年木屋古宅改建，以復刻家傳秘方泰菜聞名，菜色精緻、環境優雅，適合商務晚餐。',
+    tags:['Fine Dining','泰式','$$$'],
+    gmap:'https://www.google.com/maps?q=13.7352,100.5652' },
+  { zone:'a', type:'food', name:'Appia', sub:'羅馬義式料理 · 4.7 ★',
+    coords:[13.7360,100.5680], rating:'4.7',
+    desc:'主廚來自羅馬，現烤乳豬（Porchetta）是招牌，生麵條每日現製，曼谷義大利菜 Top 3。',
+    tags:['義大利料理','現製麵食','$$$'],
+    gmap:'https://www.google.com/maps?q=13.7360,100.5680' },
+  { zone:'a', type:'food', name:'Pier 21 美食街', sub:'Terminal 21 頂樓 · 平價',
+    coords:[13.7379,100.5601], rating:'4.5',
+    desc:'Terminal 21 頂樓，超過 40 個攤位，均價 50–100 THB，泰式炒麵、冬陰功、芒果糯米飯一應俱全，旅客必訪。',
+    tags:['美食街','道地','$'],
+    gmap:'https://www.google.com/maps?q=13.7379,100.5601' },
+  { zone:'a', type:'food', name:'Doo Rae Korean BBQ', sub:'韓式燒肉 · 4.6 ★',
+    coords:[13.7392,100.5600], rating:'4.6',
+    desc:'韓國城入口，正宗韓式烤肉，肉質好、小菜豐盛，是曼谷韓商聚集區，氣氛熱鬧。',
+    tags:['韓式燒肉','夜晚','$$'],
+    gmap:'https://www.google.com/maps?q=13.7392,100.5600' },
+
+  /* ===== ZONE A · 景點 ===== */
+  { zone:'a', type:'spot', name:'Terminal 21', sub:'機場主題購物中心',
+    coords:[13.7379,100.5601],
+    desc:'仿各國機場設計，六個樓層各有主題（Tokyo, Istanbul, San Francisco…），600+ 店鋪，頂樓 Pier 21 美食街最受歡迎。',
+    tags:['購物','餐廳','免費入場'],
+    gmap:'https://www.google.com/maps?q=13.7379,100.5601' },
+  { zone:'a', type:'spot', name:'Benjakitti Forest Park', sub:'曼谷最美湖濱公園',
+    coords:[13.7215,100.5652],
+    desc:'130 公頃森林公園，環湖步道、空中步橋、自行車道，傍晚燈光倒映湖面，是市區最佳散步地點。免費入場。',
+    tags:['公園','散步','免費'],
+    gmap:'https://www.google.com/maps?q=13.7215,100.5652' },
+  { zone:'a', type:'spot', name:'Baan Kamthieng 博物館', sub:'百年柚木古宅文化館',
+    coords:[13.7392,100.5613],
+    desc:'由暹羅學會保存的北泰傳統木構屋，展示泰族農業器具與日常文物，在喧囂 Asok 旁的難得寧靜角落。',
+    tags:['博物館','文化','入場費低'],
+    gmap:'https://www.google.com/maps?q=13.7392,100.5613' },
+  { zone:'a', type:'spot', name:'Emsphere', sub:'曼谷最新旗艦商場',
+    coords:[13.7250,100.5710],
+    desc:'2023 年底開幕，12 層樓，設有 Em Lifestyle、Em Innovation 等主題區，餐廳、電影院、高端品牌齊聚。',
+    tags:['購物','餐廳','新景點'],
+    gmap:'https://www.google.com/maps?q=13.7250,100.5710' },
+  { zone:'a', type:'spot', name:'Nana 夜市', sub:'夜晚街頭市集',
+    coords:[13.7420,100.5549],
+    desc:'Nana 至 Asok 之間的夜市，17:00 後開始熱鬧，服飾、配件、小吃、飲料，是體驗曼谷夜生活的入門地點。',
+    tags:['夜市','小吃','免費'],
+    gmap:'https://www.google.com/maps?q=13.7420,100.5549' },
+
+  /* ===== ZONE B · 美食 ===== */
+  { zone:'b', type:'food', name:'SUSHI SEKI', sub:'日本料理 · Mega Bangna · 4.6 ★',
+    coords:[13.6762,100.6092], rating:'4.6',
+    desc:'Mega Bangna 內評分最高的日式餐廳，以新鮮食材與細緻刀工著稱，適合展後高規格餐聚。',
+    tags:['日式料理','壽司','$$$'],
+    gmap:'https://www.google.com/maps?q=13.6762,100.6092' },
+  { zone:'b', type:'food', name:'Faikam Restaurant', sub:'道地泰菜 · 4.5 ★',
+    coords:[13.6700,100.6085], rating:'4.5',
+    desc:'BITEC 附近人氣泰式小館，本地人推薦，打拋豬、泰式炒飯皆是招牌，價格親民，建議展場休息日前往。',
+    tags:['泰式料理','道地','$$'],
+    gmap:'https://www.google.com/maps?q=13.6700,100.6085' },
+  { zone:'b', type:'food', name:'BITEC Food Court / Beef Express', sub:'展場內 · 平價',
+    coords:[13.6690,100.6100],
+    desc:'位於展館內，提供泰式、日式等多國選擇，Beef Express 為吃到飽模式（約 400 THB），展期午餐最方便選擇。',
+    tags:['美食街','吃到飽','$'],
+    gmap:'https://www.google.com/maps?q=13.6690,100.6100' },
+  { zone:'b', type:'food', name:'Ojo Bangkok', sub:'墨西哥風味料理 · 4.5 ★',
+    coords:[13.6695,100.6105], rating:'4.5',
+    desc:'以 Wagyu Ribeye Tacos、Esquites 等創意墨西哥料理著稱，BITEC 周邊少見的特色選擇，環境時尚。',
+    tags:['墨西哥料理','創意','$$$'],
+    gmap:'https://www.google.com/maps?q=13.6695,100.6105' },
+
+  /* ===== ZONE B · 景點 ===== */
+  { zone:'b', type:'spot', name:'Mega Bangna', sub:'東曼谷最大購物中心',
+    coords:[13.6762,100.6092],
+    desc:'曼谷東部最大商場，設有 IKEA、Major Cineplex、超市、美食廣場，展後採購或聚餐的最佳去處，距 BITEC 車程 5 分鐘。',
+    tags:['購物','電影院','餐廳'],
+    gmap:'https://www.google.com/maps?q=13.6762,100.6092' },
+  { zone:'b', type:'spot', name:'Central Plaza Bangna', sub:'綜合型商場 &amp; 美食聚集地',
+    coords:[13.6740,100.6092],
+    desc:'Bangna 區第二大商場，包含超市、餐廳、藥妝，展後不走遠即可解決晚餐與日用品採購。',
+    tags:['購物','超市','餐廳'],
+    gmap:'https://www.google.com/maps?q=13.6740,100.6092' },
+
+  /* ===== ZONE C · 美食 ===== */
+  { zone:'c', type:'food', name:'Sorn（ศรณ์）', sub:'Michelin ★★★ · 泰南料理',
+    coords:[13.7232,100.5688], rating:'★★★',
+    desc:'The World\'s 50 Best 第 17 名，2024 升至米其林三星，主打極致南泰料理，22 道精緻套餐，提前數週訂位。Soi 26。',
+    tags:['米其林三星','Fine Dining','$$$$'],
+    gmap:'https://www.google.com/maps?q=13.7232,100.5688' },
+  { zone:'c', type:'food', name:'El Mercado', sub:'歐陸家常料理 · 4.6 ★',
+    coords:[13.7268,100.5645], rating:'4.6',
+    desc:'隱藏版歐陸小酒館，自製義大利麵、新鮮生蠔、火腿起司拼盤，深受外派族群與美食圈喜愛。',
+    tags:['歐陸料理','自然酒','$$$'],
+    gmap:'https://www.google.com/maps?q=13.7268,100.5645' },
+  { zone:'c', type:'food', name:'Marie Guimar', sub:'泰式料理 · Wyndham 28F 景觀餐廳',
+    coords:[13.7220,100.5590], rating:'4.5',
+    desc:'位於 Wyndham Bangkok 28 樓，俯瞰 Benjakitti 公園，供應精緻傳統泰菜，適合 JNJ Session 後的慶功晚宴。',
+    tags:['泰式料理','景觀','$$$'],
+    gmap:'https://www.google.com/maps?q=13.7220,100.5590' },
+  { zone:'c', type:'food', name:'Food Republic @ The Parq', sub:'現代美食廣場 · 4.4 ★',
+    coords:[13.7229,100.5590], rating:'4.4',
+    desc:'FYI Center 旁 The Parq 綠建築內的精品食堂，聚集多個知名餐廳品牌，採光好、環境舒適，午餐休息首選。',
+    tags:['美食廣場','多元料理','$$'],
+    gmap:'https://www.google.com/maps?q=13.7229,100.5590' },
+  { zone:'c', type:'food', name:'Dean & DeLuca FYI Center', sub:'精品咖啡 · 現場即食',
+    coords:[13.7247,100.5603],
+    desc:'FYI Center 一樓，知名美式精品咖啡兼輕食，面試前補充咖啡因、活動中場休息的最方便選擇。',
+    tags:['咖啡','輕食','$$'],
+    gmap:'https://www.google.com/maps?q=13.7247,100.5603' },
+
+  /* ===== ZONE C · 景點 ===== */
+  { zone:'c', type:'spot', name:'Benchasiri Park（Queen\'s Park）', sub:'雕塑公園 · 免費',
+    coords:[13.7272,100.5699],
+    desc:'1992 年為紀念詩麗吉王后 60 歲生日而建，緊鄰 EmQuartier，12 件戶外雕塑、噴水池，每天三次燈光水舞秀。',
+    tags:['公園','文化','免費'],
+    gmap:'https://www.google.com/maps?q=13.7272,100.5699' },
+  { zone:'c', type:'spot', name:'Khlong Toei Market', sub:'曼谷最大傳統市場',
+    coords:[13.7093,100.5558],
+    desc:'百年在地傳統市場，匯聚生鮮、香料、街邊小吃，早晨最熱鬧，是感受曼谷市井生活的最佳地點。MRT 一站可達。',
+    tags:['傳統市場','在地文化','免費'],
+    gmap:'https://www.google.com/maps?q=13.7093,100.5558' },
+  { zone:'c', type:'spot', name:'EmQuartier', sub:'奢華購物 · 頂樓空中花園',
+    coords:[13.7318,100.5694],
+    desc:'帶有植物瀑布的旋轉型商場，高端品牌、米其林餐廳進駐，頂樓空中花園是曼谷打卡熱點，距 MRT 步行可達。',
+    tags:['購物','美食','景觀'],
+    gmap:'https://www.google.com/maps?q=13.7318,100.5694' },
+];
+
+/* ================================================
+   LEAFLET MAP (File B) — variable renamed to foodMap
+   ================================================ */
+const foodMap = L.map('food-map', { scrollWheelZoom:false })
+             .setView([13.705, 100.595], 13);
+
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains:'abcd', maxZoom:19
+}).addTo(foodMap);
+
+foodMap.on('focus', () => foodMap.scrollWheelZoom.enable());
+foodMap.on('blur',  () => foodMap.scrollWheelZoom.disable());
+
+// Anchor markers (base POIs)
+const ANCHOR_COLORS = { a:'#f5c451', b:'#4ade80', c:'#60a5fa' };
+
+ANCHORS.forEach(a => {
+  const icon = L.divIcon({
+    className:'',
+    html:`<div class="m-icon m-anchor zone-${a.zone}" style="background:${ANCHOR_COLORS[a.zone]}22;--mc:${ANCHOR_COLORS[a.zone]}">${a.emoji}</div>`,
+    iconSize:[32,32], iconAnchor:[16,16]
+  });
+  L.marker(a.coords, { icon, zIndexOffset:1000 })
+   .addTo(foodMap)
+   .bindPopup(`
+     <div class="pop-cat" style="color:${ANCHOR_COLORS[a.zone]}">📍 定點基地</div>
+     <div class="pop-title">${a.name}</div>
+     <div class="pop-sub">${a.sub}</div>
+     <a class="gmap-btn" href="${a.gmap}" target="_blank" rel="noopener">📍 在 Google Maps 開啟</a>
+   `);
+});
+
+// Place markers (food & spot), grouped for filtering
+const layerAll   = L.layerGroup().addTo(foodMap);
+const layerFood  = L.layerGroup();
+const layerSpot  = L.layerGroup();
+const layerZoneA = L.layerGroup();
+const layerZoneB = L.layerGroup();
+const layerZoneC = L.layerGroup();
+
+const markerInstances = [];
+
+PLACES.forEach((p, idx) => {
+  const isFood = p.type === 'food';
+  const color  = isFood ? '#fb923c' : '#c084fc';
+  const emoji  = isFood ? '🍽️' : '⭐';
+  const icon = L.divIcon({
+    className:'',
+    html:`<div class="m-icon m-${p.type}" style="border-color:${color}">${emoji}</div>`,
+    iconSize:[32,32], iconAnchor:[16,16]
+  });
+
+  const ratingHtml = p.rating
+    ? `<span class="pop-tag rating">${isFood ? '⭐' : '🏅'} ${p.rating}</span>` : '';
+  const tagsHtml = (p.tags||[]).map(t=>`<span class="pop-tag">${t}</span>`).join('');
+  const btnCls = isFood ? '' : ' spot';
+
+  const marker = L.marker(p.coords, { icon })
+    .bindPopup(`
+      <div class="pop-cat" style="color:${color}">${isFood?'🍽️ 美食':'⭐ 景點'}</div>
+      <div class="pop-title">${p.name}</div>
+      <div class="pop-sub">${p.sub||''}</div>
+      <div class="pop-desc">${p.desc}</div>
+      <div class="pop-meta">${ratingHtml}${tagsHtml}</div>
+      <a class="gmap-btn${btnCls}" href="${p.gmap}" target="_blank" rel="noopener">📍 在 Google Maps 開啟</a>
+    `);
+
+  layerAll.addLayer(marker);
+  if (isFood) layerFood.addLayer(marker);
+  else        layerSpot.addLayer(marker);
+  if (p.zone==='a') layerZoneA.addLayer(marker);
+  if (p.zone==='b') layerZoneB.addLayer(marker);
+  if (p.zone==='c') layerZoneC.addLayer(marker);
+
+  markerInstances.push({ idx, zone:p.zone, type:p.type, marker });
+});
+
+// Fit map bounds
+foodMap.fitBounds([
+  [13.6600, 100.5450],
+  [13.7550, 100.6200]
+], { padding:[40,40] });
+
+/* ================================================
+   FILTER LOGIC
+   ================================================ */
+let activeType = 'all';
+let activeZone = 'all';
+
+function filterMap(key, btn) {
+  // Determine category vs zone
+  const isType = ['all','food','spot'].includes(key);
+  const isZone = ['a','b','c'].includes(key);
+
+  if (isType) {
+    activeType = key;
+    document.querySelectorAll('.food-wrap .fbtn.f-all,.food-wrap .fbtn.f-food,.food-wrap .fbtn.f-spot')
+      .forEach(b => b.classList.remove('active'));
+  }
+  if (isZone) {
+    activeZone = (activeZone === key) ? 'all' : key; // toggle
+    document.querySelectorAll('.food-wrap .fbtn.f-a,.food-wrap .fbtn.f-b,.food-wrap .fbtn.f-c')
+      .forEach(b => b.classList.remove('active'));
+  }
+  btn.classList.toggle('active', true);
+  if (isZone && activeZone === 'all') btn.classList.remove('active');
+
+  // Remove all
+  [layerAll, layerFood, layerSpot, layerZoneA, layerZoneB, layerZoneC]
+    .forEach(l => foodMap.removeLayer(l));
+
+  // Add correct layers
+  if (activeZone === 'all') {
+    if (activeType === 'all')  layerAll.addTo(foodMap);
+    if (activeType === 'food') layerFood.addTo(foodMap);
+    if (activeType === 'spot') layerSpot.addTo(foodMap);
+  } else {
+    const zoneLayer = { a:layerZoneA, b:layerZoneB, c:layerZoneC }[activeZone];
+    // Filter within zone by type
+    markerInstances.forEach(({ zone, type, marker }) => {
+      if (zone !== activeZone) return;
+      if (activeType !== 'all' && type !== activeType) return;
+      foodMap.addLayer(marker);
+    });
+    // Fly to zone
+    const zoneCenters = {
+      a:[13.7390,100.5590], b:[13.6720,100.6095], c:[13.7250,100.5640]
+    };
+    foodMap.flyTo(zoneCenters[activeZone], 15, { duration:0.9 });
+  }
+
+  // Card visibility
+  ['a','b','c'].forEach(z => {
+    const el = document.getElementById('zone-'+z);
+    if (!el) return;
+    el.style.display = (activeZone==='all' || activeZone===z) ? '' : 'none';
+  });
+  document.querySelectorAll('.food-wrap .card').forEach(c => {
+    const t = c.dataset.type;
+    c.style.display = (activeType==='all' || t===activeType) ? '' : 'none';
+  });
+}
+
+/* ================================================
+   BUILD CARDS
+   ================================================ */
+function buildCards() {
+  const containers = { a:'cards-a', b:'cards-b', c:'cards-c' };
+  Object.keys(containers).forEach(zone => {
+    const el = document.getElementById(containers[zone]);
+    PLACES.filter(p => p.zone===zone).forEach(p => {
+      const isFood = p.type==='food';
+      const color  = isFood ? 'var(--food)' : 'var(--spot)';
+      const ratingHtml = p.rating
+        ? `<span class="star">${isFood?'⭐':'🏅'} ${p.rating}</span>` : '';
+      const tagsHtml = (p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('');
+      const card = document.createElement('a');
+      card.className = `card ${p.type}`;
+      card.dataset.type = p.type;
+      card.href = p.gmap;
+      card.target = '_blank';
+      card.rel = 'noopener';
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="card-title">${p.name}</span>
+          <span class="card-badge ${p.type}">${isFood?'🍽️ 美食':'⭐ 景點'}</span>
+        </div>
+        <div class="card-type">${p.sub||''}</div>
+        <div class="card-desc">${p.desc}</div>
+        <div class="card-foot">
+          ${ratingHtml}${tagsHtml}
+          <span class="gmap-link ${p.type==='spot'?'spot':''}" style="margin-left:auto">📍 Google Maps →</span>
+        </div>
+      `;
+      // Click on card also flies map to location
+      card.addEventListener('mouseenter', () => {
+        foodMap.flyTo(p.coords, 16, { duration:0.8 });
+      });
+      el.appendChild(card);
+    });
+  });
+}
+
+buildCards();
+</script>
+
+</body>
+</html>
