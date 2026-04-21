@@ -662,6 +662,33 @@
     color: var(--isu-blue);
   }
 
+  /* ========== ANSWER LINKS ========== */
+  .qa-link {
+    color: var(--isu-blue);
+    text-decoration: underline;
+    text-decoration-color: rgba(0, 56, 147, 0.35);
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    font-weight: 500;
+    word-break: break-all;
+    transition: all 0.2s ease;
+  }
+  .qa-link:hover {
+    color: var(--isu-gold);
+    text-decoration-color: var(--isu-gold);
+    background: rgba(201, 162, 39, 0.08);
+    border-radius: 3px;
+  }
+  .qa-link::after {
+    content: "↗";
+    font-size: 0.75em;
+    margin-left: 0.15em;
+    opacity: 0.6;
+    display: inline-block;
+    vertical-align: super;
+  }
+  .qa-link[href^="mailto:"]::after { content: "✉"; }
+
   .highlight {
     background: rgba(201, 162, 39, 0.12);
     border-left: 3px solid var(--isu-gold);
@@ -1507,7 +1534,7 @@ function renderQA() {
       card.dataset.num = num;
       card.style.setProperty('--cat-color', info.color);
 
-      let answerHtml = item.a[currentLang].replace(/`([^`]+)`/g, '<code>$1</code>');
+      let answerHtml = linkify(item.a[currentLang]);
       const importantHtml = item.important
         ? `<div class="highlight">${uiStrings.importantNotice[currentLang]}</div>` : '';
 
@@ -1597,17 +1624,95 @@ function createParticles() {
   }
 }
 
+// ========== LINKIFY (answer text → clickable links) ==========
+// Handles four patterns, in order:
+//   1. markdown `code` → <code>
+//   2. markdown [text](url) → <a>
+//   3. bare URLs http(s)://...
+//   4. email addresses
+// HTML-escapes everything that's not a matched link to prevent injection.
+function linkify(text) {
+  if (!text) return '';
+
+  // Step 1: escape raw HTML
+  const esc = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+  // Step 2: markdown code (backticks)
+  let out = esc.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Step 3: markdown links [text](url) — run FIRST so bare-URL step doesn't double-match
+  out = out.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer" class="qa-link">$1</a>'
+  );
+
+  // Step 4: bare URLs not already wrapped — use placeholder trick to skip already-linked ones
+  const PLACEHOLDER = '\u0001';
+  const anchors = [];
+  out = out.replace(/<a\s[^>]*>.*?<\/a>/g, m => {
+    anchors.push(m);
+    return PLACEHOLDER + (anchors.length - 1) + PLACEHOLDER;
+  });
+  out = out.replace(
+    /(https?:\/\/[^\s<]+[^\s<.,;:!?)'"])/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer" class="qa-link">$1</a>'
+  );
+  // Step 5: email addresses
+  out = out.replace(
+    /([\w.+-]+@[\w-]+\.[\w.-]+)/g,
+    '<a href="mailto:$1" class="qa-link">$1</a>'
+  );
+  // Restore protected anchors
+  out = out.replace(new RegExp(PLACEHOLDER + '(\\d+)' + PLACEHOLDER, 'g'),
+    (_, i) => anchors[+i]);
+
+  return out;
+}
+
 // ========== COUNTER ANIMATION ==========
+// rAF gives smooth animation when tab is visible; a setTimeout fallback
+// guarantees the final value appears even if the tab is backgrounded
+// (rAF is paused in hidden tabs, which could otherwise leave "0").
 function animateCounters() {
+  const DURATION = 1000; // ms
   document.querySelectorAll('.stat-num').forEach(el => {
-    const target = parseInt(el.dataset.target);
-    let current = 0;
-    const step = target / 60;
-    const timer = setInterval(() => {
-      current = Math.min(current + step, target);
-      el.textContent = Math.floor(current);
-      if (current >= target) clearInterval(timer);
-    }, 16);
+    if (el.dataset.animated === 'done') return;
+    el.dataset.animated = 'running';
+
+    const target = parseInt(el.dataset.target) || 0;
+    el.textContent = target;   // show final value immediately as fallback
+
+    const start = performance.now();
+    function tick(now) {
+      if (el.dataset.animated === 'done') return;
+      const t = Math.min((now - start) / DURATION, 1);
+      const eased = 1 - (1 - t) * (1 - t);
+      el.textContent = Math.floor(eased * target);
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        el.textContent = target;
+        el.dataset.animated = 'done';
+      }
+    }
+    // Reset display to 0 only if we expect rAF to animate (tab is visible)
+    if (document.visibilityState === 'visible') {
+      el.textContent = 0;
+      requestAnimationFrame(tick);
+      // Safety net: force-finish after 2× duration
+      setTimeout(() => {
+        if (el.dataset.animated !== 'done') {
+          el.textContent = target;
+          el.dataset.animated = 'done';
+        }
+      }, DURATION * 2);
+    } else {
+      el.dataset.animated = 'done';
+    }
   });
 }
 
@@ -1737,28 +1842,20 @@ async function init() {
     setSyncStatus('warn', '⚠ 無法連線 Google Sheet，顯示快取版本');
   }
 
-  // Sync hero "精選問題" counter with actual sheet count (no competing animation)
+  // Sync hero "精選問題" counter target with actual sheet count
   const stat1 = document.querySelector('.stat-num[data-target]');
-  if (stat1) {
-    stat1.dataset.target = qaData.length;
-    stat1.textContent   = qaData.length;
-  }
+  if (stat1) stat1.dataset.target = qaData.length;
 
   renderCategories();
   renderQA();
   createParticles();
   filterCards();
+
+  // Drive counter animation once, now that data-target is correct.
+  // Delay so hero transition is visible first.
+  setTimeout(animateCounters, 400);
 }
 init();
-
-// Animate counters when hero visible
-const heroObserver = new IntersectionObserver((entries) => {
-  if (entries[0].isIntersecting) {
-    setTimeout(animateCounters, 600);
-    heroObserver.disconnect();
-  }
-});
-heroObserver.observe(document.querySelector('.hero-content'));
 
 // Hero background parallax
 window.addEventListener('scroll', () => {
