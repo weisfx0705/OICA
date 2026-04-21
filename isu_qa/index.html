@@ -1737,9 +1737,12 @@ async function init() {
     setSyncStatus('warn', '⚠ 無法連線 Google Sheet，顯示快取版本');
   }
 
-  // Update hero stat target to reflect actual count
+  // Sync hero "精選問題" counter with actual sheet count (no competing animation)
   const stat1 = document.querySelector('.stat-num[data-target]');
-  if (stat1) stat1.dataset.target = qaData.length;
+  if (stat1) {
+    stat1.dataset.target = qaData.length;
+    stat1.textContent   = qaData.length;
+  }
 
   renderCategories();
   renderQA();
