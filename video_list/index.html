@@ -1,1403 +1,1672 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>影片製作成本結構報告 — 義守大學媒體行銷組</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&amp;family=Noto+Sans+TC:wght@300;400;500;700&amp;family=Playfair+Display:wght@700;900&amp;display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #1a1814;
-    --paper: #faf8f3;
-    --cream: #f3efe6;
-    --amber: #c8882a;
-    --amber-light: #e8a84a;
-    --amber-pale: #fdf3e0;
-    --slate: #2c2c2e;
-    --muted: #6b6560;
-    --border: #d8d0c4;
-    --red: #b84a3a;
-    --green: #3a7a5a;
-    --blue: #2a5c8a;
-    --type1: #3a7a5a;
-    --type2: #2a5c8a;
-    --type3: #8a6a2a;
-    --type4: #8a2a4a;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Noto Sans TC', sans-serif;
-    font-weight: 300;
-    line-height: 1.9;
-    font-size: 17px;
-  }
-
-  /* ── PRINT BAND ── */
-  .print-band {
-    background: var(--ink);
-    color: var(--paper);
-    text-align: center;
-    padding: 8px 20px;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    font-weight: 400;
-  }
-
-  /* ── COVER ── */
-  .cover {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 80px 60px 60px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .cover::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background:
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 39px,
-        rgba(255,255,255,0.03) 39px,
-        rgba(255,255,255,0.03) 40px
-      );
-    pointer-events: none;
-  }
-
-  .cover-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    position: relative;
-  }
-
-  .cover-label {
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    color: var(--amber-light);
-    font-weight: 500;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-  }
-
-  .cover-rule {
-    width: 60px;
-    height: 3px;
-    background: var(--amber);
-    margin-bottom: 32px;
-  }
-
-  .cover-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 52px;
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 16px;
-    letter-spacing: 0.02em;
-  }
-
-  .cover-sub {
-    font-size: 22px;
-    color: rgba(255,255,255,0.65);
-    margin-bottom: 48px;
-    font-weight: 300;
-  }
-
-  .cover-meta {
-    display: flex;
-    gap: 48px;
-    padding-top: 40px;
-    border-top: 1px solid rgba(255,255,255,0.15);
-  }
-
-  .cover-meta-item label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    color: var(--amber-light);
-    margin-bottom: 4px;
-    text-transform: uppercase;
-  }
-
-  .cover-meta-item span {
-    font-size: 14px;
-    color: rgba(255,255,255,0.8);
-  }
-
-  /* ── EXECUTIVE SUMMARY ── */
-  .exec-summary {
-    background: var(--amber);
-    color: var(--ink);
-    padding: 40px 60px;
-  }
-
-  .exec-summary-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 40px;
-    align-items: start;
-  }
-
-  .exec-label {
-    font-size: 11px;
-    letter-spacing: 0.25em;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding-top: 4px;
-  }
-
-  .exec-text {
-    font-size: 18px;
-    line-height: 1.9;
-    font-weight: 400;
-  }
-
-  /* ── MAIN CONTENT ── */
-  .content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 60px;
-  }
-
-  /* ── SECTION ── */
-  .section {
-    margin-bottom: 72px;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: flex-start;
-    gap: 24px;
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 2px solid var(--ink);
-  }
-
-  .section-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 64px;
-    font-weight: 700;
-    line-height: 1;
-    color: var(--border);
-    min-width: 64px;
-    margin-top: -8px;
-  }
-
-  .section-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 1.3;
-    margin-bottom: 6px;
-  }
-
-  .section-desc {
-    font-size: 13px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  /* ── CALLOUT BOX ── */
-  .callout {
-    border-left: 4px solid var(--amber);
-    background: var(--amber-pale);
-    padding: 20px 24px;
-    margin: 24px 0;
-    border-radius: 0 4px 4px 0;
-  }
-
-  .callout strong {
-    color: var(--amber);
-    font-weight: 700;
-  }
-
-  /* ── VIDEO TYPE CARDS ── */
-  .type-cards {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 32px;
-    margin-top: 16px;
-  }
-
-  .type-card {
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .type-card-header {
-    padding: 24px 28px;
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 20px;
-    align-items: center;
-  }
-
-  .type-badge {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: white;
-    flex-shrink: 0;
-  }
-
-  .type-card.t1 .type-badge { background: var(--type1); }
-  .type-card.t2 .type-badge { background: var(--type2); }
-  .type-card.t3 .type-badge { background: var(--type3); }
-  .type-card.t4 .type-badge { background: var(--type4); }
-
-  .type-card.t1 .type-card-header { background: #f0f7f4; border-left: 4px solid var(--type1); }
-  .type-card.t2 .type-card-header { background: #f0f4f9; border-left: 4px solid var(--type2); }
-  .type-card.t3 .type-card-header { background: #fcf7ec; border-left: 4px solid var(--type3); }
-  .type-card.t4 .type-card-header { background: #f9f0f3; border-left: 4px solid var(--type4); }
-
-  .type-title {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 2px;
-  }
-
-  .type-subtitle {
-    font-size: 13px;
-    color: var(--muted);
-  }
-
-  .type-budget-label {
-    font-size: 10px;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-align: right;
-    margin-bottom: 2px;
-    text-transform: uppercase;
-  }
-
-  .type-budget {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 28px;
-    font-weight: 700;
-    text-align: right;
-  }
-
-  .type-card.t1 .type-budget { color: var(--type1); }
-  .type-card.t2 .type-budget { color: var(--type2); }
-  .type-card.t3 .type-budget { color: var(--type3); }
-  .type-card.t4 .type-budget { color: var(--type4); }
-
-  .type-card-body {
-    padding: 24px 28px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  .type-card-body h4 {
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 10px;
-    font-weight: 700;
-  }
-
-  .type-card-body ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .type-card-body ul li {
-    padding: 4px 0;
-    font-size: 14px;
-    padding-left: 16px;
-    position: relative;
-  }
-
-  .type-card-body ul li::before {
-    content: '—';
-    position: absolute;
-    left: 0;
-    color: var(--border);
-  }
-
-  .type-card-footer {
-    background: var(--cream);
-    padding: 16px 28px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    border-top: 1px solid var(--border);
-  }
-
-  .type-card-footer.four-stats {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .stat-block {
-    text-align: center;
-  }
-
-  .stat-block .stat-val {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 28px;
-    font-weight: 700;
-    display: block;
-    margin-bottom: 2px;
-  }
-
-  .type-card.t1 .stat-val { color: var(--type1); }
-  .type-card.t2 .stat-val { color: var(--type2); }
-  .type-card.t3 .stat-val { color: var(--type3); }
-  .type-card.t4 .stat-val { color: var(--type4); }
-
-  .stat-block .stat-label {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
-
-  /* ── EXAMPLE VIDEOS ── */
-  .video-examples {
-    padding: 16px 28px 20px;
-    border-top: 1px solid var(--border);
-    background: #fefefe;
-  }
-
-  .video-examples h4 {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 12px;
-    font-weight: 700;
-  }
-
-  .video-tags {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-  }
-
-  .video-tag {
-    display: flex;
-    flex-direction: column;
-    background: var(--ink);
-    border-radius: 3px;
-    overflow: hidden;
-    text-decoration: none;
-    transition: transform 0.15s, box-shadow 0.15s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  }
-
-  .video-tag:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-  }
-
-  .video-thumb {
-    width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    display: block;
-    background: #222;
-  }
-
-  .video-tag-label {
-    padding: 7px 10px;
-    font-size: 12px;
-    color: rgba(255,255,255,0.85);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
-  }
-
-  .video-tag-label::before {
-    content: '▶';
-    font-size: 9px;
-    color: var(--amber-light);
-    flex-shrink: 0;
-  }
-
-  /* ── ARGUMENT BLOCK ── */
-  .argument-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-top: 24px;
-  }
-
-  .argument-card {
-    padding: 24px;
-    border: 1px solid var(--border);
-    position: relative;
-    background: white;
-  }
-
-  .argument-card.highlight {
-    border-color: var(--amber);
-    background: var(--amber-pale);
-  }
-
-  .argument-card h3 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 12px;
-  }
-
-  .argument-card p {
-    font-size: 14px;
-    line-height: 1.8;
-    color: var(--slate);
-  }
-
-  .argument-icon {
-    font-size: 24px;
-    margin-bottom: 12px;
-  }
-
-  /* ── COST TABLE ── */
-  .cost-table-wrap {
-    overflow-x: auto;
-    margin-top: 24px;
-    border: 1px solid var(--border);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 16px;
-  }
-
-  thead tr {
-    background: var(--ink);
-    color: var(--paper);
-  }
-
-  thead th {
-    padding: 14px 16px;
-    text-align: left;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
-  tbody tr:nth-child(even) {
-    background: var(--cream);
-  }
-
-  tbody tr:hover {
-    background: var(--amber-pale);
-  }
-
-  tbody td {
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-
-  tbody td:first-child {
-    font-weight: 500;
-  }
-
-  .tag-t1 { color: var(--type1); font-weight: 700; }
-  .tag-t2 { color: var(--type2); font-weight: 700; }
-  .tag-t3 { color: var(--type3); font-weight: 700; }
-  .tag-t4 { color: var(--type4); font-weight: 700; }
-
-  /* ── INDUSTRY BENCHMARK ── */
-  .benchmark-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 24px;
-  }
-
-  .benchmark-card {
-    border: 1px solid var(--border);
-    padding: 20px;
-    background: white;
-    text-align: center;
-  }
-
-  .benchmark-val {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 34px;
-    font-weight: 700;
-    color: var(--amber);
-    display: block;
-    margin-bottom: 6px;
-  }
-
-  .benchmark-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  /* ── RECOMMENDATION ── */
-  .recommendation {
-    background: var(--ink);
-    color: var(--paper);
-    padding: 48px 60px;
-    margin-top: 80px;
-  }
-
-  .recommendation-inner {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .recommendation h2 {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 32px;
-  }
-
-  .rec-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 24px;
-    margin-bottom: 40px;
-  }
-
-  .rec-item {
-    border-top: 2px solid var(--amber);
-    padding-top: 16px;
-  }
-
-  .rec-item h4 {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: var(--amber-light);
-  }
-
-  .rec-item p {
-    font-size: 13px;
-    line-height: 1.8;
-    color: rgba(255,255,255,0.7);
-  }
-
-  .conclusion-box {
-    border: 1px solid rgba(255,255,255,0.2);
-    padding: 24px 28px;
-    border-radius: 2px;
-  }
-
-  .conclusion-box p {
-    font-size: 15px;
-    line-height: 1.9;
-    color: rgba(255,255,255,0.85);
-  }
-
-  /* ── FOOTER ── */
-  .footer {
-    background: var(--cream);
-    padding: 24px 60px;
-    border-top: 1px solid var(--border);
-  }
-
-  .footer-inner {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .footer-inner p {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  /* ── DIVIDER ── */
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin: 40px 0;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-  }
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ── HIGHLIGHT BAND ── */
-  .highlight-band {
-    background: linear-gradient(135deg, #1a2a3a 0%, #2a3a4a 100%);
-    color: white;
-    padding: 28px 32px;
-    margin: 24px 0;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .highlight-band .icon {
-    font-size: 36px;
-    flex-shrink: 0;
-  }
-
-  .highlight-band p {
-    font-size: 15px;
-    line-height: 1.8;
-    color: rgba(255,255,255,0.85);
-  }
-
-  .highlight-band strong {
-    color: var(--amber-light);
-  }
-
-  /* ── SOURCE NOTE ── */
-  .source-note {
-    font-size: 11px;
-    color: var(--muted);
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-    font-style: italic;
-  }
-
-  @media print {
-    .print-band { display: none; }
-    .cover { padding: 50px 40px 40px; }
-    .content { padding: 40px; }
-  }
-
-  /* ══════════════════════════════
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>影片製作成本結構報告 — 義守大學媒體行銷組</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&amp;family=Noto+Sans+TC:wght@300;400;500;700&amp;family=Playfair+Display:wght@700;900&amp;display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1814;
+      --paper: #faf8f3;
+      --cream: #f3efe6;
+      --amber: #c8882a;
+      --amber-light: #e8a84a;
+      --amber-pale: #fdf3e0;
+      --slate: #2c2c2e;
+      --muted: #6b6560;
+      --border: #d8d0c4;
+      --red: #b84a3a;
+      --green: #3a7a5a;
+      --blue: #2a5c8a;
+      --type1: #3a7a5a;
+      --type2: #2a5c8a;
+      --type3: #8a6a2a;
+      --type4: #8a2a4a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 300;
+      line-height: 1.9;
+      font-size: 17px;
+    }
+
+    /* ── PRINT BAND ── */
+    .print-band {
+      background: var(--ink);
+      color: var(--paper);
+      text-align: center;
+      padding: 8px 20px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      font-weight: 400;
+    }
+
+    /* ── COVER ── */
+    .cover {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 80px 60px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        repeating-linear-gradient(0deg,
+          transparent,
+          transparent 39px,
+          rgba(255, 255, 255, 0.03) 39px,
+          rgba(255, 255, 255, 0.03) 40px);
+      pointer-events: none;
+    }
+
+    .cover-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .cover-label {
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      color: var(--amber-light);
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .cover-rule {
+      width: 60px;
+      height: 3px;
+      background: var(--amber);
+      margin-bottom: 32px;
+    }
+
+    .cover-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 52px;
+      font-weight: 900;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+    }
+
+    .cover-sub {
+      font-size: 22px;
+      color: rgba(255, 255, 255, 0.65);
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 48px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .cover-meta-item label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--amber-light);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .cover-meta-item span {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* ── EXECUTIVE SUMMARY ── */
+    .exec-summary {
+      background: var(--amber);
+      color: var(--ink);
+      padding: 40px 60px;
+    }
+
+    .exec-summary-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .exec-label {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding-top: 4px;
+    }
+
+    .exec-text {
+      font-size: 18px;
+      line-height: 1.9;
+      font-weight: 400;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      margin-bottom: 72px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .section-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--border);
+      min-width: 64px;
+      margin-top: -8px;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── CALLOUT BOX ── */
+    .callout {
+      border-left: 4px solid var(--amber);
+      background: var(--amber-pale);
+      padding: 20px 24px;
+      margin: 24px 0;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .callout strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    /* ── VIDEO TYPE CARDS ── */
+    .type-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      margin-top: 16px;
+    }
+
+    .type-card {
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .type-card-header {
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .type-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .type-card.t1 .type-badge {
+      background: var(--type1);
+    }
+
+    .type-card.t2 .type-badge {
+      background: var(--type2);
+    }
+
+    .type-card.t3 .type-badge {
+      background: var(--type3);
+    }
+
+    .type-card.t4 .type-badge {
+      background: var(--type4);
+    }
+
+    .type-card.t1 .type-card-header {
+      background: #f0f7f4;
+      border-left: 4px solid var(--type1);
+    }
+
+    .type-card.t2 .type-card-header {
+      background: #f0f4f9;
+      border-left: 4px solid var(--type2);
+    }
+
+    .type-card.t3 .type-card-header {
+      background: #fcf7ec;
+      border-left: 4px solid var(--type3);
+    }
+
+    .type-card.t4 .type-card-header {
+      background: #f9f0f3;
+      border-left: 4px solid var(--type4);
+    }
+
+    .type-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .type-subtitle {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .type-budget-label {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-align: right;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+    }
+
+    .type-budget {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 28px;
+      font-weight: 700;
+      text-align: right;
+    }
+
+    .type-card.t1 .type-budget {
+      color: var(--type1);
+    }
+
+    .type-card.t2 .type-budget {
+      color: var(--type2);
+    }
+
+    .type-card.t3 .type-budget {
+      color: var(--type3);
+    }
+
+    .type-card.t4 .type-budget {
+      color: var(--type4);
+    }
+
+    .type-card-body {
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .type-card-body h4 {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .type-card-body ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .type-card-body ul li {
+      padding: 4px 0;
+      font-size: 14px;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .type-card-body ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--border);
+    }
+
+    .type-card-footer {
+      background: var(--cream);
+      padding: 16px 28px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .type-card-footer.four-stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-block {
+      text-align: center;
+    }
+
+    .stat-block .stat-val {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 28px;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .type-card.t1 .stat-val {
+      color: var(--type1);
+    }
+
+    .type-card.t2 .stat-val {
+      color: var(--type2);
+    }
+
+    .type-card.t3 .stat-val {
+      color: var(--type3);
+    }
+
+    .type-card.t4 .stat-val {
+      color: var(--type4);
+    }
+
+    .stat-block .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── EXAMPLE VIDEOS ── */
+    .video-examples {
+      padding: 16px 28px 20px;
+      border-top: 1px solid var(--border);
+      background: #fefefe;
+    }
+
+    .video-examples h4 {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+
+    .video-tags {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+    }
+
+    .video-tag {
+      display: flex;
+      flex-direction: column;
+      background: var(--ink);
+      border-radius: 3px;
+      overflow: hidden;
+      text-decoration: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .video-tag:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .video-thumb {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      background: #222;
+    }
+
+    .video-tag-label {
+      padding: 7px 10px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.85);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .video-tag-label::before {
+      content: '▶';
+      font-size: 9px;
+      color: var(--amber-light);
+      flex-shrink: 0;
+    }
+
+    /* ── ARGUMENT BLOCK ── */
+    .argument-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .argument-card {
+      padding: 24px;
+      border: 1px solid var(--border);
+      position: relative;
+      background: white;
+    }
+
+    .argument-card.highlight {
+      border-color: var(--amber);
+      background: var(--amber-pale);
+    }
+
+    .argument-card h3 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .argument-card p {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--slate);
+    }
+
+    .argument-icon {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    /* ── COST TABLE ── */
+    .cost-table-wrap {
+      overflow-x: auto;
+      margin-top: 24px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px;
+    }
+
+    thead tr {
+      background: var(--ink);
+      color: var(--paper);
+    }
+
+    thead th {
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--cream);
+    }
+
+    tbody tr:hover {
+      background: var(--amber-pale);
+    }
+
+    tbody td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tbody td:first-child {
+      font-weight: 500;
+    }
+
+    .tag-t1 {
+      color: var(--type1);
+      font-weight: 700;
+    }
+
+    .tag-t2 {
+      color: var(--type2);
+      font-weight: 700;
+    }
+
+    .tag-t3 {
+      color: var(--type3);
+      font-weight: 700;
+    }
+
+    .tag-t4 {
+      color: var(--type4);
+      font-weight: 700;
+    }
+
+    /* ── INDUSTRY BENCHMARK ── */
+    .benchmark-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .benchmark-card {
+      border: 1px solid var(--border);
+      padding: 20px;
+      background: white;
+      text-align: center;
+    }
+
+    .benchmark-val {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--amber);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .benchmark-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── RECOMMENDATION ── */
+    .recommendation {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 48px 60px;
+      margin-top: 80px;
+    }
+
+    .recommendation-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .recommendation h2 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 32px;
+    }
+
+    .rec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .rec-item {
+      border-top: 2px solid var(--amber);
+      padding-top: 16px;
+    }
+
+    .rec-item h4 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--amber-light);
+    }
+
+    .rec-item p {
+      font-size: 13px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .conclusion-box {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 24px 28px;
+      border-radius: 2px;
+    }
+
+    .conclusion-box p {
+      font-size: 15px;
+      line-height: 1.9;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--cream);
+      padding: 24px 60px;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-inner p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 40px 0;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── HIGHLIGHT BAND ── */
+    .highlight-band {
+      background: linear-gradient(135deg, #1a2a3a 0%, #2a3a4a 100%);
+      color: white;
+      padding: 28px 32px;
+      margin: 24px 0;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .highlight-band .icon {
+      font-size: 36px;
+      flex-shrink: 0;
+    }
+
+    .highlight-band p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .highlight-band strong {
+      color: var(--amber-light);
+    }
+
+    /* ── SOURCE NOTE ── */
+    .source-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-style: italic;
+    }
+
+    @media print {
+      .print-band {
+        display: none;
+      }
+
+      .cover {
+        padding: 50px 40px 40px;
+      }
+
+      .content {
+        padding: 40px;
+      }
+    }
+
+    /* ══════════════════════════════
      響應式設計 — 平板（768px 以下）
   ══════════════════════════════ */
-  @media (max-width: 768px) {
-    body { font-size: 15px; }
+    @media (max-width: 768px) {
+      body {
+        font-size: 15px;
+      }
 
-    /* 封面 */
-    .cover { padding: 48px 24px 36px; }
-    .cover-title { font-size: 34px; }
-    .cover-sub { font-size: 16px; margin-bottom: 32px; }
-    .cover-meta {
-      flex-wrap: wrap;
-      gap: 20px 32px;
+      /* 封面 */
+      .cover {
+        padding: 48px 24px 36px;
+      }
+
+      .cover-title {
+        font-size: 34px;
+      }
+
+      .cover-sub {
+        font-size: 16px;
+        margin-bottom: 32px;
+      }
+
+      .cover-meta {
+        flex-wrap: wrap;
+        gap: 20px 32px;
+      }
+
+      /* 摘要 */
+      .exec-summary {
+        padding: 28px 24px;
+      }
+
+      .exec-summary-inner {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .exec-label {
+        font-size: 13px;
+      }
+
+      .exec-text {
+        font-size: 15px;
+      }
+
+      /* 主內容 */
+      .content {
+        padding: 32px 20px;
+      }
+
+      .section {
+        margin-bottom: 48px;
+      }
+
+      /* 章節標題 */
+      .section-num {
+        font-size: 48px;
+        min-width: 48px;
+      }
+
+      .section-title {
+        font-size: 22px;
+      }
+
+      .section-header {
+        gap: 14px;
+        padding-bottom: 16px;
+      }
+
+      /* 類型卡片 header */
+      .type-card-header {
+        grid-template-columns: auto 1fr;
+        gap: 14px;
+        padding: 16px 18px;
+      }
+
+      /* budget 區塊移到第二列 */
+      .type-card-header>div:last-child {
+        grid-column: 1 / -1;
+        text-align: left;
+      }
+
+      .type-budget-label {
+        text-align: left;
+      }
+
+      .type-budget {
+        text-align: left;
+        font-size: 22px;
+      }
+
+      /* 類型卡片 body */
+      .type-card-body {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 16px 18px;
+      }
+
+      .type-card-body ul li {
+        font-size: 14px;
+      }
+
+      /* 類型卡片 footer stats */
+      .type-card-footer {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 12px 18px;
+        gap: 8px;
+      }
+
+      .type-card-footer.four-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat-block .stat-val {
+        font-size: 20px;
+      }
+
+      .stat-block .stat-label {
+        font-size: 10px;
+      }
+
+      /* 費用拆解列：允許換行，縮短 padding */
+      .cost-breakdown {
+        padding: 14px 18px !important;
+        gap: 8px 16px !important;
+      }
+
+      .cost-breakdown>div {
+        flex: 1 1 120px;
+      }
+
+      /* 業界行情格子 */
+      .benchmark-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .benchmark-val {
+        font-size: 26px;
+      }
+
+      .benchmark-desc {
+        font-size: 12px;
+      }
+
+      /* 影片縮圖 grid */
+      .video-tags {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+      }
+
+      .video-examples {
+        padding: 12px 18px 16px;
+      }
+
+      /* 表格：允許橫向滾動，鎖定第一欄 */
+      .cost-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      table {
+        font-size: 13px;
+        min-width: 560px;
+      }
+
+      thead th {
+        padding: 10px 10px;
+        font-size: 10px;
+      }
+
+      tbody td {
+        padding: 8px 10px;
+      }
+
+      /* highlight band */
+      .highlight-band {
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px 18px;
+      }
+
+      .highlight-band .icon {
+        font-size: 28px;
+      }
+
+      .highlight-band p {
+        font-size: 14px;
+      }
+
+      /* footer */
+      .footer {
+        padding: 20px 20px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 6px;
+        text-align: center;
+      }
+
+      /* callout */
+      .callout {
+        padding: 16px 18px;
+        font-size: 14px;
+      }
+
+      /* 說明色塊（三欄 → 單欄）*/
+      div[style*="grid-template-columns:1fr 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+      }
     }
 
-    /* 摘要 */
-    .exec-summary { padding: 28px 24px; }
-    .exec-summary-inner {
-      grid-template-columns: 1fr;
-      gap: 12px;
-    }
-    .exec-label { font-size: 13px; }
-    .exec-text { font-size: 15px; }
-
-    /* 主內容 */
-    .content { padding: 32px 20px; }
-    .section { margin-bottom: 48px; }
-
-    /* 章節標題 */
-    .section-num { font-size: 48px; min-width: 48px; }
-    .section-title { font-size: 22px; }
-    .section-header { gap: 14px; padding-bottom: 16px; }
-
-    /* 類型卡片 header */
-    .type-card-header {
-      grid-template-columns: auto 1fr;
-      gap: 14px;
-      padding: 16px 18px;
-    }
-    /* budget 區塊移到第二列 */
-    .type-card-header > div:last-child {
-      grid-column: 1 / -1;
-      text-align: left;
-    }
-    .type-budget-label { text-align: left; }
-    .type-budget { text-align: left; font-size: 22px; }
-
-    /* 類型卡片 body */
-    .type-card-body {
-      grid-template-columns: 1fr;
-      gap: 16px;
-      padding: 16px 18px;
-    }
-    .type-card-body ul li { font-size: 14px; }
-
-    /* 類型卡片 footer stats */
-    .type-card-footer {
-      grid-template-columns: repeat(3, 1fr);
-      padding: 12px 18px;
-      gap: 8px;
-    }
-    .type-card-footer.four-stats {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .stat-block .stat-val { font-size: 20px; }
-    .stat-block .stat-label { font-size: 10px; }
-
-    /* 費用拆解列：允許換行，縮短 padding */
-    .cost-breakdown {
-      padding: 14px 18px !important;
-      gap: 8px 16px !important;
-    }
-    .cost-breakdown > div { flex: 1 1 120px; }
-
-    /* 業界行情格子 */
-    .benchmark-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .benchmark-val { font-size: 26px; }
-    .benchmark-desc { font-size: 12px; }
-
-    /* 影片縮圖 grid */
-    .video-tags {
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 8px;
-    }
-    .video-examples { padding: 12px 18px 16px; }
-
-    /* 表格：允許橫向滾動，鎖定第一欄 */
-    .cost-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    table { font-size: 13px; min-width: 560px; }
-    thead th { padding: 10px 10px; font-size: 10px; }
-    tbody td { padding: 8px 10px; }
-
-    /* highlight band */
-    .highlight-band {
-      flex-direction: column;
-      gap: 10px;
-      padding: 20px 18px;
-    }
-    .highlight-band .icon { font-size: 28px; }
-    .highlight-band p { font-size: 14px; }
-
-    /* footer */
-    .footer { padding: 20px 20px; }
-    .footer-inner { flex-direction: column; gap: 6px; text-align: center; }
-
-    /* callout */
-    .callout { padding: 16px 18px; font-size: 14px; }
-
-    /* 說明色塊（三欄 → 單欄）*/
-    div[style*="grid-template-columns:1fr 1fr 1fr"] {
-      grid-template-columns: 1fr !important;
-    }
-  }
-
-  /* ══════════════════════════════
+    /* ══════════════════════════════
      響應式設計 — 手機（480px 以下）
   ══════════════════════════════ */
-  @media (max-width: 480px) {
-    body { font-size: 14px; }
+    @media (max-width: 480px) {
+      body {
+        font-size: 14px;
+      }
 
-    .cover { padding: 36px 16px 28px; }
-    .cover-title { font-size: 26px; }
-    .cover-sub { font-size: 14px; }
-    .cover-meta { gap: 16px; }
-    .cover-meta-item span { font-size: 13px; }
+      .cover {
+        padding: 36px 16px 28px;
+      }
 
-    .exec-summary { padding: 20px 16px; }
-    .content { padding: 24px 16px; }
+      .cover-title {
+        font-size: 26px;
+      }
 
-    .section-num { font-size: 40px; min-width: 40px; }
-    .section-title { font-size: 19px; }
-    .section-header { gap: 10px; }
+      .cover-sub {
+        font-size: 14px;
+      }
 
-    .type-card-header { padding: 14px 14px; }
-    .type-budget { font-size: 20px; }
-    .type-card-body { padding: 14px 14px; }
-    .type-card-footer { padding: 10px 14px; gap: 6px; }
-    .type-card-footer.four-stats { grid-template-columns: repeat(2, 1fr); }
-    .stat-block .stat-val { font-size: 18px; }
+      .cover-meta {
+        gap: 16px;
+      }
 
-    .benchmark-grid { grid-template-columns: 1fr; gap: 8px; }
-    .benchmark-val { font-size: 28px; }
-    .benchmark-card { padding: 14px; }
+      .cover-meta-item span {
+        font-size: 13px;
+      }
 
-    .video-tags { grid-template-columns: 1fr 1fr; }
+      .exec-summary {
+        padding: 20px 16px;
+      }
 
-    table { font-size: 12px; min-width: 500px; }
+      .content {
+        padding: 24px 16px;
+      }
 
-    .footer { padding: 16px; }
-    .print-band { font-size: 11px; padding: 6px 12px; }
-  }
-</style>
+      .section-num {
+        font-size: 40px;
+        min-width: 40px;
+      }
+
+      .section-title {
+        font-size: 19px;
+      }
+
+      .section-header {
+        gap: 10px;
+      }
+
+      .type-card-header {
+        padding: 14px 14px;
+      }
+
+      .type-budget {
+        font-size: 20px;
+      }
+
+      .type-card-body {
+        padding: 14px 14px;
+      }
+
+      .type-card-footer {
+        padding: 10px 14px;
+        gap: 6px;
+      }
+
+      .type-card-footer.four-stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stat-block .stat-val {
+        font-size: 18px;
+      }
+
+      .benchmark-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .benchmark-val {
+        font-size: 28px;
+      }
+
+      .benchmark-card {
+        padding: 14px;
+      }
+
+      .video-tags {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      table {
+        font-size: 12px;
+        min-width: 500px;
+      }
+
+      .footer {
+        padding: 16px;
+      }
+
+      .print-band {
+        font-size: 11px;
+        padding: 6px 12px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="print-band">義守大學 — 媒體行銷組 — 內部報告文件</div>
+  <div class="print-band">義守大學 — 媒體行銷組 — 內部報告文件</div>
 
-<!-- COVER -->
-<div class="cover">
-  <div class="cover-inner">
-    <div class="cover-label">業務政策建議報告</div>
-    <div class="cover-rule"></div>
-    <h1 class="cover-title">影片製作成本認知<br>與類型分級制度建議</h1>
-    <p class="cover-sub">以影片內容類型為依據的工時與預算結構化方案</p>
-    <div class="cover-meta">
-      <div class="cover-meta-item">
-        <label>提報單位</label>
-        <span>義守大學 媒體行銷組</span>
-      </div>
-      <div class="cover-meta-item">
-        <label>日期</label>
-        <span>2026 年 4 月</span>
-      </div>
-      <div class="cover-meta-item">
-        <label>報告性質</label>
-        <span>內部政策建議</span>
-      </div>
-      <div class="cover-meta-item">
-        <label>參考依據</label>
-        <span>業界行情 ＋ 實務工作經驗</span>
-      </div>
-      <div class="cover-meta-item">
-        <label>資料彙整分析</label>
-        <span>陳嘉暐　2026.04.08</span>
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-inner">
+      <div class="cover-label">業務政策建議報告</div>
+      <div class="cover-rule"></div>
+      <h1 class="cover-title">影片製作成本認知<br>與類型分級制度建議</h1>
+      <p class="cover-sub">以影片內容類型為依據的工時與預算結構化方案</p>
+      <div class="cover-meta">
+        <div class="cover-meta-item">
+          <label>提報單位</label>
+          <span>義守大學 媒體行銷組</span>
+        </div>
+        <div class="cover-meta-item">
+          <label>日期</label>
+          <span>2026 年 4 月</span>
+        </div>
+        <div class="cover-meta-item">
+          <label>報告性質</label>
+          <span>內部政策建議</span>
+        </div>
+        <div class="cover-meta-item">
+          <label>參考依據</label>
+          <span>業界行情 ＋ 實務工作經驗</span>
+        </div>
+        <div class="cover-meta-item">
+          <label>資料彙整分析</label>
+          <span>陳嘉暐　2026.04.08</span>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- EXEC SUMMARY -->
-<div class="exec-summary">
-  <div class="exec-summary-inner">
-    <div class="exec-label">報告摘要</div>
-    <p class="exec-text">
-      本報告旨在建立一套以<strong>影片內容類型</strong>為核心的工時與預算分級標準，以解決現行依「影片長度」計費所產生的認知落差。媒體行銷組長期使用工讀生執行影像製作業務，而影片製作的實際成本與複雜度，絕非單憑片長可以衡量——一支一分鐘的訪談影片，其所需的工時可能遠超一支五分鐘的活動紀錄。本文提出四種類型分級，並附具體工時與預算建議，供長官參考。
-    </p>
-  </div>
-</div>
-
-<!-- MAIN CONTENT -->
-<div class="content">
-
-  <!-- SECTION 1: THE CORE ARGUMENT -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num">01</div>
-      <div>
-        <div class="section-title">為何不能以「片長」計費？</div>
-        <div class="section-desc">核心論點：影片時長與製作成本之間並無線性關係</div>
-      </div>
-    </div>
-
-    <div class="callout">
-      影片製作的實際成本取決於<strong>前製規劃、拍攝規模、素材量與後製工程</strong>，而非最終輸出的片長。一支一分鐘的訪談影片，所需工時可能遠超一支五分鐘的活動紀錄。<strong>以片長計費，無法正確反映製作難度。</strong>
-    </div>
-
-    <div class="highlight-band">
-      <div class="icon">🎬</div>
-      <p>
-        業界實況：同樣是短片成品，活動紀錄、訪談敘事與廣告型影片的企劃、拍攝、素材整理與後製複雜度差異極大。應以「<strong>影片內容類型</strong>」作為工時與預算的計費依據，而非只以最終片長判斷。
+  <!-- EXEC SUMMARY -->
+  <div class="exec-summary">
+    <div class="exec-summary-inner">
+      <div class="exec-label">報告摘要</div>
+      <p class="exec-text">
+        本報告旨在建立一套以<strong>影片內容類型</strong>為核心的工時與預算分級標準，以解決現行依「影片長度」計費所產生的認知落差。媒體行銷組長期使用工讀生執行影像製作業務，而影片製作的實際成本與複雜度，絕非單憑片長可以衡量——一支一分鐘的訪談影片，其所需的工時可能遠超一支五分鐘的活動紀錄。本文提出四種類型分級，並附具體工時與預算建議，供長官參考。
       </p>
     </div>
   </div>
 
-  <!-- SECTION 2: FOUR TYPES -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num">02</div>
-      <div>
-        <div class="section-title">影片類型分級說明</div>
-        <div class="section-desc">四種類型對應不同的製作規格、人員配置與預算範圍</div>
+  <!-- MAIN CONTENT -->
+  <div class="content">
+
+    <!-- SECTION 1: THE CORE ARGUMENT -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div>
+          <div class="section-title">為何不能以「片長」計費？</div>
+          <div class="section-desc">核心論點：影片時長與製作成本之間並無線性關係</div>
+        </div>
+      </div>
+
+      <div class="callout">
+        影片製作的實際成本取決於<strong>前製規劃、拍攝規模、素材量與後製工程</strong>，而非最終輸出的片長。一支一分鐘的訪談影片，所需工時可能遠超一支五分鐘的活動紀錄。<strong>以片長計費，無法正確反映製作難度。</strong>
+      </div>
+
+      <div class="highlight-band">
+        <div class="icon">🎬</div>
+        <p>
+          業界實況：同樣是短片成品，活動紀錄、訪談敘事與廣告型影片的企劃、拍攝、素材整理與後製複雜度差異極大。應以「<strong>影片內容類型</strong>」作為工時與預算的計費依據，而非只以最終片長判斷。
+        </p>
       </div>
     </div>
 
-    <div class="type-cards">
-
-      <!-- TYPE 1 -->
-      <div class="type-card t1">
-        <div class="type-card-header">
-          <div class="type-badge">I</div>
-          <div>
-            <div class="type-title">活動紀錄型</div>
-            <div class="type-subtitle">Activity Documentation ／ Vlog 風格紀錄影片</div>
-          </div>
-          <div>
-            <div class="type-budget-label">學校製作費估算</div>
-            <div class="type-budget">$7,000 – $10,000</div>
-            <div style="font-size:11px;color:var(--type1);margin-top:2px;text-align:right;">工讀金</div>
-          </div>
-        </div>
-        <div class="type-card-body">
-          <div>
-            <h4>製作特性</h4>
-            <ul>
-              <li>活動現場連續拍攝為主</li>
-              <li>素材以紀實為主，剪輯流暢即可</li>
-              <li>不需複雜燈光配置</li>
-              <li>不需腳本，依現場素材剪輯</li>
-              <li>後製以剪輯為主，調色輔助</li>
-            </ul>
-          </div>
-          <div>
-            <h4>人員配置</h4>
-            <ul>
-              <li>攝影師兼後製剪輯 × 1</li>
-              <li>工讀生以<strong>一人獨立執行</strong>為原則</li>
-              <li>合計：<strong>1 人</strong></li>
-              <li>拍攝天數：<strong>1 天（活動當日）</strong></li>
-            </ul>
-          </div>
-        </div>
-        <div class="type-card-footer">
-          <div class="stat-block">
-            <span class="stat-val">1天</span>
-            <span class="stat-label">拍攝（活動現場）</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">1–3天</span>
-            <span class="stat-label">後期製作</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">2–4天</span>
-            <span class="stat-label">總天數</span>
-          </div>
-        </div>
-        <div class="cost-breakdown" style="background:#e8f4ee; padding:14px 28px; border-top:1px solid #b8d8c8; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
-          <div style="margin-right:20px;">
-            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type1);font-weight:700;margin-bottom:2px;">工讀金（1人，含拍攝與延長後製）</div>
-            <div style="font-size:17px;font-weight:700;color:var(--ink);">$7,000 – $10,000</div>
-            <div style="font-size:11px;color:var(--muted);">含活動出班、素材整理、剪輯、調色與交付修正</div>
-            <div style="font-size:11px;color:var(--type1);font-weight:700;margin-top:4px;">建議編列工時：約 36～51h</div>
-            <div style="font-size:11px;color:var(--muted);">含素材備份、溝通、修正與交付緩衝</div>
-          </div>
-          <div style="color:var(--muted);font-size:20px;margin-right:20px;">＝</div>
-          <div>
-            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:2px;">學校製作費合計</div>
-            <div style="font-size:20px;font-weight:900;color:var(--amber);">$7,000 – $10,000</div>
-          </div>
-        </div>
-        <div class="video-examples">
-          <h4>參考影片範例（Vlog 型）</h4>
-          <div class="video-tags">
-            <a class="video-tag" href="https://www.youtube.com/watch?v=kozkhkzfAao" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/kozkhkzfAao/mqdefault.jpg" alt="活動 Vlog 範例一">
-              <span class="video-tag-label">範例一：活動 Vlog</span>
-            </a>
-            <a class="video-tag" href="https://www.youtube.com/watch?v=NbAg46WLqXI" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/NbAg46WLqXI/mqdefault.jpg" alt="校園紀錄 Vlog">
-              <span class="video-tag-label">範例二：校園紀錄 Vlog</span>
-            </a>
-          </div>
+    <!-- SECTION 2: FOUR TYPES -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div>
+          <div class="section-title">影片類型分級說明</div>
+          <div class="section-desc">四種類型對應不同的製作規格、人員配置與預算範圍</div>
         </div>
       </div>
 
-      <!-- TYPE 2 -->
-      <div class="type-card t2">
-        <div class="type-card-header">
-          <div class="type-badge">II</div>
-          <div>
-            <div class="type-title">訪談敘事型</div>
-            <div class="type-subtitle">Interview Documentary ／ 有敘事結構的紀錄影片</div>
+      <div class="type-cards">
+
+        <!-- TYPE 1 -->
+        <div class="type-card t1">
+          <div class="type-card-header">
+            <div class="type-badge">I</div>
+            <div>
+              <div class="type-title">活動紀錄型</div>
+              <div class="type-subtitle">Activity Documentation ／ Vlog 風格紀錄影片</div>
+            </div>
+            <div>
+              <div class="type-budget-label">學校製作費估算</div>
+              <div class="type-budget">$7,000 – $10,000</div>
+              <div style="font-size:11px;color:var(--type1);margin-top:2px;text-align:right;">工讀金</div>
+            </div>
           </div>
-          <div>
-            <div class="type-budget-label">學校製作費估算</div>
-            <div class="type-budget">$15,000 – $25,000</div>
-            <div style="font-size:11px;color:var(--type2);margin-top:2px;text-align:right;">工讀金</div>
+          <div class="type-card-body">
+            <div>
+              <h4>製作特性</h4>
+              <ul>
+                <li>活動現場連續拍攝為主</li>
+                <li>素材以紀實為主，剪輯流暢即可</li>
+                <li>不需複雜燈光配置</li>
+                <li>不需腳本，依現場素材剪輯</li>
+                <li>後製以剪輯為主，調色輔助</li>
+              </ul>
+            </div>
+            <div>
+              <h4>人員配置</h4>
+              <ul>
+                <li>攝影師兼後製剪輯 × 1</li>
+                <li>工讀生以<strong>一人獨立執行</strong>為原則</li>
+                <li>合計：<strong>1 人</strong></li>
+                <li>拍攝天數：<strong>1 天（活動當日）</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="type-card-footer">
+            <div class="stat-block">
+              <span class="stat-val">1天</span>
+              <span class="stat-label">拍攝（活動現場）</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">1–3天</span>
+              <span class="stat-label">後期製作</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">2–4天</span>
+              <span class="stat-label">總天數</span>
+            </div>
+          </div>
+          <div class="cost-breakdown"
+            style="background:#e8f4ee; padding:14px 28px; border-top:1px solid #b8d8c8; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
+            <div style="margin-right:20px;">
+              <div
+                style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type1);font-weight:700;margin-bottom:2px;">
+                工讀金（1人，含拍攝與延長後製）</div>
+              <div style="font-size:17px;font-weight:700;color:var(--ink);">$7,000 – $10,000</div>
+              <div style="font-size:11px;color:var(--muted);">含活動出班、素材整理、剪輯、調色與交付修正</div>
+              <div style="font-size:11px;color:var(--type1);font-weight:700;margin-top:4px;">建議編列工時：約 36～51h</div>
+              <div style="font-size:11px;color:var(--muted);">含素材備份、溝通、修正與交付緩衝</div>
+            </div>
+            <div style="color:var(--muted);font-size:20px;margin-right:20px;">＝</div>
+            <div>
+              <div
+                style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:2px;">
+                學校製作費合計</div>
+              <div style="font-size:20px;font-weight:900;color:var(--amber);">$7,000 – $10,000</div>
+            </div>
+          </div>
+          <div class="video-examples">
+            <h4>參考影片範例（Vlog 型）</h4>
+            <div class="video-tags">
+              <a class="video-tag" href="https://www.youtube.com/watch?v=kozkhkzfAao" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/kozkhkzfAao/mqdefault.jpg" alt="活動 Vlog 範例一">
+                <span class="video-tag-label">範例一：活動 Vlog</span>
+              </a>
+              <a class="video-tag" href="https://www.youtube.com/watch?v=NbAg46WLqXI" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/NbAg46WLqXI/mqdefault.jpg" alt="校園紀錄 Vlog">
+                <span class="video-tag-label">範例二：校園紀錄 Vlog</span>
+              </a>
+            </div>
           </div>
         </div>
-        <div class="type-card-body">
-          <div>
-            <h4>製作特性</h4>
-            <ul>
-              <li>需要前期腳本撰寫與訪綱規劃</li>
-              <li>必須聯繫、溝通並準備受訪者</li>
-              <li>室內外均需打燈，維持視覺一致</li>
-              <li>需補拍 B-roll 配合敘事</li>
-              <li>後製含字幕、音效、調色等完整流程</li>
-            </ul>
+
+        <!-- TYPE 2 -->
+        <div class="type-card t2">
+          <div class="type-card-header">
+            <div class="type-badge">II</div>
+            <div>
+              <div class="type-title">訪談敘事型</div>
+              <div class="type-subtitle">Interview Documentary ／ 有敘事結構的紀錄影片</div>
+            </div>
+            <div>
+              <div class="type-budget-label">學校製作費估算</div>
+              <div class="type-budget">$15,000 – $25,000</div>
+              <div style="font-size:11px;color:var(--type2);margin-top:2px;text-align:right;">工讀金</div>
+            </div>
           </div>
-          <div>
-            <h4>人員配置</h4>
-            <ul>
-              <li>攝影師 × 1</li>
-              <li>企劃（腳本）× 1</li>
-              <li>燈光助理 × 1（可兼任）</li>
-              <li>合計：<strong>2～3 人</strong></li>
-            </ul>
+          <div class="type-card-body">
+            <div>
+              <h4>製作特性</h4>
+              <ul>
+                <li>需要前期腳本撰寫與訪綱規劃</li>
+                <li>必須聯繫、溝通並準備受訪者</li>
+                <li>室內外均需打燈，維持視覺一致</li>
+                <li>需補拍 B-roll 配合敘事</li>
+                <li>後製含字幕、音效、調色等完整流程</li>
+              </ul>
+            </div>
+            <div>
+              <h4>人員配置</h4>
+              <ul>
+                <li>攝影師 × 1</li>
+                <li>企劃（腳本）× 1</li>
+                <li>燈光助理 × 1（可兼任）</li>
+                <li>合計：<strong>2～3 人</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="type-card-footer four-stats">
+            <div class="stat-block">
+              <span class="stat-val">1–2天</span>
+              <span class="stat-label">前製（腳本、協調）</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">1天</span>
+              <span class="stat-label">拍攝（含 B-roll）</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">3–5天</span>
+              <span class="stat-label">後期製作</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">5–8天</span>
+              <span class="stat-label">總天數</span>
+            </div>
+          </div>
+          <div class="cost-breakdown"
+            style="background:#e8eef6; padding:14px 28px; border-top:1px solid #b0c4dc; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
+            <div style="margin-right:20px;">
+              <div
+                style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type2);font-weight:700;margin-bottom:2px;">
+                工讀金合計（2～3人，依工讀金費率計算）</div>
+              <div style="font-size:17px;font-weight:700;color:var(--ink);">$15,000 – $25,000</div>
+              <div style="font-size:11px;color:var(--muted);">含前製企劃、拍攝出班、B-roll 整理、字幕、剪輯、調色與修正</div>
+              <div style="font-size:11px;color:var(--type2);font-weight:700;margin-top:4px;">建議編列工時：約 77～128h</div>
+              <div style="font-size:11px;color:var(--muted);">含多人分工與修正緩衝</div>
+            </div>
+            <div style="color:var(--muted);font-size:20px;margin-right:20px;">＝</div>
+            <div>
+              <div
+                style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:2px;">
+                學校製作費合計</div>
+              <div style="font-size:20px;font-weight:900;color:var(--amber);">$15,000 – $25,000</div>
+            </div>
+          </div>
+          <div style="background:#f0f4f9; padding:12px 28px; border-top:1px solid var(--border);">
+            <p style="font-size:13px; color:var(--type2); font-weight:500;">
+              📌 建議工時計算基準：5 分鐘成品 → 至少 <strong>24～40 小時</strong>後製工時，加上前製企劃與拍攝出班，作為完整訪談敘事專案估算基礎。
+            </p>
+          </div>
+          <div class="video-examples">
+            <h4>參考影片範例</h4>
+            <div class="video-tags">
+              <a class="video-tag" href="https://youtu.be/kovhdWt4wUQ?si=pAVYYD-d-13W5sl" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/kovhdWt4wUQ/mqdefault.jpg" alt="訪談型範例一">
+                <span class="video-tag-label">訪談型範例一</span>
+              </a>
+              <a class="video-tag" href="https://www.youtube.com/watch?v=quBJ71nMgT0" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/quBJ71nMgT0/mqdefault.jpg" alt="訪談型範例二">
+                <span class="video-tag-label">訪談型範例二</span>
+              </a>
+              <a class="video-tag" href="https://www.youtube.com/watch?v=ygjJfsV7Zrs" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/ygjJfsV7Zrs/mqdefault.jpg" alt="活動＋訪談混合型">
+                <span class="video-tag-label">活動＋訪談混合型</span>
+              </a>
+              <a class="video-tag" href="https://www.youtube.com/watch?v=pN_LK7F7y3w" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/pN_LK7F7y3w/mqdefault.jpg" alt="遊戲互動形式">
+                <span class="video-tag-label">遊戲互動形式</span>
+              </a>
+              <a class="video-tag" href="https://www.youtube.com/watch?v=SYpAfkUU6tI" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/SYpAfkUU6tI/mqdefault.jpg" alt="旁白敘事型">
+                <span class="video-tag-label">旁白敘事型</span>
+              </a>
+            </div>
           </div>
         </div>
-        <div class="type-card-footer four-stats">
-          <div class="stat-block">
-            <span class="stat-val">1–2天</span>
-            <span class="stat-label">前製（腳本、協調）</span>
+
+        <!-- TYPE 3 -->
+        <div class="type-card t3">
+          <div class="type-card-header">
+            <div class="type-badge">III</div>
+            <div>
+              <div class="type-title">學生創意專案拍攝</div>
+              <div class="type-subtitle">Student Creative Project ／ 主題敘述＋多活動素材整合</div>
+            </div>
+            <div>
+              <div class="type-budget-label">學校製作費估算</div>
+              <div class="type-budget">$30,000 – $50,000</div>
+              <div style="font-size:11px;color:var(--type3);margin-top:2px;text-align:right;">工讀金</div>
+            </div>
           </div>
-          <div class="stat-block">
-            <span class="stat-val">1天</span>
-            <span class="stat-label">拍攝（含 B-roll）</span>
+          <div class="type-card-body">
+            <div>
+              <h4>製作特性</h4>
+              <ul>
+                <li>以主題敘述串接多場活動素材</li>
+                <li>常見成品長度約 <strong>10 分鐘</strong></li>
+                <li>需跨不同活動時段蒐集可用畫面</li>
+                <li>常搭配訪談、旁白或主題文字建立主軸</li>
+                <li>後製需整理大量素材並重建敘事節奏</li>
+              </ul>
+            </div>
+            <div>
+              <h4>人員配置</h4>
+              <ul>
+                <li>攝影／剪輯 × 1</li>
+                <li>企劃／採訪 × 1</li>
+                <li>協拍／燈光 × 1～2</li>
+                <li>收音／場控 × 1</li>
+                <li>主持／旁白／受訪串接 × 1</li>
+                <li>素材整理／剪輯助理 × 1～2</li>
+                <li>合計：<strong>5～8 人</strong></li>
+              </ul>
+            </div>
           </div>
-          <div class="stat-block">
-            <span class="stat-val">3–5天</span>
-            <span class="stat-label">後期製作</span>
+          <div class="type-card-footer four-stats">
+            <div class="stat-block">
+              <span class="stat-val">2–3天</span>
+              <span class="stat-label">前製（主題、腳本、訪綱）</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">2–4天</span>
+              <span class="stat-label">拍攝／素材蒐集</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">5–8天</span>
+              <span class="stat-label">後期製作</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">9–15天</span>
+              <span class="stat-label">總天數</span>
+            </div>
           </div>
-          <div class="stat-block">
-            <span class="stat-val">5–8天</span>
-            <span class="stat-label">總天數</span>
+          <div class="cost-breakdown"
+            style="background:#fcf7ec; padding:14px 28px; border-top:1px solid #d8c39b; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
+            <div style="margin-right:20px;">
+              <div
+                style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type3);font-weight:700;margin-bottom:2px;">
+                工讀金合計（5～8人，依工讀金費率計算）</div>
+              <div style="font-size:17px;font-weight:700;color:var(--ink);">$30,000 – $50,000</div>
+              <div style="font-size:11px;color:var(--muted);">含前製發想、多次拍攝出班、素材整理、長版剪輯、字幕、調色與多輪修正</div>
+            </div>
+            <div style="color:var(--muted);font-size:20px;margin-right:20px;">＝</div>
+            <div>
+              <div
+                style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:2px;">
+                學校製作費合計</div>
+              <div style="font-size:20px;font-weight:900;color:var(--amber);">$30,000 – $50,000</div>
+            </div>
+          </div>
+          <div style="background:#fdf8ef; padding:12px 28px; border-top:1px solid var(--border);">
+            <p style="font-size:13px; color:var(--type3); font-weight:500;">
+              📌 此類型重點不在單次拍攝，而在跨活動累積素材後重新建立主題線；約 10 分鐘成品通常需預留 <strong>64～96 工時以上</strong>。
+            </p>
+          </div>
+          <div class="video-examples">
+            <h4>參考影片範例</h4>
+            <div class="video-tags">
+              <a class="video-tag" href="https://youtu.be/m8M2Rg2bvsA?si=fWnJf3HPK_3XiGr2" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/m8M2Rg2bvsA/mqdefault.jpg" alt="Hero Maker">
+                <span class="video-tag-label">Hero Maker</span>
+              </a>
+              <a class="video-tag" href="https://youtu.be/LSbjZrwaIBk?si=EK77q9GqDWIDbdWm" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/LSbjZrwaIBk/mqdefault.jpg"
+                  alt="IMAGINE your LIFE at I-Shou University, Taiwan">
+                <span class="video-tag-label">IMAGINE your LIFE at I-Shou University, Taiwan</span>
+              </a>
+            </div>
           </div>
         </div>
-        <div class="cost-breakdown" style="background:#e8eef6; padding:14px 28px; border-top:1px solid #b0c4dc; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
-          <div style="margin-right:20px;">
-            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type2);font-weight:700;margin-bottom:2px;">工讀金合計（2～3人，依工讀金費率計算）</div>
-            <div style="font-size:17px;font-weight:700;color:var(--ink);">$15,000 – $25,000</div>
-            <div style="font-size:11px;color:var(--muted);">含前製企劃、拍攝出班、B-roll 整理、字幕、剪輯、調色與修正</div>
-            <div style="font-size:11px;color:var(--type2);font-weight:700;margin-top:4px;">建議編列工時：約 77～128h（人次）</div>
-            <div style="font-size:11px;color:var(--muted);">含多人分工與修正緩衝</div>
+
+        <!-- TYPE 4 -->
+        <div class="type-card t4">
+          <div class="type-card-header">
+            <div class="type-badge">IV</div>
+            <div>
+              <div class="type-title">劇情廣告型</div>
+              <div class="type-subtitle">Short Film ／ Commercial ／ 高規格影片製作</div>
+            </div>
+            <div>
+              <div class="type-budget-label">學校製作費估算</div>
+              <div class="type-budget">$150,000 – $500,000+</div>
+              <div style="font-size:11px;color:var(--type4);margin-top:2px;text-align:right;">回歸學系製作預算</div>
+            </div>
           </div>
-          <div style="color:var(--muted);font-size:20px;margin-right:20px;">＝</div>
-          <div>
-            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:2px;">學校製作費合計</div>
-            <div style="font-size:20px;font-weight:900;color:var(--amber);">$15,000 – $25,000</div>
+          <div class="type-card-body">
+            <div>
+              <h4>製作特性</h4>
+              <ul>
+                <li>完整劇本與分鏡表</li>
+                <li>演員、服裝、道具規劃</li>
+                <li>多場景拍攝，需場地許可</li>
+                <li>專業燈光與攝影設備</li>
+                <li>後製含特效、配樂、調色</li>
+                <li>拍攝周期長達 3～5 天以上</li>
+              </ul>
+            </div>
+            <div>
+              <h4>人員配置</h4>
+              <ul>
+                <li>導演 × 1</li>
+                <li>攝影師 × 1～2</li>
+                <li>燈光師 × 1～2</li>
+                <li>製片／企劃 × 1</li>
+                <li>演員、後製、音效等</li>
+                <li>合計：<strong>15～20 人</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="type-card-footer four-stats">
+            <div class="stat-block">
+              <span class="stat-val">4–11天</span>
+              <span class="stat-label">前製（劇本、分鏡、籌備）</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">3–5天</span>
+              <span class="stat-label">拍攝天數</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">7–14天</span>
+              <span class="stat-label">後期製作</span>
+            </div>
+            <div class="stat-block">
+              <span class="stat-val">14–30天</span>
+              <span class="stat-label">總天數</span>
+            </div>
+          </div>
+          <div style="background:#f9f0f3; padding:12px 28px; border-top:1px solid var(--border);">
+            <p style="font-size:13px; color:var(--type4); font-weight:500;">
+              📌 此類型通常來自電影電視學系製作預算，工作模式以鏡頭為單位逐一製作，不適合工讀生單獨執行。
+            </p>
+          </div>
+          <div class="video-examples">
+            <h4>參考影片範例（高規格）</h4>
+            <div class="video-tags" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
+              <a class="video-tag" href="https://www.youtube.com/watch?v=oVSG8ZQuqkk" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/oVSG8ZQuqkk/mqdefault.jpg" alt="高規格廣告拍攝">
+                <span class="video-tag-label">高規格廣告拍攝</span>
+              </a>
+              <a class="video-tag" href="https://www.youtube.com/watch?v=ws90pE-PYmo" target="_blank">
+                <img class="video-thumb" src="https://img.youtube.com/vi/ws90pE-PYmo/mqdefault.jpg" alt="劇情影片拍攝">
+                <span class="video-tag-label">劇情影片拍攝</span>
+              </a>
+            </div>
           </div>
         </div>
-        <div style="background:#f0f4f9; padding:12px 28px; border-top:1px solid var(--border);">
-          <p style="font-size:13px; color:var(--type2); font-weight:500;">
-            📌 建議工時計算基準：5 分鐘成品 → 至少 <strong>24～40 小時</strong>後製工時，加上前製企劃與拍攝出班，作為完整訪談敘事專案估算基礎。
-          </p>
-        </div>
-        <div class="video-examples">
-          <h4>參考影片範例</h4>
-          <div class="video-tags">
-            <a class="video-tag" href="https://youtu.be/kovhdWt4wUQ?si=pAVYYD-d-13W5sl" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/kovhdWt4wUQ/mqdefault.jpg" alt="訪談型範例一">
-              <span class="video-tag-label">訪談型範例一</span>
-            </a>
-            <a class="video-tag" href="https://www.youtube.com/watch?v=quBJ71nMgT0" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/quBJ71nMgT0/mqdefault.jpg" alt="訪談型範例二">
-              <span class="video-tag-label">訪談型範例二</span>
-            </a>
-            <a class="video-tag" href="https://www.youtube.com/watch?v=ygjJfsV7Zrs" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/ygjJfsV7Zrs/mqdefault.jpg" alt="活動＋訪談混合型">
-              <span class="video-tag-label">活動＋訪談混合型</span>
-            </a>
-            <a class="video-tag" href="https://www.youtube.com/watch?v=pN_LK7F7y3w" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/pN_LK7F7y3w/mqdefault.jpg" alt="遊戲互動形式">
-              <span class="video-tag-label">遊戲互動形式</span>
-            </a>
-            <a class="video-tag" href="https://www.youtube.com/watch?v=SYpAfkUU6tI" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/SYpAfkUU6tI/mqdefault.jpg" alt="旁白敘事型">
-              <span class="video-tag-label">旁白敘事型</span>
-            </a>
-          </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 3: COST BREAKDOWN TABLE -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div>
+          <div class="section-title">工時與費用對照表</div>
+          <div class="section-desc">以類型為基準的具體工時建議與工讀生費用試算</div>
         </div>
       </div>
 
-      <!-- TYPE 3 -->
-      <div class="type-card t3">
-        <div class="type-card-header">
-          <div class="type-badge">III</div>
-          <div>
-            <div class="type-title">學生創意專案拍攝</div>
-            <div class="type-subtitle">Student Creative Project ／ 主題敘述＋多活動素材整合</div>
-          </div>
-          <div>
-            <div class="type-budget-label">學校製作費估算</div>
-            <div class="type-budget">$30,000 – $50,000</div>
-            <div style="font-size:11px;color:var(--type3);margin-top:2px;text-align:right;">工讀金</div>
-          </div>
-        </div>
-        <div class="type-card-body">
-          <div>
-            <h4>製作特性</h4>
-            <ul>
-              <li>以主題敘述串接多場活動素材</li>
-              <li>常見成品長度約 <strong>10 分鐘</strong></li>
-              <li>需跨不同活動時段蒐集可用畫面</li>
-              <li>常搭配訪談、旁白或主題文字建立主軸</li>
-              <li>後製需整理大量素材並重建敘事節奏</li>
-            </ul>
-          </div>
-          <div>
-            <h4>人員配置</h4>
-            <ul>
-              <li>攝影／剪輯 × 1</li>
-              <li>企劃／採訪 × 1</li>
-              <li>協拍／燈光 × 1～2</li>
-              <li>收音／場控 × 1</li>
-              <li>主持／旁白／受訪串接 × 1</li>
-              <li>素材整理／剪輯助理 × 1～2</li>
-              <li>合計：<strong>5～8 人</strong></li>
-            </ul>
-          </div>
-        </div>
-        <div class="type-card-footer four-stats">
-          <div class="stat-block">
-            <span class="stat-val">2–3天</span>
-            <span class="stat-label">前製（主題、腳本、訪綱）</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">2–4天</span>
-            <span class="stat-label">拍攝／素材蒐集</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">5–8天</span>
-            <span class="stat-label">後期製作</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">9–15天</span>
-            <span class="stat-label">總天數</span>
-          </div>
-        </div>
-        <div class="cost-breakdown" style="background:#fcf7ec; padding:14px 28px; border-top:1px solid #d8c39b; display:flex; align-items:flex-start; gap:0; flex-wrap:wrap;">
-          <div style="margin-right:20px;">
-            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--type3);font-weight:700;margin-bottom:2px;">工讀金合計（5～8人，依工讀金費率計算）</div>
-            <div style="font-size:17px;font-weight:700;color:var(--ink);">$30,000 – $50,000</div>
-            <div style="font-size:11px;color:var(--muted);">含前製發想、多次拍攝出班、素材整理、長版剪輯、字幕、調色與多輪修正</div>
-          </div>
-          <div style="color:var(--muted);font-size:20px;margin-right:20px;">＝</div>
-          <div>
-            <div style="font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-bottom:2px;">學校製作費合計</div>
-            <div style="font-size:20px;font-weight:900;color:var(--amber);">$30,000 – $50,000</div>
-          </div>
-        </div>
-        <div style="background:#fdf8ef; padding:12px 28px; border-top:1px solid var(--border);">
-          <p style="font-size:13px; color:var(--type3); font-weight:500;">
-            📌 此類型重點不在單次拍攝，而在跨活動累積素材後重新建立主題線；約 10 分鐘成品通常需預留 <strong>64～96 工時以上</strong>。
-          </p>
-        </div>
-        <div class="video-examples">
-          <h4>參考影片範例</h4>
-          <div class="video-tags">
-            <a class="video-tag" href="https://youtu.be/m8M2Rg2bvsA?si=fWnJf3HPK_3XiGr2" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/m8M2Rg2bvsA/mqdefault.jpg" alt="Hero Maker">
-              <span class="video-tag-label">Hero Maker</span>
-            </a>
-            <a class="video-tag" href="https://youtu.be/LSbjZrwaIBk?si=EK77q9GqDWIDbdWm" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/LSbjZrwaIBk/mqdefault.jpg" alt="IMAGINE your LIFE at I-Shou University, Taiwan">
-              <span class="video-tag-label">IMAGINE your LIFE at I-Shou University, Taiwan</span>
-            </a>
-          </div>
-        </div>
+      <!-- 工讀金說明 -->
+      <div
+        style="background:#fff8ec; border:1px solid var(--amber); border-radius:2px; padding:14px 18px; margin-bottom:16px; font-size:13px; line-height:1.8;">
+        📌 <strong>工讀金欄位說明：</strong>下表中的「工讀金」均為<strong>全體工讀人員費用總合</strong>，並非單一學生所得，實際給付依工讀金費率標準核算。<br>
+        ・類型 I（1 人執行）：工讀金為該 1 人的工時費用合計。<br>
+        ・類型 II（2～3 人）：工讀金為各人費用之加總，含前製企劃、拍攝出班、後製剪輯各階段。<br>
+        ・類型 III（5～8 人）：工讀金為跨多次拍攝與長版後製之加總，會高於一般單日訪談型專案。
       </div>
 
-      <!-- TYPE 4 -->
-      <div class="type-card t4">
-        <div class="type-card-header">
-          <div class="type-badge">IV</div>
-          <div>
-            <div class="type-title">劇情廣告型</div>
-            <div class="type-subtitle">Short Film ／ Commercial ／ 高規格影片製作</div>
-          </div>
-          <div>
-            <div class="type-budget-label">學校製作費估算</div>
-            <div class="type-budget">$150,000 – $500,000+</div>
-            <div style="font-size:11px;color:var(--type4);margin-top:2px;text-align:right;">回歸學系製作預算</div>
-          </div>
-        </div>
-        <div class="type-card-body">
-          <div>
-            <h4>製作特性</h4>
-            <ul>
-              <li>完整劇本與分鏡表</li>
-              <li>演員、服裝、道具規劃</li>
-              <li>多場景拍攝，需場地許可</li>
-              <li>專業燈光與攝影設備</li>
-              <li>後製含特效、配樂、調色</li>
-              <li>拍攝周期長達 3～5 天以上</li>
-            </ul>
-          </div>
-          <div>
-            <h4>人員配置</h4>
-            <ul>
-              <li>導演 × 1</li>
-              <li>攝影師 × 1～2</li>
-              <li>燈光師 × 1～2</li>
-              <li>製片／企劃 × 1</li>
-              <li>演員、後製、音效等</li>
-              <li>合計：<strong>15～20 人</strong></li>
-            </ul>
-          </div>
-        </div>
-        <div class="type-card-footer four-stats">
-          <div class="stat-block">
-            <span class="stat-val">4–11天</span>
-            <span class="stat-label">前製（劇本、分鏡、籌備）</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">3–5天</span>
-            <span class="stat-label">拍攝天數</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">7–14天</span>
-            <span class="stat-label">後期製作</span>
-          </div>
-          <div class="stat-block">
-            <span class="stat-val">14–30天</span>
-            <span class="stat-label">總天數</span>
-          </div>
-        </div>
-        <div style="background:#f9f0f3; padding:12px 28px; border-top:1px solid var(--border);">
-          <p style="font-size:13px; color:var(--type4); font-weight:500;">
-            📌 此類型通常來自電影電視學系製作預算，工作模式以鏡頭為單位逐一製作，不適合工讀生單獨執行。
-          </p>
-        </div>
-        <div class="video-examples">
-          <h4>參考影片範例（高規格）</h4>
-          <div class="video-tags" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));">
-            <a class="video-tag" href="https://www.youtube.com/watch?v=oVSG8ZQuqkk" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/oVSG8ZQuqkk/mqdefault.jpg" alt="高規格廣告拍攝">
-              <span class="video-tag-label">高規格廣告拍攝</span>
-            </a>
-            <a class="video-tag" href="https://www.youtube.com/watch?v=ws90pE-PYmo" target="_blank">
-              <img class="video-thumb" src="https://img.youtube.com/vi/ws90pE-PYmo/mqdefault.jpg" alt="劇情影片拍攝">
-              <span class="video-tag-label">劇情影片拍攝</span>
-            </a>
-          </div>
-        </div>
+      <!-- 建議編列說明 -->
+      <div
+        style="background:#fff8ec; border:1px solid #e0c890; border-radius:2px; padding:14px 18px; margin-bottom:20px; font-size:13px; line-height:1.8;">
+        <strong style="color:var(--amber);">❸ 建議編列工讀金：</strong>下表以天數呈現核心製作排程，並在後欄列出以 2026 年法定基本時薪 NT$196/h 反推可支應的建議編列工時。
       </div>
+
+      <div class="cost-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>影片類型</th>
+              <th>人員規模</th>
+              <th>核心製作天數</th>
+              <th>建議編列工時</th>
+              <th style="background:#5a4a20; color:#e8d090;">❸ 建議編列工讀金<br><span
+                  style="font-size:10px;opacity:0.8;">含延長後製與修正</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="tag-t1">I 活動紀錄型</span><br><small style="color:#888">Activity Documentation</small></td>
+              <td>1人</td>
+              <td>拍攝 1 天＋後期製作 1～3 天<br><strong>總天數：2～4 天</strong></td>
+              <td><strong>約 36～51h</strong><br><small style="color:#888;">含素材備份、溝通、修正與交付緩衝</small></td>
+              <td style="color:var(--amber); font-weight:600;">$7,000<br>～$10,000</td>
+            </tr>
+            <tr>
+              <td><span class="tag-t2">II 訪談敘事型</span><br><small style="color:#888">5分鐘以下</small></td>
+              <td>2～3人</td>
+              <td>前製 1～2 天＋拍攝 1 天＋後期製作 3～5 天<br><strong>總天數：5～8 天</strong></td>
+              <td><strong>約 77～128h</strong><br><small style="color:#888;">含多人分工與修正緩衝</small></td>
+              <td style="color:var(--amber); font-weight:600;">$15,000<br>～$25,000</td>
+            </tr>
+            <tr>
+              <td><span class="tag-t2">II 訪談敘事型</span><br><small style="color:#888">5～10分鐘</small></td>
+              <td>2～3人</td>
+              <td>前製 1～2 天＋拍攝 1 天＋後期製作 3～5 天<br><strong>總天數：5～8 天</strong></td>
+              <td><strong>約 77～153h</strong><br><small style="color:#888;">含多人分工與修正緩衝</small></td>
+              <td style="color:var(--amber); font-weight:600;">$15,000<br>～$30,000</td>
+            </tr>
+            <tr style="background:#fcf7ec;">
+              <td><span class="tag-t3">III 學生創意專案拍攝</span><br><small style="color:#888">約 10 分鐘</small></td>
+              <td>5～8人</td>
+              <td>前製 2～3 天＋拍攝／素材蒐集 2～4 天＋後期製作 5～8 天<br><strong>總天數：9～15 天</strong></td>
+              <td><strong>約 153～255h</strong><br><small style="color:#888;">含多人分工與多輪修正</small></td>
+              <td style="color:var(--amber); font-weight:600;">$30,000<br>～$50,000</td>
+            </tr>
+            <tr style="background:#fdf0f3;">
+              <td><span class="tag-t4">IV 劇情廣告型</span><br><small style="color:#888">任意長度</small></td>
+              <td>15～20人</td>
+              <td>前製 4～11 天＋拍攝 3～5 天＋後期製作 7～14 天<br><strong>總天數：14～30 天</strong></td>
+              <td><strong>依專案計</strong></td>
+              <td style="color:var(--type4); font-weight:600;">$150,000<br>～$500,000+</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="source-note">
+        ※ <strong>❸ 建議編列工讀金</strong>：建議編列工時以 NT$196/h 換算，四捨五入呈現；核心製作天數則用來說明實際排程，避免將所有可支應工時誤解為單純剪輯時間。<br>
+        ※ 類型 IV 回歸電影電視學系製作預算框架，工讀費用結構不適用。
+      </p>
 
     </div>
+
+    <!-- SECTION 4: INDUSTRY BENCHMARKS -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div>
+          <div class="section-title">業界行情佐證</div>
+          <div class="section-desc">台灣影片製作市場參考數據，支持本報告的定價邏輯</div>
+        </div>
+      </div>
+
+      <div class="benchmark-grid">
+        <div class="benchmark-card">
+          <span class="benchmark-val">$2–6萬</span>
+          <span class="benchmark-desc">台灣企業委外<br>活動拍攝行情（半天起）</span>
+        </div>
+        <div class="benchmark-card">
+          <span class="benchmark-val">$10–20萬</span>
+          <span class="benchmark-desc">台灣企業訪談型<br>影片整體製作行情</span>
+        </div>
+        <div class="benchmark-card">
+          <span class="benchmark-val">$40–150萬</span>
+          <span class="benchmark-desc">台灣企業微電影<br>廣告型影片製作行情</span>
+        </div>
+      </div>
+
+      <p class="source-note">
+        資料來源：
+        <a href="https://3day.tw" target="_blank" style="color:var(--amber);text-decoration:none;">3DAY 台北影片製作</a>、
+        <a href="https://www.pro360.com.tw" target="_blank" style="color:var(--amber);text-decoration:none;">PRO360
+          達人網</a>、
+        <a href="https://taiwanbusinessvideo.com" target="_blank"
+          style="color:var(--amber);text-decoration:none;">傑夫影像（台灣企業影片製作）</a>、
+        <a href="https://www.gazinge.com" target="_blank"
+          style="color:var(--amber);text-decoration:none;">見素影像</a>，2024–2025 年市場行情。
+      </p>
+
+    </div>
+
   </div>
 
-  <!-- SECTION 3: COST BREAKDOWN TABLE -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num">03</div>
-      <div>
-        <div class="section-title">工時與費用對照表</div>
-        <div class="section-desc">以類型為基準的具體工時建議與工讀生費用試算</div>
-      </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-inner">
+      <p>義守大學 媒體行銷組 ／ 內部政策建議報告 ／ 2026 年 4 月</p>
+      <p>文件為業務討論用途，數據以業界公開行情為參考基準</p>
     </div>
-
-    <!-- 工讀金說明 -->
-    <div style="background:#fff8ec; border:1px solid var(--amber); border-radius:2px; padding:14px 18px; margin-bottom:16px; font-size:13px; line-height:1.8;">
-      📌 <strong>工讀金欄位說明：</strong>下表中的「工讀金」均為<strong>全體工讀人員費用總合</strong>，並非單一學生所得，實際給付依工讀金費率標準核算。<br>
-      ・類型 I（1 人執行）：工讀金為該 1 人的工時費用合計。<br>
-      ・類型 II（2～3 人）：工讀金為各人費用之加總，含前製企劃、拍攝出班、後製剪輯各階段。<br>
-      ・類型 III（5～8 人）：工讀金為跨多次拍攝與長版後製之加總，會高於一般單日訪談型專案。
-    </div>
-
-    <!-- 建議編列說明 -->
-    <div style="background:#fff8ec; border:1px solid #e0c890; border-radius:2px; padding:14px 18px; margin-bottom:20px; font-size:13px; line-height:1.8;">
-      <strong style="color:var(--amber);">❸ 建議編列工讀金：</strong>下表以天數呈現核心製作排程，並在後欄列出以 2026 年法定基本時薪 NT$196/h 反推可支應的建議編列工時。
-    </div>
-
-    <div class="cost-table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>影片類型</th>
-            <th>人員規模</th>
-            <th>核心製作天數</th>
-            <th>建議編列工時</th>
-            <th style="background:#5a4a20; color:#e8d090;">❸ 建議編列工讀金<br><span style="font-size:10px;opacity:0.8;">含延長後製與修正</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><span class="tag-t1">I 活動紀錄型</span><br><small style="color:#888">Activity Documentation</small></td>
-            <td>1人</td>
-            <td>拍攝 1 天＋後期製作 1～3 天<br><strong>總天數：2～4 天</strong></td>
-            <td><strong>約 36～51h</strong><br><small style="color:#888;">含素材備份、溝通、修正與交付緩衝</small></td>
-            <td style="color:var(--amber); font-weight:600;">$7,000<br>～$10,000</td>
-          </tr>
-          <tr>
-            <td><span class="tag-t2">II 訪談敘事型</span><br><small style="color:#888">5分鐘以下</small></td>
-            <td>2～3人</td>
-            <td>前製 1～2 天＋拍攝 1 天＋後期製作 3～5 天<br><strong>總天數：5～8 天</strong></td>
-            <td><strong>約 77～128h（人次）</strong><br><small style="color:#888;">含多人分工與修正緩衝</small></td>
-            <td style="color:var(--amber); font-weight:600;">$15,000<br>～$25,000</td>
-          </tr>
-          <tr>
-            <td><span class="tag-t2">II 訪談敘事型</span><br><small style="color:#888">5～10分鐘</small></td>
-            <td>2～3人</td>
-            <td>前製 1～2 天＋拍攝 1 天＋後期製作 3～5 天<br><strong>總天數：5～8 天</strong></td>
-            <td><strong>約 77～153h（人次）</strong><br><small style="color:#888;">含多人分工與修正緩衝</small></td>
-            <td style="color:var(--amber); font-weight:600;">$15,000<br>～$30,000</td>
-          </tr>
-          <tr style="background:#fcf7ec;">
-            <td><span class="tag-t3">III 學生創意專案拍攝</span><br><small style="color:#888">約 10 分鐘</small></td>
-            <td>5～8人</td>
-            <td>前製 2～3 天＋拍攝／素材蒐集 2～4 天＋後期製作 5～8 天<br><strong>總天數：9～15 天</strong></td>
-            <td><strong>約 153～255h（人次）</strong><br><small style="color:#888;">含多人分工與多輪修正</small></td>
-            <td style="color:var(--amber); font-weight:600;">$30,000<br>～$50,000</td>
-          </tr>
-          <tr style="background:#fdf0f3;">
-            <td><span class="tag-t4">IV 劇情廣告型</span><br><small style="color:#888">任意長度</small></td>
-            <td>15～20人</td>
-            <td>前製 4～11 天＋拍攝 3～5 天＋後期製作 7～14 天<br><strong>總天數：14～30 天</strong></td>
-            <td><strong>依專案計</strong></td>
-            <td style="color:var(--type4); font-weight:600;">$150,000<br>～$500,000+</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <p class="source-note">
-      ※ <strong>❸ 建議編列工讀金</strong>：建議編列工時以 NT$196/h 換算，四捨五入呈現；核心製作天數則用來說明實際排程，避免將所有可支應工時誤解為單純剪輯時間。<br>
-      ※ 類型 IV 回歸電影電視學系製作預算框架，工讀費用結構不適用。
-    </p>
-
   </div>
-
-  <!-- SECTION 4: INDUSTRY BENCHMARKS -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-num">04</div>
-      <div>
-        <div class="section-title">業界行情佐證</div>
-        <div class="section-desc">台灣影片製作市場參考數據，支持本報告的定價邏輯</div>
-      </div>
-    </div>
-
-    <div class="benchmark-grid">
-      <div class="benchmark-card">
-        <span class="benchmark-val">$2–6萬</span>
-        <span class="benchmark-desc">台灣企業委外<br>活動拍攝行情（半天起）</span>
-      </div>
-      <div class="benchmark-card">
-        <span class="benchmark-val">$10–20萬</span>
-        <span class="benchmark-desc">台灣企業訪談型<br>影片整體製作行情</span>
-      </div>
-      <div class="benchmark-card">
-        <span class="benchmark-val">$40–150萬</span>
-        <span class="benchmark-desc">台灣企業微電影<br>廣告型影片製作行情</span>
-      </div>
-    </div>
-
-    <p class="source-note">
-      資料來源：
-      <a href="https://3day.tw" target="_blank" style="color:var(--amber);text-decoration:none;">3DAY 台北影片製作</a>、
-      <a href="https://www.pro360.com.tw" target="_blank" style="color:var(--amber);text-decoration:none;">PRO360 達人網</a>、
-      <a href="https://taiwanbusinessvideo.com" target="_blank" style="color:var(--amber);text-decoration:none;">傑夫影像（台灣企業影片製作）</a>、
-      <a href="https://www.gazinge.com" target="_blank" style="color:var(--amber);text-decoration:none;">見素影像</a>，2024–2025 年市場行情。
-    </p>
-
-  </div>
-
-</div>
-
-
-<!-- FOOTER -->
-<div class="footer">
-  <div class="footer-inner">
-    <p>義守大學 媒體行銷組 ／ 內部政策建議報告 ／ 2026 年 4 月</p>
-    <p>文件為業務討論用途，數據以業界公開行情為參考基準</p>
-  </div>
-</div>
 
 </body>
+
 </html>
