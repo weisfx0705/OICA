@@ -1376,51 +1376,76 @@
 
   <!-- ====== 6. CHECKLIST ====== -->
   <section id="checklist">
-    <h2><span class="num">08</span> 行前檢核清單</h2>
+    <h2><span class="num">08</span> 出門前 1 分鐘檢查清單</h2>
 
     <div class="check-grid">
       <div class="check">
-        <h4>證件與文件</h4>
-        <ul>
-          <li>護照（效期 6 個月以上）</li>
-          <li>電子機票 TG631 / TG630</li>
-          <li>Thrive Hotel 訂房確認單</li>
-          <li>Dek-D 教育展參展證件</li>
-          <li>JNJ Session 邀請函 / 名片</li>
-        </ul>
+        <h4>證件、文件與通訊</h4>
+        <div class="check-list">
+          <label><input type="checkbox"> 護照</label>
+          <label><input type="checkbox"> 手機</label>
+          <label><input type="checkbox"> 錢包（信用卡 / HSBC / 泰銖）</label>
+          <label><input type="checkbox"> eSIM receipt 已存手機</label>
+          <label><input type="checkbox"> 班機資訊已存手機</label>
+        </div>
       </div>
       <div class="check">
-        <h4>金融與通訊</h4>
-        <ul>
-          <li>泰銖現金 / 外幣卡</li>
-          <li>信用卡（可刷海外）</li>
-          <li>泰國上網卡或漫遊方案</li>
-          <li>行動電源</li>
-          <li>萬用轉接插頭</li>
-        </ul>
+        <h4>電子設備</h4>
+        <div class="check-list">
+          <label><input type="checkbox"> 筆電 / iPad / 二螢幕</label>
+          <label><input type="checkbox"> 360攝影機 / 麥克風 / 腳架</label>
+          <label><input type="checkbox"> 小喇叭 / 行動電源</label>
+          <label><input type="checkbox"> 充電器 + 線 / 萬用插頭</label>
+          <label><input type="checkbox"> 延長線 / 排插</label>
+        </div>
       </div>
       <div class="check">
-        <h4>商務與展務</h4>
-        <ul>
-          <li>名片（中英雙語）</li>
-          <li>展場工作人員服裝</li>
-          <li>筆電 / 簡報備份</li>
-          <li>JNJ Session 個人資料</li>
-          <li>文件袋 / 宣傳資料</li>
-        </ul>
+        <h4>商務物資</h4>
+        <div class="check-list">
+          <label><input type="checkbox"> 名片</label>
+          <label><input type="checkbox"> 印刷品</label>
+          <label><input type="checkbox"> 布條包包</label>
+        </div>
       </div>
       <div class="check">
         <h4>生活與備品</h4>
-        <ul>
-          <li>輕便衣物（曼谷 4 月炎熱）</li>
-          <li>展場久站舒適鞋</li>
-          <li>雨具（防曬陽傘兼用）</li>
-          <li>常備藥品（腸胃 / 防蚊）</li>
-          <li>洗漱用品（飯店未必齊全）</li>
-        </ul>
+        <div class="check-list">
+          <label><input type="checkbox"> 藥品</label>
+          <label><input type="checkbox"> 刮鬍刀（電池已拔）</label>
+          <label><input type="checkbox"> 衣服 / 布鞋</label>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 24px; background: rgba(244,114,182,0.1); border: 1px solid var(--flight); border-radius: 12px; padding: 20px;">
+      <h4 style="margin: 0 0 12px 0; color: var(--flight); display: flex; align-items: center; gap: 8px;">🚀 最後三件事</h4>
+      <div class="check-list" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+        <label style="font-weight: 600;"><input type="checkbox"> 行動電源放隨身，不托運</label>
+        <label style="font-weight: 600;"><input type="checkbox"> 護照跟卡片有帶</label>
+        <label style="font-weight: 600;"><input type="checkbox"> 名片、印刷品、線材有帶</label>
       </div>
     </div>
   </section>
+
+  <style>
+    .check-list label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      cursor: pointer;
+      font-size: 13px;
+      color: #cbd2ea;
+      transition: color 0.2s;
+    }
+    .check-list label:hover { color: var(--text); }
+    .check-list input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+  </style>
 
 </div>
 
