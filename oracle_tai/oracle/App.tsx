@@ -19,6 +19,51 @@ const QUESTION_PLACEHOLDERS = [
   "我想去高雄讀書，這個決定對嗎？ / การไปเรียนที่เกาสงเป็นทางเลือกที่ใช่ไหม?"
 ];
 
+// LINE 社群連結（ISU Thailand 2026 - Freshmen Connect）
+const LINE_GROUP_URL = "https://line.me/ti/g2/BxpTQiXVr_u7P9FW0enF5QuyPT5VcpYs59n92g?utm_source=invitation&utm_medium=link_copy&utm_campaign=default";
+
+const qrImageUrl = (size: number) =>
+  `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=6&qzone=2&data=${encodeURIComponent(LINE_GROUP_URL)}`;
+
+const LineQrCard: React.FC<{ size?: "sm" | "lg" }> = ({ size = "sm" }) => {
+  const px = size === "lg" ? 320 : 180;
+  return (
+    <a
+      href={LINE_GROUP_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex flex-col items-center text-center"
+      title="ISU Thailand 2026 - Freshmen Connect"
+    >
+      <div
+        className="rounded-3xl p-[3px] shadow-[0_10px_50px_rgba(34,197,94,0.35)] group-hover:scale-[1.03] transition-transform duration-500"
+        style={{ background: 'linear-gradient(135deg,#22c55e,#34d399,#22d3ee,#a78bfa,#f472b6)' }}
+      >
+        <div className="bg-white rounded-[22px] p-3 sm:p-4">
+          <img
+            src={qrImageUrl(px * 2)}
+            alt="LINE QR Code - ISU Thailand 2026 Freshmen Connect"
+            width={px}
+            height={px}
+            className="block"
+            style={{ width: `${px}px`, height: `${px}px` }}
+          />
+        </div>
+      </div>
+      <div className="mt-4 flex items-center gap-2 text-green-300 font-bold tracking-wide">
+        <span className="inline-block w-6 h-6 rounded-md bg-[#06C755] flex items-center justify-center text-white text-xs font-black">L</span>
+        <span className={size === "lg" ? "text-lg" : "text-sm"}>ISU Thailand 2026 · Freshmen Connect</span>
+      </div>
+      <p className={`mt-1 ${size === "lg" ? "text-sm" : "text-xs"} text-slate-300`}>
+        加入 LINE 社群，我們會把籤詩結果傳給你！
+      </p>
+      <p className={`${size === "lg" ? "text-sm" : "text-xs"} text-slate-400`}>
+        สแกนเข้ากลุ่ม LINE แล้วเราจะส่งผลเซียมซีให้คุณ
+      </p>
+    </a>
+  );
+};
+
 const LOADING_MESSAGES = [
   "大師正在把籤詩翻成泰文招生雷達... / กำลังแปลเซียมซีเป็นเรดาร์แนะแนวภาษาไทย...",
   "正在比對你的問題與義守大學科系地圖... / กำลังจับคู่คำถามของคุณกับแผนที่สาขาของ ISU...",
@@ -508,6 +553,10 @@ const App: React.FC = () => {
                 誠心求籤 / ขอเซียมซี
               </button>
             </div>
+
+            <div className="pt-8 border-t border-slate-700/50 flex flex-col items-center">
+              <LineQrCard size="sm" />
+            </div>
           </div>
         )}
 
@@ -678,6 +727,17 @@ const App: React.FC = () => {
               >
                 換個問題再抽一次 / ถามใหม่อีกครั้ง
               </button>
+            </div>
+
+            <div className="mt-12 pt-10 border-t border-slate-700/50">
+              <div className="text-center mb-6 space-y-1">
+                <h3 className="text-2xl md:text-3xl font-black text-green-300">我們會把籤詩結果傳給你 📲</h3>
+                <p className="text-slate-300">掃 QR 加入 LINE 社群「ISU Thailand 2026 · Freshmen Connect」，我們會把你這次抽到的籤詩結果傳給你。</p>
+                <p className="text-slate-400 text-sm">สแกน QR เข้ากลุ่ม LINE แล้วเราจะส่งผลเซียมซีของคุณไปให้ทางแชท</p>
+              </div>
+              <div className="flex justify-center">
+                <LineQrCard size="lg" />
+              </div>
             </div>
           </div>
         )}
