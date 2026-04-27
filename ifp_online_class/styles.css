@@ -390,6 +390,13 @@ tbody tr:last-child td {
   object-position: top left;
 }
 
+.shot img[src*="11.21.00"] {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: center 48%;
+  background: #fff;
+}
+
 .shot.narrow img {
   aspect-ratio: 1 / 1;
 }
