@@ -359,6 +359,14 @@ tbody tr:last-child td {
   align-items: start;
 }
 
+.account-entry {
+  margin-bottom: 18px;
+}
+
+.account-actions {
+  margin-top: 18px;
+}
+
 .guide {
   border: 1px solid var(--line);
   background: var(--panel);
@@ -399,6 +407,12 @@ tbody tr:last-child td {
 
 .shot.narrow img {
   aspect-ratio: 1 / 1;
+}
+
+.mail-shot img {
+  aspect-ratio: 16 / 7.9;
+  object-fit: cover;
+  object-position: center;
 }
 
 .shot figcaption {
