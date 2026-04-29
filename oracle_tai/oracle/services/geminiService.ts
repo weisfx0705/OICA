@@ -1,6 +1,7 @@
 
 import { GoogleGenAI, Modality, Type } from "@google/genai";
 import { Poem, InterpretationResult } from "../types";
+import { ProgramOption } from "../programs";
 
 const API_KEY = process.env.API_KEY || "";
 
@@ -27,10 +28,9 @@ Practical selling points for Thai recruitment:
 - Work permit after ARC, up to 20 hours per week during semester, unlimited during breaks.
 `;
 
-export const getGeminiInterpretation = async (apiKey: string, question: string, poem: Poem): Promise<InterpretationResult> => {
-  const ai = new GoogleGenAI({ apiKey });
+function buildDefaultInterpretationPrompt(question: string, poem: Poem): string {
   const poemLinesNumbered = poem.content.map((l, i) => `第${i + 1}句：${l}`).join("\n");
-  const prompt = `
+  return `
     你是一位「懂觀音靈籤、懂泰國年輕人、也懂義守大學招生」的雙語解籤顧問。
     你的任務不是硬賣，而是把籤詩意義、提問者的人生狀態，轉化成一段有趣但可信的升學建議。
 
@@ -81,6 +81,87 @@ export const getGeminiInterpretation = async (apiKey: string, question: string, 
     - **備選 / Backup Option:** 中文科系名 + English program name + 一句中文一句泰文說明。
     - **給你的一句話 / ประโยคปิดท้าย:** 一句中文 + 一句泰文，溫暖、有力、不過度承諾。
   `;
+}
+
+function buildProgramFocusedInterpretationPrompt(
+  question: string,
+  poem: Poem,
+  selectedProgram: ProgramOption,
+): string {
+  const poemLinesNumbered = poem.content.map((l, i) => `第${i + 1}句：${l}`).join("\n");
+  return `
+    你是一位「懂觀音靈籤、懂泰國學生面試心理、也懂義守大學國際學程面試節奏」的雙語顧問。
+    這次不是幫學生選系，而是幫一位**已經選好第一志願**的學生，把籤詩轉成面試前的自我理解、回答方向、以及氣場提醒。
+
+    學生已選第一志願 / First-choice program already selected:
+    - Program: ${selectedProgram.firstChoiceLabel}
+    - Degree title: ${selectedProgram.degreeTitle}
+    - Focus keywords: ${selectedProgram.summary}
+    - Interview direction: ${selectedProgram.interviewFocus}
+
+    用戶現在的問題 / คำถามของผู้ใช้：
+    「${question}」
+
+    抽到的觀音靈籤 / เลขเซียมซี：第 ${poem.id} 籤
+    籤詩（共四句，需逐句解讀）：
+    ${poemLinesNumbered}
+
+    義守大學與學程背景資料（整理自 oica-isu.md）：
+    ${ISU_RECRUITMENT_CONTEXT}
+
+    核心任務：
+    - 先從問題推敲學生的性格、壓力點、表達習慣與面試風格。
+    - 所有建議都要圍繞「這位學生如何更像 ${selectedProgram.shortCode} 想找的人」。
+    - 不要再推薦其他大方向的 ISU 科系，重點是幫他講清楚：他與這個已選學程之間的對位。
+    - 如果學生和學程之間有落差，要誠實指出補強點，但語氣要建設性。
+
+    請以 JSON 物件輸出，包含兩個欄位：
+
+    1) thaiPoem：一個長度為 4 的陣列，對應四句中文籤詩，將每一句翻譯為**押韻的泰文詩句**。
+       - 保留原詩意境，但泰文要自然、通順、具韻律。
+       - 相鄰兩句之間應有押韻（AABB 或 ABAB 皆可）。
+       - 每句長度建議 10–16 個泰文音節。
+       - 不要加入編號、符號裝飾或中文字。
+
+    2) markdown：使用 Markdown，依照以下**嚴格順序與標題**撰寫，每一段都必須「繁體中文 + 泰文」並陳（中文在前，泰文在後），語氣可以犀利、清醒、鼓舞，但不要羞辱、不要過度迷信、不要保證錄取。
+
+    ## 大師開示｜คำทำนายจากอาจารย์
+    針對每一句籤詩做一小段解讀，重點要對照學生現在對面試、申請、未來準備的焦慮與優勢。共四小段，依序用：
+
+    ### 第一句：{原文}
+    先中文 2–3 句，再泰文 2–3 句。
+
+    ### 第二句：{原文}
+    同上。
+
+    ### 第三句：{原文}
+    同上。
+
+    ### 第四句：{原文}
+    同上。
+
+    ## 面試對照分析｜Interview Alignment
+    這一段必須完全圍繞學生已選的第一志願 ${selectedProgram.firstChoiceLabel}，請依下列子欄位撰寫：
+
+    - **第一志願 / Chosen Program:** 直接寫 ${selectedProgram.firstChoiceLabel}
+    - **教授可能看到的你 / What the panel sees:** 中文一句 + 泰文一句，指出 2–3 個面試官會記住的特質。
+    - **你該主打的優勢 / Strengths to emphasize:** 中文 2 句 + 泰文 2–3 句，要直接對位 ${selectedProgram.shortCode} 的面向。
+    - **你要補強的地方 / Gap to fix:** 中文一句 + 泰文一句，誠實指出一個弱點或風險，但要給明確補法。
+    - **回答方向 / Interview answer direction:** 中文 2 句 + 泰文 2 句，告訴學生回答教授時該怎麼組織語氣與重點。
+    - **給你的一句定心丸 / Final boost:** 一句中文 + 一句泰文，像面試前 10 分鐘會想記住的話。
+  `;
+}
+
+export const getGeminiInterpretation = async (
+  apiKey: string,
+  question: string,
+  poem: Poem,
+  selectedProgram?: ProgramOption,
+): Promise<InterpretationResult> => {
+  const ai = new GoogleGenAI({ apiKey });
+  const prompt = selectedProgram
+    ? buildProgramFocusedInterpretationPrompt(question, poem, selectedProgram)
+    : buildDefaultInterpretationPrompt(question, poem);
 
   try {
     const response = await ai.models.generateContent({
@@ -123,8 +204,16 @@ export const getGeminiInterpretation = async (apiKey: string, question: string, 
 };
 
 function extractRecommendationContext(interpretation: string): string {
-  const match = interpretation.match(/## ISU 對照分析｜ISU สาขาที่เหมาะกับคุณ([\s\S]*)/);
-  if (match) return match[0].slice(0, 1800);
+  const sectionPatterns = [
+    /## ISU 對照分析｜ISU สาขาที่เหมาะกับคุณ([\s\S]*)/,
+    /## 面試對照分析｜Interview Alignment([\s\S]*)/,
+  ];
+
+  for (const pattern of sectionPatterns) {
+    const match = interpretation.match(pattern);
+    if (match) return match[0].slice(0, 1800);
+  }
+
   return interpretation.slice(-1800);
 }
 
@@ -156,8 +245,9 @@ export const generatePoemImage = async (
   apiKey: string,
   poem: Poem,
   interpretation: string,
-  customStyle: string = "Thai-Taiwan fusion recruitment oracle card, cinematic paper cut collage",
+  customStyle: string = "Thai-Taiwan fusion recruitment oracle card, cinematic paper-cut illustration, non-photorealistic",
   logoUrl?: string,
+  selectedProgram?: ProgramOption,
 ): Promise<string> => {
   const ai = new GoogleGenAI({ apiKey });
   const poemText = poem.content.join(" ");
@@ -175,19 +265,26 @@ export const generatePoemImage = async (
 
     Visual style: ${customStyle}.
     Oracle poem meaning: "${poemText}".
+    ${selectedProgram ? `Chosen first-choice program: ${selectedProgram.firstChoiceLabel}.` : ""}
+    ${selectedProgram ? `Program fit keywords: ${selectedProgram.summary}.` : ""}
+    ${selectedProgram ? `Interview and personality focus: ${selectedProgram.interviewFocus}.` : ""}
     Program recommendation from the interpretation:
     ${recommendation}
 
     Combine three visual ideas:
     1. The symbolic meaning of the oracle poem.
-    2. The recommended ISU department/program and its career atmosphere.
+    2. ${selectedProgram ? `The chosen program "${selectedProgram.firstChoiceLabel}" and its interview/career atmosphere.` : "The recommended ISU department/program and its career atmosphere."}
     3. Thai-Taiwan cultural bridge: warm Thai visual rhythm + Kaohsiung/Taiwan academic future.
+
+    ${selectedProgram ? `Specific visual direction for this program: ${selectedProgram.imageDirection}.` : ""}
 
     Composition:
     - Vertical 3:4 poster/card.
     - Luxurious but youthful recruitment energy.
     - Sacred oracle feeling, not horror.
     - Rainbow-mystic palette: indigo, violet, magenta, gold, cyan, emerald, with warm tropical accents. Keep depth so it still feels mysterious, not cartoonish.
+    - Absolutely avoid photorealism, realistic camera rendering, documentary look, or real human photo style.
+    - Prefer illustration, collage, graphic poster, painterly, symbolic, editorial, or fantasy-art direction.
 
     Logo rule (the ONLY allowed text-like element):
     - Incorporate the attached logo.webp as an official visual element — preserve it exactly as provided, do not redraw, restyle or retype it.

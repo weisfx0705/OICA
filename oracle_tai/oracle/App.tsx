@@ -143,12 +143,12 @@ const App: React.FC = () => {
       [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
     }
 
-    // Tiangan (10) and Dizhi (12)
-    const TIANGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
-    const DIZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
-    const CARD_OPTIONS = [...TIANGAN, ...DIZHI]; // Total 22
+    // 22 張牌統一改成英文字母序列 A-V
+    const CARD_OPTIONS = Array.from({ length: 22 }, (_, i) =>
+      String.fromCharCode(65 + i)
+    );
 
-    // 取前 22 個不重複的數字配對給 Tiangan/Dizhi
+    // 取前 22 個不重複的數字配對給字母牌
     const seeds: RandomSeed[] = Array.from({ length: 22 }, (_, i) => ({
       letter: CARD_OPTIONS[i],
       number: numbers[i]

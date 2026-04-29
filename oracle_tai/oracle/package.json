@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "node scripts/build-static.mjs",
+    "build:index2": "node scripts/build-index2.mjs",
     "mirror": "vite build --watch",
     "preview": "vite preview"
   },
