@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISU Graduation Oracle</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Cinzel:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --rose: #ff7aa2;
+            --peach: #ffb86b;
+            --sun: #ffe66d;
+            --mint: #7cf2bd;
+            --sky: #69d7ff;
+            --lilac: #c69cff;
+            --ink: #16211f;
+            --cream: #fff7df;
+        }
+
+        body {
+            font-family: 'Source Serif 4', Georgia, serif;
+            background-color: #11201d;
+            color: var(--cream);
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-family: 'Cinzel', 'Source Serif 4', Georgia, serif;
+        }
+
+        h2,
+        .font-black,
+        button {
+            font-family: 'Baloo 2', 'Source Serif 4', Georgia, serif;
+        }
+
+        .mystic-gradient {
+            background:
+                linear-gradient(115deg, rgba(255, 122, 162, 0.20), transparent 28%),
+                linear-gradient(145deg, transparent 12%, rgba(255, 230, 109, 0.18) 26%, transparent 43%),
+                linear-gradient(205deg, transparent 14%, rgba(105, 215, 255, 0.18) 33%, transparent 52%),
+                linear-gradient(255deg, rgba(198, 156, 255, 0.18), transparent 34%),
+                linear-gradient(180deg, #10231f 0%, #17362f 46%, #1b2a37 100%);
+            background-attachment: fixed;
+        }
+
+        .mystic-gradient::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.22;
+            background-image:
+                linear-gradient(135deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+                linear-gradient(45deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 36px 36px;
+            mask-image: linear-gradient(to bottom, black, transparent 82%);
+        }
+
+        .rainbow-title {
+            background: linear-gradient(90deg, var(--rose), var(--peach), var(--sun), var(--mint), var(--sky), var(--lilac), var(--rose));
+            background-size: 220% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow-flow 9s linear infinite;
+            filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.28));
+        }
+
+        .rainbow-shell,
+        .rainbow-panel {
+            position: relative;
+            isolation: isolate;
+        }
+
+        .rainbow-shell::before,
+        .rainbow-panel::before {
+            content: "";
+            position: absolute;
+            inset: -2px;
+            z-index: -1;
+            border-radius: inherit;
+            background: linear-gradient(120deg, var(--rose), var(--peach), var(--sun), var(--mint), var(--sky), var(--lilac), var(--rose));
+            background-size: 240% 240%;
+            animation: rainbow-flow 10s linear infinite;
+        }
+
+        .rainbow-shell::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            z-index: -1;
+            border-radius: calc(2rem - 4px);
+            background: rgba(16, 28, 25, 0.96);
+        }
+
+        .rainbow-panel::after {
+            content: "";
+            position: absolute;
+            inset: 2px;
+            z-index: -1;
+            border-radius: inherit;
+            background: rgba(18, 31, 28, 0.94);
+        }
+
+        .soft-confetti {
+            background-image:
+                linear-gradient(90deg, rgba(255, 122, 162, 0.12) 0 10px, transparent 10px 24px),
+                linear-gradient(90deg, rgba(255, 230, 109, 0.10) 0 8px, transparent 8px 28px),
+                linear-gradient(90deg, rgba(124, 242, 189, 0.12) 0 12px, transparent 12px 30px),
+                linear-gradient(90deg, rgba(105, 215, 255, 0.12) 0 9px, transparent 9px 26px);
+            background-size: 180px 12px, 220px 10px, 200px 14px, 240px 12px;
+            background-position: 0 0, 32px 24px, 70px 48px, 118px 72px;
+        }
+
+        @keyframes rainbow-flow {
+            to {
+                background-position: 220% center;
+            }
+        }
+
+        .interpretation-content h2 {
+            color: var(--sun);
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            margin-top: 1.75rem;
+            margin-bottom: 0.85rem;
+            border-left: 4px solid var(--sky);
+            padding-left: 0.9rem;
+        }
+
+        .interpretation-content h3 {
+            color: var(--mint);
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .interpretation-content p {
+            margin-bottom: 1rem;
+            line-height: 1.85;
+        }
+
+        .interpretation-content strong {
+            color: var(--sun);
+        }
+    </style>
+    <script type="module" src="/index.tsx"></script>
+</head>
+
+<body class="mystic-gradient min-h-screen">
+    <div id="root" class="relative z-10"></div>
+</body>
+
+</html>

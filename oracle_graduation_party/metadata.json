@@ -1,0 +1,7 @@
+{
+  "name": "ISU Graduation Oracle",
+  "description": "An English Guanyin oracle game for I-Shou University international graduates, with future-facing readings, TTS, and AI blessing-card generation.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
