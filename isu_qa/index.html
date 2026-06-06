@@ -47,11 +47,18 @@
   }
 
   /* ========== LANGUAGE SWITCHER ========== */
-  .lang-switcher {
+  /* Top-right control cluster: language switcher + AI settings */
+  .top-controls {
     position: fixed;
     top: 1.5rem;
     right: 1.5rem;
     z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .lang-switcher {
     display: flex;
     gap: 0.5rem;
     background: rgba(10, 22, 40, 0.6);
@@ -882,11 +889,13 @@
     .q-text { font-size: 0.85rem; }
     .a-text { font-size: 0.85rem; }
 
-    .lang-switcher { 
-      top: auto; 
-      bottom: 2rem; 
-      right: 1.5rem; 
+    .top-controls {
+      top: auto;
+      bottom: 1.5rem;
+      right: 1.5rem;
       left: auto;
+    }
+    .lang-switcher {
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
     }
     .lang-reminder {
@@ -915,15 +924,190 @@
     .footer-links { gap: 1rem; }
   }
 
+  /* ========== AI SETTINGS BUTTON ========== */
+  .settings-btn {
+    position: relative;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: rgba(10, 22, 40, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: var(--isu-gold);
+    cursor: pointer;
+    font-size: 1.05rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s, color 0.2s;
+  }
+  .settings-btn:hover { color: var(--isu-gold-light); transform: rotate(75deg); }
+  .settings-btn .key-dot {
+    position: absolute; top: 1px; right: 1px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #e74c3c; border: 2px solid var(--isu-navy);
+    transition: background 0.3s;
+  }
+  .settings-btn.has-key .key-dot { background: #2ecc71; }
+
+  /* ========== MODAL (settings) ========== */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(5, 12, 24, 0.75);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-card {
+    background: #fff; color: var(--text-dark);
+    border-radius: 18px; width: 100%; max-width: 440px;
+    padding: 2rem;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    border-top: 4px solid var(--isu-gold);
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.25s;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-overlay.open .modal-card { transform: translateY(0) scale(1); }
+  .modal-title {
+    font-family: 'Noto Serif TC', serif; font-size: 1.3rem; font-weight: 700;
+    margin-bottom: 0.3rem; color: var(--isu-navy);
+  }
+  .modal-sub { font-size: 0.8rem; color: var(--text-soft); margin-bottom: 1rem; line-height: 1.6; }
+  .modal-label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-mid); margin: 0.9rem 0 0.4rem; }
+  .modal-input, .modal-select {
+    width: 100%; padding: 0.75rem 0.9rem;
+    border: 2px solid #e3e8f0; border-radius: 10px;
+    font-size: 0.9rem; font-family: 'Noto Sans TC', sans-serif; color: var(--text-dark);
+    outline: none; transition: border 0.2s; background: #fff;
+  }
+  .modal-input:focus, .modal-select:focus { border-color: var(--isu-gold); }
+  .modal-hint { font-size: 0.72rem; color: var(--text-soft); margin-top: 0.4rem; line-height: 1.5; }
+  .modal-hint a { color: var(--isu-blue); font-weight: 600; }
+  .modal-actions { display: flex; gap: 0.7rem; margin-top: 1.6rem; }
+  .btn {
+    flex: 1; padding: 0.8rem; border-radius: 10px; border: none; cursor: pointer;
+    font-size: 0.9rem; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; transition: all 0.2s;
+  }
+  .btn-primary { background: var(--isu-navy); color: #fff; }
+  .btn-primary:hover { background: var(--isu-blue); }
+  .btn-ghost { background: #f0f3f9; color: var(--text-mid); }
+  .btn-ghost:hover { background: #e3e8f0; }
+
+  /* ========== AI LAUNCHER (FAB) ========== */
+  .ai-fab {
+    position: fixed; bottom: 2rem; left: 2rem; z-index: 999;
+    display: flex; align-items: center; gap: 0.55rem;
+    padding: 0.85rem 1.4rem; border-radius: 100px; border: none;
+    background: linear-gradient(135deg, var(--isu-blue), var(--isu-navy));
+    color: #fff; font-family: 'Noto Sans TC', sans-serif; font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; box-shadow: 0 10px 30px rgba(0, 56, 147, 0.45);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .ai-fab:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0, 56, 147, 0.55); }
+  .ai-fab .spark { font-size: 1.1rem; animation: pulse-dot 2.5s infinite; }
+
+  /* ========== CHAT DRAWER ========== */
+  .chat-drawer {
+    position: fixed; top: 0; right: 0; z-index: 1500;
+    width: 420px; max-width: 100vw; height: 100%;
+    background: var(--isu-light);
+    display: flex; flex-direction: column;
+    box-shadow: -10px 0 50px rgba(0, 0, 0, 0.35);
+    transform: translateX(105%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .chat-drawer.open { transform: translateX(0); }
+  .chat-header {
+    background: var(--isu-navy); color: #fff; padding: 1.1rem 1.3rem;
+    display: flex; align-items: center; gap: 0.7rem;
+    border-bottom: 3px solid var(--isu-gold);
+  }
+  .chat-header .ch-icon { font-size: 1.3rem; }
+  .chat-header .ch-title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 1.05rem; }
+  .chat-header .ch-sub { font-size: 0.66rem; color: rgba(255, 255, 255, 0.55); font-family: 'Space Mono', monospace; margin-top: 1px; }
+  .chat-close { background: none; border: none; color: rgba(255, 255, 255, 0.7); font-size: 1.6rem; cursor: pointer; line-height: 1; }
+  .chat-close:hover { color: #fff; }
+  .chat-body { flex: 1; overflow-y: auto; padding: 1.2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .chat-msg { display: flex; flex-direction: column; max-width: 92%; animation: card-in 0.3s ease both; }
+  .chat-msg.user { align-self: flex-end; align-items: flex-end; }
+  .chat-msg.bot { align-self: flex-start; align-items: flex-start; width: 100%; }
+  .bubble { padding: 0.8rem 1rem; border-radius: 14px; font-size: 0.9rem; line-height: 1.65; }
+  .chat-msg.user .bubble { background: var(--isu-blue); color: #fff; border-bottom-right-radius: 4px; white-space: pre-wrap; }
+  .chat-msg.bot .bubble {
+    background: #fff; color: var(--text-dark);
+    border: 1px solid rgba(0, 0, 0, 0.06); border-bottom-left-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  .chat-msg.bot .bubble > *:first-child { margin-top: 0; }
+  .chat-msg.bot .bubble > *:last-child { margin-bottom: 0; }
+  .chat-msg.bot .bubble p { margin: 0 0 0.6em; }
+  .chat-msg.bot .bubble ul, .chat-msg.bot .bubble ol { margin: 0.3em 0 0.6em; padding-left: 1.4em; }
+  .chat-msg.bot .bubble strong { color: var(--isu-navy); }
+  .chat-msg.bot .bubble a { color: var(--isu-blue); }
+  .bubble.thinking { color: var(--text-soft); font-style: italic; display: flex; align-items: center; gap: 0.5rem; }
+  .bubble.thinking .dots { display: inline-flex; gap: 3px; }
+  .bubble.thinking .dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--isu-gold); animation: think-bounce 1.2s infinite; }
+  .bubble.thinking .dots i:nth-child(2) { animation-delay: 0.2s; }
+  .bubble.thinking .dots i:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes think-bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-5px); opacity: 1; } }
+
+  .related-wrap { margin-top: 0.7rem; width: 100%; }
+  .related-label { font-size: 0.66rem; font-weight: 700; color: var(--text-soft); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.4rem; }
+  .related-chip {
+    display: block; width: 100%; text-align: left;
+    background: #fff; border: 1px solid rgba(0, 0, 0, 0.08); border-left: 3px solid var(--isu-gold);
+    border-radius: 8px; padding: 0.55rem 0.7rem; margin-bottom: 0.4rem;
+    font-size: 0.8rem; color: var(--text-mid); cursor: pointer; transition: all 0.2s;
+    font-family: inherit; line-height: 1.45;
+  }
+  .related-chip:hover { background: rgba(201, 162, 39, 0.08); color: var(--text-dark); transform: translateX(2px); }
+  .related-chip .rc-num { font-family: 'Space Mono', monospace; font-size: 0.64rem; color: var(--isu-blue); font-weight: 700; margin-right: 0.4rem; }
+
+  .chat-footer { padding: 0.9rem 1rem; border-top: 1px solid rgba(0, 0, 0, 0.08); background: #fff; }
+  .chat-suggest { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.7rem; }
+  .suggest-chip {
+    background: var(--isu-light); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 100px;
+    padding: 0.4rem 0.8rem; font-size: 0.73rem; color: var(--text-mid); cursor: pointer;
+    transition: all 0.2s; font-family: inherit;
+  }
+  .suggest-chip:hover { background: var(--isu-gold); color: var(--isu-navy); border-color: var(--isu-gold); }
+  .chat-input-row { display: flex; gap: 0.5rem; align-items: flex-end; }
+  .chat-input {
+    flex: 1; resize: none; border: 2px solid #e3e8f0; border-radius: 12px;
+    padding: 0.65rem 0.8rem; font-size: 0.9rem; font-family: 'Noto Sans TC', sans-serif;
+    outline: none; max-height: 120px; line-height: 1.4; color: var(--text-dark);
+  }
+  .chat-input:focus { border-color: var(--isu-gold); }
+  .chat-send {
+    width: 44px; height: 44px; border-radius: 12px; border: none;
+    background: var(--isu-navy); color: #fff; font-size: 1.1rem; cursor: pointer; flex-shrink: 0;
+    transition: background 0.2s;
+  }
+  .chat-send:hover { background: var(--isu-blue); }
+  .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .chat-disclaimer { font-size: 0.64rem; color: var(--text-soft); text-align: center; margin-top: 0.5rem; }
+
+  @media (max-width: 768px) {
+    .chat-drawer { width: 100%; }
+    .ai-fab { bottom: 1.5rem; left: 1.5rem; padding: 0.7rem 1.1rem; font-size: 0.82rem; }
+  }
+
 </style>
 </head>
 <body>
 
-<!-- Language Switcher -->
-<div class="lang-switcher">
-  <button class="lang-btn active" onclick="changeLanguage('zh')">繁中</button>
-  <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
-  <button class="lang-btn" onclick="changeLanguage('vi')">VN</button>
+<!-- Top-right controls: Language Switcher + AI Settings -->
+<div class="top-controls">
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="changeLanguage('zh')">繁中</button>
+    <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+    <button class="lang-btn" onclick="changeLanguage('vi')">VN</button>
+  </div>
+  <button class="settings-btn" id="settingsBtn" title="AI 設定 / Settings" aria-label="AI Settings">
+    ⚙️<span class="key-dot"></span>
+  </button>
 </div>
 
 <!-- Language Reminder -->
@@ -1020,6 +1204,61 @@
   <p id="ui-footerText">義守大學 · 國際及兩岸事務處 (OICA) · 本指南為參考用途，最終解釋以學校公告為準</p>
   <p style="margin-top:1rem; color:rgba(201, 162, 39, 0.5)">84001 高雄市燕巢區橫山路1號</p>
 </footer>
+
+<!-- ========== AI SETTINGS MODAL ========== -->
+<div class="modal-overlay" id="settingsOverlay">
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <div class="modal-title">⚙️ AI 設定 · Settings</div>
+    <div class="modal-sub" id="settingsSub">
+      設定 Google Gemini API 金鑰以啟用 AI 問答。金鑰僅儲存在你的瀏覽器 (localStorage)，不會上傳到任何伺服器。
+    </div>
+
+    <label class="modal-label" for="keyInput">Google Gemini API Key</label>
+    <input type="password" id="keyInput" class="modal-input" placeholder="AIza..." autocomplete="off" spellcheck="false">
+    <div class="modal-hint">
+      免費取得金鑰 · Get a free key:
+      <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio →</a>
+    </div>
+
+    <label class="modal-label" for="modelSelect">模型 · Model</label>
+    <select id="modelSelect" class="modal-select">
+      <option value="gemini-3-flash-preview">gemini-3-flash-preview（推薦 · 預設）</option>
+      <option value="gemini-3.5-flash">gemini-3.5-flash（穩定版）</option>
+      <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite（最省錢）</option>
+      <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+    </select>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="settingsCancel">取消 Cancel</button>
+      <button class="btn btn-primary" id="settingsSave">儲存 Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== AI CHAT ========== -->
+<button class="ai-fab" id="aiFab">
+  <span class="spark">✨</span><span id="aiFabLabel">問 AI</span>
+</button>
+
+<div class="chat-drawer" id="chatDrawer">
+  <div class="chat-header">
+    <span class="ch-icon">✨</span>
+    <div style="flex:1">
+      <div class="ch-title" id="chatTitle">AI 智能問答</div>
+      <div class="ch-sub" id="chatSub">由 Gemini 提供 · 答案來自官方 Q&amp;A</div>
+    </div>
+    <button class="chat-close" id="chatClose" aria-label="Close">×</button>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-footer">
+    <div class="chat-suggest" id="chatSuggest"></div>
+    <div class="chat-input-row">
+      <textarea class="chat-input" id="chatInput" rows="1" placeholder="輸入你的問題…"></textarea>
+      <button class="chat-send" id="chatSend" aria-label="Send">➤</button>
+    </div>
+    <div class="chat-disclaimer" id="chatDisclaimer">AI 回答僅供參考，最終以學校公告為準</div>
+  </div>
+</div>
 
 <!-- Back to Top -->
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
@@ -1949,6 +2188,362 @@ window.addEventListener('scroll', () => {
     heroBg.style.transform = `translateY(${scrollY * 0.4}px)`;
   }
 });
+</script>
+
+<!-- ========================================================== -->
+<!-- ==========  AI Q&A ASSISTANT (Google Gemini)  ============ -->
+<!-- ========================================================== -->
+<script>
+(function () {
+  'use strict';
+
+  const KEY_LS   = 'isu_gemini_key';
+  const MODEL_LS = 'isu_gemini_model';
+  const DEFAULT_MODEL = 'gemini-3-flash-preview';
+
+  // i18n strings for the AI UI
+  const T = {
+    fab:       { zh: '問 AI',            en: 'Ask AI',           vi: 'Hỏi AI' },
+    chatTitle: { zh: 'AI 智能問答',       en: 'AI Assistant',     vi: 'Trợ lý AI' },
+    chatSub:   { zh: '由 Gemini 提供 · 答案來自官方 Q&A', en: 'Powered by Gemini · From official Q&A', vi: 'Bởi Gemini · Từ Q&A chính thức' },
+    placeholder: { zh: '輸入你的問題…（例如：居留證要多久內辦理？）', en: 'Type your question…', vi: 'Nhập câu hỏi của bạn…' },
+    related:   { zh: '相關題目',          en: 'Related questions', vi: 'Câu hỏi liên quan' },
+    disclaimer:{ zh: 'AI 回答僅供參考，最終以學校公告為準', en: 'AI answers are for reference only; official announcements prevail', vi: 'Câu trả lời AI chỉ để tham khảo' },
+    err:       { zh: '❌ 發生錯誤：',      en: '❌ Error: ',        vi: '❌ Lỗi: ' },
+    noKey:     {
+      zh: '⚠️ 尚未設定 API 金鑰。請點右上角的 ⚙️ 按鈕，輸入你的 Google Gemini API Key 即可開始使用。',
+      en: '⚠️ No API key set. Click the ⚙️ button at the top-right and enter your Google Gemini API key to begin.',
+      vi: '⚠️ Chưa có API key. Nhấn nút ⚙️ ở góc trên bên phải và nhập Google Gemini API key của bạn.'
+    },
+    welcome: {
+      zh: '你好！我是義守大學國際處 (OICA) 的 AI 助理 👋\n\n我可以根據**官方 Q&A** 回答你關於簽證、獎學金、宿舍、健保、選課、打工等問題。請問有什麼想了解的嗎？',
+      en: "Hi! I'm the ISU OICA AI assistant 👋\n\nAsk me anything about visas, scholarships, dorms, insurance, course selection or work permits — my answers come from the **official Q&A**.",
+      vi: 'Xin chào! Tôi là trợ lý AI của Văn phòng Quốc tế ISU (OICA) 👋\n\nHãy hỏi tôi về visa, học bổng, ký túc xá, bảo hiểm, chọn môn hoặc giấy phép làm việc — câu trả lời đến từ **Q&A chính thức**.'
+    },
+    suggests: {
+      zh: ['居留證要多久內辦理？', '新生獎學金有多少？', '可以打工嗎？', '宿舍可以開伙嗎？'],
+      en: ['How soon must I apply for an ARC?', 'How much is the freshman scholarship?', 'Can I work part-time?', 'Can I cook in the dorm?'],
+      vi: ['Khi nào phải xin ARC?', 'Học bổng tân sinh viên bao nhiêu?', 'Được làm thêm không?', 'Nấu ăn trong KTX được không?']
+    }
+  };
+
+  const lang = () => (typeof currentLang !== 'undefined' ? currentLang : 'zh');
+
+  // ---- element refs ----
+  const settingsBtn     = document.getElementById('settingsBtn');
+  const settingsOverlay = document.getElementById('settingsOverlay');
+  const keyInput        = document.getElementById('keyInput');
+  const modelSelect     = document.getElementById('modelSelect');
+  const aiFab           = document.getElementById('aiFab');
+  const chatDrawer      = document.getElementById('chatDrawer');
+  const chatBody        = document.getElementById('chatBody');
+  const chatInput       = document.getElementById('chatInput');
+  const chatSend        = document.getElementById('chatSend');
+  const chatSuggest     = document.getElementById('chatSuggest');
+
+  // ---- state ----
+  let history = [];        // [{role:'user'|'model', text}]
+  let sending = false;
+  let welcomed = false;
+
+  // ---- settings helpers ----
+  const getKey   = () => (localStorage.getItem(KEY_LS) || '').trim();
+  const getModel = () => localStorage.getItem(MODEL_LS) || DEFAULT_MODEL;
+
+  function updateKeyDot() {
+    settingsBtn.classList.toggle('has-key', !!getKey());
+  }
+
+  function openSettings() {
+    keyInput.value = getKey();
+    modelSelect.value = getModel();
+    settingsOverlay.classList.add('open');
+    setTimeout(() => keyInput.focus(), 200);
+  }
+  function closeSettings() { settingsOverlay.classList.remove('open'); }
+  function saveSettings() {
+    const k = keyInput.value.trim();
+    const m = modelSelect.value;
+    if (k) localStorage.setItem(KEY_LS, k); else localStorage.removeItem(KEY_LS);
+    localStorage.setItem(MODEL_LS, m);
+    updateKeyDot();
+    closeSettings();
+  }
+
+  settingsBtn.addEventListener('click', openSettings);
+  document.getElementById('settingsSave').addEventListener('click', saveSettings);
+  document.getElementById('settingsCancel').addEventListener('click', closeSettings);
+  settingsOverlay.addEventListener('click', (e) => { if (e.target === settingsOverlay) closeSettings(); });
+
+  // ---- knowledge base (built from the live sheet-synced qaData) ----
+  function buildKnowledgeBase() {
+    return qaData.map((it) => {
+      const n = it.num || ('Q' + (qaData.indexOf(it) + 1));
+      return `[${n}]\n` +
+        `Q_zh: ${it.q.zh || ''}\nQ_en: ${it.q.en || ''}\nQ_vi: ${it.q.vi || ''}\n` +
+        `A_zh: ${it.a.zh || ''}\nA_en: ${it.a.en || ''}\nA_vi: ${it.a.vi || ''}`;
+    }).join('\n\n');
+  }
+
+  function buildSystemPrompt() {
+    return [
+      'You are the AI assistant for I-Shou University (義守大學) Office of International and Cross-Strait Affairs (OICA), helping international and overseas students.',
+      '',
+      'RULES:',
+      '1. Answer the student\'s question using ONLY the knowledge base below. Do NOT invent facts, fees, dates, or rules that are not in it.',
+      '2. Reply in the SAME language as the student\'s latest question (Traditional Chinese / English / Vietnamese).',
+      '3. Be clear and concise. Summarize — do not just copy. Use markdown (bold, bullet lists) when it helps readability.',
+      '4. If the knowledge base does not cover the question, say so honestly and suggest emailing OICA at oia@isu.edu.tw. Do not guess.',
+      '5. In the "relatedNums" field, return the IDs (e.g. "Q03") of the 1–4 knowledge-base entries most relevant to your answer. Only use IDs that actually appear in the knowledge base. Return an empty array if none apply.',
+      '',
+      '===== KNOWLEDGE BASE =====',
+      buildKnowledgeBase()
+    ].join('\n');
+  }
+
+  // ---- Gemini call (structured JSON output) ----
+  async function callGemini() {
+    const apiKey = getKey();
+    const model  = getModel();
+    const contents = history.slice(-8).map((m) => ({
+      role: m.role === 'model' ? 'model' : 'user',
+      parts: [{ text: m.text }]
+    }));
+
+    const body = {
+      system_instruction: { parts: [{ text: buildSystemPrompt() }] },
+      contents,
+      generationConfig: {
+        temperature: 0.3,
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: 'OBJECT',
+          properties: {
+            answer:      { type: 'STRING' },
+            relatedNums: { type: 'ARRAY', items: { type: 'STRING' } }
+          },
+          required: ['answer', 'relatedNums']
+        }
+      }
+    };
+
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
+      encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey);
+
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+
+    if (!res.ok) {
+      let msg = 'HTTP ' + res.status;
+      try { const ej = await res.json(); if (ej.error && ej.error.message) msg = ej.error.message; } catch (_) {}
+      throw new Error(msg);
+    }
+
+    const data = await res.json();
+    const cand = data.candidates && data.candidates[0];
+    if (!cand || !cand.content || !cand.content.parts) {
+      const fb = data.promptFeedback && data.promptFeedback.blockReason;
+      throw new Error(fb ? ('Blocked: ' + fb) : 'No response from model');
+    }
+    const txt = cand.content.parts.map((p) => p.text || '').join('');
+    let parsed;
+    try { parsed = JSON.parse(txt); }
+    catch (_) { parsed = { answer: txt, relatedNums: [] }; }
+    return {
+      answer: parsed.answer || '',
+      relatedNums: Array.isArray(parsed.relatedNums) ? parsed.relatedNums : []
+    };
+  }
+
+  // ---- rendering ----
+  function scrollChatToBottom() { chatBody.scrollTop = chatBody.scrollHeight; }
+
+  function addUser(text) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg user';
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    b.textContent = text;
+    div.appendChild(b);
+    chatBody.appendChild(div);
+    scrollChatToBottom();
+  }
+
+  function addBot(markdown, relatedNums) {
+    const div = document.createElement('div');
+    div.className = 'chat-msg bot';
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    // reuse the page's markdown→HTML→sanitize pipeline
+    b.innerHTML = (typeof renderAnswer === 'function')
+      ? renderAnswer(markdown)
+      : String(markdown).replace(/</g, '&lt;');
+    div.appendChild(b);
+
+    if (relatedNums && relatedNums.length) {
+      const items = relatedNums
+        .map((n) => qaData.find((it) => (it.num || '').toLowerCase() === String(n).toLowerCase()))
+        .filter(Boolean);
+      if (items.length) {
+        const wrap = document.createElement('div');
+        wrap.className = 'related-wrap';
+        const lbl = document.createElement('div');
+        lbl.className = 'related-label';
+        lbl.textContent = T.related[lang()];
+        wrap.appendChild(lbl);
+        items.forEach((it) => {
+          const chip = document.createElement('button');
+          chip.className = 'related-chip';
+          const qText = it.q[lang()] || it.q.zh || '';
+          chip.innerHTML = '<span class="rc-num">' + (it.num || '') + '</span>' +
+            qText.replace(/</g, '&lt;');
+          chip.addEventListener('click', () => jumpToCard(it.num));
+          wrap.appendChild(chip);
+        });
+        div.appendChild(wrap);
+      }
+    }
+    chatBody.appendChild(div);
+    scrollChatToBottom();
+  }
+
+  function addThinking() {
+    const div = document.createElement('div');
+    div.className = 'chat-msg bot';
+    div.innerHTML = '<div class="bubble thinking">' +
+      '<span class="dots"><i></i><i></i><i></i></span></div>';
+    chatBody.appendChild(div);
+    scrollChatToBottom();
+    return div;
+  }
+
+  function jumpToCard(num) {
+    if (!num) return;
+    closeChat();
+    // clear filters so the target card is guaranteed visible
+    const allBtn = document.querySelector('.cat-btn[data-cat="all"]');
+    if (allBtn && typeof handleCatClick === 'function') handleCatClick(allBtn);
+    const si = document.getElementById('searchInput');
+    if (si) { si.value = ''; if (typeof filterCards === 'function') filterCards(); }
+
+    const sel = '.qa-card[data-num="' + (window.CSS && CSS.escape ? CSS.escape(num) : num) + '"]';
+    const card = document.querySelector(sel);
+    if (card) {
+      card.classList.remove('hidden');
+      card.classList.add('open');
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const prev = card.style.boxShadow;
+      card.style.boxShadow = '0 0 0 3px var(--isu-gold)';
+      setTimeout(() => { card.style.boxShadow = prev; }, 1700);
+    }
+  }
+
+  // ---- send flow ----
+  function setSending(v) {
+    sending = v;
+    chatSend.disabled = v;
+  }
+
+  async function send(text) {
+    text = (text || '').trim();
+    if (!text || sending) return;
+
+    if (!getKey()) {
+      addUser(text);
+      addBot(T.noKey[lang()], []);
+      return;
+    }
+
+    hideSuggests();
+    addUser(text);
+    history.push({ role: 'user', text });
+    chatInput.value = '';
+    autoGrow();
+
+    const thinkingEl = addThinking();
+    setSending(true);
+    try {
+      const result = await callGemini();
+      thinkingEl.remove();
+      addBot(result.answer, result.relatedNums);
+      history.push({ role: 'model', text: result.answer });
+    } catch (e) {
+      thinkingEl.remove();
+      addBot(T.err[lang()] + (e && e.message ? e.message : e), []);
+    } finally {
+      setSending(false);
+      chatInput.focus();
+    }
+  }
+
+  // ---- suggestion chips ----
+  function renderSuggests() {
+    chatSuggest.innerHTML = '';
+    (T.suggests[lang()] || []).forEach((s) => {
+      const chip = document.createElement('button');
+      chip.className = 'suggest-chip';
+      chip.textContent = s;
+      chip.addEventListener('click', () => send(s));
+      chatSuggest.appendChild(chip);
+    });
+    chatSuggest.style.display = '';
+  }
+  function hideSuggests() { chatSuggest.style.display = 'none'; }
+
+  // ---- open / close chat ----
+  function openChat() {
+    refreshLabels();
+    chatDrawer.classList.add('open');
+    if (!welcomed) {
+      addBot(T.welcome[lang()], []);
+      renderSuggests();
+      welcomed = true;
+    }
+    setTimeout(() => chatInput.focus(), 350);
+  }
+  function closeChat() { chatDrawer.classList.remove('open'); }
+
+  aiFab.addEventListener('click', openChat);
+  document.getElementById('chatClose').addEventListener('click', closeChat);
+
+  // ---- input behaviour ----
+  function autoGrow() {
+    chatInput.style.height = 'auto';
+    chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+  }
+  chatInput.addEventListener('input', autoGrow);
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(chatInput.value); }
+  });
+  chatSend.addEventListener('click', () => send(chatInput.value));
+
+  // Esc closes whatever is open
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    if (settingsOverlay.classList.contains('open')) closeSettings();
+    else if (chatDrawer.classList.contains('open')) closeChat();
+  });
+
+  // ---- labels refresh on language change ----
+  function refreshLabels() {
+    document.getElementById('aiFabLabel').textContent = T.fab[lang()];
+    document.getElementById('chatTitle').textContent  = T.chatTitle[lang()];
+    document.getElementById('chatSub').textContent    = T.chatSub[lang()];
+    document.getElementById('chatDisclaimer').textContent = T.disclaimer[lang()];
+    chatInput.placeholder = T.placeholder[lang()];
+    if (welcomed && chatSuggest.style.display !== 'none') renderSuggests();
+  }
+  document.querySelectorAll('.lang-btn').forEach((b) =>
+    b.addEventListener('click', () => setTimeout(refreshLabels, 0))
+  );
+
+  // ---- init ----
+  updateKeyDot();
+  refreshLabels();
+})();
 </script>
 </body>
 </html>
