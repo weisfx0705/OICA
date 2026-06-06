@@ -454,6 +454,16 @@
     align-items: center;
   }
 
+  /* Reserve space on the right of the sticky category bar so its pills never
+     slide under the fixed language / settings controls. Only needed in the
+     width range where the two actually overlap; above ~1700px the centered
+     1200px bar clears the controls on its own. */
+  @media (min-width: 769px) and (max-width: 1700px) {
+    .categories-inner {
+      padding-right: 235px;
+    }
+  }
+
   .cat-btn {
     display: flex;
     align-items: center;
@@ -2049,6 +2059,11 @@ window.addEventListener('scroll', () => {
 
   const backTop = document.getElementById('backTop');
   backTop.classList.toggle('visible', scrollTop > 400);
+
+  // Hide the "select language" hint once the user scrolls into the content,
+  // so it never overlaps the sticky category bar.
+  const reminder = document.getElementById('langReminder');
+  if (reminder && scrollTop > 200) reminder.classList.add('hidden');
 });
 
 // ========== GOOGLE SHEET SYNC ==========
