@@ -2211,10 +2211,11 @@ window.addEventListener('scroll', () => {
     disclaimer:{ zh: 'AI 回答僅供參考，最終以學校公告為準', en: 'AI answers are for reference only; official announcements prevail', vi: 'Câu trả lời AI chỉ để tham khảo' },
     err:       { zh: '❌ 發生錯誤：',      en: '❌ Error: ',        vi: '❌ Lỗi: ' },
     noKey:     {
-      zh: '⚠️ 尚未設定 API 金鑰。請點右上角的 ⚙️ 按鈕，輸入你的 Google Gemini API Key 即可開始使用。',
-      en: '⚠️ No API key set. Click the ⚙️ button at the top-right and enter your Google Gemini API key to begin.',
-      vi: '⚠️ Chưa có API key. Nhấn nút ⚙️ ở góc trên bên phải và nhập Google Gemini API key của bạn.'
+      zh: '⚠️ 尚未設定 API 金鑰。請先設定你的 Google Gemini API Key 才能開始使用 AI 問答。',
+      en: '⚠️ No API key set. Please set your Google Gemini API key before using the AI assistant.',
+      vi: '⚠️ Chưa có API key. Vui lòng thiết lập Google Gemini API key trước khi sử dụng trợ lý AI.'
     },
+    setupBtn:  { zh: '⚙️ 前往設定金鑰', en: '⚙️ Set up API key', vi: '⚙️ Thiết lập API key' },
     welcome: {
       zh: '你好！我是義守大學國際處 (OICA) 的 AI 助理 👋\n\n我可以根據**官方 Q&A** 回答你關於簽證、獎學金、宿舍、健保、選課、打工等問題。請問有什麼想了解的嗎？',
       en: "Hi! I'm the ISU OICA AI assistant 👋\n\nAsk me anything about visas, scholarships, dorms, insurance, course selection or work permits — my answers come from the **official Q&A**.",
@@ -2267,6 +2268,7 @@ window.addEventListener('scroll', () => {
     if (k) localStorage.setItem(KEY_LS, k); else localStorage.removeItem(KEY_LS);
     localStorage.setItem(MODEL_LS, m);
     updateKeyDot();
+    ensureKeyWarning();
     closeSettings();
   }
 
@@ -2422,7 +2424,9 @@ window.addEventListener('scroll', () => {
 
   function jumpToCard(num) {
     if (!num) return;
-    closeChat();
+    // On mobile the drawer is full-screen, so close it to reveal the card.
+    // On desktop the drawer is a side panel — keep it open.
+    if (window.matchMedia('(max-width: 768px)').matches) closeChat();
     // clear filters so the target card is guaranteed visible
     const allBtn = document.querySelector('.cat-btn[data-cat="all"]');
     if (allBtn && typeof handleCatClick === 'function') handleCatClick(allBtn);
@@ -2502,7 +2506,40 @@ window.addEventListener('scroll', () => {
       renderSuggests();
       welcomed = true;
     }
+    ensureKeyWarning();
     setTimeout(() => chatInput.focus(), 350);
+  }
+
+  // Persistent warning shown whenever no API key is set
+  function ensureKeyWarning() {
+    const existing = document.getElementById('keyWarn');
+    if (getKey()) { if (existing) existing.remove(); return; }
+    if (existing) {            // refresh text (e.g. after language change)
+      existing.querySelector('.kw-text').textContent = T.noKey[lang()];
+      existing.querySelector('.kw-btn').textContent  = T.setupBtn[lang()];
+      return;
+    }
+    const div = document.createElement('div');
+    div.id = 'keyWarn';
+    div.className = 'chat-msg bot';
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    b.style.borderLeft = '3px solid #e74c3c';
+    const txt = document.createElement('div');
+    txt.className = 'kw-text';
+    txt.textContent = T.noKey[lang()];
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-primary kw-btn';
+    btn.style.marginTop = '0.7rem';
+    btn.style.width = '100%';
+    btn.style.flex = 'none';
+    btn.textContent = T.setupBtn[lang()];
+    btn.addEventListener('click', openSettings);
+    b.appendChild(txt);
+    b.appendChild(btn);
+    div.appendChild(b);
+    chatBody.appendChild(div);
+    scrollChatToBottom();
   }
   function closeChat() { chatDrawer.classList.remove('open'); }
 
@@ -2535,6 +2572,7 @@ window.addEventListener('scroll', () => {
     document.getElementById('chatDisclaimer').textContent = T.disclaimer[lang()];
     chatInput.placeholder = T.placeholder[lang()];
     if (welcomed && chatSuggest.style.display !== 'none') renderSuggests();
+    if (document.getElementById('keyWarn')) ensureKeyWarning();
   }
   document.querySelectorAll('.lang-btn').forEach((b) =>
     b.addEventListener('click', () => setTimeout(refreshLabels, 0))
