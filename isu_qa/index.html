@@ -11,7 +11,6 @@
 <!-- Markdown rendering pipeline: marked → DOMPurify (XSS 防護) -->
 <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.5/dist/purify.min.js"></script>
-<script src="./config.js"></script>
 
 <style>
   :root {
@@ -48,7 +47,7 @@
   }
 
   /* ========== LANGUAGE SWITCHER ========== */
-  /* Top-right control cluster: language switcher */
+  /* Top-right control cluster: language switcher + AI settings */
   .top-controls {
     position: fixed;
     top: 1.5rem;
@@ -935,6 +934,68 @@
     .footer-links { gap: 1rem; }
   }
 
+  /* ========== AI SETTINGS BUTTON ========== */
+  .settings-btn {
+    position: relative;
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: rgba(10, 22, 40, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    color: var(--isu-gold);
+    cursor: pointer;
+    font-size: 1.05rem;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.4s, color 0.2s;
+  }
+  .settings-btn:hover { color: var(--isu-gold-light); transform: rotate(75deg); }
+  .settings-btn .key-dot {
+    position: absolute; top: 1px; right: 1px;
+    width: 9px; height: 9px; border-radius: 50%;
+    background: #e74c3c; border: 2px solid var(--isu-navy);
+    transition: background 0.3s;
+  }
+  .settings-btn.has-key .key-dot { background: #2ecc71; }
+
+  /* ========== MODAL (settings) ========== */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 2000;
+    background: rgba(5, 12, 24, 0.75);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1.5rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal-card {
+    background: #fff; color: var(--text-dark);
+    border-radius: 18px; width: 100%; max-width: 440px;
+    padding: 2rem;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+    border-top: 4px solid var(--isu-gold);
+    transform: translateY(20px) scale(0.97);
+    transition: transform 0.25s;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .modal-overlay.open .modal-card { transform: translateY(0) scale(1); }
+  .modal-title {
+    font-family: 'Noto Serif TC', serif; font-size: 1.3rem; font-weight: 700;
+    margin-bottom: 0.3rem; color: var(--isu-navy);
+  }
+  .modal-sub { font-size: 0.8rem; color: var(--text-soft); margin-bottom: 1rem; line-height: 1.6; }
+  .modal-label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--text-mid); margin: 0.9rem 0 0.4rem; }
+  .modal-input, .modal-select {
+    width: 100%; padding: 0.75rem 0.9rem;
+    border: 2px solid #e3e8f0; border-radius: 10px;
+    font-size: 0.9rem; font-family: 'Noto Sans TC', sans-serif; color: var(--text-dark);
+    outline: none; transition: border 0.2s; background: #fff;
+  }
+  .modal-input:focus, .modal-select:focus { border-color: var(--isu-gold); }
+  .modal-hint { font-size: 0.72rem; color: var(--text-soft); margin-top: 0.4rem; line-height: 1.5; }
+  .modal-hint a { color: var(--isu-blue); font-weight: 600; }
+  .modal-actions { display: flex; gap: 0.7rem; margin-top: 1.6rem; }
   .btn {
     flex: 1; padding: 0.8rem; border-radius: 10px; border: none; cursor: pointer;
     font-size: 0.9rem; font-weight: 700; font-family: 'Noto Sans TC', sans-serif; transition: all 0.2s;
@@ -1047,13 +1108,16 @@
 </head>
 <body>
 
-<!-- Top-right controls: Language Switcher -->
+<!-- Top-right controls: Language Switcher + AI Settings -->
 <div class="top-controls">
   <div class="lang-switcher">
     <button class="lang-btn active" onclick="changeLanguage('zh')">繁中</button>
     <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
     <button class="lang-btn" onclick="changeLanguage('vi')">VN</button>
   </div>
+  <button class="settings-btn" id="settingsBtn" title="AI 設定 / Settings" aria-label="AI Settings">
+    ⚙️<span class="key-dot"></span>
+  </button>
 </div>
 
 <!-- Language Reminder -->
@@ -1150,6 +1214,36 @@
   <p id="ui-footerText">義守大學 · 國際及兩岸事務處 (OICA) · 本指南為參考用途，最終解釋以學校公告為準</p>
   <p style="margin-top:1rem; color:rgba(201, 162, 39, 0.5)">84001 高雄市燕巢區橫山路1號</p>
 </footer>
+
+<!-- ========== AI SETTINGS MODAL ========== -->
+<div class="modal-overlay" id="settingsOverlay">
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <div class="modal-title">⚙️ AI 設定 · Settings</div>
+    <div class="modal-sub" id="settingsSub">
+      設定 Google Gemini API 金鑰以啟用 AI 問答。金鑰僅儲存在你的瀏覽器 (localStorage)，不會上傳到任何伺服器。
+    </div>
+
+    <label class="modal-label" for="keyInput">Google Gemini API Key</label>
+    <input type="password" id="keyInput" class="modal-input" placeholder="AIza..." autocomplete="off" spellcheck="false">
+    <div class="modal-hint">
+      免費取得金鑰 · Get a free key:
+      <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio →</a>
+    </div>
+
+    <label class="modal-label" for="modelSelect">模型 · Model</label>
+    <select id="modelSelect" class="modal-select">
+      <option value="gemini-3-flash-preview">gemini-3-flash-preview（推薦 · 預設）</option>
+      <option value="gemini-3.5-flash">gemini-3.5-flash（穩定版）</option>
+      <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite（最省錢）</option>
+      <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+    </select>
+
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="settingsCancel">取消 Cancel</button>
+      <button class="btn btn-primary" id="settingsSave">儲存 Save</button>
+    </div>
+  </div>
+</div>
 
 <!-- ========== AI CHAT ========== -->
 <button class="ai-fab" id="aiFab">
@@ -2118,16 +2212,9 @@ window.addEventListener('scroll', () => {
 (function () {
   'use strict';
 
-  function resolveAiEndpoint() {
-    const config = window.ISU_AI_CONFIG || {};
-    const endpoint = typeof config.apiEndpoint === 'string' ? config.apiEndpoint.trim() : '';
-    const isLocalhost = ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname);
-    if (isLocalhost && !config.forceRemote) return '/api/ai';
-    return endpoint || '/api/ai';
-  }
-
-  const AI_ENDPOINT = resolveAiEndpoint();
-  const isGithubPages = /\.github\.io$/i.test(window.location.hostname);
+  const KEY_LS   = 'isu_gemini_key';
+  const MODEL_LS = 'isu_gemini_model';
+  const DEFAULT_MODEL = 'gemini-3-flash-preview';
 
   // i18n strings for the AI UI
   const T = {
@@ -2138,11 +2225,12 @@ window.addEventListener('scroll', () => {
     related:   { zh: '相關題目',          en: 'Related questions', vi: 'Câu hỏi liên quan' },
     disclaimer:{ zh: 'AI 回答僅供參考，最終以學校公告為準', en: 'AI answers are for reference only; official announcements prevail', vi: 'Câu trả lời AI chỉ để tham khảo' },
     err:       { zh: '❌ 發生錯誤：',      en: '❌ Error: ',        vi: '❌ Lỗi: ' },
-    noEndpoint: {
-      zh: 'AI 服務尚未設定。若網站部署在 GitHub Pages，請在 config.js 設定 Cloudflare API endpoint。',
-      en: 'AI service is not configured. If this site is deployed on GitHub Pages, set the Cloudflare API endpoint in config.js.',
-      vi: 'Dịch vụ AI chưa được cấu hình. Nếu trang được triển khai trên GitHub Pages, hãy đặt Cloudflare API endpoint trong config.js.'
+    noKey:     {
+      zh: '⚠️ 尚未設定 API 金鑰。請先設定你的 Google Gemini API Key 才能開始使用 AI 問答。',
+      en: '⚠️ No API key set. Please set your Google Gemini API key before using the AI assistant.',
+      vi: '⚠️ Chưa có API key. Vui lòng thiết lập Google Gemini API key trước khi sử dụng trợ lý AI.'
     },
+    setupBtn:  { zh: '⚙️ 前往設定金鑰', en: '⚙️ Set up API key', vi: '⚙️ Thiết lập API key' },
     welcome: {
       zh: '你好！我是義守大學國際處 (OICA) 的 AI 助理 👋\n\n我可以根據**官方 Q&A** 回答你關於簽證、獎學金、宿舍、健保、選課、打工等問題。請問有什麼想了解的嗎？',
       en: "Hi! I'm the ISU OICA AI assistant 👋\n\nAsk me anything about visas, scholarships, dorms, insurance, course selection or work permits — my answers come from the **official Q&A**.",
@@ -2158,6 +2246,10 @@ window.addEventListener('scroll', () => {
   const lang = () => (typeof currentLang !== 'undefined' ? currentLang : 'zh');
 
   // ---- element refs ----
+  const settingsBtn     = document.getElementById('settingsBtn');
+  const settingsOverlay = document.getElementById('settingsOverlay');
+  const keyInput        = document.getElementById('keyInput');
+  const modelSelect     = document.getElementById('modelSelect');
   const aiFab           = document.getElementById('aiFab');
   const chatDrawer      = document.getElementById('chatDrawer');
   const chatBody        = document.getElementById('chatBody');
@@ -2169,6 +2261,36 @@ window.addEventListener('scroll', () => {
   let history = [];        // [{role:'user'|'model', text}]
   let sending = false;
   let welcomed = false;
+
+  // ---- settings helpers ----
+  const getKey   = () => (localStorage.getItem(KEY_LS) || '').trim();
+  const getModel = () => localStorage.getItem(MODEL_LS) || DEFAULT_MODEL;
+
+  function updateKeyDot() {
+    settingsBtn.classList.toggle('has-key', !!getKey());
+  }
+
+  function openSettings() {
+    keyInput.value = getKey();
+    modelSelect.value = getModel();
+    settingsOverlay.classList.add('open');
+    setTimeout(() => keyInput.focus(), 200);
+  }
+  function closeSettings() { settingsOverlay.classList.remove('open'); }
+  function saveSettings() {
+    const k = keyInput.value.trim();
+    const m = modelSelect.value;
+    if (k) localStorage.setItem(KEY_LS, k); else localStorage.removeItem(KEY_LS);
+    localStorage.setItem(MODEL_LS, m);
+    updateKeyDot();
+    ensureKeyWarning();
+    closeSettings();
+  }
+
+  settingsBtn.addEventListener('click', openSettings);
+  document.getElementById('settingsSave').addEventListener('click', saveSettings);
+  document.getElementById('settingsCancel').addEventListener('click', closeSettings);
+  settingsOverlay.addEventListener('click', (e) => { if (e.target === settingsOverlay) closeSettings(); });
 
   // ---- knowledge base (built from the live sheet-synced qaData) ----
   function buildKnowledgeBase() {
@@ -2198,21 +2320,34 @@ window.addEventListener('scroll', () => {
 
   // ---- Gemini call (structured JSON output) ----
   async function callGemini() {
-    if (isGithubPages && AI_ENDPOINT === '/api/ai') {
-      throw new Error(T.noEndpoint[lang()]);
-    }
-
+    const apiKey = getKey();
+    const model  = getModel();
     const contents = history.slice(-8).map((m) => ({
       role: m.role === 'model' ? 'model' : 'user',
       parts: [{ text: m.text }]
     }));
 
     const body = {
-      systemInstruction: buildSystemPrompt(),
-      contents
+      system_instruction: { parts: [{ text: buildSystemPrompt() }] },
+      contents,
+      generationConfig: {
+        temperature: 0.3,
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: 'OBJECT',
+          properties: {
+            answer:      { type: 'STRING' },
+            relatedNums: { type: 'ARRAY', items: { type: 'STRING' } }
+          },
+          required: ['answer', 'relatedNums']
+        }
+      }
     };
 
-    const res = await fetch(AI_ENDPOINT, {
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
+      encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey);
+
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -2220,11 +2355,7 @@ window.addEventListener('scroll', () => {
 
     if (!res.ok) {
       let msg = 'HTTP ' + res.status;
-      try {
-        const ej = await res.json();
-        if (typeof ej.error === 'string') msg = ej.error;
-        else if (ej.error && ej.error.message) msg = ej.error.message;
-      } catch (_) {}
+      try { const ej = await res.json(); if (ej.error && ej.error.message) msg = ej.error.message; } catch (_) {}
       throw new Error(msg);
     }
 
@@ -2339,6 +2470,12 @@ window.addEventListener('scroll', () => {
     text = (text || '').trim();
     if (!text || sending) return;
 
+    if (!getKey()) {
+      addUser(text);
+      addBot(T.noKey[lang()], []);
+      return;
+    }
+
     hideSuggests();
     addUser(text);
     history.push({ role: 'user', text });
@@ -2384,7 +2521,40 @@ window.addEventListener('scroll', () => {
       renderSuggests();
       welcomed = true;
     }
+    ensureKeyWarning();
     setTimeout(() => chatInput.focus(), 350);
+  }
+
+  // Persistent warning shown whenever no API key is set
+  function ensureKeyWarning() {
+    const existing = document.getElementById('keyWarn');
+    if (getKey()) { if (existing) existing.remove(); return; }
+    if (existing) {            // refresh text (e.g. after language change)
+      existing.querySelector('.kw-text').textContent = T.noKey[lang()];
+      existing.querySelector('.kw-btn').textContent  = T.setupBtn[lang()];
+      return;
+    }
+    const div = document.createElement('div');
+    div.id = 'keyWarn';
+    div.className = 'chat-msg bot';
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    b.style.borderLeft = '3px solid #e74c3c';
+    const txt = document.createElement('div');
+    txt.className = 'kw-text';
+    txt.textContent = T.noKey[lang()];
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-primary kw-btn';
+    btn.style.marginTop = '0.7rem';
+    btn.style.width = '100%';
+    btn.style.flex = 'none';
+    btn.textContent = T.setupBtn[lang()];
+    btn.addEventListener('click', openSettings);
+    b.appendChild(txt);
+    b.appendChild(btn);
+    div.appendChild(b);
+    chatBody.appendChild(div);
+    scrollChatToBottom();
   }
   function closeChat() { chatDrawer.classList.remove('open'); }
 
@@ -2405,7 +2575,8 @@ window.addEventListener('scroll', () => {
   // Esc closes whatever is open
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    if (chatDrawer.classList.contains('open')) closeChat();
+    if (settingsOverlay.classList.contains('open')) closeSettings();
+    else if (chatDrawer.classList.contains('open')) closeChat();
   });
 
   // ---- labels refresh on language change ----
@@ -2416,12 +2587,14 @@ window.addEventListener('scroll', () => {
     document.getElementById('chatDisclaimer').textContent = T.disclaimer[lang()];
     chatInput.placeholder = T.placeholder[lang()];
     if (welcomed && chatSuggest.style.display !== 'none') renderSuggests();
+    if (document.getElementById('keyWarn')) ensureKeyWarning();
   }
   document.querySelectorAll('.lang-btn').forEach((b) =>
     b.addEventListener('click', () => setTimeout(refreshLabels, 0))
   );
 
   // ---- init ----
+  updateKeyDot();
   refreshLabels();
 })();
 </script>
