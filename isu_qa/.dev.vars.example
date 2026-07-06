@@ -1,0 +1,6 @@
+GEMINI_API_KEY=replace-with-your-google-api-key
+# Optional. Defaults to gemini-2.5-flash when omitted.
+# GEMINI_MODEL=gemini-2.5-flash
+# Optional. Required when a GitHub Pages site calls a Cloudflare API endpoint.
+# Example: ALLOWED_ORIGINS=https://your-user.github.io
+# ALLOWED_ORIGINS=
