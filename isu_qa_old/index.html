@@ -1220,12 +1220,22 @@
   <div class="modal-card" role="dialog" aria-modal="true">
     <div class="modal-title">⚙️ AI 設定 · Settings</div>
     <div class="modal-sub" id="settingsSub">
-      AI 問答已透過 Cloudflare Worker 代理啟用。Google Gemini API 金鑰由 Cloudflare secret 管理，不會出現在瀏覽器或網頁原始碼中。
+      設定 Google Gemini API 金鑰以啟用 AI 問答。金鑰僅儲存在你的瀏覽器 (localStorage)，不會上傳到任何伺服器。
+    </div>
+
+    <label class="modal-label" for="keyInput">Google Gemini API Key</label>
+    <input type="password" id="keyInput" class="modal-input" placeholder="AIza..." autocomplete="off" spellcheck="false">
+    <div class="modal-hint">
+      免費取得金鑰 · Get a free key:
+      <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Google AI Studio →</a>
     </div>
 
     <label class="modal-label" for="modelSelect">模型 · Model</label>
-    <select id="modelSelect" class="modal-select" disabled>
-      <option value="gemini-3-flash-preview">gemini-3-flash-preview（Cloudflare proxy）</option>
+    <select id="modelSelect" class="modal-select">
+      <option value="gemini-3-flash-preview">gemini-3-flash-preview（推薦 · 預設）</option>
+      <option value="gemini-3.5-flash">gemini-3.5-flash（穩定版）</option>
+      <option value="gemini-3.1-flash-lite">gemini-3.1-flash-lite（最省錢）</option>
+      <option value="gemini-2.5-flash">gemini-2.5-flash</option>
     </select>
 
     <div class="modal-actions">
@@ -2202,8 +2212,9 @@ window.addEventListener('scroll', () => {
 (function () {
   'use strict';
 
+  const KEY_LS   = 'isu_gemini_key';
+  const MODEL_LS = 'isu_gemini_model';
   const DEFAULT_MODEL = 'gemini-3-flash-preview';
-  const GEMINI_PROXY_URL = 'https://isu-visitor-oracle.chiawei-studio.workers.dev/api/gemini-qa';
 
   // i18n strings for the AI UI
   const T = {
@@ -2215,11 +2226,11 @@ window.addEventListener('scroll', () => {
     disclaimer:{ zh: 'AI 回答僅供參考，最終以學校公告為準', en: 'AI answers are for reference only; official announcements prevail', vi: 'Câu trả lời AI chỉ để tham khảo' },
     err:       { zh: '❌ 發生錯誤：',      en: '❌ Error: ',        vi: '❌ Lỗi: ' },
     noKey:     {
-      zh: '⚠️ Cloudflare Gemini 代理暫時無法使用，請稍後再試。',
-      en: '⚠️ The Cloudflare Gemini proxy is temporarily unavailable. Please try again later.',
-      vi: '⚠️ Proxy Cloudflare Gemini tạm thời không khả dụng. Vui lòng thử lại sau.'
+      zh: '⚠️ 尚未設定 API 金鑰。請先設定你的 Google Gemini API Key 才能開始使用 AI 問答。',
+      en: '⚠️ No API key set. Please set your Google Gemini API key before using the AI assistant.',
+      vi: '⚠️ Chưa có API key. Vui lòng thiết lập Google Gemini API key trước khi sử dụng trợ lý AI.'
     },
-    setupBtn:  { zh: '⚙️ 查看 AI 設定', en: '⚙️ View AI settings', vi: '⚙️ Xem cài đặt AI' },
+    setupBtn:  { zh: '⚙️ 前往設定金鑰', en: '⚙️ Set up API key', vi: '⚙️ Thiết lập API key' },
     welcome: {
       zh: '你好！我是義守大學國際處 (OICA) 的 AI 助理 👋\n\n我可以根據**官方 Q&A** 回答你關於簽證、獎學金、宿舍、健保、選課、打工等問題。請問有什麼想了解的嗎？',
       en: "Hi! I'm the ISU OICA AI assistant 👋\n\nAsk me anything about visas, scholarships, dorms, insurance, course selection or work permits — my answers come from the **official Q&A**.",
@@ -2237,6 +2248,7 @@ window.addEventListener('scroll', () => {
   // ---- element refs ----
   const settingsBtn     = document.getElementById('settingsBtn');
   const settingsOverlay = document.getElementById('settingsOverlay');
+  const keyInput        = document.getElementById('keyInput');
   const modelSelect     = document.getElementById('modelSelect');
   const aiFab           = document.getElementById('aiFab');
   const chatDrawer      = document.getElementById('chatDrawer');
@@ -2251,19 +2263,27 @@ window.addEventListener('scroll', () => {
   let welcomed = false;
 
   // ---- settings helpers ----
-  const getModel = () => DEFAULT_MODEL;
+  const getKey   = () => (localStorage.getItem(KEY_LS) || '').trim();
+  const getModel = () => localStorage.getItem(MODEL_LS) || DEFAULT_MODEL;
 
   function updateKeyDot() {
-    settingsBtn.classList.add('has-key');
+    settingsBtn.classList.toggle('has-key', !!getKey());
   }
 
   function openSettings() {
+    keyInput.value = getKey();
     modelSelect.value = getModel();
     settingsOverlay.classList.add('open');
+    setTimeout(() => keyInput.focus(), 200);
   }
   function closeSettings() { settingsOverlay.classList.remove('open'); }
   function saveSettings() {
+    const k = keyInput.value.trim();
+    const m = modelSelect.value;
+    if (k) localStorage.setItem(KEY_LS, k); else localStorage.removeItem(KEY_LS);
+    localStorage.setItem(MODEL_LS, m);
     updateKeyDot();
+    ensureKeyWarning();
     closeSettings();
   }
 
@@ -2300,6 +2320,8 @@ window.addEventListener('scroll', () => {
 
   // ---- Gemini call (structured JSON output) ----
   async function callGemini() {
+    const apiKey = getKey();
+    const model  = getModel();
     const contents = history.slice(-8).map((m) => ({
       role: m.role === 'model' ? 'model' : 'user',
       parts: [{ text: m.text }]
@@ -2322,7 +2344,10 @@ window.addEventListener('scroll', () => {
       }
     };
 
-    const res = await fetch(GEMINI_PROXY_URL, {
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' +
+      encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(apiKey);
+
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -2445,6 +2470,12 @@ window.addEventListener('scroll', () => {
     text = (text || '').trim();
     if (!text || sending) return;
 
+    if (!getKey()) {
+      addUser(text);
+      addBot(T.noKey[lang()], []);
+      return;
+    }
+
     hideSuggests();
     addUser(text);
     history.push({ role: 'user', text });
@@ -2490,13 +2521,40 @@ window.addEventListener('scroll', () => {
       renderSuggests();
       welcomed = true;
     }
+    ensureKeyWarning();
     setTimeout(() => chatInput.focus(), 350);
   }
 
-  // API key is held by Cloudflare Worker secrets, so no browser warning is needed.
+  // Persistent warning shown whenever no API key is set
   function ensureKeyWarning() {
     const existing = document.getElementById('keyWarn');
-    if (existing) existing.remove();
+    if (getKey()) { if (existing) existing.remove(); return; }
+    if (existing) {            // refresh text (e.g. after language change)
+      existing.querySelector('.kw-text').textContent = T.noKey[lang()];
+      existing.querySelector('.kw-btn').textContent  = T.setupBtn[lang()];
+      return;
+    }
+    const div = document.createElement('div');
+    div.id = 'keyWarn';
+    div.className = 'chat-msg bot';
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    b.style.borderLeft = '3px solid #e74c3c';
+    const txt = document.createElement('div');
+    txt.className = 'kw-text';
+    txt.textContent = T.noKey[lang()];
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-primary kw-btn';
+    btn.style.marginTop = '0.7rem';
+    btn.style.width = '100%';
+    btn.style.flex = 'none';
+    btn.textContent = T.setupBtn[lang()];
+    btn.addEventListener('click', openSettings);
+    b.appendChild(txt);
+    b.appendChild(btn);
+    div.appendChild(b);
+    chatBody.appendChild(div);
+    scrollChatToBottom();
   }
   function closeChat() { chatDrawer.classList.remove('open'); }
 
