@@ -1,10 +1,14 @@
 # index2.html iframe 嵌入範例
 
-把 `src` 換成 GitHub Pages 上的 `index2.html` 網址即可。
+QA 精靈網址：
+
+```text
+https://weisfx0705.github.io/OICA/isu_qa/index2.html
+```
 
 ```html
 <iframe
-  src="https://YOUR_ACCOUNT.github.io/YOUR_REPO/index2.html"
+  src="https://weisfx0705.github.io/OICA/isu_qa/index2.html"
   width="420"
   height="680"
   style="border:0; width:420px; height:680px;"
@@ -18,7 +22,7 @@
 
 ```html
 <iframe
-  src="https://YOUR_ACCOUNT.github.io/YOUR_REPO/index2.html?lang=zh"
+  src="https://weisfx0705.github.io/OICA/isu_qa/index2.html?lang=zh"
   width="420"
   height="680"
   style="border:0; width:420px; height:680px;"
@@ -30,7 +34,7 @@ English：
 
 ```html
 <iframe
-  src="https://YOUR_ACCOUNT.github.io/YOUR_REPO/index2.html?lang=en"
+  src="https://weisfx0705.github.io/OICA/isu_qa/index2.html?lang=en"
   width="420"
   height="680"
   style="border:0; width:420px; height:680px;"
@@ -42,7 +46,7 @@ Tiếng Việt：
 
 ```html
 <iframe
-  src="https://YOUR_ACCOUNT.github.io/YOUR_REPO/index2.html?lang=vi"
+  src="https://weisfx0705.github.io/OICA/isu_qa/index2.html?lang=vi"
   width="420"
   height="680"
   style="border:0; width:420px; height:680px;"
@@ -56,7 +60,7 @@ Tiếng Việt：
 
 ```html
 <iframe
-  src="https://YOUR_ACCOUNT.github.io/YOUR_REPO/index2.html"
+  src="https://weisfx0705.github.io/OICA/isu_qa/index2.html?lang=zh"
   style="border:0; width:100%; height:680px; max-width:420px;"
   title="義守大學 OICA AI Assistant"
 ></iframe>

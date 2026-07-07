@@ -2106,6 +2106,30 @@ window.addEventListener('scroll', () => {
 // ========== GOOGLE SHEET SYNC ==========
 const SHEET_ID  = '1CAzt-c4FI1j6A_fvrXCaKtv49wnlHX-w';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+const SHEET_CACHE_KEY = 'isu-qa-sheet-cache-v1';
+const SHEET_CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
+
+function readCachedQAData() {
+  try {
+    const raw = localStorage.getItem(SHEET_CACHE_KEY);
+    if (!raw) return null;
+    const cached = JSON.parse(raw);
+    if (!cached || !Array.isArray(cached.data)) return null;
+    if (Date.now() - Number(cached.savedAt || 0) > SHEET_CACHE_MAX_AGE) return null;
+    return cached.data;
+  } catch (_) {
+    return null;
+  }
+}
+
+function writeCachedQAData(data) {
+  try {
+    localStorage.setItem(SHEET_CACHE_KEY, JSON.stringify({
+      savedAt: Date.now(),
+      data
+    }));
+  } catch (_) {}
+}
 
 // Map the first emoji in the 章節 text back to its category id (1~7)
 const EMOJI_TO_CAT = {};
@@ -2186,7 +2210,7 @@ function buildQAFromSheet(rows) {
 }
 
 async function fetchSheetData() {
-  const res = await fetch(SHEET_URL + '&_=' + Date.now(), { cache: 'no-store' });
+  const res = await fetch(SHEET_URL, { cache: 'no-store' });
   if (!res.ok) throw new Error('HTTP ' + res.status);
   const text = await res.text();
   return parseCSV(text);
@@ -2240,16 +2264,45 @@ function revealLinkedQuestion() {
   if (linkedNum) revealQuestionCard(linkedNum);
 }
 
+function refreshDataViews() {
+  const stat1 = document.querySelector('.stat-num[data-target]');
+  if (stat1) {
+    stat1.dataset.target = qaData.length;
+    if (stat1.dataset.animated) {
+      stat1.dataset.animated = 'done';
+      stat1.textContent = qaData.length;
+    }
+  }
+
+  renderCategories();
+  renderQA();
+  filterCards();
+  if (currentLang !== 'zh') changeLanguage(currentLang);
+  setTimeout(revealLinkedQuestion, 60);
+}
+
 // ========== INIT ==========
 async function init() {
-  setSyncStatus('loading', '⟳ 同步 Google Sheet 中…');
+  const cachedQA = readCachedQAData();
+  if (cachedQA && cachedQA.length > 0) {
+    qaData = cachedQA;
+    setSyncStatus('loading', `⟳ 已載入快取 ${qaData.length} 題，背景同步 Google Sheet 中…`);
+  } else {
+    setSyncStatus('loading', `⟳ 已載入內建 ${qaData.length} 題，背景同步 Google Sheet 中…`);
+  }
+
+  refreshDataViews();
+  createParticles();
+
   try {
     const rows = await fetchSheetData();
     const fresh = buildQAFromSheet(rows);
     if (fresh.length > 0) {
       qaData = fresh;
+      writeCachedQAData(fresh);
       const stamp = new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
       setSyncStatus('ok', `✓ 已同步 ${fresh.length} 題 · ${stamp}`);
+      refreshDataViews();
     } else {
       setSyncStatus('warn', '⚠ Google Sheet 無有效資料，顯示快取版本');
     }
@@ -2257,17 +2310,6 @@ async function init() {
     console.warn('Sheet fetch failed:', err);
     setSyncStatus('warn', '⚠ 無法連線 Google Sheet，顯示快取版本');
   }
-
-  // Sync hero "精選問題" counter target with actual sheet count
-  const stat1 = document.querySelector('.stat-num[data-target]');
-  if (stat1) stat1.dataset.target = qaData.length;
-
-  renderCategories();
-  renderQA();
-  createParticles();
-  filterCards();
-  if (currentLang !== 'zh') changeLanguage(currentLang);
-  setTimeout(revealLinkedQuestion, 120);
 
   // Drive counter animation once, now that data-target is correct.
   // Delay so hero transition is visible first.
