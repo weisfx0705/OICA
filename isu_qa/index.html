@@ -1097,7 +1097,7 @@
     background: #fff; border: 1px solid rgba(0, 0, 0, 0.08); border-left: 3px solid var(--isu-gold);
     border-radius: 8px; padding: 0.55rem 0.7rem; margin-bottom: 0.4rem;
     font-size: 0.8rem; color: var(--text-mid); cursor: pointer; transition: all 0.2s;
-    font-family: inherit; line-height: 1.45;
+    font-family: inherit; line-height: 1.45; text-decoration: none;
   }
   .related-chip:hover { background: rgba(201, 162, 39, 0.08); color: var(--text-dark); transform: translateX(2px); }
   .related-chip .rc-num { font-family: 'Space Mono', monospace; font-size: 0.64rem; color: var(--isu-blue); font-weight: 700; margin-right: 0.4rem; }
@@ -1781,7 +1781,15 @@ let qaData = [
 ];
 
 // ========== CONFIG ==========
-let currentLang = 'zh';
+const PAGE_LANGS = ['zh', 'en', 'vi'];
+let currentLang = (() => {
+  try {
+    const requestedLang = new URLSearchParams(window.location.search).get('lang');
+    return PAGE_LANGS.includes(requestedLang) ? requestedLang : 'zh';
+  } catch (_) {
+    return 'zh';
+  }
+})();
 
 // ========== LANGUAGE LOGIC ==========
 function changeLanguage(lang) {
@@ -2191,6 +2199,47 @@ function setSyncStatus(kind, message) {
   el.textContent = message;
 }
 
+function getLinkedQuestionNum() {
+  let raw = '';
+  try {
+    raw = decodeURIComponent((window.location.hash || '').replace(/^#/, '')).trim();
+    if (!raw) raw = (new URLSearchParams(window.location.search).get('q') || '').trim();
+  } catch (_) {}
+  if (!/^Q\d+$/i.test(raw)) return '';
+  return raw.toUpperCase();
+}
+
+function revealQuestionCard(num) {
+  if (!num) return false;
+
+  const allBtn = document.querySelector('.cat-btn[data-cat="all"]');
+  if (allBtn && typeof handleCatClick === 'function') handleCatClick(allBtn);
+
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.value = '';
+    if (typeof filterCards === 'function') filterCards();
+  }
+
+  const safeNum = window.CSS && CSS.escape ? CSS.escape(num) : num;
+  const card = document.querySelector('.qa-card[data-num="' + safeNum + '"]');
+  if (!card) return false;
+
+  card.classList.remove('hidden');
+  card.classList.add('open');
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  const prev = card.style.boxShadow;
+  card.style.boxShadow = '0 0 0 3px var(--isu-gold)';
+  setTimeout(() => { card.style.boxShadow = prev; }, 1800);
+  return true;
+}
+
+function revealLinkedQuestion() {
+  const linkedNum = getLinkedQuestionNum();
+  if (linkedNum) revealQuestionCard(linkedNum);
+}
+
 // ========== INIT ==========
 async function init() {
   setSyncStatus('loading', '⟳ 同步 Google Sheet 中…');
@@ -2217,12 +2266,16 @@ async function init() {
   renderQA();
   createParticles();
   filterCards();
+  if (currentLang !== 'zh') changeLanguage(currentLang);
+  setTimeout(revealLinkedQuestion, 120);
 
   // Drive counter animation once, now that data-target is correct.
   // Delay so hero transition is visible first.
   setTimeout(animateCounters, 400);
 }
 init();
+
+window.addEventListener('hashchange', () => setTimeout(revealLinkedQuestion, 0));
 
 // Hero background parallax
 window.addEventListener('scroll', () => {

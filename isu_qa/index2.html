@@ -1097,7 +1097,7 @@
     background: #fff; border: 1px solid rgba(0, 0, 0, 0.08); border-left: 3px solid var(--isu-gold);
     border-radius: 8px; padding: 0.55rem 0.7rem; margin-bottom: 0.4rem;
     font-size: 0.8rem; color: var(--text-mid); cursor: pointer; transition: all 0.2s;
-    font-family: inherit; line-height: 1.45;
+    font-family: inherit; line-height: 1.45; text-decoration: none;
   }
   .related-chip:hover { background: rgba(201, 162, 39, 0.08); color: var(--text-dark); transform: translateX(2px); }
   .related-chip .rc-num { font-family: 'Space Mono', monospace; font-size: 0.64rem; color: var(--isu-blue); font-weight: 700; margin-right: 0.4rem; }
@@ -2450,6 +2450,17 @@ window.addEventListener('scroll', () => {
   // ---- rendering ----
   function scrollChatToBottom() { chatBody.scrollTop = chatBody.scrollHeight; }
 
+  function isEmbedMode() {
+    return document.body.classList.contains('embed-mode');
+  }
+
+  function getQuestionUrl(num) {
+    const url = new URL('index.html', window.location.href);
+    url.searchParams.set('lang', lang());
+    url.hash = num || '';
+    return url.href;
+  }
+
   function addUser(text) {
     const div = document.createElement('div');
     div.className = 'chat-msg user';
@@ -2484,12 +2495,18 @@ window.addEventListener('scroll', () => {
         lbl.textContent = T.related[lang()];
         wrap.appendChild(lbl);
         items.forEach((it) => {
-          const chip = document.createElement('button');
+          const chip = document.createElement(isEmbedMode() ? 'a' : 'button');
           chip.className = 'related-chip';
           const qText = it.q[lang()] || it.q.zh || '';
           chip.innerHTML = '<span class="rc-num">' + (it.num || '') + '</span>' +
             qText.replace(/</g, '&lt;');
-          chip.addEventListener('click', () => jumpToCard(it.num));
+          if (isEmbedMode()) {
+            chip.href = getQuestionUrl(it.num);
+            chip.target = '_blank';
+            chip.rel = 'noopener noreferrer';
+          } else {
+            chip.addEventListener('click', () => jumpToCard(it.num));
+          }
           wrap.appendChild(chip);
         });
         div.appendChild(wrap);
