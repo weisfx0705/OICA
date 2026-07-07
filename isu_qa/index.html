@@ -2681,8 +2681,11 @@ window.addEventListener('scroll', () => {
     });
   }
 
-  function setChatLanguage(nextLang) {
+  function setChatLanguage(nextLang, options = {}) {
     if (!SUPPORTED_LANGS.includes(nextLang)) return;
+    if (options.syncPage && typeof changeLanguage === 'function' && pageLang() !== nextLang) {
+      changeLanguage(nextLang);
+    }
     chatLang = nextLang;
     refreshLabels();
     if (chatDrawer.classList.contains('open')) chatInput.focus();
@@ -2707,7 +2710,7 @@ window.addEventListener('scroll', () => {
     if (document.getElementById('keyWarn')) ensureKeyWarning();
   }
   chatLangButtons.forEach((button) =>
-    button.addEventListener('click', () => setChatLanguage(button.dataset.chatLang))
+    button.addEventListener('click', () => setChatLanguage(button.dataset.chatLang, { syncPage: true }))
   );
   document.querySelectorAll('.lang-btn').forEach((b) =>
     b.addEventListener('click', () => setTimeout(() => setChatLanguage(pageLang()), 0))
