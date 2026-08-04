@@ -1300,7 +1300,7 @@
 
     <label class="modal-label" for="modelSelect">模型 · Model</label>
     <select id="modelSelect" class="modal-select" disabled>
-      <option value="gemini-3-flash-preview">gemini-3-flash-preview（Cloudflare proxy）</option>
+      <option value="gemini-3.5-flash">gemini-3.5-flash（Cloudflare proxy）</option>
     </select>
 
     <div class="modal-actions">
@@ -2324,7 +2324,7 @@ window.addEventListener('scroll', () => {
 (function () {
   'use strict';
 
-  const DEFAULT_MODEL = 'gemini-3-flash-preview';
+  const DEFAULT_MODEL = 'gemini-3.5-flash';
   const GEMINI_PROXY_URL = 'https://isu-visitor-oracle.chiawei-studio.workers.dev/api/gemini-qa';
 
   // i18n strings for the AI UI
@@ -2411,11 +2411,12 @@ window.addEventListener('scroll', () => {
 
   // ---- knowledge base (built from the live sheet-synced qaData) ----
   function buildKnowledgeBase() {
+    const selectedLang = lang();
     return qaData.map((it) => {
       const n = it.num || ('Q' + (qaData.indexOf(it) + 1));
       return `[${n}]\n` +
-        `Q_zh: ${it.q.zh || ''}\nQ_en: ${it.q.en || ''}\nQ_vi: ${it.q.vi || ''}\n` +
-        `A_zh: ${it.a.zh || ''}\nA_en: ${it.a.en || ''}\nA_vi: ${it.a.vi || ''}`;
+        `Q_${selectedLang}: ${it.q[selectedLang] || ''}\n` +
+        `A_${selectedLang}: ${it.a[selectedLang] || ''}`;
     }).join('\n\n');
   }
 
@@ -2448,7 +2449,7 @@ window.addEventListener('scroll', () => {
       system_instruction: { parts: [{ text: buildSystemPrompt() }] },
       contents,
       generationConfig: {
-        temperature: 0.3,
+        thinkingConfig: { thinkingLevel: 'minimal' },
         responseMimeType: 'application/json',
         responseSchema: {
           type: 'OBJECT',
