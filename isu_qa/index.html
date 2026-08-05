@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
 <title id="docTitle">義守大學 ISU — 國際生・境外生 Q&A 實用指南</title>
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1132,12 +1132,14 @@
   .chat-disclaimer { font-size: 0.64rem; color: var(--text-soft); text-align: center; margin-top: 0.5rem; }
 
   @media (max-width: 768px) {
-    .chat-drawer { width: 100%; }
+    .chat-drawer { width: 100%; height: 100dvh; }
     .chat-footer {
       padding-right: max(0.75rem, env(safe-area-inset-right));
       padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
       padding-left: max(0.75rem, env(safe-area-inset-left));
     }
+    /* 16px prevents iOS from zooming the viewport when the textarea receives focus. */
+    .chat-input { font-size: 16px; }
     .ai-fab { bottom: 1.5rem; left: 1.5rem; padding: 0.7rem 1.1rem; font-size: 0.82rem; }
   }
 
