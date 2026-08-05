@@ -1102,7 +1102,10 @@
   .related-chip:hover { background: rgba(201, 162, 39, 0.08); color: var(--text-dark); transform: translateX(2px); }
   .related-chip .rc-num { font-family: 'Space Mono', monospace; font-size: 0.64rem; color: var(--isu-blue); font-weight: 700; margin-right: 0.4rem; }
 
-  .chat-footer { padding: 0.9rem 1rem; border-top: 1px solid rgba(0, 0, 0, 0.08); background: #fff; }
+  .chat-footer {
+    width: 100%; min-width: 0; padding: 0.9rem 1rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.08); background: #fff;
+  }
   .chat-suggest { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.7rem; }
   .suggest-chip {
     background: var(--isu-light); border: 1px solid rgba(0, 0, 0, 0.1); border-radius: 100px;
@@ -1110,16 +1113,18 @@
     transition: all 0.2s; font-family: inherit;
   }
   .suggest-chip:hover { background: var(--isu-gold); color: var(--isu-navy); border-color: var(--isu-gold); }
-  .chat-input-row { display: flex; gap: 0.5rem; align-items: flex-end; }
+  .chat-input-row { display: flex; width: 100%; min-width: 0; gap: 0.5rem; align-items: flex-end; }
   .chat-input {
-    flex: 1; resize: none; border: 2px solid #e3e8f0; border-radius: 12px;
+    flex: 1 1 0; width: 0; min-width: 0; resize: none;
+    border: 2px solid #e3e8f0; border-radius: 12px;
     padding: 0.65rem 0.8rem; font-size: 0.9rem; font-family: 'Noto Sans TC', sans-serif;
     outline: none; max-height: 120px; line-height: 1.4; color: var(--text-dark);
   }
   .chat-input:focus { border-color: var(--isu-gold); }
   .chat-send {
     width: 44px; height: 44px; border-radius: 12px; border: none;
-    background: var(--isu-navy); color: #fff; font-size: 1.1rem; cursor: pointer; flex-shrink: 0;
+    background: var(--isu-navy); color: #fff; font-size: 1.1rem; cursor: pointer;
+    flex: 0 0 44px;
     transition: background 0.2s;
   }
   .chat-send:hover { background: var(--isu-blue); }
@@ -1128,6 +1133,11 @@
 
   @media (max-width: 768px) {
     .chat-drawer { width: 100%; }
+    .chat-footer {
+      padding-right: max(0.75rem, env(safe-area-inset-right));
+      padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+      padding-left: max(0.75rem, env(safe-area-inset-left));
+    }
     .ai-fab { bottom: 1.5rem; left: 1.5rem; padding: 0.7rem 1.1rem; font-size: 0.82rem; }
   }
 
