@@ -825,36 +825,25 @@
     background: var(--isu-navy);
     color: rgba(255, 255, 255, 0.5);
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 2.75rem 2rem;
     font-size: 0.8rem;
     border-top: 3px solid var(--isu-gold);
   }
 
-  .footer strong { color: var(--isu-gold); }
-
-  .footer-logo {
-    font-family: 'Noto Serif TC', serif;
-    font-size: 1.5rem;
-    color: white;
-    margin-bottom: 0.5rem;
+  .footer-ai-warning {
+    max-width: 960px;
+    margin: 0 auto 1.25rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid rgba(201, 162, 39, 0.62);
+    border-left: 4px solid var(--isu-gold);
+    border-radius: 12px;
+    background: rgba(201, 162, 39, 0.1);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.88rem;
+    line-height: 1.75;
+    text-align: left;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
-
-  .footer-links {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin: 1.5rem 0;
-  }
-
-  .footer-links a {
-    color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
-    transition: color 0.2s;
-    font-size: 0.85rem;
-  }
-
-  .footer-links a:hover { color: var(--isu-gold); }
 
   /* ========== PROGRESS BAR ========== */
   .progress-bar {
@@ -931,8 +920,7 @@
       50% { transform: translateY(-8px); }
     }
 
-    .footer { padding: 3rem 1rem; }
-    .footer-links { gap: 1rem; }
+    .footer { padding: 2.25rem 1rem; }
   }
 
   /* ========== AI SETTINGS BUTTON ========== */
@@ -1129,7 +1117,17 @@
   }
   .chat-send:hover { background: var(--isu-blue); }
   .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
-  .chat-disclaimer { font-size: 0.64rem; color: var(--text-soft); text-align: center; margin-top: 0.5rem; }
+  .chat-disclaimer {
+    margin-top: 0.7rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid rgba(201, 162, 39, 0.55);
+    border-radius: 9px;
+    background: rgba(201, 162, 39, 0.1);
+    color: var(--text-mid);
+    font-size: 0.7rem;
+    line-height: 1.55;
+    text-align: left;
+  }
 
   @media (max-width: 768px) {
     .chat-drawer { width: 100%; height: 100dvh; }
@@ -1249,16 +1247,8 @@
 
 <!-- Footer -->
 <footer class="footer">
-  <div class="footer-logo">義守大學 I-Shou University</div>
-  <div class="footer-links">
-    <a href="https://www.isu.edu.tw" target="_blank">官方網站</a>
-    <a href="https://oia.isu.edu.tw" target="_blank">國際處 OICA</a>
-    <a href="mailto:oia@isu.edu.tw">oia@isu.edu.tw</a>
-    <a href="https://sis.isu.edu.tw" target="_blank">校務資訊系統</a>
-    <a href="https://moodle.isu.edu.tw" target="_blank">ISU Moodle</a>
-  </div>
+  <p class="footer-ai-warning" id="ui-aiTranslationWarning" role="note">⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。</p>
   <p id="ui-footerText">義守大學 · 國際及兩岸事務處 (OICA) · 本指南為參考用途，最終解釋以學校公告為準</p>
-  <p style="margin-top:1rem; color:rgba(201, 162, 39, 0.5)">84001 高雄市燕巢區橫山路1號</p>
 </footer>
 
 <!-- ========== AI SETTINGS MODAL ========== -->
@@ -1307,7 +1297,7 @@
       <textarea class="chat-input" id="chatInput" rows="1" placeholder="輸入你的問題…"></textarea>
       <button class="chat-send" id="chatSend" aria-label="Send">➤</button>
     </div>
-    <div class="chat-disclaimer" id="chatDisclaimer">AI 回答僅供參考，最終以學校公告為準</div>
+    <div class="chat-disclaimer" id="chatDisclaimer" role="note">⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。</div>
   </div>
 </div>
 
@@ -1362,6 +1352,11 @@ const uiStrings = {
     zh: "義守大學 · 國際及兩岸事務處 (OICA) · 本指南為參考用途，最終解釋以學校公告為準",
     en: "ISU · OICA · This guide is for reference only; official announcements prevail.",
     vi: "ISU · OICA · Hướng dẫn này chỉ mang tính tham khảo; các thông báo chính thức có hiệu lực cao nhất."
+  },
+  aiTranslationWarning: {
+    zh: "⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。",
+    en: "⚠️ Some multilingual content and AI Assistant replies on this website are translated with the assistance of artificial intelligence and are provided for reference only. In case of discrepancy, the original Chinese text and official university announcements shall prevail.",
+    vi: "⚠️ Một số nội dung đa ngôn ngữ và phản hồi của Trợ lý AI trên trang web này được dịch với sự hỗ trợ của trí tuệ nhân tạo và chỉ mang tính tham khảo. Nếu có khác biệt, vui lòng căn cứ vào bản tiếng Trung gốc và thông báo chính thức của nhà trường."
   }
 };
 
@@ -1827,6 +1822,7 @@ function changeLanguage(lang) {
   document.getElementById('searchInput').placeholder = uiStrings.searchPlaceholder[lang];
   document.getElementById('ui-noResults').textContent = uiStrings.noResults[lang];
   document.getElementById('ui-footerText').textContent = uiStrings.footerText[lang];
+  document.getElementById('ui-aiTranslationWarning').textContent = uiStrings.aiTranslationWarning[lang];
 
   // Re-render categories & QA
   renderCategories();
@@ -2358,7 +2354,11 @@ window.addEventListener('scroll', () => {
     chatSub:   { zh: '由 Gemini 提供 · 答案來自官方 Q&A', en: 'Powered by Gemini · From official Q&A', vi: 'Bởi Gemini · Từ Q&A chính thức' },
     placeholder: { zh: '輸入你的問題…（例如：居留證要多久內辦理？）', en: 'Type your question…', vi: 'Nhập câu hỏi của bạn…' },
     related:   { zh: '相關題目',          en: 'Related questions', vi: 'Câu hỏi liên quan' },
-    disclaimer:{ zh: 'AI 回答僅供參考，最終以學校公告為準', en: 'AI answers are for reference only; official announcements prevail', vi: 'Câu trả lời AI chỉ để tham khảo' },
+    disclaimer:{
+      zh: '⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。',
+      en: '⚠️ Some multilingual content and AI Assistant replies on this website are translated with the assistance of artificial intelligence and are provided for reference only. In case of discrepancy, the original Chinese text and official university announcements shall prevail.',
+      vi: '⚠️ Một số nội dung đa ngôn ngữ và phản hồi của Trợ lý AI trên trang web này được dịch với sự hỗ trợ của trí tuệ nhân tạo và chỉ mang tính tham khảo. Nếu có khác biệt, vui lòng căn cứ vào bản tiếng Trung gốc và thông báo chính thức của nhà trường.'
+    },
     err:       { zh: '❌ 發生錯誤：',      en: '❌ Error: ',        vi: '❌ Lỗi: ' },
     noKey:     {
       zh: '⚠️ Cloudflare Gemini 代理暫時無法使用，請稍後再試。',
