@@ -15,6 +15,8 @@
 
 <style>
   :root {
+    /* Measured at runtime by the fixed-footer sizer; fallback keeps layout sane before JS runs. */
+    --footer-h: 104px;
     --isu-navy: #0a1628;
     --isu-blue: #003893;
     --isu-gold: #c9a227;
@@ -37,7 +39,7 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-bottom: calc(var(--footer-h) + 1rem); }
 
   body {
     font-family: 'Noto Sans TC', sans-serif;
@@ -45,6 +47,7 @@
     color: var(--isu-cream);
     overflow-x: hidden;
     min-height: 100vh;
+    padding-bottom: var(--footer-h);
   }
 
   /* ========== LANGUAGE SWITCHER ========== */
@@ -798,7 +801,7 @@
   /* ========== BACK TO TOP ========== */
   .back-top {
     position: fixed;
-    bottom: 2rem;
+    bottom: calc(1.25rem + var(--footer-h));
     right: 2rem;
     width: 50px; height: 50px;
     background: var(--isu-gold);
@@ -821,28 +824,51 @@
   .back-top:hover { transform: translateY(-4px) scale(1.1); }
 
   /* ========== FOOTER ========== */
+  /* Pinned to the viewport so the AI-translation warning stays visible while scrolling. */
   .footer {
-    background: var(--isu-navy);
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 900;
+    background: rgba(10, 22, 40, 0.96);
+    backdrop-filter: blur(10px);
     color: rgba(255, 255, 255, 0.5);
-    text-align: center;
-    padding: 2.75rem 2rem;
+    padding: 0.85rem 2rem;
+    padding-bottom: calc(0.85rem + env(safe-area-inset-bottom));
     font-size: 0.8rem;
     border-top: 3px solid var(--isu-gold);
+    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem 1.5rem;
+    flex-wrap: wrap;
+    max-height: 45vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .footer-ai-warning {
-    max-width: 960px;
-    margin: 0 auto 1.25rem;
-    padding: 1rem 1.15rem;
+    flex: 1 1 460px;
+    max-width: 820px;
+    margin: 0;
+    padding: 0.6rem 0.9rem;
     border: 1px solid rgba(201, 162, 39, 0.62);
     border-left: 4px solid var(--isu-gold);
-    border-radius: 12px;
-    background: rgba(201, 162, 39, 0.1);
+    border-radius: 10px;
+    background: rgba(201, 162, 39, 0.12);
     color: rgba(255, 255, 255, 0.92);
-    font-size: 0.88rem;
-    line-height: 1.75;
+    font-size: 0.8rem;
+    line-height: 1.6;
     text-align: left;
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .footer #ui-footerText {
+    flex: 0 1 auto;
+    margin: 0;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    text-align: right;
   }
 
   /* ========== PROGRESS BAR ========== */
@@ -891,7 +917,7 @@
 
     .top-controls {
       top: auto;
-      bottom: 1.5rem;
+      bottom: calc(1rem + var(--footer-h));
       right: 1.5rem;
       left: auto;
     }
@@ -900,7 +926,7 @@
     }
     .lang-reminder {
       top: auto;
-      bottom: 5.5rem;
+      bottom: calc(5rem + var(--footer-h));
       right: 1.5rem;
       align-items: flex-end;
     }
@@ -920,7 +946,23 @@
       50% { transform: translateY(-8px); }
     }
 
-    .footer { padding: 2.25rem 1rem; }
+    .footer {
+      padding: 0.6rem 0.85rem;
+      padding-bottom: calc(0.6rem + env(safe-area-inset-bottom));
+      gap: 0.5rem;
+      max-height: 42vh;
+    }
+    .footer-ai-warning {
+      flex: 1 1 100%;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.72rem;
+      line-height: 1.55;
+    }
+    .footer #ui-footerText {
+      flex: 1 1 100%;
+      text-align: center;
+      font-size: 0.6rem;
+    }
   }
 
   /* ========== AI SETTINGS BUTTON ========== */
@@ -996,7 +1038,7 @@
 
   /* ========== AI LAUNCHER (FAB) ========== */
   .ai-fab {
-    position: fixed; bottom: 2rem; left: 2rem; z-index: 999;
+    position: fixed; bottom: calc(1.25rem + var(--footer-h)); left: 2rem; z-index: 999;
     display: flex; align-items: center; gap: 0.55rem;
     padding: 0.85rem 1.4rem; border-radius: 100px; border: none;
     background: linear-gradient(135deg, var(--isu-blue), var(--isu-navy));
@@ -1138,7 +1180,7 @@
     }
     /* 16px prevents iOS from zooming the viewport when the textarea receives focus. */
     .chat-input { font-size: 16px; }
-    .ai-fab { bottom: 1.5rem; left: 1.5rem; padding: 0.7rem 1.1rem; font-size: 0.82rem; }
+    .ai-fab { bottom: calc(1rem + var(--footer-h)); left: 1.5rem; padding: 0.7rem 1.1rem; font-size: 0.82rem; }
   }
 
   @media (max-width: 420px) {
@@ -2732,6 +2774,20 @@ window.addEventListener('scroll', () => {
   // ---- init ----
   updateKeyDot();
   refreshLabels();
+})();
+
+/* Keep --footer-h in sync with the fixed footer so nothing hides behind it. */
+(function syncFooterHeight() {
+  const footer = document.querySelector('.footer');
+  if (!footer) return;
+  const apply = () => {
+    document.documentElement.style.setProperty('--footer-h', footer.offsetHeight + 'px');
+  };
+  apply();
+  if (window.ResizeObserver) new ResizeObserver(apply).observe(footer);
+  window.addEventListener('resize', apply);
+  window.addEventListener('orientationchange', () => setTimeout(apply, 150));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(apply);
 })();
 </script>
 </body>
