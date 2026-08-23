@@ -863,14 +863,6 @@
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
-  .footer #ui-footerText {
-    flex: 0 1 auto;
-    margin: 0;
-    font-size: 0.7rem;
-    line-height: 1.5;
-    text-align: right;
-  }
-
   /* ========== PROGRESS BAR ========== */
   .progress-bar {
     position: fixed;
@@ -957,11 +949,6 @@
       padding: 0.5rem 0.7rem;
       font-size: 0.72rem;
       line-height: 1.55;
-    }
-    .footer #ui-footerText {
-      flex: 1 1 100%;
-      text-align: center;
-      font-size: 0.6rem;
     }
   }
 
@@ -1290,7 +1277,6 @@
 <!-- Footer -->
 <footer class="footer">
   <p class="footer-ai-warning" id="ui-aiTranslationWarning" role="note">⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。</p>
-  <p id="ui-footerText">義守大學 · 國際及兩岸事務處 (OICA) · 本指南為參考用途，最終解釋以學校公告為準</p>
 </footer>
 
 <!-- ========== AI SETTINGS MODAL ========== -->
@@ -1389,11 +1375,6 @@ const uiStrings = {
     zh: "找不到符合的問題，請嘗試其他關鍵字",
     en: "No matching questions found, please try other keywords",
     vi: "Không tìm thấy câu hỏi phù hợp, vui lòng thử từ khóa khác"
-  },
-  footerText: {
-    zh: "義守大學 · 國際及兩岸事務處 (OICA) · 本指南為參考用途，最終解釋以學校公告為準",
-    en: "ISU · OICA · This guide is for reference only; official announcements prevail.",
-    vi: "ISU · OICA · Hướng dẫn này chỉ mang tính tham khảo; các thông báo chính thức có hiệu lực cao nhất."
   },
   aiTranslationWarning: {
     zh: "⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。",
@@ -1863,7 +1844,6 @@ function changeLanguage(lang) {
   document.getElementById('ui-scroll').textContent = uiStrings.scroll[lang];
   document.getElementById('searchInput').placeholder = uiStrings.searchPlaceholder[lang];
   document.getElementById('ui-noResults').textContent = uiStrings.noResults[lang];
-  document.getElementById('ui-footerText').textContent = uiStrings.footerText[lang];
   document.getElementById('ui-aiTranslationWarning').textContent = uiStrings.aiTranslationWarning[lang];
 
   // Re-render categories & QA
