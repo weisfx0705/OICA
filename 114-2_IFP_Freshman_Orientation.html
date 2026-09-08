@@ -285,6 +285,16 @@
       margin-bottom: 6px;
     }
 
+    .contact-footer .counseling-contact {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 2px dashed #e8dcc8;
+    }
+
+    .contact-footer .counseling-contact div {
+      margin-top: 3px;
+    }
+
     .scenario-controls {
       display: flex;
       flex-wrap: wrap;
@@ -853,7 +863,6 @@
         <button class="tab-btn active" data-tab="overview">總覽與到校提醒</button>
         <button class="tab-btn" data-tab="scenarios">14 大情境對話</button>
         <button class="tab-btn" data-tab="majors">科系願景引導</button>
-        <button class="tab-btn" data-tab="line-groups">📱 導師專屬 LINE 群組</button>
         <button class="tab-btn" data-tab="resources">工具與聯絡</button>
       </nav>
     </header>
@@ -871,18 +880,16 @@
             <button class="guide-item guide-link" data-jump-tab="majors"><strong>科系願景：</strong>用 1
               句話引導學生看見升學與就業方向。</button>
             <button class="guide-item guide-link"
-              data-jump-tab="line-groups"><strong>導師 LINE 群組：</strong>雙向查找學生、導師與群組 QR code。</button>
-            <button class="guide-item guide-link"
               data-jump-tab="resources"><strong>工具與聯絡：</strong>掃碼啟用翻譯工具，並快速找到協作窗口。</button>
           </div>
         </article>
 
         <article class="panel half">
           <span class="badge sun">關鍵時程</span>
-          <h2>114 學年度第 2 學期新生到校提醒</h2>
+          <h2>115 學年度第 1 學期新生到校提醒</h2>
           <div class="timeline">
             <div class="event">華語先修需完成 <strong>1 年、至少 720 小時</strong>。</div>
-            <div class="event">因入境延遲，<strong>114-2 華語課程與暑假安排順延 2 週</strong>。</div>
+            <div class="event">因入境延遲，<strong>115-1 部分新生華語課程順延 4 週</strong>。</div>
             <div class="event">升讀大一前需通過 <strong>TOCFL A2</strong>。</div>
           </div>
         </article>
@@ -940,78 +947,6 @@
       </div>
     </section>
 
-    <section class="tab-page" id="tab-line-groups">
-      <div class="grid">
-        <article class="panel large" style="grid-column: span 12;">
-          <span class="badge mint">📱 導師專屬 LINE 群組</span>
-          <h2>入學後的即時溝通管道</h2>
-          <p class="tip">待學生入學後，本處將為<strong>每一位導師</strong>建立一個<strong>專屬的 LINE 群組</strong>，方便即時溝通與輔導。</p>
-          <div class="guide" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
-            <div class="guide-item" style="text-align:center;">
-              <div style="font-size:2rem;">👩‍🏫</div>
-              <strong>導師</strong>
-              <div style="color:var(--sub);font-size:.9rem;">班級導師本人</div>
-            </div>
-            <div class="guide-item" style="text-align:center;">
-              <div style="font-size:2rem;">🧑‍💼</div>
-              <strong>專屬 TA</strong>
-              <div style="color:var(--sub);font-size:.9rem;">本處指派之專屬助教</div>
-            </div>
-            <div class="guide-item" style="text-align:center;">
-              <div style="font-size:2rem;">👩‍🎓👨‍🎓</div>
-              <strong>所有專修部導生</strong>
-              <div style="color:var(--sub);font-size:.9rem;">該導師所帶之全體學生</div>
-            </div>
-          </div>
-          <p style="margin-top:12px;line-height:1.7;color:var(--sub);">透過此群組，導師可快速掌握學生動態、傳達重要訊息，TA
-            也能即時協助翻譯與溝通，確保輔導工作順暢進行。</p>
-          <div class="line-search">
-            <div class="line-search-head">
-              <div>
-                <h3>LINE 群組 QR Code 搜尋引擎</h3>
-                <p class="footer" style="margin-top:4px;">支援 <strong>學生找導師</strong>、<strong>導師找學生</strong>，並同步顯示對應 LINE 群組 QR code。</p>
-              </div>
-              <div class="line-search-actions">
-                <span class="badge sun" style="margin-bottom:0;">學生 / 導師 / 群組</span>
-                <button class="line-reset" id="lineResetBtn" type="button">重設查詢</button>
-              </div>
-            </div>
-            <div class="line-lookup-grid">
-              <section class="line-panel">
-                <span class="badge mint">學生找導師</span>
-                <h4>輸入學號或姓名</h4>
-                <label for="lineStudentSearch">學生查詢
-                  <input id="lineStudentSearch" type="search" placeholder="例如：11496231E、孝桐、阮..." />
-                </label>
-                <div class="match-hint" id="lineStudentHint">輸入後會列出符合的學生，點選即可直接帶出導師、學生名單與 LINE 群組。</div>
-                <div class="match-list" id="lineStudentMatches"></div>
-              </section>
-              <section class="line-panel">
-                <span class="badge peach">導師找學生 / 學系找群組</span>
-                <h4>先選學系，再選導師</h4>
-                <div class="line-search-controls">
-                  <label for="lineDeptSelect">1. 選擇學系
-                    <select id="lineDeptSelect">
-                      <option value="">請先選擇學系</option>
-                    </select>
-                  </label>
-                  <label for="lineTeacherSelect">2. 選擇導師
-                    <select id="lineTeacherSelect" disabled>
-                      <option value="">請先選擇學系</option>
-                    </select>
-                  </label>
-                </div>
-                <div class="match-hint">若從左側點選學生，這裡會自動同步到該學生的導師與學系。</div>
-              </section>
-            </div>
-            <div class="line-result" id="lineGroupResult">
-              <div class="tip line-empty">可從左側搜尋學生，或從右側依學系選導師；選定後會顯示群組 QR code 與學生名單。</div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
     <section class="tab-page" id="tab-resources">
       <div class="grid">
         <article class="panel large">
@@ -1041,12 +976,6 @@
           <p>阮秋芳（越語專業）<br><a href="mailto:celia@isu.edu.tw">celia@isu.edu.tw</a><br>07-6577711 Ext.2086</p>
           <p>阮玉翠（越語專業）<br><a href="mailto:mia1005@isu.edu.tw">mia1005@isu.edu.tw</a><br>07-6577711 Ext.2644</p>
           <p>胡美佳（印尼語專業）<br><a href="mailto:meganagnes@isu.edu.tw">meganagnes@isu.edu.tw</a><br>07-6577711 Ext.2088</p>
-          <div class="qr-card" style="margin-top:14px;">
-            <h3>專班老師與導師Line群</h3>
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https%3A%2F%2Fline.me%2Fti%2Fg%2F8gzpKv8rZn%23~"
-              alt="專班老師與導師Line群 QR Code" />
-            <p><a href="https://line.me/ti/g/8gzpKv8rZn#~" target="_blank" rel="noreferrer">開啟原始連結</a></p>
-          </div>
         </article>
 
 
@@ -1060,6 +989,13 @@
       <div>辦公時間：一(Mon) -五( Fri) : 8AM - 5PM (午休 Break: 12PM - 1PM)</div>
       <div>TEL：886-7-6577711 ext.2099</div>
       <div>EMAIL：<a href="mailto:oia@isu.edu.tw">oia@isu.edu.tw</a></div>
+      <section class="counseling-contact" aria-labelledby="counseling-title">
+        <h3 id="counseling-title">諮商輔導組資訊</h3>
+        <div><strong>校本部：行政大樓3樓 / 醫學院：B棟一樓</strong></div>
+        <div><strong>08:00-12:00 &amp; 13:00-17:00</strong></div>
+        <div><strong>校本部電話：07-6577711 分機：2235、資源教室：2253</strong></div>
+        <div><strong>醫學院電話：07-6151100 分機：3233；專線：07-6577012</strong></div>
+      </section>
     </footer>
   </div>
 
@@ -1204,24 +1140,7 @@
       }
     ];
 
-    const lineGroups = [
-      { department: "電機系", teacher: "孫迺翔", url: "https://line.me/ti/g/KcCG3rr6uv" },
-      { department: "電子系", teacher: "林彥勝", url: "https://line.me/ti/g/h_qAheDUkM" },
-      { department: "資工系", teacher: "蔡雅茹", url: "https://line.me/ti/g/juwtzxyY_V" },
-      { department: "資管系", teacher: "陳筠昀", url: "https://line.me/ti/g/sX8dxpgSuE" },
-      { department: "資管系", teacher: "陳秀如", url: "", note: "Word 檔中未附群組連結，待補。" },
-      { department: "機械系", teacher: "劉芳寶", url: "https://line.me/ti/g/UkuwZrDaG-" },
-      { department: "化工系", teacher: "劉建宏", url: "https://line.me/ti/g/QhJnMnNRkR" },
-      { department: "土木系", teacher: "古志生", url: "https://line.me/ti/g/_VQfQdfyrq" },
-      { department: "材料系", teacher: "謝之駿", url: "https://line.me/ti/g/ZQkBgD5FKa" },
-      { department: "餐旅系", teacher: "傅信維", url: "https://line.me/ti/g/v2N9qVhzNC" },
-      { department: "餐旅系", teacher: "溫武男", url: "https://line.me/ti/g/5gw99JmMfS" },
-      { department: "餐旅系", teacher: "黃一正", url: "https://line.me/ti/g/h7CbpnpSh5" },
-      { department: "餐旅系", teacher: "保里乃玲", url: "https://line.me/ti/g/hBH793wAuQ" },
-      { department: "餐旅系", teacher: "張琬菁", url: "https://line.me/ti/g/ZM3_KtyXNN" },
-      { department: "廚藝系", teacher: "汪芷榆", url: "https://line.me/ti/g/Zw5h7X-Bqs" },
-      { department: "醫工系", teacher: "王智昱", url: "https://line.me/ti/g/63cmP2Cjvx" }
-    ];
+    const lineGroups = [];
 
     const studentRosterText = String.raw`學號|姓名|導師姓名|導師單位
 11496231E|孝桐|古志生|土木工程學系
@@ -1682,6 +1601,7 @@
     const unitList = [...new Set(teacherDirectory.map((teacher) => teacher.unit))];
     const lineState = { selectedTeacherKey: "", selectedStudentId: "" };
 
+    if (lineDeptSelect) {
     lineDeptSelect.innerHTML = `
       <option value="">請選擇學系</option>
       ${unitList.map((unit) => `<option value="${escapeHtml(unit)}">${escapeHtml(unit)}</option>`).join("")}
@@ -1857,6 +1777,7 @@
     });
 
     lineResetBtn.addEventListener("click", resetLineLookup);
+    }
 
     renderCards();
   </script>
