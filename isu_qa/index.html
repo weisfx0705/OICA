@@ -1383,7 +1383,7 @@ const uiStrings = {
   }
 };
 
-const categoryInfo = {
+const baseCategoryInfo = {
   1: { zh: "簽證與外僑居留證 (ARC)", en: "Visa and ARC", vi: "Visa và Thẻ Cư trú (ARC)", emoji: "🛂", color: "#e74c3c" },
   2: { zh: "獎助學金與服務學習", en: "Scholarships", vi: "Học bổng", emoji: "💰", color: "#e67e22" },
   3: { zh: "健康保險與醫療照護", en: "Health & Medical", vi: "Y tế & Sức khỏe", emoji: "🏥", color: "#27ae60" },
@@ -1392,6 +1392,121 @@ const categoryInfo = {
   6: { zh: "國際專修部特別規定", en: "IFP Special Rules", vi: "Quy định Đặc biệt IFP", emoji: "📚", color: "#1abc9c" },
   7: { zh: "工作許可證與日常生活", en: "Work & Daily Life", vi: "Việc làm & Cuộc sống", emoji: "💼", color: "#e91e63" }
 };
+const categoryInfo = { ...baseCategoryInfo };
+const CATEGORY_COLOR_POOL = [
+  "#e74c3c", "#e67e22", "#27ae60", "#2980b9", "#8e44ad", "#1abc9c", "#e91e63",
+  "#d35400", "#16a085", "#2c7be5", "#c0392b", "#6c5ce7", "#00897b", "#b83280",
+  "#5d6d7e", "#af601a", "#117a65", "#7d3c98", "#2874a6", "#b03a2e"
+];
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (ch) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[ch]));
+}
+
+function normalizeCategoryText(value) {
+  return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+function leadingCategoryEmoji(value) {
+  const text = normalizeCategoryText(value);
+  const match = text.match(/^(\p{Extended_Pictographic}(?:\uFE0F|\u200D\p{Extended_Pictographic}|\uFE0F)*)\s*/u);
+  return match ? match[1] : '';
+}
+
+function stripLeadingCategoryEmoji(value) {
+  const text = normalizeCategoryText(value);
+  const emoji = leadingCategoryEmoji(text);
+  return emoji ? text.slice(emoji.length).trim() : text;
+}
+
+function parseCategoryNames(sectionText) {
+  const raw = normalizeCategoryText(sectionText);
+  const label = stripLeadingCategoryEmoji(raw) || raw || baseCategoryInfo[1].zh;
+  const parts = label.split(/\s+\/\s+|\s*\/\s*/).map(normalizeCategoryText).filter(Boolean);
+  const zh = parts[0] || label;
+  const en = parts[1] || zh;
+  const vi = parts.length > 2 ? parts.slice(2).join(' / ') : en;
+  return { zh, en, vi, label };
+}
+
+function categoryHash(value) {
+  let hash = 0;
+  const text = normalizeCategoryText(value).toLowerCase();
+  for (let i = 0; i < text.length; i++) {
+    hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
+  }
+  return Math.abs(hash);
+}
+
+function knownCategoryId(sectionText) {
+  const raw = normalizeCategoryText(sectionText);
+  if (!raw) return '1';
+  const label = stripLeadingCategoryEmoji(raw);
+  const rawEmoji = leadingCategoryEmoji(raw);
+  const labelLower = label.toLowerCase();
+
+  for (const id in baseCategoryInfo) {
+    const info = baseCategoryInfo[id];
+    const knownLabels = [info.zh, info.en, info.vi].map(normalizeCategoryText);
+    const knownWithEmoji = knownLabels.map(known => `${info.emoji} ${known}`);
+    const matchesKnownLabel = knownLabels.some(known => {
+      const knownLower = known.toLowerCase();
+      return labelLower === knownLower ||
+        labelLower.startsWith(`${knownLower} /`) ||
+        labelLower.startsWith(`${knownLower}/`);
+    });
+    if (raw === info.emoji || knownLabels.includes(raw) || knownWithEmoji.includes(raw) || (matchesKnownLabel && (!rawEmoji || rawEmoji === info.emoji))) {
+      return id;
+    }
+  }
+  return '';
+}
+
+function categoryIdFromText(sectionText) {
+  const knownId = knownCategoryId(sectionText);
+  if (knownId) return knownId;
+  const { label } = parseCategoryNames(sectionText);
+  return `sheet-${categoryHash(label).toString(36)}`;
+}
+
+function ensureCategoryInfo(catId, sectionText) {
+  const id = String(catId || '1');
+  if (categoryInfo[id]) return categoryInfo[id];
+
+  const raw = normalizeCategoryText(sectionText);
+  const names = parseCategoryNames(raw);
+  const color = CATEGORY_COLOR_POOL[categoryHash(names.label) % CATEGORY_COLOR_POOL.length];
+  categoryInfo[id] = {
+    zh: names.zh,
+    en: names.en,
+    vi: names.vi,
+    emoji: leadingCategoryEmoji(raw) || "🏷️",
+    color
+  };
+  return categoryInfo[id];
+}
+
+function getCategoryLabel(info) {
+  return info[currentLang] || info.zh || info.en || info.vi || '';
+}
+
+function getActiveCategories() {
+  const seen = new Set();
+  const categories = [];
+
+  qaData.forEach(item => {
+    const id = String(item.cat || '1');
+    if (seen.has(id)) return;
+    const info = ensureCategoryInfo(id, item.categoryRaw || item.categoryLabel || '');
+    seen.add(id);
+    categories.push({ id, info, count: qaData.filter(row => String(row.cat || '1') === id).length });
+  });
+
+  if (categories.length > 0) return categories;
+  return Object.keys(baseCategoryInfo).map(id => ({ id, info: baseCategoryInfo[id], count: 0 }));
+}
 
 // ========== Q&A DATA (fallback; actual data fetched from Google Sheet) ==========
 let qaData = [
@@ -1861,16 +1976,15 @@ function renderCategories() {
     </button>
   `;
 
-  for (let id in categoryInfo) {
-    const info = categoryInfo[id];
+  getActiveCategories().forEach(({ id, info }) => {
     const btn = document.createElement('button');
     btn.className = 'cat-btn';
     btn.dataset.cat = id;
     btn.style.setProperty('--cat-color', info.color);
     btn.onclick = () => handleCatClick(btn);
-    btn.innerHTML = `<span class="cat-emoji">${info.emoji}</span> ${info[currentLang]}`;
+    btn.innerHTML = `<span class="cat-emoji">${escapeHtml(info.emoji)}</span> ${escapeHtml(getCategoryLabel(info))}`;
     container.appendChild(btn);
-  }
+  });
 }
 
 function handleCatClick(btn) {
@@ -1884,18 +1998,17 @@ function renderQA() {
   const wrapper = document.getElementById('qaContentWrapper');
   wrapper.innerHTML = '';
 
-  for (let id in categoryInfo) {
-    const info = categoryInfo[id];
+  getActiveCategories().forEach(({ id, info }, index) => {
     const group = document.createElement('div');
     group.className = 'category-group';
     group.dataset.group = id;
 
     group.innerHTML = `
       <div class="category-header" style="--cat-color:${info.color}">
-        <div class="cat-icon">${info.emoji}</div>
+        <div class="cat-icon">${escapeHtml(info.emoji)}</div>
         <div>
-          <div class="cat-title">${info[currentLang]}</div>
-          <div class="cat-range">CATEGORY ${id}</div>
+          <div class="cat-title">${escapeHtml(getCategoryLabel(info))}</div>
+          <div class="cat-range">CATEGORY ${String(index + 1).padStart(2, '0')}</div>
         </div>
       </div>
       <div class="qa-grid" id="grid-${id}"></div>
@@ -1904,7 +2017,7 @@ function renderQA() {
     wrapper.appendChild(group);
 
     // Filter items for this category
-    const items = qaData.filter(item => item.cat == id);
+    const items = qaData.filter(item => String(item.cat) === id);
     const grid = group.querySelector('.qa-grid');
 
     items.forEach((item) => {
@@ -1919,13 +2032,14 @@ function renderQA() {
       card.style.setProperty('--cat-color', info.color);
 
       let answerHtml = renderAnswer(item.a[currentLang]);
+      const questionText = item.q[currentLang] || item.q.zh || '';
       const importantHtml = item.important
         ? `<div class="highlight">${uiStrings.importantNotice[currentLang]}</div>` : '';
 
       card.innerHTML = `
         <div class="qa-question" onclick="toggleCard(this)">
           <span class="q-num">${num}</span>
-          <span class="q-text">${item.q[currentLang]}</span>
+          <span class="q-text">${escapeHtml(questionText)}</span>
           <span class="q-toggle">+</span>
         </div>
         <div class="qa-answer">
@@ -1938,7 +2052,7 @@ function renderQA() {
       `;
       grid.appendChild(card);
     });
-  }
+  });
 }
 
 function toggleCard(el) {
@@ -2136,7 +2250,7 @@ window.addEventListener('scroll', () => {
 // ========== GOOGLE SHEET SYNC ==========
 const SHEET_ID  = '1CAzt-c4FI1j6A_fvrXCaKtv49wnlHX-w';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
-const SHEET_CACHE_KEY = 'isu-qa-sheet-cache-v1';
+const SHEET_CACHE_KEY = 'isu-qa-sheet-cache-v2';
 const SHEET_CACHE_MAX_AGE = 24 * 60 * 60 * 1000;
 
 function readCachedQAData() {
@@ -2161,10 +2275,6 @@ function writeCachedQAData(data) {
   } catch (_) {}
 }
 
-// Map the first emoji in the 章節 text back to its category id (1~7)
-const EMOJI_TO_CAT = {};
-for (const cid in categoryInfo) EMOJI_TO_CAT[categoryInfo[cid].emoji] = Number(cid);
-
 // Minimal RFC-4180 CSV parser
 function parseCSV(text) {
   const rows = [];
@@ -2185,14 +2295,6 @@ function parseCSV(text) {
   }
   if (field.length || row.length) { row.push(field); rows.push(row); }
   return rows;
-}
-
-function sectionToCat(sectionText) {
-  if (!sectionText) return 1;
-  for (const emoji in EMOJI_TO_CAT) {
-    if (sectionText.indexOf(emoji) !== -1) return EMOJI_TO_CAT[emoji];
-  }
-  return 1;
 }
 
 function buildQAFromSheet(rows) {
@@ -2228,9 +2330,15 @@ function buildQAFromSheet(rows) {
       ? /^(true|是|y|yes|1|★|重要)$/i.test((row[iImp] || '').trim())
       : false;
 
+    const categoryRaw = row[iSec] || '';
+    const cat = categoryIdFromText(categoryRaw);
+    ensureCategoryInfo(cat, categoryRaw);
+
     out.push({
       num,
-      cat: sectionToCat(row[iSec] || ''),
+      cat,
+      categoryLabel: parseCategoryNames(categoryRaw).zh,
+      categoryRaw: normalizeCategoryText(categoryRaw),
       important,
       q: { zh: (row[iQzh] || '').trim(), en: (row[iQen] || '').trim(), vi: (row[iQvi] || '').trim() },
       a: { zh: (row[iAzh] || '').trim(), en: (row[iAen] || '').trim(), vi: (row[iAvi] || '').trim() }
