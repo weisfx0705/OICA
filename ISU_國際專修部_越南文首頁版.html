@@ -57,13 +57,16 @@
     }
 
     /* ══════════════ LANG SYSTEM ══════════════ */
-    [data-lang-en], [data-lang-vi] { display: none; }
-    body.lang-en [data-lang-zh] { display: none; }
-    body.lang-en [data-lang-en] { display: revert; }
-    body.lang-en [data-lang-vi] { display: none; }
-    body.lang-vi [data-lang-zh] { display: none; }
-    body.lang-vi [data-lang-en] { display: none; }
-    body.lang-vi [data-lang-vi] { display: revert; }
+    [data-lang-zh], [data-lang-en] { display: none !important; }
+    [data-lang-vi] { display: revert !important; }
+    body.lang-zh [data-lang-zh] { display: revert !important; }
+    body.lang-zh [data-lang-en], body.lang-zh [data-lang-vi] { display: none !important; }
+    body.lang-en [data-lang-zh] { display: none !important; }
+    body.lang-en [data-lang-en] { display: revert !important; }
+    body.lang-en [data-lang-vi] { display: none !important; }
+    body.lang-vi [data-lang-zh] { display: none !important; }
+    body.lang-vi [data-lang-en] { display: none !important; }
+    body.lang-vi [data-lang-vi] { display: revert !important; }
 
     /* ══════════════ PAGE HEADER ══════════════ */
     .page-header {
@@ -1260,7 +1263,7 @@
 
 
 <!-- Scroll Progress -->
-<div id="progress-bar" style="width: 100%;"></div>
+<div id="progress-bar"></div>
 
 <!-- ══════════════ PAGE HEADER ══════════════ -->
 <header class="page-header">
@@ -1276,9 +1279,9 @@
       <h1 data-lang-vi="">Khoa Dự bị Quốc tế <em>2026-2027</em></h1>
     </div>
     <div class="lang-bar">
-      <button class="lang-btn active" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn" onclick="setLang('zh')">中文</button>
       <button class="lang-btn" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" onclick="setLang('vi')">Tiếng Việt</button>
+      <button class="lang-btn active" onclick="setLang('vi')">Tiếng Việt</button>
     </div>
   </div>
   <p class="page-header-sub" data-lang-zh="">
@@ -1378,7 +1381,7 @@
       <span data-lang-en="">Financial</span>
       <span data-lang-vi="">Tài chính</span>
     </a>
-    <a class="nav-link active" href="#contact">
+    <a class="nav-link" href="#contact">
       <span data-lang-zh="">聯絡我們</span>
       <span data-lang-en="">Contact</span>
       <span data-lang-vi="">Liên hệ</span>
@@ -1666,7 +1669,7 @@
     </div>
   </section>
 
-    <!-- ═══ SECTION 3: ADMISSION ═══ -->
+  <!-- ═══ SECTION 3: ADMISSION ═══ -->
   <section id="admission">
     <div class="sec-head">
       <div class="sec-icon-box" style="background:var(--blue-light);">03</div>
@@ -1971,10 +1974,10 @@
         <button class="dept-tag" type="button" data-major="bme"><span class="dot dot-red"></span><span class="dept-name">Kỹ thuật Y sinh</span></button>
       </div>
     </div>
-    <div class="dept-hover-card" id="deptHoverCard" aria-hidden="true" style="left: 1064px; top: 336px;">
-      <div class="dept-hover-kicker" id="deptHoverKicker">科系簡介</div>
-      <div class="dept-hover-title" id="deptHoverTitle">Culinary Arts &amp; Gastronomy</div>
-      <div class="dept-hover-body" id="deptHoverBody">廚藝暨美食學學系以廚藝科學、美學與健康飲食為主軸，涵蓋中西餐、烘焙、飲調與餐飲服務，適合想投入主廚、產品研發與餐飲管理的學生。</div>
+    <div class="dept-hover-card" id="deptHoverCard" aria-hidden="true">
+      <div class="dept-hover-kicker" id="deptHoverKicker">Giới thiệu ngành</div>
+      <div class="dept-hover-title" id="deptHoverTitle"></div>
+      <div class="dept-hover-body" id="deptHoverBody"></div>
     </div>
   </section>
 
@@ -2176,7 +2179,6 @@
 
     </div>
   </section>
-
 
   <!-- ═══ SECTION 6: HOUSING ═══ -->
   <section id="housing">
@@ -2557,9 +2559,10 @@ const departmentDescriptions = {
 };
 
 function getCurrentLang() {
+  if (document.body.classList.contains('lang-zh')) return 'zh';
   if (document.body.classList.contains('lang-en')) return 'en';
   if (document.body.classList.contains('lang-vi')) return 'vi';
-  return 'zh';
+  return 'vi';
 }
 
 const deptHoverCard = document.getElementById('deptHoverCard');
@@ -2611,7 +2614,8 @@ function hideDeptCard() {
 
 /* ══════════════ LANGUAGE SWITCHER ══════════════ */
 function setLang(lang) {
-  document.body.classList.remove('lang-en', 'lang-vi');
+  document.body.classList.remove('lang-zh', 'lang-en', 'lang-vi');
+  if (lang === 'zh') document.body.classList.add('lang-zh');
   if (lang === 'en') document.body.classList.add('lang-en');
   if (lang === 'vi') document.body.classList.add('lang-vi');
 
@@ -2664,7 +2668,6 @@ function toggleMobileDesc(tag) {
   const content = departmentDescriptions[key];
   if (!content) return;
 
-  // Check if this tag already has an open panel
   let panel = tag.nextElementSibling;
   if (panel && panel.classList.contains('dept-mobile-desc')) {
     if (panel.classList.contains('is-open')) {
@@ -2673,10 +2676,8 @@ function toggleMobileDesc(tag) {
     }
   }
 
-  // Close any other open panels
   closeMobileDesc();
 
-  // Create or update panel
   if (!panel || !panel.classList.contains('dept-mobile-desc')) {
     panel = document.createElement('div');
     panel.className = 'dept-mobile-desc';
@@ -2690,7 +2691,6 @@ function toggleMobileDesc(tag) {
 }
 
 document.querySelectorAll('.dept-tag[data-major]').forEach(tag => {
-  // Desktop: hover card
   tag.addEventListener('mouseenter', event => {
     if (!isMobileView()) showDeptCard(tag, event.clientX, event.clientY);
   });
@@ -2707,7 +2707,6 @@ document.querySelectorAll('.dept-tag[data-major]').forEach(tag => {
     if (!isMobileView()) hideDeptCard();
   });
 
-  // Mobile: click to expand inline description
   tag.addEventListener('click', (e) => {
     if (isMobileView()) {
       e.preventDefault();

@@ -126,53 +126,6 @@
     }
 
     /* ── QUICK-NAV GRID ── */
-    .quick-nav {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 12px;
-      max-width: 1100px;
-      margin: 0 auto 8px;
-      padding: 0 24px;
-    }
-    .qn-card {
-      background: var(--surface);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 12px;
-      text-decoration: none;
-      color: var(--text);
-      cursor: pointer;
-      transition: background .2s, transform .2s, border-color .2s, box-shadow .2s;
-      display: flex; flex-direction: column;
-      align-items: center; gap: 8px;
-    }
-    .qn-card:hover {
-      background: var(--red-light);
-      border-color: var(--red);
-      transform: translateY(-4px);
-      box-shadow: var(--shadow);
-    }
-    .qn-icon { font-size: 2rem; line-height: 1; }
-    .qn-label {
-      font-size: clamp(.78rem, 1.4vw, .9rem);
-      font-weight: 700;
-      text-align: center;
-      line-height: 1.35;
-      color: var(--text);
-    }
-    .qn-arrow {
-      font-size: 16px; color: var(--muted);
-      transition: transform .2s;
-    }
-    .qn-card:hover .qn-arrow { transform: translateY(3px); color: var(--red); }
-
-    @media(max-width:900px) {
-      .quick-nav { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media(max-width:480px) {
-      .quick-nav { grid-template-columns: 1fr 1fr; gap: 10px; }
-    }
-
     /* ══════════════ STICKY NAV ══════════════ */
     nav {
       background: var(--surface);
@@ -507,7 +460,6 @@
     /* ══════════════ RESPONSIVE ══════════════ */
     @media(max-width:600px) {
       .page-header { padding: 24px 16px 0; }
-      .quick-nav { padding: 0 16px; }
       .sec-head { flex-direction: column; gap: 12px; }
       .sec-icon-box { width: 56px; height: 56px; font-size: 2rem; }
       main { padding: 36px 16px 60px; }
@@ -669,75 +621,6 @@
       color: var(--muted);
       font-size: .9rem;
       line-height: 1.7;
-    }
-
-    .quick-nav {
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 12px;
-      max-width: 1180px;
-      margin: 24px auto 0;
-      padding: 0;
-    }
-
-    .qn-card {
-      position: relative;
-      min-height: 116px;
-      align-items: flex-start;
-      justify-content: space-between;
-      padding: 16px;
-      border: 1px solid rgba(54, 52, 142, .10);
-      border-radius: 0;
-      background: #fff;
-      box-shadow: none;
-    }
-
-    .qn-card::before {
-      content: '';
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 3px;
-      background: var(--primary);
-      opacity: .08;
-      transition: opacity .2s ease;
-    }
-
-    .qn-card:hover {
-      background: #fff;
-      border-color: rgba(54, 52, 142, .24);
-      transform: none;
-      box-shadow: none;
-    }
-
-    .qn-card:hover::before {
-      opacity: 1;
-    }
-
-    .qn-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: auto;
-      height: auto;
-      padding: 0;
-      border-radius: 0;
-      background: transparent;
-      color: var(--primary);
-      font-size: .72rem;
-      font-weight: 800;
-      letter-spacing: .12em;
-      line-height: 1;
-    }
-
-    .qn-label {
-      font-size: .92rem;
-      text-align: left;
-      line-height: 1.45;
-    }
-
-    .qn-arrow {
-      align-self: flex-end;
-      font-size: 18px;
-      color: var(--primary);
     }
 
     nav {
@@ -1077,7 +960,6 @@
       font-size: 1.1rem;
     }
 
-    .qn-label,
     .nav-link,
     .sec-head-text .sub {
       font-size: 1.08rem;
@@ -1319,11 +1201,6 @@
         grid-template-columns: 1fr;
       }
 
-      .quick-nav {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        padding: 0 12px;
-      }
-
       main {
         padding: 30px 12px 70px;
       }
@@ -1339,12 +1216,6 @@
         align-items: flex-start;
       }
 
-      .quick-nav {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        margin: 16px 14px 0;
-        padding: 0;
-      }
-
       .nav-inner {
         padding: 0 14px;
       }
@@ -1357,6 +1228,34 @@
       .sec-icon-box {
         width: 58px;
         height: 58px;
+      }
+    }
+
+    /* ══════════════ SUBSECTION HEADING ══════════════ */
+    .sub-head {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.35;
+      margin: 44px 0 18px;
+      padding-left: 14px;
+      border-left: 5px solid var(--primary);
+    }
+
+    /* ══════════════ TOP CTA ACTIONS ══════════════ */
+    .top-cta-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    @media(max-width:600px) {
+      .top-cta-actions {
+        width: 100%;
+        flex-direction: column;
+      }
+      .top-cta-actions .btn {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
@@ -1428,57 +1327,20 @@
       <span data-lang-vi="">Miễn phí ／ Đăng ký trực tuyến ／ Xét theo thứ tự</span>
     </small>
   </div>
-  <a class="btn btn-primary" href="https://enroll.isu.edu.tw/DQ/" target="_blank">
-    <span data-lang-zh="">立即線上報名</span>
-    <span data-lang-en="">Apply Online Now</span>
-    <span data-lang-vi="">Đăng ký ngay</span>
-    →
-  </a>
-</div>
-
-<div class="quick-nav">
-  <a class="qn-card" href="#pathway">
-    <span class="qn-icon">PATH</span>
-    <span class="qn-label" data-lang-zh="">求學路徑</span>
-    <span class="qn-label" data-lang-en="">Pathway</span>
-    <span class="qn-label" data-lang-vi="">Lộ trình</span>
-    <span class="qn-arrow">↓</span>
-  </a>
-  <a class="qn-card" href="#scholarship">
-    <span class="qn-icon">AID</span>
-    <span class="qn-label" data-lang-zh="">獎學金</span>
-    <span class="qn-label" data-lang-en="">Scholarships</span>
-    <span class="qn-label" data-lang-vi="">Học bổng</span>
-    <span class="qn-arrow">↓</span>
-  </a>
-  <a class="qn-card" href="#admission">
-    <span class="qn-icon">APPLY</span>
-    <span class="qn-label" data-lang-zh="">入學方法</span>
-    <span class="qn-label" data-lang-en="">Admission</span>
-    <span class="qn-label" data-lang-vi="">Nhập học</span>
-    <span class="qn-arrow">↓</span>
-  </a>
-  <a class="qn-card" href="#departments">
-    <span class="qn-icon">DEPT</span>
-    <span class="qn-label" data-lang-zh="">招生學系</span>
-    <span class="qn-label" data-lang-en="">Departments</span>
-    <span class="qn-label" data-lang-vi="">Khoa ngành</span>
-    <span class="qn-arrow">↓</span>
-  </a>
-  <a class="qn-card" href="#tuition">
-    <span class="qn-icon">FEE</span>
-    <span class="qn-label" data-lang-zh="">學費</span>
-    <span class="qn-label" data-lang-en="">Tuition</span>
-    <span class="qn-label" data-lang-vi="">Học phí</span>
-    <span class="qn-arrow">↓</span>
-  </a>
-  <a class="qn-card" href="#housing">
-    <span class="qn-icon">LIVE</span>
-    <span class="qn-label" data-lang-zh="">住宿</span>
-    <span class="qn-label" data-lang-en="">Housing</span>
-    <span class="qn-label" data-lang-vi="">Ký túc xá</span>
-    <span class="qn-arrow">↓</span>
-  </a>
+  <div class="top-cta-actions">
+    <a class="btn btn-primary" href="https://enroll.isu.edu.tw/DQ/" target="_blank">
+      <span data-lang-zh="">立即線上報名</span>
+      <span data-lang-en="">Apply Online Now</span>
+      <span data-lang-vi="">Đăng ký ngay</span>
+      →
+    </a>
+    <a class="btn btn-outline" href="https://aa.isu.edu.tw/en-US/page/preview-Nzp2mJYtLF5H" target="_blank" rel="noopener noreferrer">
+      📄
+      <span data-lang-zh="">查看招生簡章最新公告</span>
+      <span data-lang-en="">Latest Admission Guidelines</span>
+      <span data-lang-vi="">Thông báo tuyển sinh mới nhất</span>
+    </a>
+  </div>
 </div>
 
 <!-- ══════════════ STICKY NAV ══════════════ -->
@@ -1513,6 +1375,11 @@
       <span data-lang-zh="">住宿</span>
       <span data-lang-en="">Housing</span>
       <span data-lang-vi="">Ký túc xá</span>
+    </a>
+    <a class="nav-link" href="#financial">
+      <span data-lang-zh="">財力證明</span>
+      <span data-lang-en="">Financial</span>
+      <span data-lang-vi="">Tài chính</span>
     </a>
     <a class="nav-link" href="#contact">
       <span data-lang-zh="">聯絡我們</span>
@@ -1849,7 +1716,7 @@
         </ul>
       </div>
 
-      <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:16px;">申請流程</h3>
+      <h3 class="sub-head">申請流程</h3>
       <div class="timeline">
         <div class="tl-item">
           <h4>確定入學班別及申請學系</h4>
@@ -1906,7 +1773,7 @@
         </ul>
       </div>
 
-      <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:16px;">Application Process</h3>
+      <h3 class="sub-head">Application Process</h3>
       <div class="timeline">
         <div class="tl-item">
           <h4>Choose Intake &amp; Department</h4>
@@ -1963,7 +1830,7 @@
         </ul>
       </div>
 
-      <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:16px;">Quy trình nộp đơn</h3>
+      <h3 class="sub-head">Quy trình nộp đơn</h3>
       <div class="timeline">
         <div class="tl-item">
           <h4>Chọn kỳ nhập học &amp; khoa</h4>
@@ -2373,7 +2240,7 @@
           <li>每週日至週四晚間 10:30 進行點名</li>
           <li>如需外宿須事先申請</li>
           <li>住校期間應遵守學生宿舍生活公約與管理要點</li>
-          <li>境外生住宿保留金 1,500 元須於 2026/8/31 前繳交</li>
+          <li>境外生住宿保留金 1,500 元須於入境前繳交，截止時間請留意電子郵件通知</li>
         </ul>
       </div>
     </div>
@@ -2415,6 +2282,7 @@
           <li>Roll call every Sun–Thu at 10:30 PM</li>
           <li>Off-campus stays require prior approval</li>
           <li>Follow all dormitory regulations and guidelines</li>
+          <li>The NT$1,500 housing reservation fee for international students must be paid before you arrive in Taiwan; please watch your email for the deadline</li>
         </ul>
       </div>
     </div>
@@ -2456,12 +2324,137 @@
           <li>Điểm danh mỗi CN–T5 lúc 22:30</li>
           <li>Ở ngoài qua đêm phải xin phép trước</li>
           <li>Tuân thủ tất cả quy định ký túc xá</li>
+          <li>Phí giữ chỗ ký túc xá dành cho sinh viên quốc tế là 1.500 Đài tệ, phải nộp trước khi nhập cảnh; vui lòng theo dõi email để biết thời hạn</li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- ═══ SECTION 7: CONTACT / CTA ═══ -->
+  <!-- ═══ SECTION 7: FINANCIAL STATEMENT ═══ -->
+  <section id="financial">
+    <div class="sec-head">
+      <div class="sec-icon-box" style="background:var(--accent-light);">07</div>
+      <div class="sec-head-text">
+        <div class="sec-num">SECTION 07</div>
+        <h2 data-lang-zh="">財力證明</h2>
+        <h2 data-lang-en="">Financial Statement</h2>
+        <h2 data-lang-vi="">Chứng minh tài chính</h2>
+        <p class="sub" data-lang-zh="">三種方式擇一繳交，並請依規定格式上傳</p>
+        <p class="sub" data-lang-en="">Submit one of three options, in the required document format</p>
+        <p class="sub" data-lang-vi="">Chọn một trong ba hình thức và nộp đúng định dạng quy định</p>
+      </div>
+    </div>
+
+    <!-- ZH -->
+    <div data-lang-zh="">
+      <div class="info-box teal">
+        <h4>三種方式擇一繳交</h4>
+        <p>財力證明是線上報名時必須上傳的文件之一，用來證明您有足夠經費支應在臺就學期間的學費與生活費。以下三種方式<strong>擇一</strong>繳交即可。</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🏦</div>
+          <h4>1. 本人名下存款證明</h4>
+          <p>由金融機構（銀行、郵局等）<strong>正式開立</strong>、且為<strong>最近三個月內</strong>之存款證明書，金額須達<strong>美金 4,000 元（USD 4,000）或新臺幣 120,000 元（TWD 120,000）以上</strong>。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">👪</div>
+          <h4>2. 資助者存款證明 ＋ 財力保證書</h4>
+          <p>若存款證明非申請人本人帳戶，須提供<strong>資助者名下</strong>由金融機構正式開立之存款證明（金額與效期同上），並附上資助者的<strong>財力保證書</strong>。<br>※ 財力保證書於線上報名表填寫完成後自動產生，列印簽章後掃描上傳。</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎓</div>
+          <h4>3. 全額獎學金證明（非本校獎學金）</h4>
+          <p>已獲得<strong>非本校</strong>核發之全額獎學金者（如臺灣獎學金、其他政府機構或學校），須檢附「全額獎學金得獎證明」替代存款證明。<br>※ <strong>本校核發之獎助學金不得作為財力證明。</strong></p>
+        </div>
+      </div>
+
+      <div class="info-box red">
+        <h4>⚠️ 重要上傳須知與格式限制（請務必閱讀）</h4>
+        <p>為符合教育部規定，以下文件<strong>無法</strong>作為財力證明審查，請勿上傳：</p>
+        <ul style="list-style:none;padding-left:0;">
+          <li>❌ 郵局／銀行之「存摺封面與內頁照片」（必須為金融機構開立之存款證明書）。</li>
+          <li>❌ 公司行號、代辦中心或個人開立之收入／在職證明。</li>
+          <li>❌ 稅捐機關之「薪資所得扣繳憑單」或扣繳證明。</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- EN -->
+    <div data-lang-en="">
+      <div class="info-box teal">
+        <h4>Please submit ONE of the three options</h4>
+        <p>A financial statement is one of the documents you must upload with your online application. It proves that you have sufficient funds to cover tuition and living costs while studying in Taiwan. <strong>Only one</strong> of the three options below is required.</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🏦</div>
+          <h4>1. Certificate of deposit in your own name</h4>
+          <p>A certificate of deposit <strong>officially issued by a financial institution</strong> (bank, post office, etc.) <strong>within the three most recent months</strong>, showing a balance of <strong>US$4,000 (USD 4,000) or NT$120,000 (TWD 120,000) or more</strong>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">👪</div>
+          <h4>2. Sponsor&rsquo;s certificate of deposit + Financial Affidavit</h4>
+          <p>If the certificate of deposit is not in the applicant&rsquo;s own name, please provide a certificate of deposit officially issued by a financial institution <strong>in the sponsor&rsquo;s name</strong> (same amount and validity period as above), together with the sponsor&rsquo;s <strong>Financial Affidavit</strong>.<br>※ The Financial Affidavit is generated automatically once the online application form is completed. Print it, sign it, scan it and upload it.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎓</div>
+          <h4>3. Proof of full scholarship (non-ISU scholarships)</h4>
+          <p>If you have been awarded a full scholarship by an institution <strong>other than ISU</strong> (e.g. the Taiwan Scholarship, another government body or a school), you must attach the full scholarship award certificate in place of a certificate of deposit.<br>※ <strong>A scholarship awarded by ISU cannot be used as a financial statement.</strong></p>
+        </div>
+      </div>
+
+      <div class="info-box red">
+        <h4>⚠️ Important upload rules and format restrictions (please read carefully)</h4>
+        <p>In accordance with Ministry of Education regulations, the following documents <strong>cannot</strong> be accepted as a financial statement. Please do not upload them:</p>
+        <ul style="list-style:none;padding-left:0;">
+          <li>❌ Photos of the cover and inside pages of a bank or post office passbook (it must be a certificate of deposit issued by a financial institution).</li>
+          <li>❌ Income or employment certificates issued by a company, an agency, or an individual.</li>
+          <li>❌ A withholding tax statement for salary income, or any withholding certificate issued by a tax authority.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- VI -->
+    <div data-lang-vi="">
+      <div class="info-box teal">
+        <h4>Chọn nộp một trong ba hình thức sau</h4>
+        <p>Chứng minh tài chính là một trong những giấy tờ bắt buộc phải tải lên khi đăng ký trực tuyến, nhằm chứng minh thí sinh có đủ khả năng tài chính để chi trả học phí và sinh hoạt phí trong thời gian học tập tại Đài Loan. Chỉ cần nộp <strong>một</strong> trong ba hình thức dưới đây.</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🏦</div>
+          <h4>1. Giấy xác nhận số dư đứng tên thí sinh</h4>
+          <p>Giấy xác nhận số dư tài khoản do tổ chức tài chính (ngân hàng, bưu điện&hellip;) <strong>chính thức cấp</strong>, <strong>trong vòng ba tháng gần nhất</strong>, với số dư <strong>từ 4.000 USD (USD 4.000) hoặc 120.000 Đài tệ (TWD 120.000) trở lên</strong>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">👪</div>
+          <h4>2. Giấy xác nhận số dư của người bảo trợ ＋ Bản cam kết tài chính</h4>
+          <p>Trường hợp giấy xác nhận số dư không đứng tên thí sinh, phải nộp giấy xác nhận số dư do tổ chức tài chính chính thức cấp <strong>đứng tên người bảo trợ</strong> (số tiền và thời hạn như trên), kèm theo <strong>Bản cam kết tài chính</strong> của người bảo trợ.<br>※ Bản cam kết tài chính được hệ thống tự động tạo sau khi hoàn tất đơn đăng ký trực tuyến; in ra, ký tên, quét và tải lên.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎓</div>
+          <h4>3. Giấy chứng nhận học bổng toàn phần (học bổng ngoài ISU)</h4>
+          <p>Trường hợp được cấp học bổng toàn phần bởi đơn vị <strong>không phải ISU</strong> (ví dụ Học bổng Đài Loan, cơ quan chính phủ khác hoặc nhà trường), thí sinh phải nộp kèm &ldquo;Giấy chứng nhận học bổng toàn phần&rdquo; thay cho giấy xác nhận số dư.<br>※ <strong>Học bổng do ISU cấp không được dùng làm chứng minh tài chính.</strong></p>
+        </div>
+      </div>
+
+      <div class="info-box red">
+        <h4>⚠️ Lưu ý quan trọng về hồ sơ tải lên và quy định định dạng (vui lòng đọc kỹ)</h4>
+        <p>Theo quy định của Bộ Giáo dục Đài Loan, các giấy tờ sau <strong>không</strong> được chấp nhận làm chứng minh tài chính, vui lòng không tải lên:</p>
+        <ul style="list-style:none;padding-left:0;">
+          <li>❌ Ảnh chụp bìa và các trang bên trong của sổ tiết kiệm ngân hàng / bưu điện (bắt buộc phải là giấy xác nhận số dư do tổ chức tài chính cấp).</li>
+          <li>❌ Giấy chứng nhận thu nhập hoặc giấy xác nhận công tác do công ty, trung tâm tư vấn du học hoặc cá nhân cấp.</li>
+          <li>❌ Chứng từ khấu trừ thuế thu nhập từ tiền lương hoặc giấy xác nhận khấu trừ thuế do cơ quan thuế cấp.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SECTION 8: CONTACT / CTA ═══ -->
   <section id="contact">
     <div class="cta-section">
       <h2 data-lang-zh="">準備好開始你的台灣求學之旅了嗎？</h2>
@@ -2478,6 +2471,12 @@
           <span data-lang-en="">Apply Online Now</span>
           <span data-lang-vi="">Đăng ký ngay</span>
           →
+        </a>
+        <a class="btn btn-outline" href="https://aa.isu.edu.tw/en-US/page/preview-Nzp2mJYtLF5H" target="_blank" rel="noopener noreferrer">
+          📄
+          <span data-lang-zh="">查看招生簡章最新公告</span>
+          <span data-lang-en="">Latest Admission Guidelines</span>
+          <span data-lang-vi="">Thông báo tuyển sinh mới nhất</span>
         </a>
         <a class="btn btn-outline" href="https://international.isu.edu.tw/" target="_blank">
           <span data-lang-zh="">義守大學國際學習</span>
