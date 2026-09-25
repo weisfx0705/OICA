@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>義守大學外籍生招生與在學異動決策儀表板 | 即時同步 Google 試算表</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+    body {
+      font-family: 'Inter', 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+    }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+    }
+    .glow-purple {
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.2);
+    }
+    .pulse-dot {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.15); }
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Top Navbar -->
+  <header class="sticky top-0 z-50 glass-card border-b border-slate-700/60 bg-slate-900/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-3.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+          <i class="fa-solid fa-graduation-cap text-white text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-lg font-bold text-white tracking-wide">義守大學 I-SHOU UNIVERSITY</h1>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-medium">境外生專用</span>
+          </div>
+          <p class="text-xs text-slate-400">各學期招生漏斗、報到率、國籍消長與學籍異動決策儀表板</p>
+        </div>
+      </div>
+
+      <!-- Sync Status & Controls -->
+      <div class="flex items-center flex-wrap gap-2.5">
+        <!-- Live Status Badge -->
+        <div id="syncBadge" class="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span>
+          <span id="syncText">正在連線 Google 試算表...</span>
+        </div>
+
+        <!-- Last Sync Time -->
+        <span id="syncTime" class="text-xs text-slate-400 hidden sm:inline-block">最後更新: --:--:--</span>
+
+        <!-- Manual Refresh Button -->
+        <button id="refreshBtn" onclick="syncFromGoogleSheet()" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 active:scale-95 transition text-white text-xs font-semibold shadow-md shadow-indigo-600/30">
+          <i class="fa-solid fa-arrows-rotate" id="refreshIcon"></i>
+          <span>即時同步試算表</span>
+        </button>
+
+        <!-- Direct Link to Google Sheet -->
+        <a href="https://docs.google.com/spreadsheets/d/18Vwv0TafvUlOeDk-92WPjiDXz6CvurUS6zvsOmpmsq0/edit" target="_blank" rel="noopener noreferrer" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition text-xs font-medium">
+          <i class="fa-solid fa-table text-emerald-400"></i>
+          <span>開啟 Google 總表</span>
+          <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-slate-400"></i>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Notice / Alert Banner -->
+    <div id="statusAlert" class="hidden rounded-xl p-3.5 text-xs flex items-center justify-between transition-all">
+      <div class="flex items-center space-x-2.5">
+        <i id="alertIcon" class="fa-solid fa-circle-check text-base"></i>
+        <span id="alertMsg"></span>
+      </div>
+      <button onclick="document.getElementById('statusAlert').classList.add('hidden')" class="text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Filter & Slicers -->
+    <div class="glass-card rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center flex-wrap gap-2">
+        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-1">
+          <i class="fa-solid fa-filter text-indigo-400 mr-1"></i> 學期篩選:
+        </span>
+        <button onclick="setSemesterFilter('all')" class="sem-btn active px-3 py-1 rounded-lg text-xs font-medium transition bg-indigo-600 text-white" data-sem="all">全部學期 (113-1 ~ 115-1)</button>
+        <button onclick="setSemesterFilter('113-1')" class="sem-btn px-3 py-1 rounded-lg text-xs font-medium transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-sem="113-1">113-1</button>
+        <button onclick="setSemesterFilter('113-2')" class="sem-btn px-3 py-1 rounded-lg text-xs font-medium transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-sem="113-2">113-2</button>
+        <button onclick="setSemesterFilter('114-1')" class="sem-btn px-3 py-1 rounded-lg text-xs font-medium transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-sem="114-1">114-1</button>
+        <button onclick="setSemesterFilter('114-2')" class="sem-btn px-3 py-1 rounded-lg text-xs font-medium transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-sem="114-2">114-2</button>
+        <button onclick="setSemesterFilter('115-1')" class="sem-btn px-3 py-1 rounded-lg text-xs font-medium transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-sem="115-1">115-1</button>
+      </div>
+
+      <div class="flex items-center space-x-2 text-xs text-slate-400">
+        <span>資料更新方式：</span>
+        <span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300">Google Sheet 即時拉取 (GViz)</span>
+      </div>
+    </div>
+
+    <!-- 4 Key Performance Metrics (KPI Cards) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- KPI 1: 報名總人次 -->
+      <div class="glass-card rounded-2xl p-5 relative overflow-hidden group hover:border-indigo-500/50 transition">
+        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/10 rounded-full blur-xl group-hover:bg-blue-500/20 transition"></div>
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-medium text-slate-400">累積申請報名人次</p>
+            <h3 id="kpiApplicants" class="text-2xl font-bold text-white mt-1">2,445</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-file-signature"></i>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center text-xs text-slate-400">
+          <span class="text-emerald-400 font-semibold mr-1.5"><i class="fa-solid fa-arrow-trend-up"></i> 5個學期</span>
+          <span>最高期 113-1 (1,223人)</span>
+        </div>
+      </div>
+
+      <!-- KPI 2: 錄取總人數 -->
+      <div class="glass-card rounded-2xl p-5 relative overflow-hidden group hover:border-violet-500/50 transition">
+        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-violet-500/10 rounded-full blur-xl group-hover:bg-violet-500/20 transition"></div>
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-medium text-slate-400">累積錄取總人數</p>
+            <h3 id="kpiAdmitted" class="text-2xl font-bold text-white mt-1">814</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-violet-500/20 text-violet-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-user-check"></i>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center text-xs text-slate-400">
+          <span id="kpiAdmitRate" class="text-violet-400 font-semibold mr-1.5">錄取率 33.3%</span>
+          <span>114學年度錄取率達 65%</span>
+        </div>
+      </div>
+
+      <!-- KPI 3: 報到入學人數 -->
+      <div class="glass-card rounded-2xl p-5 relative overflow-hidden group hover:border-emerald-500/50 transition">
+        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition"></div>
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-medium text-slate-400">累積新生報到入學</p>
+            <h3 id="kpiNewEnrolled" class="text-2xl font-bold text-white mt-1">133</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-door-open"></i>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center text-xs text-slate-400">
+          <span id="kpiEnrollRate" class="text-emerald-400 font-semibold mr-1.5">報到率 19.6%</span>
+          <span>錄取後正式入學報到</span>
+        </div>
+      </div>
+
+      <!-- KPI 4: 114-2 在學總名額 -->
+      <div class="glass-card rounded-2xl p-5 relative overflow-hidden group hover:border-amber-500/50 transition">
+        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-amber-500/10 rounded-full blur-xl group-hover:bg-amber-500/20 transition"></div>
+        <div class="flex justify-between items-start">
+          <div>
+            <p class="text-xs font-medium text-slate-400">最新在學總人數 (114-2)</p>
+            <h3 id="kpiTotalEnrolled" class="text-2xl font-bold text-white mt-1">162</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-users"></i>
+          </div>
+        </div>
+        <div class="mt-3 flex items-center text-xs text-slate-400">
+          <span class="text-amber-400 font-semibold mr-1.5">在學率 68.7%</span>
+          <span>畢業 41 / 退學 28 / 休學 3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section Row 1: 趨勢與漏斗 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Chart 1: 歷年招生與錄取趨勢 (2 cols) -->
+      <div class="glass-card rounded-2xl p-5 lg:col-span-2 flex flex-col justify-between">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h3 class="text-base font-semibold text-white flex items-center">
+              <i class="fa-solid fa-chart-line text-indigo-400 mr-2"></i>
+              歷年各學期招生趨勢 (報名 vs 錄取 vs 錄取率)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">跨 113-1 至 115-1 之消長走向與錄取率曲線</p>
+          </div>
+          <span class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-md border border-slate-700">趨勢對比</span>
+        </div>
+        <div class="relative h-72 w-full">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: 招生轉化漏斗 (1 col) -->
+      <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h3 class="text-base font-semibold text-white flex items-center">
+              <i class="fa-solid fa-filter-circle-dollar text-emerald-400 mr-2"></i>
+              全期招生轉換漏斗
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">報名 ➜ 錄取 ➜ 報到 ➜ 在學</p>
+          </div>
+        </div>
+        <div class="relative h-72 w-full flex items-center justify-center">
+          <canvas id="funnelChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section Row 2: 國籍分佈與系所分佈 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Chart 3: 生源國籍前八大 (圓餅/環形圖) -->
+      <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h3 class="text-base font-semibold text-white flex items-center">
+              <i class="fa-solid fa-earth-asia text-blue-400 mr-2"></i>
+              生源國籍結構分佈 (前八大生源國)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">越南、印尼為核心主幹，佔在學外籍生 76.5%</p>
+          </div>
+          <span class="text-xs bg-blue-500/10 text-blue-300 border border-blue-500/20 px-2 py-0.5 rounded">主力生源</span>
+        </div>
+        <div class="relative h-80 w-full flex items-center justify-center">
+          <canvas id="nationalityChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4: 熱門系所錄取人次排行 (長條圖) -->
+      <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h3 class="text-base font-semibold text-white flex items-center">
+              <i class="fa-solid fa-building-columns text-violet-400 mr-2"></i>
+              前十大熱門系所錄取人數排行
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">國際學院 IMBA (147人) 與 IBA (99人) 需求最高</p>
+          </div>
+          <span class="text-xs bg-violet-500/10 text-violet-300 border border-violet-500/20 px-2 py-0.5 rounded">學院分佈</span>
+        </div>
+        <div class="relative h-80 w-full">
+          <canvas id="deptChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section Row 3: 學籍異動與招生管道 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Chart 5: 114-2 學籍異動與留存狀況 -->
+      <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h3 class="text-base font-semibold text-white flex items-center">
+              <i class="fa-solid fa-user-shield text-amber-400 mr-2"></i>
+              114-2 學籍異動狀態分析 (留存率 68.7%)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">累計異動 230 人：在學 158 / 畢業 41 / 退學 28 / 休學 3</p>
+          </div>
+          <span class="text-xs bg-amber-500/10 text-amber-300 border border-amber-500/20 px-2 py-0.5 rounded">流失警示</span>
+        </div>
+        <div class="relative h-72 w-full flex items-center justify-center">
+          <canvas id="attritionChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 6: 招生管道與推薦機構 -->
+      <div class="glass-card rounded-2xl p-5 flex flex-col justify-between">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <h3 class="text-base font-semibold text-white flex items-center">
+              <i class="fa-solid fa-handshake text-emerald-400 mr-2"></i>
+              主要推薦合作機構榜單 (前 7 大)
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">單位與學校推薦佔 36.5%，台灣獎學金與 ICO 貢獻最高</p>
+          </div>
+          <span class="text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2 py-0.5 rounded">管道效益</span>
+        </div>
+        <div class="relative h-72 w-full">
+          <canvas id="agencyChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data Tables with Tabs -->
+    <div class="glass-card rounded-2xl p-5 overflow-hidden">
+      <!-- Table Header & Tabs -->
+      <div class="flex flex-wrap justify-between items-center border-b border-slate-700/80 pb-4 gap-4">
+        <div class="flex items-center space-x-2">
+          <h3 class="text-base font-bold text-white flex items-center">
+            <i class="fa-solid fa-table-list text-indigo-400 mr-2"></i>
+            詳細數據表檢視
+          </h3>
+          <span class="text-xs text-slate-400">可切換不同分頁檢視完整指標</span>
+        </div>
+
+        <div class="flex items-center space-x-1.5 flex-wrap">
+          <button onclick="switchTab('tabFunnel')" id="btnTabFunnel" class="table-tab-btn active px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-600 text-white">漏斗轉換總表</button>
+          <button onclick="switchTab('tabNations')" id="btnTabNations" class="table-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">國籍分佈統計</button>
+          <button onclick="switchTab('tabDepts')" id="btnTabDepts" class="table-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">院系錄取明細</button>
+          <button onclick="switchTab('tabAttrition')" id="btnTabAttrition" class="table-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">學籍異動明細</button>
+          <button onclick="switchTab('tabAgencies')" id="btnTabAgencies" class="table-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700">推薦機構統計</button>
+        </div>
+      </div>
+
+      <!-- Tab Content 1: Funnel -->
+      <div id="tabFunnel" class="table-tab-content pt-4 overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-800/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-700">
+            <tr>
+              <th class="py-3 px-4">學期</th>
+              <th class="py-3 px-4 text-right">報名人數</th>
+              <th class="py-3 px-4 text-right">錄取人數</th>
+              <th class="py-3 px-4 text-right">錄取率 (%)</th>
+              <th class="py-3 px-4 text-right">在學總人數</th>
+              <th class="py-3 px-4 text-right">當期新生報到</th>
+              <th class="py-3 px-4 text-right">報到率 (%)</th>
+            </tr>
+          </thead>
+          <tbody id="funnelTableBody" class="divide-y divide-slate-800">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab Content 2: Nations -->
+      <div id="tabNations" class="table-tab-content hidden pt-4 overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-800/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-700">
+            <tr>
+              <th class="py-3 px-4">國籍 (中文)</th>
+              <th class="py-3 px-4">國籍 (英文)</th>
+              <th class="py-3 px-4">地區分類</th>
+              <th class="py-3 px-4 text-right">報名總數</th>
+              <th class="py-3 px-4 text-right">錄取總數</th>
+              <th class="py-3 px-4 text-right">錄取率 (%)</th>
+              <th class="py-3 px-4 text-right">114-2最新在學</th>
+            </tr>
+          </thead>
+          <tbody id="nationsTableBody" class="divide-y divide-slate-800">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab Content 3: Depts -->
+      <div id="tabDepts" class="table-tab-content hidden pt-4 overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-800/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-700">
+            <tr>
+              <th class="py-3 px-4">學院</th>
+              <th class="py-3 px-4">系所名稱</th>
+              <th class="py-3 px-4">學制</th>
+              <th class="py-3 px-4 text-right">錄取總數</th>
+              <th class="py-3 px-4 text-right">113-1</th>
+              <th class="py-3 px-4 text-right">113-2</th>
+              <th class="py-3 px-4 text-right">114-1</th>
+              <th class="py-3 px-4 text-right">114-2</th>
+              <th class="py-3 px-4 text-right">115-1</th>
+            </tr>
+          </thead>
+          <tbody id="deptsTableBody" class="divide-y divide-slate-800">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab Content 4: Attrition -->
+      <div id="tabAttrition" class="table-tab-content hidden pt-4 overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-800/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-700">
+            <tr>
+              <th class="py-3 px-4">學籍狀態</th>
+              <th class="py-3 px-4 text-right">人數</th>
+              <th class="py-3 px-4 text-right">佔比 (%)</th>
+              <th class="py-3 px-4">狀態描述與說明</th>
+            </tr>
+          </thead>
+          <tbody id="attritionTableBody" class="divide-y divide-slate-800">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Tab Content 5: Agencies -->
+      <div id="tabAgencies" class="table-tab-content hidden pt-4 overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-800/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-700">
+            <tr>
+              <th class="py-3 px-4">合作機構 / 推薦單位</th>
+              <th class="py-3 px-4 text-right">推薦人數</th>
+              <th class="py-3 px-4 text-right">佔比 (%)</th>
+              <th class="py-3 px-4">主力生源國</th>
+            </tr>
+          </thead>
+          <tbody id="agenciesTableBody" class="divide-y divide-slate-800">
+            <!-- Populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="glass-card border-t border-slate-800 py-6 mt-12 text-center text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+      <p>© 2026 義守大學 I-SHOU UNIVERSITY - 外籍生數據決策平台</p>
+      <div class="flex items-center space-x-4">
+        <a href="https://docs.google.com/spreadsheets/d/18Vwv0TafvUlOeDk-92WPjiDXz6CvurUS6zvsOmpmsq0/edit" target="_blank" class="hover:text-indigo-400 transition"><i class="fa-solid fa-table mr-1"></i>Google 試算表母表</a>
+        <span>•</span>
+        <span class="text-slate-400">資料來源：Google Drive 義守大學外籍生資料庫</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript Code for Live Google Sheet Sync & Visualization -->
+  <script>
+    // 1. Google Sheet Configuration
+    const SPREADSHEET_ID = "18Vwv0TafvUlOeDk-92WPjiDXz6CvurUS6zvsOmpmsq0";
+    const SHEET_NAMES = {
+      funnel: "總覽與漏斗轉換分析",
+      nations: "生源國籍分佈與消長",
+      depts: "學院與系所招生分析",
+      attrition: "學籍異動與流失追蹤",
+      channels: "招生管道與合作機構"
+    };
+
+    // 2. Embedded Fallback Data
+    const fallbackDb = {"funnel": [{"semester": "113-1", "applicants": 1223, "admitted": 134, "admit_rate": 10.96, "enrolled_total": 126, "new_enrolled": 42, "enroll_rate": 31.34}, {"semester": "113-2", "applicants": 290, "admitted": 136, "admit_rate": 46.9, "enrolled_total": 156, "new_enrolled": 24, "enroll_rate": 17.65}, {"semester": "114-1", "applicants": 308, "admitted": 199, "admit_rate": 64.61, "enrolled_total": 160, "new_enrolled": 47, "enroll_rate": 23.62}, {"semester": "114-2", "applicants": 316, "admitted": 210, "admit_rate": 66.46, "enrolled_total": 162, "new_enrolled": 20, "enroll_rate": 9.52}, {"semester": "115-1", "applicants": 308, "admitted": 135, "admit_rate": 43.83, "enrolled_total": null, "new_enrolled": null, "enroll_rate": null}], "nationalities": [{"nation_zh": "越南", "nation_en": "Vietnam", "region": "東南亞", "applicants": 633, "admitted": 480, "rate": 75.83, "current": 79}, {"nation_zh": "史瓦帝尼", "nation_en": "Eswatini", "region": "非洲友邦", "applicants": 363, "admitted": 17, "rate": 4.68, "current": 2}, {"nation_zh": "印尼", "nation_en": "Indonesia", "region": "東南亞", "applicants": 346, "admitted": 161, "rate": 46.53, "current": 45}, {"nation_zh": "菲律賓", "nation_en": "Philippines", "region": "東南亞", "applicants": 169, "admitted": 45, "rate": 26.63, "current": 16}, {"nation_zh": "巴基斯坦", "nation_en": "Pakistan", "region": "南亞", "applicants": 141, "admitted": 0, "rate": 0.0, "current": 0}, {"nation_zh": "奈及利亞", "nation_en": "Nigeria", "region": "非洲", "applicants": 100, "admitted": 2, "rate": 2.0, "current": 0}, {"nation_zh": "蒙古", "nation_en": "Mongolia", "region": "東亞", "applicants": 88, "admitted": 13, "rate": 14.77, "current": 1}, {"nation_zh": "泰國", "nation_en": "Thailand", "region": "東南亞", "applicants": 81, "admitted": 29, "rate": 35.8, "current": 9}, {"nation_zh": "日本", "nation_en": "Japan", "region": "東亞", "applicants": 67, "admitted": 15, "rate": 22.39, "current": 5}, {"nation_zh": "海地", "nation_en": "Haiti", "region": "友邦(拉美)", "applicants": 45, "admitted": 12, "rate": 26.67, "current": 1}, {"nation_zh": "印度", "nation_en": "India", "region": "南亞", "applicants": 45, "admitted": 8, "rate": 17.78, "current": 2}, {"nation_zh": "聖文森", "nation_en": "Saint Vincent", "region": "友邦(拉美)", "applicants": 25, "admitted": 6, "rate": 24.0, "current": 1}, {"nation_zh": "貝里斯", "nation_en": "Belize", "region": "友邦(拉美)", "applicants": 23, "admitted": 7, "rate": 30.43, "current": 0}, {"nation_zh": "俄羅斯", "nation_en": "Russia", "region": "歐洲", "applicants": 22, "admitted": 7, "rate": 31.82, "current": 0}, {"nation_zh": "馬來西亞", "nation_en": "Malaysia", "region": "東南亞", "applicants": 18, "admitted": 5, "rate": 27.78, "current": 0}], "departments": [{"college": "國際學院", "dept": "國際學院國際管理碩士班(IMBA)", "degree": "碩士班", "total": 147, "s113_1": 13, "s113_2": 22, "s114_1": 53, "s114_2": 41, "s115_1": 18}, {"college": "國際學院", "dept": "國際企業經營英語學士學程(IBA)", "degree": "學士班", "total": 99, "s113_1": 14, "s113_2": 11, "s114_1": 29, "s114_2": 23, "s115_1": 22}, {"college": "智慧科技學院", "dept": "智慧科技英語學士學程(AIT)", "degree": "學士班", "total": 82, "s113_1": 15, "s113_2": 6, "s114_1": 19, "s114_2": 21, "s115_1": 21}, {"college": "國際學院", "dept": "智慧觀光餐旅管理英語學程(ITHM)", "degree": "學士班", "total": 55, "s113_1": 13, "s113_2": 7, "s114_1": 12, "s114_2": 11, "s115_1": 12}, {"college": "管理學院", "dept": "企業管理學系", "degree": "學/碩士", "total": 50, "s113_1": 6, "s113_2": 11, "s114_1": 14, "s114_2": 10, "s115_1": 9}, {"college": "管理學院", "dept": "餐旅管理學系", "degree": "學士班", "total": 41, "s113_1": 7, "s113_2": 8, "s114_1": 11, "s114_2": 9, "s115_1": 6}, {"college": "智慧科技學院", "dept": "資訊管理學系", "degree": "學士班", "total": 39, "s113_1": 5, "s113_2": 7, "s114_1": 11, "s114_2": 9, "s115_1": 7}, {"college": "國際學院", "dept": "財務與商業分析英語學程(FBA)", "degree": "學士班", "total": 35, "s113_1": 6, "s113_2": 4, "s114_1": 11, "s114_2": 8, "s115_1": 6}, {"college": "工學院", "dept": "機械與自動化工程學系", "degree": "學士班", "total": 26, "s113_1": 4, "s113_2": 5, "s114_1": 8, "s114_2": 6, "s115_1": 3}, {"college": "智慧科技學院", "dept": "資訊工程學系", "degree": "學士班", "total": 24, "s113_1": 3, "s113_2": 5, "s114_1": 7, "s114_2": 5, "s115_1": 4}], "attrition": [{"status": "在學", "count": 158, "ratio": 68.7, "desc": "持續在學修讀，學籍正常"}, {"status": "畢業", "count": 41, "ratio": 17.83, "desc": "順利取得學位完成學業"}, {"status": "退學", "count": 28, "ratio": 12.17, "desc": "因志趣不合、未註冊或工作轉換"}, {"status": "休學", "count": 3, "ratio": 1.3, "desc": "因個人或家庭因素辦理休學"}], "channels": [{"name": "單位/學校推薦", "count": 84, "ratio": 36.52}, {"name": "網路搜尋", "count": 78, "ratio": 33.91}, {"name": "親友介紹", "count": 31, "ratio": 13.48}, {"name": "教育展/其他", "count": 37, "ratio": 16.09}], "agencies": [{"name": "台灣獎學金辦公室", "count": 18, "ratio": 21.43}, {"name": "ICO (國際文化教育組織)", "count": 14, "ratio": 16.67}, {"name": "JNJ 國際教育", "count": 12, "ratio": 14.29}, {"name": "日華外語中心", "count": 11, "ratio": 13.1}, {"name": "Taiwan Diary (越南辦事處)", "count": 8, "ratio": 9.52}, {"name": "ITCC / 印尼教育中心", "count": 8, "ratio": 9.52}, {"name": "Kingedu 留學", "count": 6, "ratio": 7.14}, {"name": "其他海外合作單位", "count": 7, "ratio": 8.33}]};
+    let currentDb = JSON.parse(JSON.stringify(fallbackDb));
+    let selectedSemester = "all";
+
+    // Chart Instances
+    let charts = {};
+
+    // Initialize Dashboard
+    window.addEventListener("DOMContentLoaded", () => {
+      renderAllTables(currentDb);
+      initCharts(currentDb);
+      // Auto-trigger live sync from Google Sheet
+      syncFromGoogleSheet();
+    });
+
+    // Fetch Table Data from Google Sheets using Google Visualization API (GViz)
+    async function fetchGVizSheet(sheetName) {
+      const encodedSheet = encodeURIComponent(sheetName);
+      const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodedSheet}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const text = await response.text();
+      
+      // GViz returns: /*O_o*/
+google.visualization.Query.setResponse({...});
+      const start = text.indexOf("{");
+      const end = text.lastIndexOf("}");
+      if (start === -1 || end === -1) throw new Error("Invalid GViz response format");
+      
+      const json = JSON.parse(text.substring(start, end + 1));
+      return json.table;
+    }
+
+    // Master Sync Function
+    async function syncFromGoogleSheet() {
+      const syncBadge = document.getElementById("syncBadge");
+      const syncText = document.getElementById("syncText");
+      const syncTime = document.getElementById("syncTime");
+      const refreshIcon = document.getElementById("refreshIcon");
+      const statusAlert = document.getElementById("statusAlert");
+      const alertMsg = document.getElementById("alertMsg");
+      const alertIcon = document.getElementById("alertIcon");
+
+      // UI: Loading State
+      refreshIcon.classList.add("fa-spin");
+      syncBadge.className = "flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-medium";
+      syncText.innerText = "正在連線 Google 試算表讀取最新數據...";
+
+      try {
+        // Fetch all sheets in parallel
+        const [funnelTable, nationsTable, deptsTable, attritionTable] = await Promise.all([
+          fetchGVizSheet(SHEET_NAMES.funnel),
+          fetchGVizSheet(SHEET_NAMES.nations),
+          fetchGVizSheet(SHEET_NAMES.depts),
+          fetchGVizSheet(SHEET_NAMES.attrition)
+        ]);
+
+        // Parse Funnel Data
+        const newFunnel = [];
+        if (funnelTable && funnelTable.rows) {
+          funnelTable.rows.forEach(r => {
+            const sem = r.c[0] ? (r.c[0].f || r.c[0].v) : "";
+            if (sem && sem.includes("-")) {
+              newFunnel.push({
+                semester: sem,
+                applicants: r.c[1] ? Number(r.c[1].v) || 0 : 0,
+                admitted: r.c[2] ? Number(r.c[2].v) || 0 : 0,
+                admit_rate: r.c[3] ? (parseFloat(r.c[3].f || r.c[3].v) || 0) : 0,
+                enrolled_total: (r.c[4] && !isNaN(Number(r.c[4].v))) ? Number(r.c[4].v) : null,
+                new_enrolled: (r.c[5] && !isNaN(Number(r.c[5].v))) ? Number(r.c[5].v) : null,
+                enroll_rate: (r.c[6] && !isNaN(parseFloat(r.c[6].f || r.c[6].v))) ? parseFloat(r.c[6].f || r.c[6].v) : null
+              });
+            }
+          });
+        }
+
+        // Parse Nationalities Data
+        const newNations = [];
+        if (nationsTable && nationsTable.rows) {
+          nationsTable.rows.forEach(r => {
+            const zh = r.c[0] ? (r.c[0].f || r.c[0].v) : "";
+            if (zh && zh !== "國籍中文") {
+              newNations.push({
+                nation_zh: zh,
+                nation_en: r.c[1] ? (r.c[1].f || r.c[1].v) : "",
+                region: r.c[2] ? (r.c[2].f || r.c[2].v) : "其他",
+                applicants: r.c[3] ? Number(r.c[3].v) || 0 : 0,
+                admitted: r.c[4] ? Number(r.c[4].v) || 0 : 0,
+                rate: r.c[5] ? (parseFloat(r.c[5].f || r.c[5].v) || 0) : 0,
+                current: r.c[6] ? Number(r.c[6].v) || 0 : 0
+              });
+            }
+          });
+        }
+
+        // Update database if rows are valid
+        if (newFunnel.length > 0) currentDb.funnel = newFunnel;
+        if (newNations.length > 0) currentDb.nationalities = newNations;
+
+        // UI: Success State
+        const nowStr = new Date().toLocaleTimeString("zh-TW", { hour12: false });
+        syncBadge.className = "flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium";
+        syncText.innerText = "已連動 Google 試算表（最新即時資料）";
+        syncTime.innerText = `最後更新: ${nowStr}`;
+        syncTime.classList.remove("hidden");
+
+        statusAlert.className = "rounded-xl p-3 bg-emerald-950/40 border border-emerald-500/40 text-emerald-300 text-xs flex items-center justify-between";
+        alertIcon.className = "fa-solid fa-circle-check text-base text-emerald-400";
+        alertMsg.innerText = `成功連線並取得 Google Sheet 最新資料！共讀取 ${newFunnel.length} 個學期漏斗數據與 ${newNations.length} 國生源數據。`;
+        statusAlert.classList.remove("hidden");
+
+        // Re-render
+        renderAllTables(currentDb);
+        updateCharts(currentDb);
+      } catch (err) {
+        console.warn("Live fetch from Google Sheet failed, using offline fallback snapshot:", err);
+        
+        // UI: Fallback State
+        syncBadge.className = "flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-medium";
+        syncText.innerText = "試算表連線中 (目前顯示離線快照備援)";
+        
+        statusAlert.className = "rounded-xl p-3 bg-amber-950/40 border border-amber-500/40 text-amber-300 text-xs flex items-center justify-between";
+        alertIcon.className = "fa-solid fa-triangle-exclamation text-base text-amber-400";
+        alertMsg.innerText = "提示：目前使用離線快照模式呈現數據。若要啟用純前端即時同步，請確認 Google Sheet 共用權限已設為「知道連結的人均可查看」。";
+        statusAlert.classList.remove("hidden");
+
+        renderAllTables(fallbackDb);
+        updateCharts(fallbackDb);
+      } finally {
+        refreshIcon.classList.remove("fa-spin");
+      }
+    }
+
+    // Filter Logic
+    function setSemesterFilter(sem) {
+      selectedSemester = sem;
+      document.querySelectorAll(".sem-btn").forEach(btn => {
+        if (btn.dataset.sem === sem) {
+          btn.className = "sem-btn active px-3 py-1 rounded-lg text-xs font-medium transition bg-indigo-600 text-white";
+        } else {
+          btn.className = "sem-btn px-3 py-1 rounded-lg text-xs font-medium transition bg-slate-800 text-slate-300 hover:bg-slate-700";
+        }
+      });
+      updateKPIs(currentDb);
+    }
+
+    function updateKPIs(db) {
+      if (selectedSemester === "all") {
+        const totalApp = db.funnel.reduce((acc, cur) => acc + cur.applicants, 0);
+        const totalAdm = db.funnel.reduce((acc, cur) => acc + cur.admitted, 0);
+        const totalNew = db.funnel.reduce((acc, cur) => acc + (cur.new_enrolled || 0), 0);
+        const latestEnrolled = 162;
+        const avgAdmitRate = ((totalAdm / totalApp) * 100).toFixed(1);
+        const avgEnrollRate = ((totalNew / (totalAdm - 135)) * 100).toFixed(1); // excluding pending 115-1
+
+        document.getElementById("kpiApplicants").innerText = totalApp.toLocaleString();
+        document.getElementById("kpiAdmitted").innerText = totalAdm.toLocaleString();
+        document.getElementById("kpiAdmitRate").innerText = `錄取率 ${avgAdmitRate}%`;
+        document.getElementById("kpiNewEnrolled").innerText = totalNew.toLocaleString();
+        document.getElementById("kpiEnrollRate").innerText = `報到率 ${avgEnrollRate}%`;
+        document.getElementById("kpiTotalEnrolled").innerText = latestEnrolled.toLocaleString();
+      } else {
+        const target = db.funnel.find(f => f.semester === selectedSemester);
+        if (target) {
+          document.getElementById("kpiApplicants").innerText = target.applicants.toLocaleString();
+          document.getElementById("kpiAdmitted").innerText = target.admitted.toLocaleString();
+          document.getElementById("kpiAdmitRate").innerText = `錄取率 ${target.admit_rate}%`;
+          document.getElementById("kpiNewEnrolled").innerText = target.new_enrolled !== null ? target.new_enrolled.toLocaleString() : "審查中";
+          document.getElementById("kpiEnrollRate").innerText = target.enroll_rate !== null ? `報到率 ${target.enroll_rate}%` : "審查中";
+          document.getElementById("kpiTotalEnrolled").innerText = target.enrolled_total !== null ? target.enrolled_total.toLocaleString() : "--";
+        }
+      }
+    }
+
+    // Render Data Tables
+    function renderAllTables(db) {
+      updateKPIs(db);
+
+      // 1. Funnel Table
+      const funnelBody = document.getElementById("funnelTableBody");
+      funnelBody.innerHTML = db.funnel.map(r => `
+        <tr class="hover:bg-slate-800/50 transition">
+          <td class="py-3 px-4 font-semibold text-white">${r.semester}</td>
+          <td class="py-3 px-4 text-right">${r.applicants.toLocaleString()}</td>
+          <td class="py-3 px-4 text-right text-indigo-300 font-medium">${r.admitted.toLocaleString()}</td>
+          <td class="py-3 px-4 text-right font-medium ${r.admit_rate > 50 ? 'text-emerald-400' : 'text-slate-300'}">${r.admit_rate}%</td>
+          <td class="py-3 px-4 text-right">${r.enrolled_total !== null ? r.enrolled_total : '<span class="text-slate-400">審查中</span>'}</td>
+          <td class="py-3 px-4 text-right text-emerald-400 font-medium">${r.new_enrolled !== null ? r.new_enrolled : '<span class="text-slate-400">審查中</span>'}</td>
+          <td class="py-3 px-4 text-right">${r.enroll_rate !== null ? r.enroll_rate + '%' : '<span class="text-slate-400">審查中</span>'}</td>
+        </tr>
+      `).join("");
+
+      // 2. Nations Table
+      const nationsBody = document.getElementById("nationsTableBody");
+      nationsBody.innerHTML = db.nationalities.map(r => `
+        <tr class="hover:bg-slate-800/50 transition">
+          <td class="py-3 px-4 font-semibold text-white">${r.nation_zh}</td>
+          <td class="py-3 px-4 text-slate-400">${r.nation_en}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[11px]">${r.region}</span></td>
+          <td class="py-3 px-4 text-right">${r.applicants.toLocaleString()}</td>
+          <td class="py-3 px-4 text-right text-indigo-300 font-medium">${r.admitted.toLocaleString()}</td>
+          <td class="py-3 px-4 text-right font-medium ${r.rate > 40 ? 'text-emerald-400' : 'text-slate-300'}">${r.rate}%</td>
+          <td class="py-3 px-4 text-right font-bold text-amber-400">${r.current}</td>
+        </tr>
+      `).join("");
+
+      // 3. Depts Table
+      const deptsBody = document.getElementById("deptsTableBody");
+      deptsBody.innerHTML = db.departments.map(r => `
+        <tr class="hover:bg-slate-800/50 transition">
+          <td class="py-3 px-4 text-slate-400">${r.college}</td>
+          <td class="py-3 px-4 font-semibold text-white">${r.dept}</td>
+          <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[11px]">${r.degree}</span></td>
+          <td class="py-3 px-4 text-right text-indigo-300 font-bold">${r.total}</td>
+          <td class="py-3 px-4 text-right text-slate-400">${r.s113_1}</td>
+          <td class="py-3 px-4 text-right text-slate-400">${r.s113_2}</td>
+          <td class="py-3 px-4 text-right text-slate-300">${r.s114_1}</td>
+          <td class="py-3 px-4 text-right text-slate-300">${r.s114_2}</td>
+          <td class="py-3 px-4 text-right text-slate-400">${r.s115_1}</td>
+        </tr>
+      `).join("");
+
+      // 4. Attrition Table
+      const attritionBody = document.getElementById("attritionTableBody");
+      attritionBody.innerHTML = db.attrition.map(r => `
+        <tr class="hover:bg-slate-800/50 transition">
+          <td class="py-3 px-4 font-semibold text-white flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full ${r.status === '在學' ? 'bg-emerald-400' : r.status === '畢業' ? 'bg-blue-400' : r.status === '退學' ? 'bg-rose-400' : 'bg-amber-400'}"></span>
+            <span>${r.status}</span>
+          </td>
+          <td class="py-3 px-4 text-right font-bold text-white">${r.count}</td>
+          <td class="py-3 px-4 text-right font-semibold">${r.ratio}%</td>
+          <td class="py-3 px-4 text-slate-400">${r.desc}</td>
+        </tr>
+      `).join("");
+
+      // 5. Agencies Table
+      const agenciesBody = document.getElementById("agenciesTableBody");
+      agenciesBody.innerHTML = db.agencies.map(r => `
+        <tr class="hover:bg-slate-800/50 transition">
+          <td class="py-3 px-4 font-semibold text-white">${r.name}</td>
+          <td class="py-3 px-4 text-right font-bold text-emerald-400">${r.count}</td>
+          <td class="py-3 px-4 text-right font-medium">${r.ratio}%</td>
+          <td class="py-3 px-4 text-slate-400">主要推薦東南亞與各友邦外籍生</td>
+        </tr>
+      `).join("");
+    }
+
+    // Tab Switching
+    function switchTab(tabId) {
+      document.querySelectorAll(".table-tab-content").forEach(el => el.classList.add("hidden"));
+      document.querySelectorAll(".table-tab-btn").forEach(el => {
+        el.className = "table-tab-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700";
+      });
+
+      document.getElementById(tabId).classList.remove("hidden");
+      event.target.className = "table-tab-btn active px-3 py-1.5 rounded-lg text-xs font-medium bg-indigo-600 text-white";
+    }
+
+    // Chart.js Theme Defaults
+    Chart.defaults.color = "#94a3b8";
+    Chart.defaults.font.family = "'Inter', 'Noto Sans TC', sans-serif";
+
+    // Initialize All Charts
+    function initCharts(db) {
+      // Chart 1: Trend Chart
+      const ctxTrend = document.getElementById("trendChart").getContext("2d");
+      charts.trend = new Chart(ctxTrend, {
+        type: "bar",
+        data: {
+          labels: db.funnel.map(d => d.semester),
+          datasets: [
+            {
+              type: "line",
+              label: "錄取率 (%)",
+              data: db.funnel.map(d => d.admit_rate),
+              borderColor: "#38bdf8",
+              backgroundColor: "#38bdf8",
+              borderWidth: 3,
+              tension: 0.35,
+              yAxisID: "y1",
+              pointRadius: 4,
+              pointHoverRadius: 6
+            },
+            {
+              type: "bar",
+              label: "申請報名人數",
+              data: db.funnel.map(d => d.applicants),
+              backgroundColor: "rgba(99, 102, 241, 0.75)",
+              borderRadius: 6,
+              yAxisID: "y"
+            },
+            {
+              type: "bar",
+              label: "錄取人數",
+              data: db.funnel.map(d => d.admitted),
+              backgroundColor: "rgba(168, 85, 247, 0.85)",
+              borderRadius: 6,
+              yAxisID: "y"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: {
+            legend: { position: "top", labels: { boxWidth: 12, padding: 15 } }
+          },
+          scales: {
+            y: {
+              type: "linear",
+              display: true,
+              position: "left",
+              grid: { color: "rgba(255, 255, 255, 0.05)" }
+            },
+            y1: {
+              type: "linear",
+              display: true,
+              position: "right",
+              grid: { drawOnChartArea: false },
+              min: 0,
+              max: 100,
+              ticks: { callback: v => v + "%" }
+            },
+            x: { grid: { display: false } }
+          }
+        }
+      });
+
+      // Chart 2: Funnel Chart
+      const ctxFunnel = document.getElementById("funnelChart").getContext("2d");
+      const totalApp = db.funnel.reduce((a, b) => a + b.applicants, 0);
+      const totalAdm = db.funnel.reduce((a, b) => a + b.admitted, 0);
+      const totalNew = db.funnel.reduce((a, b) => a + (b.new_enrolled || 0), 0);
+      charts.funnel = new Chart(ctxFunnel, {
+        type: "bar",
+        data: {
+          labels: ["1. 申請報名總人次", "2. 審查錄取總人次", "3. 正式報到入學", "4. 114-2 在學留存"],
+          datasets: [{
+            label: "人數",
+            data: [totalApp, totalAdm, totalNew, 162],
+            backgroundColor: [
+              "rgba(99, 102, 241, 0.85)",
+              "rgba(168, 85, 247, 0.85)",
+              "rgba(16, 185, 129, 0.85)",
+              "rgba(245, 158, 11, 0.85)"
+            ],
+            borderRadius: 8
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            x: { grid: { color: "rgba(255, 255, 255, 0.05)" } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+
+      // Chart 3: Nationality Chart
+      const ctxNat = document.getElementById("nationalityChart").getContext("2d");
+      const topNations = db.nationalities.slice(0, 8);
+      charts.nationality = new Chart(ctxNat, {
+        type: "doughnut",
+        data: {
+          labels: topNations.map(n => n.nation_zh),
+          datasets: [{
+            data: topNations.map(n => n.admitted),
+            backgroundColor: [
+              "#6366f1", "#a855f7", "#ec4899", "#3b82f6",
+              "#06b6d4", "#10b981", "#f59e0b", "#64748b"
+            ],
+            borderWidth: 2,
+            borderColor: "#0f172a"
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "right", labels: { boxWidth: 12, padding: 12 } }
+          },
+          cutout: "65%"
+        }
+      });
+
+      // Chart 4: Dept Chart
+      const ctxDept = document.getElementById("deptChart").getContext("2d");
+      charts.dept = new Chart(ctxDept, {
+        type: "bar",
+        data: {
+          labels: db.departments.map(d => d.dept.length > 12 ? d.dept.substring(0, 11) + '..' : d.dept),
+          datasets: [{
+            label: "累積錄取人次",
+            data: db.departments.map(d => d.total),
+            backgroundColor: "rgba(129, 140, 248, 0.8)",
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: "rgba(255, 255, 255, 0.05)" } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+
+      // Chart 5: Attrition Chart
+      const ctxAtt = document.getElementById("attritionChart").getContext("2d");
+      charts.attrition = new Chart(ctxAtt, {
+        type: "pie",
+        data: {
+          labels: db.attrition.map(a => a.status),
+          datasets: [{
+            data: db.attrition.map(a => a.count),
+            backgroundColor: ["#10b981", "#3b82f6", "#ef4444", "#f59e0b"],
+            borderWidth: 2,
+            borderColor: "#0f172a"
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "right", labels: { boxWidth: 12, padding: 12 } }
+          }
+        }
+      });
+
+      // Chart 6: Agency Chart
+      const ctxAgency = document.getElementById("agencyChart").getContext("2d");
+      charts.agency = new Chart(ctxAgency, {
+        type: "bar",
+        data: {
+          labels: db.agencies.map(a => a.name),
+          datasets: [{
+            label: "推薦人次",
+            data: db.agencies.map(a => a.count),
+            backgroundColor: "rgba(16, 185, 129, 0.8)",
+            borderRadius: 6
+          }]
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: "rgba(255, 255, 255, 0.05)" } },
+            y: { grid: { display: false } }
+          }
+        }
+      });
+    }
+
+    // Update Charts with New Data
+    function updateCharts(db) {
+      if (!charts.trend) return;
+
+      // Update Trend
+      charts.trend.data.labels = db.funnel.map(d => d.semester);
+      charts.trend.data.datasets[0].data = db.funnel.map(d => d.admit_rate);
+      charts.trend.data.datasets[1].data = db.funnel.map(d => d.applicants);
+      charts.trend.data.datasets[2].data = db.funnel.map(d => d.admitted);
+      charts.trend.update();
+
+      // Update Funnel
+      const totalApp = db.funnel.reduce((a, b) => a + b.applicants, 0);
+      const totalAdm = db.funnel.reduce((a, b) => a + b.admitted, 0);
+      const totalNew = db.funnel.reduce((a, b) => a + (b.new_enrolled || 0), 0);
+      charts.funnel.data.datasets[0].data = [totalApp, totalAdm, totalNew, 162];
+      charts.funnel.update();
+
+      // Update Nationality
+      const topNations = db.nationalities.slice(0, 8);
+      charts.nationality.data.labels = topNations.map(n => n.nation_zh);
+      charts.nationality.data.datasets[0].data = topNations.map(n => n.admitted);
+      charts.nationality.update();
+    }
+  </script>
+</body>
+</html>
