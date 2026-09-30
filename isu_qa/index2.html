@@ -1024,6 +1024,10 @@
     border-bottom: 3px solid var(--isu-gold);
   }
   .chat-header .ch-icon { font-size: 1.3rem; }
+  .chat-header .ch-logo {
+    width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px;
+    box-shadow: 0 0 0 1px rgba(201, 162, 39, 0.5);
+  }
   .chat-title-wrap { flex: 1; min-width: 0; }
   .chat-header .ch-title { font-family: 'Noto Serif TC', serif; font-weight: 700; font-size: 1.05rem; }
   .chat-header .ch-sub { font-size: 0.66rem; color: rgba(255, 255, 255, 0.55); font-family: 'Space Mono', monospace; margin-top: 1px; }
@@ -1322,7 +1326,7 @@
 
 <div class="chat-drawer" id="chatDrawer">
   <div class="chat-header">
-    <span class="ch-icon">✨</span>
+    <img class="ch-logo" src="logo.webp" alt="I-Shou University logo" width="36" height="36">
     <div class="chat-title-wrap">
       <div class="ch-title" id="chatTitle">AI 智能問答</div>
       <div class="ch-sub" id="chatSub">由 Gemini 提供 · 答案來自官方 Q&amp;A</div>
