@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
-<title id="docTitle">義守大學 ISU — OICA AI Assistant</title>
+<title id="docTitle">義守大學 ISU — OIA AI Assistant</title>
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1227,7 +1227,7 @@
       <span class="isu-logo-text">I-SHOU</span>
       <span class="isu-logo-subtext">UNIVERSITY · 義守大學</span>
     </div>
-    <div class="hero-logo-label" id="ui-heroLogo">OICA · 國際及兩岸事務處</div>
+    <div class="hero-logo-label" id="ui-heroLogo">OIA · 國際處</div>
     <h1 class="hero-title" id="ui-heroTitle">國際生・境外生<br>Q&amp;A 實用指南</h1>
     <p class="hero-subtitle" id="ui-heroSubtitle">International Student Complete Guide</p>
 
@@ -1292,7 +1292,7 @@
 <!-- Footer -->
 <footer class="footer" hidden aria-hidden="true">
   <p class="footer-ai-warning" id="ui-aiTranslationWarning" role="note">⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。</p>
-  <p id="ui-footerText">義守大學 · 國際及兩岸事務處 (OICA) · 本指南為參考用途，最終解釋以學校公告為準</p>
+  <p id="ui-footerText">義守大學 · 國際處 (OIA) · 本指南為參考用途，最終解釋以學校公告為準</p>
 </footer>
 
 <!-- ========== AI SETTINGS MODAL ========== -->
@@ -1362,9 +1362,9 @@ const uiStrings = {
     vi: "Hướng dẫn Hỏi đáp<br>Thực tế cho SV Quốc tế"
   },
   heroLogo: {
-    zh: "OICA · 國際及兩岸事務處",
-    en: "OICA · Office of International and Cross-Strait Affairs",
-    vi: "OICA · Văn phòng Quốc tế và Hai bờ Eo biển"
+    zh: "OIA · 國際處",
+    en: "OIA · Office of International Affairs",
+    vi: "OIA · Văn phòng Quốc tế"
   },
   heroSubtitle: {
     zh: "International Student Complete Guide",
@@ -1393,9 +1393,9 @@ const uiStrings = {
     vi: "Không tìm thấy câu hỏi phù hợp, vui lòng thử từ khóa khác"
   },
   footerText: {
-    zh: "義守大學 · 國際及兩岸事務處 (OICA) · 本指南為參考用途，最終解釋以學校公告為準",
-    en: "ISU · OICA · This guide is for reference only; official announcements prevail.",
-    vi: "ISU · OICA · Hướng dẫn này chỉ mang tính tham khảo; các thông báo chính thức có hiệu lực cao nhất."
+    zh: "義守大學 · 國際處 (OIA) · 本指南為參考用途，最終解釋以學校公告為準",
+    en: "ISU · OIA · This guide is for reference only; official announcements prevail.",
+    vi: "ISU · OIA · Hướng dẫn này chỉ mang tính tham khảo; các thông báo chính thức có hiệu lực cao nhất."
   },
   aiTranslationWarning: {
     zh: "⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。",
@@ -2466,9 +2466,9 @@ window.addEventListener('scroll', () => {
     },
     setupBtn:  { zh: '⚙️ 查看 AI 設定', en: '⚙️ View AI settings', vi: '⚙️ Xem cài đặt AI' },
     welcome: {
-      zh: '你好！我是義守大學國際處 (OICA) 的 AI 助理 👋\n\n我可以根據**官方 Q&A** 回答你關於簽證、獎學金、宿舍、健保、選課、打工等問題。請問有什麼想了解的嗎？',
-      en: "Hi! I'm the ISU OICA AI assistant 👋\n\nAsk me anything about visas, scholarships, dorms, insurance, course selection or work permits — my answers come from the **official Q&A**.",
-      vi: 'Xin chào! Tôi là trợ lý AI của Văn phòng Quốc tế ISU (OICA) 👋\n\nHãy hỏi tôi về visa, học bổng, ký túc xá, bảo hiểm, chọn môn hoặc giấy phép làm việc — câu trả lời đến từ **Q&A chính thức**.'
+      zh: '你好！我是義守大學國際處 (OIA) 的 AI 助理 👋\n\n我可以根據**官方 Q&A** 回答你關於簽證、獎學金、宿舍、健保、選課、打工等問題。請問有什麼想了解的嗎？',
+      en: "Hi! I'm the ISU OIA AI assistant 👋\n\nAsk me anything about visas, scholarships, dorms, insurance, course selection or work permits — my answers come from the **official Q&A**.",
+      vi: 'Xin chào! Tôi là trợ lý AI của Văn phòng Quốc tế ISU (OIA) 👋\n\nHãy hỏi tôi về visa, học bổng, ký túc xá, bảo hiểm, chọn môn hoặc giấy phép làm việc — câu trả lời đến từ **Q&A chính thức**.'
     },
     suggests: {
       zh: ['居留證要多久內辦理？', '新生獎學金有多少？', '可以打工嗎？', '宿舍可以開伙嗎？'],
@@ -2546,14 +2546,14 @@ window.addEventListener('scroll', () => {
   function buildSystemPrompt() {
     const selectedLang = LANGUAGE_NAMES[lang()] || LANGUAGE_NAMES.zh;
     return [
-      'You are the AI assistant for I-Shou University (義守大學) Office of International and Cross-Strait Affairs (OICA), helping international and overseas students.',
+      'You are the AI assistant for I-Shou University (義守大學) Office of International Affairs (OIA), helping international and overseas students.',
       `The student selected ${selectedLang} as the answer language in the chat window.`,
       '',
       'RULES:',
       '1. Answer the student\'s question using ONLY the knowledge base below. Do NOT invent facts, fees, dates, or rules that are not in it.',
       `2. Reply in ${selectedLang}. If the student's question is written in another language, still answer in ${selectedLang}.`,
       '3. Be clear and concise. Summarize — do not just copy. Use markdown (bold, bullet lists) when it helps readability.',
-      '4. If the knowledge base does not cover the question, say so honestly and suggest emailing OICA at oia@isu.edu.tw. Do not guess.',
+      '4. If the knowledge base does not cover the question, say so honestly and suggest emailing OIA at oia@isu.edu.tw. Do not guess.',
       '5. In the "relatedNums" field, return the IDs (e.g. "Q03") of the 1–4 knowledge-base entries most relevant to your answer. Only use IDs that actually appear in the knowledge base. Return an empty array if none apply.',
       '',
       '===== KNOWLEDGE BASE =====',
