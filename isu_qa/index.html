@@ -2411,6 +2411,15 @@ function refreshDataViews() {
       stat1.textContent = qaData.length;
     }
   }
+  const stat2 = document.querySelector('.hero-stats .stat:nth-child(2) .stat-num');
+  if (stat2) {
+    const categoryCount = getActiveCategories().length;
+    stat2.dataset.target = categoryCount;
+    if (stat2.dataset.animated) {
+      stat2.dataset.animated = 'done';
+      stat2.textContent = categoryCount;
+    }
+  }
 
   renderCategories();
   renderQA();
