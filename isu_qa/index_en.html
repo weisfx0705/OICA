@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
-<title id="docTitle">義守大學 ISU — 國際生・境外生 Q&A 實用指南</title>
+<title id="docTitle">I-Shou University ISU — Practical Q&amp;A Guide for International Students</title>
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1188,8 +1188,8 @@
 <!-- Top-right controls: Language Switcher + AI Settings -->
 <div class="top-controls">
   <div class="lang-switcher">
-    <button class="lang-btn active" onclick="changeLanguage('zh')">繁中</button>
-    <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+    <button class="lang-btn" onclick="changeLanguage('zh')">繁中</button>
+    <button class="lang-btn active" onclick="changeLanguage('en')">EN</button>
     <button class="lang-btn" onclick="changeLanguage('vi')">VN</button>
   </div>
   <button class="settings-btn" id="settingsBtn" title="AI 設定 / Settings" aria-label="AI Settings">
@@ -1200,7 +1200,7 @@
 <!-- Language Reminder -->
 <div class="lang-reminder" id="langReminder">
   <div class="lang-reminder-arrow"></div>
-  <div class="lang-reminder-text" id="ui-langReminder">選擇語言 / Select Language / Chọn Ngôn ngữ</div>
+  <div class="lang-reminder-text" id="ui-langReminder">Select Language</div>
 </div>
 
 <!-- Progress Bar -->
@@ -1216,22 +1216,22 @@
       <span class="isu-logo-text">I-SHOU</span>
       <span class="isu-logo-subtext">UNIVERSITY · 義守大學</span>
     </div>
-    <div class="hero-logo-label" id="ui-heroLogo">OICA · 國際及兩岸事務處</div>
-    <h1 class="hero-title" id="ui-heroTitle">國際生・境外生<br>Q&amp;A 實用指南</h1>
+    <div class="hero-logo-label" id="ui-heroLogo">OICA · Office of International and Cross-Strait Affairs</div>
+    <h1 class="hero-title" id="ui-heroTitle">International Student<br>Q&amp;A Practical Guide</h1>
     <p class="hero-subtitle" id="ui-heroSubtitle">International Student Complete Guide</p>
 
     <div class="hero-stats">
       <div class="stat">
         <span class="stat-num" data-target="100">0</span>
-        <span class="stat-label" id="ui-stat1">精選問題</span>
+        <span class="stat-label" id="ui-stat1">Selected Qs</span>
       </div>
       <div class="stat">
         <span class="stat-num" data-target="7">0</span>
-        <span class="stat-label" id="ui-stat2">主題分類</span>
+        <span class="stat-label" id="ui-stat2">Categories</span>
       </div>
       <div class="stat">
         <span class="stat-num" data-target="3">0</span>
-        <span class="stat-label" id="ui-stat3">個語言介面</span>
+        <span class="stat-label" id="ui-stat3">Languages</span>
       </div>
     </div>
   </div>
@@ -1250,11 +1250,11 @@
     <div class="search-wrapper">
       <span class="search-icon">🔍</span>
       <input type="text" class="search-input" id="searchInput"
-        placeholder="搜尋問題... (例如：獎學金、簽證、宿舍)"
+        placeholder="Search... (e.g., scholarship, visa, dorm)"
         autocomplete="off">
     </div>
-    <div class="search-count" id="searchCount">共 100 個問題</div>
-    <div class="sync-status loading" id="syncStatus">⟳ 同步 Google Sheet 中…</div>
+    <div class="search-count" id="searchCount">Found 100 questions</div>
+    <div class="sync-status loading" id="syncStatus">⟳ Syncing Google Sheet…</div>
   </section>
 
   <!-- Categories -->
@@ -1271,7 +1271,7 @@
 
     <div class="no-results" id="noResults">
       <div class="no-results-icon">🔎</div>
-      <div class="no-results-text" id="ui-noResults">找不到符合的問題，請嘗試其他關鍵字</div>
+      <div class="no-results-text" id="ui-noResults">No matching questions found, please try other keywords</div>
     </div>
 
   </section>
@@ -1280,44 +1280,44 @@
 
 <!-- Footer -->
 <footer class="footer">
-  <p class="footer-ai-warning" id="ui-aiTranslationWarning" role="note">⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。</p>
+  <p class="footer-ai-warning" id="ui-aiTranslationWarning" role="note">⚠️ Some multilingual content and AI Assistant replies on this website are translated with the assistance of artificial intelligence and are provided for reference only. In case of discrepancy, the original Chinese text and official university announcements shall prevail.</p>
 </footer>
 
 <!-- ========== AI SETTINGS MODAL ========== -->
 <div class="modal-overlay" id="settingsOverlay">
   <div class="modal-card" role="dialog" aria-modal="true">
-    <div class="modal-title">⚙️ AI 設定 · Settings</div>
+    <div class="modal-title">⚙️ AI Settings</div>
     <div class="modal-sub" id="settingsSub">
-      AI 問答已透過 Cloudflare Worker 代理啟用。Google Gemini API 金鑰由 Cloudflare secret 管理，不會出現在瀏覽器或網頁原始碼中。
+      AI Q&amp;A is enabled through a Cloudflare Worker proxy. The Google Gemini API key is managed as a Cloudflare secret and is not exposed in the browser or page source.
     </div>
 
-    <label class="modal-label" for="modelSelect">模型 · Model</label>
+    <label class="modal-label" for="modelSelect">Model</label>
     <select id="modelSelect" class="modal-select" disabled>
       <option value="gemini-3.8-flash">gemini-3.8-flash（Cloudflare proxy）</option>
     </select>
 
     <div class="modal-actions">
-      <button class="btn btn-ghost" id="settingsCancel">取消 Cancel</button>
-      <button class="btn btn-primary" id="settingsSave">儲存 Save</button>
+      <button class="btn btn-ghost" id="settingsCancel">Cancel</button>
+      <button class="btn btn-primary" id="settingsSave">Save</button>
     </div>
   </div>
 </div>
 
 <!-- ========== AI CHAT ========== -->
 <button class="ai-fab" id="aiFab">
-  <span class="spark">✨</span><span id="aiFabLabel">問 AI</span>
+  <span class="spark">✨</span><span id="aiFabLabel">Ask AI</span>
 </button>
 
 <div class="chat-drawer" id="chatDrawer">
   <div class="chat-header">
     <span class="ch-icon">✨</span>
     <div class="chat-title-wrap">
-      <div class="ch-title" id="chatTitle">AI 智能問答</div>
-      <div class="ch-sub" id="chatSub">由 Gemini 提供 · 答案來自官方 Q&amp;A</div>
+      <div class="ch-title" id="chatTitle">AI Assistant</div>
+      <div class="ch-sub" id="chatSub">Powered by Gemini · From official Q&amp;A</div>
     </div>
     <div class="chat-lang-switcher" id="chatLangSwitcher" role="group" aria-label="AI response language">
-      <button type="button" class="chat-lang-btn active" data-chat-lang="zh" title="繁體中文">繁中</button>
-      <button type="button" class="chat-lang-btn" data-chat-lang="en" title="English">EN</button>
+      <button type="button" class="chat-lang-btn" data-chat-lang="zh" title="繁體中文">繁中</button>
+      <button type="button" class="chat-lang-btn active" data-chat-lang="en" title="English">EN</button>
       <button type="button" class="chat-lang-btn" data-chat-lang="vi" title="Tiếng Việt">VN</button>
     </div>
     <button class="chat-close" id="chatClose" aria-label="Close">×</button>
@@ -1326,10 +1326,10 @@
   <div class="chat-footer">
     <div class="chat-suggest" id="chatSuggest"></div>
     <div class="chat-input-row">
-      <textarea class="chat-input" id="chatInput" rows="1" placeholder="輸入你的問題…"></textarea>
+      <textarea class="chat-input" id="chatInput" rows="1" placeholder="Type your question…"></textarea>
       <button class="chat-send" id="chatSend" aria-label="Send">➤</button>
     </div>
-    <div class="chat-disclaimer" id="chatDisclaimer" role="note">⚠️ 本網站部分多語內容及 AI 精靈回覆由人工智慧協助翻譯，僅供參考。如有疑義，請以學校中文原文及正式公告為準。</div>
+    <div class="chat-disclaimer" id="chatDisclaimer" role="note">⚠️ Some multilingual content and AI Assistant replies on this website are translated with the assistance of artificial intelligence and are provided for reference only. In case of discrepancy, the original Chinese text and official university announcements shall prevail.</div>
   </div>
 </div>
 
@@ -1934,9 +1934,9 @@ const PAGE_LANGS = ['zh', 'en', 'vi'];
 let currentLang = (() => {
   try {
     const requestedLang = new URLSearchParams(window.location.search).get('lang');
-    return PAGE_LANGS.includes(requestedLang) ? requestedLang : 'zh';
+    return PAGE_LANGS.includes(requestedLang) ? requestedLang : 'en';
   } catch (_) {
-    return 'zh';
+    return 'en';
   }
 })();
 
@@ -2438,9 +2438,13 @@ async function init() {
   const cachedQA = readCachedQAData();
   if (cachedQA && cachedQA.length > 0) {
     qaData = cachedQA;
-    setSyncStatus('loading', `⟳ 已載入快取 ${qaData.length} 題，背景同步 Google Sheet 中…`);
+    setSyncStatus('loading', currentLang === 'en'
+      ? `⟳ Loaded ${qaData.length} cached questions; syncing Google Sheet…`
+      : `⟳ 已載入快取 ${qaData.length} 題，背景同步 Google Sheet 中…`);
   } else {
-    setSyncStatus('loading', `⟳ 已載入內建 ${qaData.length} 題，背景同步 Google Sheet 中…`);
+    setSyncStatus('loading', currentLang === 'en'
+      ? `⟳ Loaded ${qaData.length} built-in questions; syncing Google Sheet…`
+      : `⟳ 已載入內建 ${qaData.length} 題，背景同步 Google Sheet 中…`);
   }
 
   refreshDataViews();
@@ -2453,14 +2457,20 @@ async function init() {
       qaData = fresh;
       writeCachedQAData(fresh);
       const stamp = new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-      setSyncStatus('ok', `✓ 已同步 ${fresh.length} 題 · ${stamp}`);
+      setSyncStatus('ok', currentLang === 'en'
+        ? `✓ Synced ${fresh.length} questions · ${stamp}`
+        : `✓ 已同步 ${fresh.length} 題 · ${stamp}`);
       refreshDataViews();
     } else {
-      setSyncStatus('warn', '⚠ Google Sheet 無有效資料，顯示快取版本');
+      setSyncStatus('warn', currentLang === 'en'
+        ? '⚠ No valid Google Sheet data; showing cached questions'
+        : '⚠ Google Sheet 無有效資料，顯示快取版本');
     }
   } catch (err) {
     console.warn('Sheet fetch failed:', err);
-    setSyncStatus('warn', '⚠ 無法連線 Google Sheet，顯示快取版本');
+    setSyncStatus('warn', currentLang === 'en'
+      ? '⚠ Could not reach Google Sheet; showing cached questions'
+      : '⚠ 無法連線 Google Sheet，顯示快取版本');
   }
 
   // Drive counter animation once, now that data-target is correct.
