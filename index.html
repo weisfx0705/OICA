@@ -95,84 +95,119 @@
 
     <div class="info">
         <p><strong>開發人員：</strong> 義守大學國際專修班 陳嘉暐</p>
-        <p><strong>開發日期：</strong> 2026/05/26</p>
+        <p><strong>開發日期：</strong> <time id="development-date" datetime="2026-10-01">2026/10/01</time></p>
+        <p>專案依最近開發時間由新到舊排列。</p>
     </div>
 
+    <!--
+        新增或更新專案時，同步更新卡片的 data-updated（台灣時間）。
+        卡片順序與上方開發日期會依此自動更新。
+        本機專案採最近內容的 Git 提交時間，排除系統檔案；
+        未納入 Git 的專案採檔案修改時間，外部連結採加入本頁的時間。
+    -->
     <main class="nav-grid">
-        <a href="114-2_IFP_Freshman_Orientation.html" class="card">
-            <h2>新生入學導覽</h2>
-            <p>114-2 學期國際專修班新生定向導覽系統</p>
+        <a href="isu-orientation-2026/isu-orientation-2026.html" class="card" data-updated="2026-10-01T15:32:13+08:00">
+            <h2>2026 新生說明會</h2>
+            <p>歡迎來到義守大學，認識 1＋4 學習旅程、校園支持資源、義守樹洞與 LINE 社群</p>
         </a>
 
-        <a href="student_analyse/index.html" class="card">
-            <h2>招生大數據與 AI 分析報告入口</h2>
-            <p>教育部大專校院校務資訊公開平台資料分析與統計摘要</p>
+        <a href="isu-tree-hollow/index.html" class="card" data-updated="2026-10-01T14:22:19+08:00">
+            <h2>義守樹洞・A Little Closer</h2>
+            <p>中文、英文與越南文的心情留言入口，分享你的故事、困惑與期待，讓我們更靠近</p>
         </a>
 
-        <a href="isu_scholarship/index.html" class="card">
-            <h2>六校境外生獎助政策對照分析</h2>
-            <p>111–114 學年度六校境外生人數成長與獎助政策對照分析報告</p>
-        </a>
-
-        <a href="isu_qa/index.html" class="card">
+        <a href="isu_qa/index.html" class="card" data-updated="2026-09-30T14:11:53+08:00">
             <h2>國際生・境外生 Q&amp;A 實用指南</h2>
             <p>義守大學國際生與境外生常見問題整理，涵蓋入學、簽證、居留、生活與校園資源資訊</p>
         </a>
 
-        <a href="isu-student-guide-2026/index.html" class="card">
-            <h2>2026 秋季班新生就學須知</h2>
-            <p>國際專修部三語版（中文・Tiếng Việt・English）新生手冊，含華語課程、獎助學金、居留證、合法打工等完整資訊</p>
+        <a href="114-2_IFP_Freshman_Orientation.html" class="card" data-updated="2026-09-08T14:03:35+08:00">
+            <h2>新生入學導覽</h2>
+            <p>114-2 學期國際專修班新生定向導覽系統</p>
         </a>
 
-        <a href="2026-04-24_Tailand.html" class="card">
-            <h2>2026 泰國曼谷出差完整指南</h2>
-            <p>4 月 24 日出差行程、交通、住宿與現地資訊整合頁面</p>
-        </a>
-
-        <a href="oracle_tai/oracle/index.html" class="card">
+        <a href="oracle_tai/oracle/index.html" class="card" data-updated="2026-09-07T22:19:34+08:00">
             <h2>泰國招生靈籤</h2>
             <p>融合台灣傳統籤詩文化與泰國招生預測的數位互動體驗</p>
         </a>
 
-        <a href="oracle_graduation_party/index.html" class="card">
-            <h2>ISU 畢業祝福靈籤</h2>
-            <p>為義守大學國際畢業生設計的英文觀音靈籤互動體驗，提供未來方向、祝福卡與語音解讀</p>
+        <a href="kaohsiung_interactive_presentation/index.html" class="card" data-updated="2026-09-01T13:40:58+08:00">
+            <h2>高雄，你的新城市</h2>
+            <p>高雄城市生活互動簡報，探索交通、美食、景點與文化，認識你的新城市</p>
         </a>
 
-        <a href="teacher_gift/index.html" class="card">
+        <a href="teacher_gift/index.html" class="card" data-updated="2026-06-04T15:23:40+08:00">
             <h2>給華語老師的一座感謝花園</h2>
             <p>獻給華語老師的感謝頁面，整理合照、祝福與心意卡片</p>
         </a>
 
-        <a href="https://isu-graduation-oracle-2026.chiawei-studio.workers.dev/" class="card">
-            <h2>2026靈籤畢業活動版本</h2>
-            <p>部署於 Cloudflare Workers 的畢業活動版靈籤互動頁面</p>
-        </a>
-
-        <a href="https://isu-visitor-oracle.chiawei-studio.workers.dev/" class="card">
+        <a href="https://isu-visitor-oracle.chiawei-studio.workers.dev/" class="card" data-updated="2026-05-29T15:39:31+08:00">
             <h2>ISU 訪客靈籤</h2>
             <p>提供校園訪客使用的 Cloudflare Workers 靈籤互動頁面</p>
         </a>
 
-        <a href="video_list/index.html" class="card">
-            <h2>影片製作成本與分級建議</h2>
-            <p>以影片內容類型為依據的工時與預算結構化方案報告</p>
+        <a href="https://isu-graduation-oracle-2026.chiawei-studio.workers.dev/" class="card" data-updated="2026-05-27T00:56:53+08:00">
+            <h2>2026靈籤畢業活動版本</h2>
+            <p>部署於 Cloudflare Workers 的畢業活動版靈籤互動頁面</p>
         </a>
 
-        <a href="ifp_online_class/teacher.html" class="card">
+        <a href="oracle_graduation_party/index.html" class="card" data-updated="2026-05-26T23:17:21+08:00">
+            <h2>ISU 畢業祝福靈籤</h2>
+            <p>為義守大學國際畢業生設計的英文觀音靈籤互動體驗，提供未來方向、祝福卡與語音解讀</p>
+        </a>
+
+        <a href="isu-student-guide-2026/index.html" class="card" data-updated="2026-05-17T22:23:55+08:00">
+            <h2>2026 秋季班新生就學須知</h2>
+            <p>國際專修部三語版（中文・Tiếng Việt・English）新生手冊，含華語課程、獎助學金、居留證、合法打工等完整資訊</p>
+        </a>
+
+        <a href="ifp_online_class/teacher.html" class="card" data-updated="2026-04-29T11:58:24+08:00">
             <h2>線上課程・教師端指引</h2>
             <p>IFP 線上課堂教師操作說明與課程管理資訊</p>
         </a>
 
-        <a href="ifp_online_class/student.html" class="card">
+        <a href="ifp_online_class/student.html" class="card" data-updated="2026-04-29T11:58:24+08:00">
             <h2>線上課程・學生端指引</h2>
             <p>IFP 線上課堂學生使用說明與學習資源</p>
+        </a>
+
+        <a href="2026-04-24_Tailand.html" class="card" data-updated="2026-04-23T21:25:23+08:00">
+            <h2>2026 泰國曼谷出差完整指南</h2>
+            <p>4 月 24 日出差行程、交通、住宿與現地資訊整合頁面</p>
+        </a>
+
+        <a href="video_list/index.html" class="card" data-updated="2026-04-22T14:07:23+08:00">
+            <h2>影片製作成本與分級建議</h2>
+            <p>以影片內容類型為依據的工時與預算結構化方案報告</p>
+        </a>
+
+        <a href="student_analyse/index.html" class="card" data-updated="2026-03-27T11:10:59+08:00">
+            <h2>招生大數據與 AI 分析報告入口</h2>
+            <p>教育部大專校院校務資訊公開平台資料分析與統計摘要</p>
+        </a>
+
+        <a href="isu_scholarship/index.html" class="card" data-updated="2026-03-19T18:44:26+08:00">
+            <h2>六校境外生獎助政策對照分析</h2>
+            <p>111–114 學年度六校境外生人數成長與獎助政策對照分析報告</p>
         </a>
     </main>
 
     <footer>
         &copy; 2026 ISU OICA - Information Service Development
     </footer>
+
+    <script>
+        const grid = document.querySelector('.nav-grid');
+        const cards = Array.from(grid.querySelectorAll('.card'));
+
+        cards.sort((a, b) => Date.parse(b.dataset.updated) - Date.parse(a.dataset.updated));
+        grid.append(...cards);
+
+        const latestDate = cards[0].dataset.updated.slice(0, 10);
+        const developmentDate = document.getElementById('development-date');
+        developmentDate.dateTime = latestDate;
+        developmentDate.textContent = latestDate.replaceAll('-', '/');
+    </script>
 
 </body>
 

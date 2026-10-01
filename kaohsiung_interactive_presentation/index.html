@@ -1,0 +1,2462 @@
+<!doctype html>
+<html lang="zh-Hant" data-lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>高雄，你的新城市｜Kaohsiung, Your New City</title>
+<meta name="description" content="給義守大學外籍新生的高雄互動導覽簡報 — An interactive Kaohsiung guide for international students at I-Shou University.">
+<link rel="icon" type="image/png" href="assets/opt/isu-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Noto+Sans+TC:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   HARBOUR LIGHT — design tokens
+   ============================================================ */
+:root{
+  --void:#04090f;
+  --ink:#08131d;
+  --ink-2:#0e1e2c;
+  --ink-3:#152a3c;
+  --edge:rgba(255,255,255,.09);
+  --edge-2:rgba(255,255,255,.16);
+  --fg:#eef4f9;
+  --fg-2:#b6c7d6;
+  --fg-3:#7b91a5;
+  --gold:#ffc857;
+  --sun:#ff8a3d;
+  --ember:#ff5470;
+  --aqua:#2ee6c5;
+  --sky:#5bb8ff;
+  --violet:#a98bff;
+  --grad:linear-gradient(100deg,var(--gold),var(--sun) 46%,var(--ember));
+  --grad-cool:linear-gradient(100deg,var(--aqua),var(--sky) 60%,var(--violet));
+  --shadow:0 30px 80px -30px rgba(0,0,0,.85);
+  --r:16px;
+  --r-s:10px;
+  --serif:"Instrument Serif",Georgia,"Songti TC",serif;
+  --mono:"Space Grotesk","SF Mono",ui-monospace,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI",Arial,"Noto Sans TC","PingFang TC","Hiragino Sans TC","Microsoft JhengHei",sans-serif;
+  --bar-t:56px;
+  --bar-b:62px;
+  --u:min(1vw, 1.86vh);
+  --pad:clamp(20px,calc(var(--u)*3.4),64px);
+}
+/* short viewports (laptops, 720p projectors): scale the whole system down */
+@media(max-height:820px){:root{--u:min(0.9vw,1.72vh);--bar-t:52px;--bar-b:58px}}
+@media(max-height:740px){:root{--u:min(0.8vw,1.66vh);--bar-t:48px;--bar-b:54px}}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:var(--void);
+  color:var(--fg);
+  font-family:var(--sans);
+  font-size:clamp(14px,calc(var(--u)*1.02),17px);
+  line-height:1.7;
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+t-x{display:inline}
+::selection{background:var(--sun);color:#000}
+
+/* ---------- ambience ---------- */
+.ambience{position:fixed;inset:0;pointer-events:none;z-index:0}
+.ambience i{
+  position:absolute;border-radius:50%;display:block;
+  filter:blur(90px);opacity:.17;
+  transition:background-color 1.15s cubic-bezier(.4,0,.2,1),transform 1.6s cubic-bezier(.2,.8,.2,1);
+}
+.ambience .b1{left:-14%;top:-18%;width:58%;aspect-ratio:1;background:#ff8a3d}
+.ambience .b2{right:-14%;bottom:-24%;width:54%;aspect-ratio:1;background:#2ee6c5}
+.ambience .b3{right:4%;top:-26%;width:48%;aspect-ratio:1;background:#a98bff}
+.ambience::after{
+  content:"";position:absolute;inset:0;opacity:.30;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.5'/></svg>");
+}
+
+/* ============================================================
+   CHROME — top bar / bottom bar
+   ============================================================ */
+.deck{position:fixed;inset:0;z-index:1;display:grid;grid-template-rows:var(--bar-t) 1fr var(--bar-b)}
+
+.topbar{
+  display:flex;align-items:center;gap:14px;
+  padding:0 clamp(14px,calc(var(--u)*2),26px);
+  border-bottom:1px solid var(--edge);
+  background:rgba(4,9,15,.55);
+  backdrop-filter:blur(18px) saturate(1.3);
+  position:relative;z-index:40;
+}
+.mark{display:flex;align-items:center;gap:10px;min-width:0}
+.mark img{width:34px;height:34px;border-radius:7px;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.14),0 3px 10px rgba(0,0,0,.4)}
+.mark .mark-t{min-width:0}
+.mark b{display:block;font-size:13px;font-weight:700;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mark span{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-3)}
+.topbar .spacer{flex:1}
+
+.chapter{
+  display:none;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-3);
+}
+@media(min-width:900px){.chapter{display:flex}}
+.chapter i{width:6px;height:6px;border-radius:50%;background:var(--sun);box-shadow:0 0 12px var(--sun);font-style:normal}
+
+.tool{
+  display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 12px;
+  border:1px solid var(--edge-2);border-radius:99px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;
+  color:var(--fg-2);background:rgba(255,255,255,.04);
+  transition:.22s cubic-bezier(.2,.8,.2,1);white-space:nowrap;
+}
+.tool:hover{color:#04090f;background:var(--gold);border-color:var(--gold);transform:translateY(-1px)}
+.tool svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.langswitch{display:flex;border:1px solid var(--edge-2);border-radius:99px;overflow:hidden;height:32px}
+.langswitch button{
+  padding:0 13px;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;
+  color:var(--fg-3);transition:.2s;
+}
+.langswitch button[aria-pressed="true"]{background:var(--fg);color:var(--void);font-weight:700}
+
+/* ---------- bottom ---------- */
+.botbar{
+  display:flex;align-items:center;gap:clamp(10px,calc(var(--u)*2),20px);
+  padding:0 clamp(14px,calc(var(--u)*2),26px);
+  border-top:1px solid var(--edge);
+  background:rgba(4,9,15,.55);
+  backdrop-filter:blur(18px) saturate(1.3);
+  position:relative;z-index:40;
+}
+.nav{display:flex;gap:8px}
+.nav button{
+  width:38px;height:38px;display:grid;place-items:center;
+  border:1px solid var(--edge-2);border-radius:50%;color:var(--fg-2);
+  transition:.22s cubic-bezier(.2,.8,.2,1);
+}
+.nav button:hover{background:var(--fg);color:var(--void);border-color:var(--fg);transform:translateY(-2px)}
+.nav svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.rail{flex:1;display:flex;gap:5px;align-items:center;min-width:0}
+.rail button{
+  flex:1;height:26px;position:relative;display:block;min-width:0;
+}
+.rail button::after{
+  content:"";position:absolute;left:0;right:0;top:50%;height:3px;margin-top:-1.5px;border-radius:99px;
+  background:rgba(255,255,255,.13);transition:.3s cubic-bezier(.2,.8,.2,1);
+}
+.rail button:hover::after{background:rgba(255,255,255,.32)}
+.rail button.seen::after{background:rgba(255,200,87,.42)}
+.rail button.now::after{background:var(--grad);height:5px;margin-top:-2.5px;box-shadow:0 0 16px rgba(255,138,61,.6)}
+.rail button .tip{
+  position:absolute;bottom:calc(100% + 12px);left:50%;transform:translate(-50%,6px);
+  padding:6px 11px;border-radius:8px;border:1px solid var(--edge-2);
+  background:rgba(10,20,30,.96);backdrop-filter:blur(10px);
+  font-size:11.5px;white-space:nowrap;opacity:0;pointer-events:none;transition:.2s;
+}
+.rail button:hover .tip{opacity:1;transform:translate(-50%,0)}
+.count{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--fg-3);white-space:nowrap}
+.count b{color:var(--fg);font-size:15px}
+
+/* ============================================================
+   STAGE + SLIDES
+   ============================================================ */
+.stage{position:relative;overflow:hidden}
+.slide{
+  position:absolute;inset:0;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:scale(1.02);
+  transition:opacity .5s ease,transform .7s cubic-bezier(.2,.8,.2,1),visibility .5s;
+  overflow:hidden;
+}
+.slide.is-active{opacity:1;visibility:visible;pointer-events:auto;transform:none}
+.slide-in{padding:var(--pad);height:100%;overflow:auto;scrollbar-width:none}
+.slide-in::-webkit-scrollbar{display:none}
+
+/* entrance stagger */
+.slide [data-anim]{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.slide.is-active [data-anim]{opacity:1;transform:none}
+.slide.is-active [data-anim]{transition-delay:calc(var(--d,0) * 75ms)}
+
+/* ---------- typography ---------- */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-family:var(--mono);font-size:clamp(10px,calc(var(--u)*0.8),12px);
+  letter-spacing:.22em;text-transform:uppercase;color:var(--gold);
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--gold);opacity:.6}
+h1,h2,h3{margin:0;font-weight:900;line-height:1.1;letter-spacing:-.015em}
+h1{font-size:clamp(34px,calc(var(--u)*5),80px)}
+h2{font-size:clamp(26px,calc(var(--u)*3.3),52px)}
+h3{font-size:clamp(16px,calc(var(--u)*1.5),23px);line-height:1.3}
+.hero-copy h1{max-width:14ch}
+html[data-lang="zh"] .hero-copy h1 em{font-family:var(--sans)!important;font-style:normal!important;font-weight:900}
+html[data-lang="zh"] .hero-copy h1{max-width:11ch}
+.sub{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(17px,calc(var(--u)*1.75),30px);line-height:1.35;color:var(--gold);
+  margin:0;
+}
+html[data-lang="zh"] .sub{font-family:var(--sans);font-style:normal;font-weight:500;font-size:clamp(15px,calc(var(--u)*1.45),24px)}
+p{margin:0}
+.lead{color:var(--fg-2);font-size:clamp(14px,calc(var(--u)*1.12),18px);line-height:1.85;max-width:60ch;overflow-wrap:break-word}
+.dim{color:var(--fg-3)}
+.tiny{font-size:clamp(10.5px,calc(var(--u)*0.8),12.5px);line-height:1.6;color:var(--fg-3)}
+.hl{color:var(--gold)}
+mark{background:linear-gradient(transparent 62%,rgba(255,138,61,.42) 0);color:inherit;padding:0 2px}
+
+/* ---------- reusable atoms ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  padding:5px 13px;border:1px solid var(--edge-2);border-radius:99px;
+  font-size:clamp(11px,calc(var(--u)*0.85),13px);color:var(--fg-2);background:rgba(255,255,255,.035);
+}
+.chip.on{border-color:var(--gold);color:var(--gold);background:rgba(255,200,87,.1)}
+
+ul.pts{list-style:none;margin:0;padding:0;display:grid;gap:clamp(9px,calc(var(--u)*1),14px)}
+ul.pts li{
+  position:relative;padding-left:26px;color:var(--fg-2);
+  font-size:clamp(13.5px,calc(var(--u)*1.05),17px);line-height:1.75;
+}
+ul.pts li::before{
+  content:"";position:absolute;left:0;top:.62em;
+  width:9px;height:9px;border-radius:50%;
+  background:var(--grad);box-shadow:0 0 0 3px rgba(255,138,61,.14);
+}
+
+.card{
+  border:1px solid var(--edge);border-radius:var(--r);
+  background:linear-gradient(160deg,rgba(255,255,255,.065),rgba(255,255,255,.018));
+  backdrop-filter:blur(10px);
+}
+
+.quote{
+  position:relative;margin:0;padding:clamp(10px,calc(var(--u)*1.1),16px) clamp(13px,calc(var(--u)*1.3),20px);
+  border-left:3px solid transparent;
+  border-image:var(--grad) 1;
+  background:linear-gradient(90deg,rgba(255,138,61,.10),transparent 80%);
+  font-size:clamp(14px,calc(var(--u)*1.2),19px);line-height:1.7;color:var(--fg);
+}
+
+/* photo primitives */
+.ph{position:relative;overflow:hidden;border-radius:var(--r);background:var(--ink-2);border:1px solid var(--edge)}
+.ph img{width:100%;height:100%;object-fit:cover;filter:saturate(1.06) brightness(1.06);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.ph:hover img{transform:scale(1.055)}
+.ph figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:clamp(11px,calc(var(--u)*1.2),18px);
+  background:linear-gradient(transparent,rgba(3,8,13,.55) 32%,rgba(3,8,13,.94));
+  display:flex;flex-direction:column;gap:2px;
+}
+.ph figcaption b{font-size:clamp(12.5px,calc(var(--u)*1),16px);font-weight:700;letter-spacing:.01em}
+.ph figcaption span{font-size:clamp(10.5px,calc(var(--u)*0.82),13px);color:var(--fg-2);line-height:1.5}
+.ph .tag{
+  position:absolute;top:11px;left:11px;padding:4px 10px;border-radius:99px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  background:rgba(4,9,15,.72);border:1px solid var(--edge-2);backdrop-filter:blur(8px);color:var(--fg-2);
+}
+.zoomable{cursor:zoom-in}
+
+/* ============================================================
+   SLIDE 1 — hero
+   ============================================================ */
+.hero{position:absolute;inset:0}
+.hero-bg{position:absolute;inset:0;overflow:hidden}
+.hero-bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.08);filter:saturate(1.15) contrast(1.05) brightness(1.22)}
+.slide.is-active .hero-bg img{animation:kb 26s ease-out forwards}
+@keyframes kb{from{transform:scale(1.02) translate3d(0,0,0)}to{transform:scale(1.17) translate3d(-2%,-1.5%,0)}}
+.hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background:
+    linear-gradient(90deg,rgba(4,9,15,.93) 0%,rgba(4,9,15,.74) 32%,rgba(4,9,15,.12) 62%,rgba(4,9,15,.42) 100%),
+    linear-gradient(0deg,rgba(4,9,15,.82),transparent 48%);
+}
+.hero-in{
+  position:relative;height:100%;padding:var(--pad);
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.85fr);gap:clamp(20px,calc(var(--u)*3),54px);
+  align-items:center;
+}
+@media(max-width:960px){.hero-in{grid-template-columns:minmax(0,1fr);align-content:center}}
+.hero-copy{display:grid;gap:clamp(12px,calc(var(--u)*1.5),22px);align-content:center;max-width:min(720px,100%)}
+.hero-copy h1{text-wrap:balance}
+.hero-copy h1 em{font-family:var(--serif);font-style:italic;font-weight:400;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+.clip{
+  position:relative;padding:clamp(18px,calc(var(--u)*1.9),30px);border-radius:4px;
+  background:#f5f1e6;color:#171310;box-shadow:0 40px 90px -30px rgba(0,0,0,.9);
+  transform:rotate(-1.4deg);
+  border-top:6px solid #171310;
+  max-width:min(520px,100%);justify-self:end;
+}
+@media(max-width:960px){.clip{justify-self:stretch;width:100%;transform:none}}
+.clip::after{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:4px;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.03) 0 1px,transparent 1px 3px);
+}
+.clip .masthead{
+  font-family:var(--serif);font-size:clamp(22px,calc(var(--u)*2.3),34px);line-height:1;letter-spacing:-.01em;
+  border-bottom:1px solid rgba(0,0,0,.2);padding-bottom:9px;margin-bottom:12px;
+  display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+}
+.clip .masthead small{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.62}
+.clip h3{font-family:var(--serif);font-weight:400;font-size:clamp(19px,calc(var(--u)*2),29px);line-height:1.16;letter-spacing:-.01em;margin-bottom:9px}
+.clip .byline{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#6b6155;margin-bottom:11px}
+.clip .body{font-size:clamp(12px,calc(var(--u)*0.95),14.5px);line-height:1.62;color:#3a332c;columns:2;column-gap:18px;column-rule:1px solid rgba(0,0,0,.12)}
+@media(max-width:520px){.clip .body{columns:1}}
+.clip .stampwrap{position:absolute;right:-18px;bottom:-22px;z-index:3}
+.stamp{
+  display:grid;place-items:center;width:104px;height:104px;border-radius:50%;
+  background:var(--grad);color:#170d04;transform:rotate(-9deg);
+  box-shadow:0 16px 40px -10px rgba(255,138,61,.7);
+  text-align:center;line-height:1.05;padding:8px;
+}
+.stamp b{display:block;font-size:26px;font-weight:900;letter-spacing:-.02em}
+.stamp span{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase}
+
+.scrollhint{
+  position:absolute;left:var(--pad);bottom:clamp(14px,calc(var(--u)*2),26px);
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--fg-3);
+}
+.scrollhint i{width:34px;height:1px;background:var(--fg-3);display:block;animation:slidex 2.2s ease-in-out infinite}
+@keyframes slidex{0%,100%{transform:translateX(0);opacity:.4}50%{transform:translateX(9px);opacity:1}}
+
+/* ============================================================
+   generic two-column slide
+   ============================================================ */
+.two{
+  display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);
+  gap:clamp(18px,calc(var(--u)*2.6),48px);align-items:center;min-height:100%;
+}
+.two.wide-left{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+.two.fill{height:100%;align-items:stretch;grid-template-rows:minmax(0,1fr)}
+.two.fill>.col{align-content:center;min-height:0}
+@media(max-width:1000px){.two,.two.wide-left,.two.fill{grid-template-columns:1fr;align-items:start;gap:22px;height:auto}}
+.col{display:grid;gap:clamp(11px,calc(var(--u)*1.3),20px);align-content:center;min-width:0}
+
+/* ============================================================
+   SLIDE 2 — The Times list
+   ============================================================ */
+.ranklist{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px 20px;
+  font-family:var(--mono);
+}
+@media(max-width:560px){.ranklist{grid-template-columns:1fr}}
+.rank{
+  display:grid;grid-template-columns:26px 1fr;align-items:center;gap:9px;
+  padding:3px 9px;border-radius:8px;font-size:clamp(10.5px,calc(var(--u)*0.84),12.5px);color:var(--fg-3);
+  border:1px solid transparent;transition:.3s;
+  opacity:0;transform:translateX(-8px);
+}
+.slide.is-active .rank{animation:rankin .5s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i) * 42ms + 260ms)}
+@keyframes rankin{to{opacity:1;transform:none}}
+.rank b{font-weight:500;font-size:11px;opacity:.55;text-align:right}
+.rank.star{
+  color:#0a0704;background:var(--grad);border-color:transparent;
+  font-weight:700;box-shadow:0 12px 34px -12px rgba(255,138,61,.85);
+  transform:translateX(-8px) scale(1);
+}
+.slide.is-active .rank.star{animation:starin .7s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i) * 42ms + 340ms)}
+@keyframes starin{0%{opacity:0;transform:translateX(-8px) scale(.9)}60%{opacity:1;transform:translateX(0) scale(1.05)}100%{opacity:1;transform:none}}
+.rank.star b{opacity:1;color:#0a0704}
+
+.statrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px}
+.stat{padding:clamp(12px,calc(var(--u)*1.3),18px);border-radius:var(--r-s);border:1px solid var(--edge);background:rgba(255,255,255,.04)}
+.stat b{
+  display:block;font-family:var(--mono);font-weight:700;line-height:1;
+  font-size:clamp(24px,calc(var(--u)*2.7),42px);letter-spacing:-.02em;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat span{display:block;margin-top:6px;font-size:clamp(10.5px,calc(var(--u)*0.82),12.5px);line-height:1.5;color:var(--fg-3)}
+.stat.cool b{background:var(--grad-cool);-webkit-background-clip:text;background-clip:text}
+
+.idxcard{
+  display:grid;gap:9px;padding:clamp(12px,calc(var(--u)*1.3),19px);
+  border:1px solid var(--edge);border-radius:var(--r);
+  background:linear-gradient(158deg,rgba(255,255,255,.07),rgba(255,255,255,.018));
+}
+.idx-head{display:flex;align-items:center;gap:11px}
+.idx-head b{
+  font-family:var(--mono);font-weight:700;line-height:1;letter-spacing:-.02em;
+  font-size:clamp(30px,calc(var(--u)*3.1),50px);
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.idx-head span{font-size:clamp(11px,calc(var(--u)*0.85),13.5px);line-height:1.4;color:var(--fg-2);font-weight:700}
+.idxgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}
+@media(max-width:640px){.idxgrid{grid-template-columns:1fr}}
+.idx{
+  display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;
+  padding:6px 10px;border-radius:8px;border:1px solid rgba(255,200,87,.24);background:rgba(255,200,87,.07);
+}
+.idx::before{
+  content:"";width:12px;height:12px;flex:none;align-self:center;background:var(--gold);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round' d='M5 13l4.5 4.5L19 7'/></svg>") center/contain no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round' d='M5 13l4.5 4.5L19 7'/></svg>") center/contain no-repeat;
+}
+.idx b{font-size:clamp(11px,calc(var(--u)*0.85),13.5px);font-weight:700;color:#ffe9b8}
+.idx small{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--fg-3)}
+.idx-extra{font-size:clamp(10.5px,calc(var(--u)*0.78),12.5px);line-height:1.5;color:var(--fg-3)}
+
+.fivelead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:6px;border-bottom:1px solid var(--edge)}
+.fivelead p{font-size:clamp(11.5px,calc(var(--u)*0.9),14.5px);line-height:1.5;color:var(--fg-2)}
+
+/* ============================================================
+   SLIDE 3 — pillars
+   ============================================================ */
+.pillars{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;min-height:0;height:100%;max-height:clamp(280px,44vh,440px);align-self:center}
+@media(max-width:1100px){.pillars{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:620px){.pillars{grid-template-columns:repeat(2,1fr)}}
+.pillar{
+  position:relative;border-radius:var(--r-s);overflow:hidden;border:1px solid var(--edge);
+  min-height:clamp(210px,26vh,440px);height:100%;background:var(--ink-2);
+  transition:.4s cubic-bezier(.2,.8,.2,1);
+}
+.pillar:hover{transform:translateY(-6px);border-color:var(--edge-2);box-shadow:var(--shadow)}
+.pillar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:var(--op,center);opacity:.8;filter:saturate(1.1) brightness(1.15);transition:.7s cubic-bezier(.2,.8,.2,1)}
+.pillar:hover img{opacity:1;transform:scale(1.08)}
+.pillar .glaze{position:absolute;inset:0;background:linear-gradient(rgba(4,9,15,.15) 6%,transparent 26%,rgba(4,9,15,.55) 58%,rgba(4,9,15,.94) 92%)}
+.pillar .txt{position:absolute;inset:auto 0 0 0;padding:clamp(10px,calc(var(--u)*1.1),15px)}
+.pillar .k{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:700;
+}
+.pillar h3{margin:3px 0 5px;font-size:clamp(14px,calc(var(--u)*1.25),19px)}
+.pillar p{font-size:clamp(10.5px,calc(var(--u)*0.8),12.5px);line-height:1.55;color:var(--fg-2)}
+
+/* ============================================================
+   SLIDE 3 — Wonderland editions
+   ============================================================ */
+.editions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,calc(var(--u)*1),14px);min-height:0}
+@media(max-width:900px){.editions{grid-template-columns:1fr}}
+.edition{
+  position:relative;overflow:hidden;display:grid;align-content:start;gap:5px;
+  padding:clamp(13px,calc(var(--u)*1.4),20px);border-radius:var(--r);
+  border:1px solid var(--edge);background:linear-gradient(158deg,rgba(255,255,255,.07),rgba(255,255,255,.015));
+  transition:.4s cubic-bezier(.2,.8,.2,1);
+}
+.edition::before{
+  content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--ec);
+}
+.edition::after{
+  content:"";position:absolute;right:-28%;top:-42%;width:74%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,var(--ec),transparent 66%);opacity:.2;transition:.5s;
+}
+.edition:hover{transform:translateY(-6px);border-color:var(--edge-2);box-shadow:var(--shadow)}
+.edition:hover::after{opacity:.4}
+.edition.e1{--ec:#ffd23f}
+.edition.e2{--ec:#ff8fc8}
+.edition.e3{--ec:#5bb8ff}
+.ed-shot{position:relative;margin:0 0 7px;border-radius:8px;overflow:hidden;border:1px solid var(--edge);height:clamp(62px,calc(var(--u)*7.2),116px);background:var(--ink-2)}
+.ed-shot img{width:100%;height:100%;object-fit:cover;object-position:var(--op,center);filter:saturate(1.05) brightness(1.04);transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.edition:hover .ed-shot img{transform:scale(1.06)}
+.shot-tag{
+  position:absolute;left:7px;bottom:7px;padding:2px 8px;border-radius:99px;
+  font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;
+  background:rgba(4,9,15,.78);border:1px solid var(--edge-2);color:var(--fg-2);backdrop-filter:blur(6px);
+}
+.shot-tag.ok{border-color:var(--ec);color:var(--ec)}
+.ed-top{display:flex;justify-content:space-between;align-items:center;gap:10px;position:relative}
+.ed-year{font-family:var(--mono);font-weight:700;font-size:clamp(22px,calc(var(--u)*2.15),33px);line-height:1;letter-spacing:-.02em;color:var(--ec)}
+.ed-tag{
+  padding:3px 10px;border-radius:99px;font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;
+  text-transform:uppercase;border:1px solid var(--edge-2);color:var(--fg-3);white-space:nowrap;
+}
+.ed-tag.now{border-color:var(--ec);color:#04090f;background:var(--ec);font-weight:700;animation:nowpulse 2.4s ease-in-out infinite}
+@keyframes nowpulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ec) 55%,transparent)}55%{box-shadow:0 0 0 8px transparent}}
+.edition h3{position:relative;font-size:clamp(17px,calc(var(--u)*1.7),26px);margin-top:2px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.ed-en{font-family:var(--mono);font-size:9.5px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-3)}
+html[data-lang="en"] .ed-en{display:none}
+.ed-body{position:relative;margin-top:3px;font-size:clamp(10.5px,calc(var(--u)*0.8),12.8px);line-height:1.55;color:var(--fg-2)}
+.ed-stat{position:relative;margin-top:auto;padding-top:7px;display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.ed-stat b{font-family:var(--mono);font-weight:700;font-size:clamp(20px,calc(var(--u)*1.85),29px);line-height:1;color:var(--ec)}
+.ed-stat b small{font-size:.5em;margin-left:2px}
+.ed-stat span{font-size:clamp(10px,calc(var(--u)*0.78),12px);color:var(--fg-3);line-height:1.4}
+.wl-foot{display:flex;gap:clamp(12px,calc(var(--u)*1.6),24px);align-items:center;flex-wrap:wrap}
+@media(max-width:820px){.wl-foot{flex-direction:column;align-items:stretch}}
+
+/* ============================================================
+   SLIDE 4 — venues
+   ============================================================ */
+.venuelist{display:grid;gap:5px}
+.venue{
+  display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;
+  padding:9px 13px;border-radius:var(--r-s);text-align:left;
+  border:1px solid var(--edge);background:rgba(255,255,255,.03);
+  transition:.25s cubic-bezier(.2,.8,.2,1);
+}
+.venue i{width:8px;height:8px;border-radius:50%;background:var(--vc);flex:none;transition:.25s}
+.venue .vn{min-width:0}
+.venue b{display:block;font-size:clamp(12.5px,calc(var(--u)*0.98),15.5px);font-weight:700;line-height:1.3}
+.venue small{display:block;font-size:10.5px;color:var(--fg-3);line-height:1.4;margin-top:1px}
+.venue em{font-family:var(--mono);font-style:normal;font-size:9.5px;letter-spacing:.1em;color:var(--fg-3);white-space:nowrap}
+.venue:hover{border-color:var(--edge-2);background:rgba(255,255,255,.07);transform:translateX(3px)}
+.venue.on{border-color:var(--vc);background:linear-gradient(90deg,color-mix(in srgb,var(--vc) 20%,transparent),rgba(255,255,255,.03))}
+.venue.on i{box-shadow:0 0 0 4px color-mix(in srgb,var(--vc) 28%,transparent)}
+.venue.on em{color:var(--vc)}
+#venueFig img{width:100%;height:100%;object-fit:cover;transition:opacity .18s ease}
+#venueFig{min-height:clamp(230px,34vh,460px)}
+
+/* ============================================================
+   SLIDE 4 — interactive map
+   ============================================================ */
+.mapwrap{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--edge);background:linear-gradient(165deg,#0a1725,#06101a)}
+.mapwrap svg{display:block;width:100%;height:auto}
+.wat{fill:#0a2c3d;opacity:.75}
+.grn{fill:#0f2b22;opacity:.85}
+.lbl{font-family:var(--sans);font-size:13px;font-weight:700;fill:#cfdeea;paint-order:stroke;stroke:#07131d;stroke-width:5px;stroke-linejoin:round}
+.lbl-s{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;fill:#6e8ba1;text-transform:uppercase;paint-order:stroke;stroke:#07131d;stroke-width:4px;stroke-linejoin:round}
+.node{cursor:pointer}
+.node circle.hit{fill:transparent}
+.node circle.dot{fill:#0d1c29;stroke:#7d93a6;stroke-width:3;transition:.3s cubic-bezier(.2,.8,.2,1)}
+.node text.ic{font-size:15px;font-weight:900;fill:#c3d5e3;pointer-events:none;transition:.3s}
+.node:hover circle.dot{stroke:#ffc857;r:20}
+.node.on circle.dot{fill:#ffc857;stroke:#fff3d6;stroke-width:3.5}
+.node.on text.ic{fill:#0a0704}
+.node .pulse{fill:none;stroke:#ffc857;stroke-width:2;opacity:0}
+.node.on .pulse{animation:pulse 2.1s ease-out infinite}
+@keyframes pulse{0%{r:18;opacity:.75}100%{r:40;opacity:0}}
+.ln{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.slide.is-active .draw{stroke-dasharray:2400;stroke-dashoffset:2400;animation:draw 1.9s cubic-bezier(.3,.7,.3,1) forwards}
+.draw-loop{fill:none}
+.slide.is-active .draw-loop{stroke-dasharray:870;stroke-dashoffset:870;animation:draw 1.6s cubic-bezier(.3,.7,.3,1) .95s forwards}
+.slide.is-active .draw.d2{animation-delay:.35s}
+.slide.is-active .draw.d3{animation-delay:.6s}
+.slide.is-active .draw.d4{animation-delay:.85s}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+.mapinfo{
+  display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center;
+  padding:14px;border-radius:var(--r-s);border:1px solid var(--edge);background:rgba(255,255,255,.045);
+  min-height:112px;
+}
+.mapinfo .mapshot{
+  position:relative;margin:0;width:96px;height:84px;border-radius:8px;overflow:hidden;
+  border:1px solid var(--edge);cursor:zoom-in;background:var(--ink-2);
+  transition:border-color .25s ease, box-shadow .25s ease;
+}
+.mapinfo .mapshot img{width:100%;height:100%;object-fit:cover;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.mapinfo .mapshot:hover,.mapinfo .mapshot:focus-visible{border-color:var(--gold);box-shadow:0 0 0 3px rgba(255,200,87,.18);outline:none}
+.mapinfo .mapshot:hover img,.mapinfo .mapshot:focus-visible img{transform:scale(1.1)}
+.zoomdot{
+  position:absolute;right:5px;bottom:5px;width:21px;height:21px;border-radius:50%;
+  display:grid;place-items:center;opacity:0;transform:scale(.82);
+  background:rgba(4,9,15,.78);border:1px solid var(--edge-2);backdrop-filter:blur(6px);
+  transition:.22s cubic-bezier(.2,.8,.2,1);
+}
+.mapinfo .mapshot:hover .zoomdot,.mapinfo .mapshot:focus-visible .zoomdot{opacity:1;transform:none}
+.zoomdot::before{
+  content:"";width:11px;height:11px;display:block;background:var(--gold);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><g fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><circle cx='10.5' cy='10.5' r='6.5'/><path d='M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6'/></g></svg>") center/contain no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><g fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'><circle cx='10.5' cy='10.5' r='6.5'/><path d='M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6'/></g></svg>") center/contain no-repeat;
+}
+.mapinfo .k{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.mapinfo h3{margin:3px 0 5px;font-size:clamp(15px,calc(var(--u)*1.25),20px)}
+.mapinfo p{font-size:clamp(11.5px,calc(var(--u)*0.88),14px);line-height:1.65;color:var(--fg-2)}
+.maplegend{display:flex;flex-wrap:wrap;gap:12px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--fg-3)}
+.maplegend i{display:inline-block;width:16px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+
+/* ============================================================
+   SLIDE 5 — transit tabs
+   ============================================================ */
+.tabs{display:flex;flex-wrap:wrap;gap:7px}
+.tabs button{
+  padding:6px 14px;border-radius:99px;border:1px solid var(--edge-2);
+  font-size:clamp(11.5px,calc(var(--u)*0.9),14px);font-weight:500;color:var(--fg-2);
+  transition:.25s cubic-bezier(.2,.8,.2,1);display:inline-flex;align-items:center;gap:8px;
+}
+.tabs button i{width:9px;height:9px;border-radius:50%;background:currentColor;opacity:.85}
+.tabs button:hover{border-color:var(--fg-2);transform:translateY(-1px)}
+.tabs button[aria-selected="true"]{background:var(--tc,var(--gold));border-color:var(--tc,var(--gold));color:#050b11;font-weight:700}
+
+.tpanel{display:none;gap:clamp(9px,calc(var(--u)*1.05),16px)}
+.tpanel.on{display:grid;animation:fadeup .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes fadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+.stripmap{position:relative;padding:15px 4px 3px;overflow-x:auto;scrollbar-width:none}
+.stripmap::-webkit-scrollbar{display:none}
+.strip{position:relative;display:flex;align-items:flex-start;min-width:max-content;padding-left:4px}
+.strip::before{content:"";position:absolute;left:14px;right:14px;top:11px;height:5px;border-radius:99px;background:var(--tc);opacity:.9}
+.stn{position:relative;display:grid;justify-items:center;gap:7px;width:clamp(62px,calc(var(--u)*7),96px);text-align:center}
+.stn i{
+  width:13px;height:13px;border-radius:50%;background:#08131d;border:3.5px solid var(--tc);
+  position:relative;z-index:2;margin-top:5px;transition:.3s;
+}
+.stn.key i{width:19px;height:19px;margin-top:2px;background:var(--tc);box-shadow:0 0 0 4px rgba(255,255,255,.09)}
+.stn span{font-size:clamp(10px,calc(var(--u)*0.78),12.5px);line-height:1.35;color:var(--fg-2)}
+.stn.key span{color:var(--fg);font-weight:700}
+.stn small{display:block;font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;color:var(--fg-3)}
+
+.factgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:9px}
+.fact{padding:8px 11px;border-radius:var(--r-s);border:1px solid var(--edge);background:rgba(255,255,255,.035)}
+.fact .k{font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--fg-3)}
+.fact b{display:block;margin-top:4px;font-size:clamp(13px,calc(var(--u)*1.05),17px);color:var(--tc,var(--gold));font-weight:700}
+
+/* ============================================================
+   SLIDE 6 — harbour mosaic
+   ============================================================ */
+.mosaic{
+  display:grid;gap:9px;height:100%;min-height:0;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-rows:repeat(4,minmax(0,1fr));
+}
+.mosaic .ph{min-height:0}
+.m1{grid-column:1/3;grid-row:1/4}
+.m2{grid-column:3/5;grid-row:1/3}
+.m3{grid-column:3/4;grid-row:3/5}
+.m4{grid-column:4/5;grid-row:3/5}
+.m5{grid-column:1/3;grid-row:4/5}
+@media(max-width:820px){
+  .mosaic{height:auto;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(4,minmax(130px,1fr))}
+  .m1{grid-column:1/3;grid-row:1/2}.m2{grid-column:1/3;grid-row:2/3}
+  .m3{grid-column:1/2;grid-row:3/4}.m4{grid-column:2/3;grid-row:3/4}.m5{grid-column:1/3;grid-row:4/5}
+}
+.routeline{display:flex;flex-wrap:wrap;align-items:center;gap:7px;font-size:clamp(11.5px,calc(var(--u)*0.92),15px)}
+.routeline b{font-weight:700}
+.routeline i{color:var(--sun);font-style:normal;opacity:.8}
+
+/* ============================================================
+   SLIDE 7 — culture flip cards
+   ============================================================ */
+.flipgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+@media(max-width:1100px){.flipgrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.flipgrid{grid-template-columns:repeat(2,1fr)}}
+.flip{perspective:1000px;height:clamp(126px,calc(var(--u)*11),190px);cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .62s cubic-bezier(.3,.9,.3,1);transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.flip-f,.flip-b{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r-s);
+  padding:11px 12px;display:grid;align-content:start;gap:4px;border:1px solid var(--edge);overflow:hidden;
+}
+.flip-f{background:linear-gradient(160deg,rgba(255,255,255,.075),rgba(255,255,255,.02))}
+.flip.on .flip-f{border-color:var(--zc);box-shadow:0 0 0 1px var(--zc)}
+.flip-b{transform:rotateY(180deg);background:linear-gradient(155deg,color-mix(in srgb,var(--zc) 26%,transparent),rgba(255,255,255,.03));border-color:var(--zc)}
+.flip h3{font-size:clamp(13px,calc(var(--u)*1.08),17px);line-height:1.25}
+.flip p{font-size:clamp(10px,calc(var(--u)*0.76),12.4px);line-height:1.5;color:var(--fg-2)}
+.flip-a{font-size:clamp(11px,calc(var(--u)*0.92),14.5px)!important;font-weight:700;line-height:1.45;color:var(--fg)!important;align-self:center}
+.flip-b{align-content:center!important}
+#zyFig figcaption{background:linear-gradient(transparent,rgba(3,8,13,.6) 24%,rgba(3,8,13,.96) 58%)}
+#zyFig figcaption span{font-size:clamp(11.5px,calc(var(--u)*0.9),14.5px);line-height:1.65;color:var(--fg-2)}
+.zy-q{font-weight:400;font-size:.68em;color:var(--fg-3);margin-left:8px}
+.flip .turn{position:absolute;left:12px;bottom:9px;font-family:var(--mono);font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--zc)}
+.flip.on .turn{opacity:0}
+#zyFig img{width:100%;height:100%;object-fit:cover;transition:opacity .18s ease}
+#zyFig{min-height:clamp(220px,36vh,500px)}
+
+/* ============================================================
+   SLIDE 8 — food + phrasebook
+   ============================================================ */
+.foodgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:9px;height:100%;min-height:0}
+.foodgrid .ph{min-height:0}
+@media(max-width:1000px){.foodgrid{height:auto;grid-template-rows:none}.foodgrid .ph{aspect-ratio:4/3}}
+
+.phrasebook{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+@media(max-width:520px){.phrasebook{grid-template-columns:repeat(2,1fr)}}
+.pcard{
+  padding:8px 11px;border-radius:var(--r-s);border:1px solid var(--edge);
+  background:rgba(255,255,255,.04);text-align:left;transition:.25s cubic-bezier(.2,.8,.2,1);
+  display:grid;gap:2px;position:relative;overflow:hidden;
+}
+.pcard:hover{border-color:var(--gold);background:rgba(255,200,87,.09);transform:translateY(-3px)}
+.pcard.say{border-color:var(--gold);background:rgba(255,200,87,.18)}
+.pcard b{font-size:clamp(13.5px,calc(var(--u)*1.1),18px);font-weight:900;letter-spacing:.02em;line-height:1.3}
+.pcard .py{font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;color:var(--gold)}
+.pcard .en{font-size:10px;color:var(--fg-3);line-height:1.35}
+.pcard::after{
+  content:"";position:absolute;right:9px;top:9px;width:11px;height:11px;opacity:.35;
+  background:currentColor;
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z'/></svg>") center/contain no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z'/></svg>") center/contain no-repeat;
+}
+.pcard.say::after{opacity:1;color:var(--gold);animation:beat .6s ease infinite}
+@keyframes beat{50%{transform:scale(1.25)}}
+
+/* day-parts row (food slide) */
+.dayparts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media(max-width:560px){.dayparts{grid-template-columns:1fr}}
+.dp{padding:10px 12px;border-radius:var(--r-s);border:1px solid var(--edge);background:rgba(255,255,255,.035)}
+.dp-k{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--gold)}
+.dp b{display:block;margin:2px 0 3px;font-size:clamp(13px,calc(var(--u)*1.05),16.5px)}
+.dp p{font-size:clamp(10.5px,calc(var(--u)*0.78),12.5px);line-height:1.55;color:var(--fg-2)}
+
+.mtnpicker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+@media(max-width:560px){.mtnpicker{grid-template-columns:1fr}}
+.mtnpick{
+  position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-areas:"i b" ". s";
+  gap:2px 9px;align-items:center;text-align:left;
+  padding:9px 12px;border-radius:var(--r-s);border:1px solid var(--edge);
+  background:rgba(255,255,255,.035);transition:.25s cubic-bezier(.2,.8,.2,1);
+}
+.mtnpick i{grid-area:i;width:8px;height:8px;border-radius:50%;background:var(--mc);transition:.25s}
+.mtnpick b{grid-area:b;font-size:clamp(14px,calc(var(--u)*1.25),19px);font-weight:900;line-height:1.2}
+.mtnpick span{grid-area:s;font-size:clamp(10px,calc(var(--u)*0.76),12px);line-height:1.4;color:var(--fg-3)}
+.mtnpick:hover{border-color:var(--edge-2);background:rgba(255,255,255,.07);transform:translateY(-2px)}
+.mtnpick.on{border-color:var(--mc);background:linear-gradient(140deg,color-mix(in srgb,var(--mc) 18%,transparent),rgba(255,255,255,.03))}
+.mtnpick.on i{box-shadow:0 0 0 4px color-mix(in srgb,var(--mc) 26%,transparent)}
+.mtnpick.on span{color:var(--fg-2)}
+#mtnFig img{width:100%;height:100%;object-fit:cover;transition:opacity .18s ease}
+#mtnFig{min-height:clamp(230px,38vh,520px)}
+.mtn-sub{font-weight:400;font-size:.72em;color:var(--fg-2);margin-left:8px}
+
+/* stacked figures share the column (mountain slide) */
+.mtn-col{display:grid;grid-template-rows:1.4fr 1fr;min-height:0}
+.mtn-col .ph{min-height:0}
+@media(max-width:1000px){.mtn-col{grid-template-rows:none}.mtn-col .ph{aspect-ratio:16/10}}
+
+/* ============================================================
+   SLIDE 10 — itinerary
+   ============================================================ */
+.timeline{position:relative;display:grid;gap:0}
+.timeline::before{content:"";position:absolute;left:clamp(52px,calc(var(--u)*5.4),74px);top:12px;bottom:12px;width:2px;background:linear-gradient(var(--gold),var(--sun),var(--ember),rgba(255,84,112,.12))}
+.leg{
+  display:grid;grid-template-columns:clamp(46px,calc(var(--u)*5),66px) 30px 1fr;gap:clamp(8px,calc(var(--u)*1),16px);
+  align-items:start;padding:clamp(4px,calc(var(--u)*0.55),9px) 0;position:relative;
+}
+.leg time{font-family:var(--mono);font-size:clamp(11.5px,calc(var(--u)*0.95),15px);font-weight:700;color:var(--gold);text-align:right;padding-top:1px}
+.leg .dot{position:relative;display:grid;place-items:center;padding-top:5px}
+.leg .dot i{width:11px;height:11px;border-radius:50%;background:var(--ink);border:2.5px solid var(--sun);z-index:2;transition:.3s}
+.leg.hot .dot i{background:var(--sun);box-shadow:0 0 0 5px rgba(255,138,61,.2)}
+.leg .body{min-width:0}
+.leg h3{font-size:clamp(12.5px,calc(var(--u)*0.98),16px);margin:0}
+.legtop{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}
+.leg p{font-size:clamp(10.5px,calc(var(--u)*0.8),12.5px);line-height:1.5;color:var(--fg-3)}
+#dayFig img{width:100%;height:100%;object-fit:cover;transition:opacity .18s ease}
+#dayFig{min-height:clamp(200px,30vh,440px)}
+.leg{border:0;border-radius:var(--r-s);background:none;text-align:left;width:100%;cursor:pointer;transition:.22s cubic-bezier(.2,.8,.2,1)}
+.leg:hover{background:rgba(255,255,255,.05)}
+.leg.hot{background:linear-gradient(90deg,rgba(255,138,61,.16),transparent 74%)}
+.leg.hot h3{color:var(--gold)}
+.tool.playing svg{animation:beat .9s ease infinite}
+.leg .cost{
+  display:inline-block;flex:none;padding:2px 9px;border-radius:99px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.06em;
+  border:1px solid var(--edge-2);color:var(--fg-2);
+}
+
+/* ============================================================
+   SLIDE 11 — iPASS / T-PASS
+   ============================================================ */
+.passwrap{display:grid;grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);gap:clamp(11px,calc(var(--u)*1.4),20px);align-items:start}
+@media(max-width:1000px){.passwrap{grid-template-columns:1fr}}
+
+.steps{display:grid;gap:8px}
+.step{display:grid;grid-template-columns:30px 1fr;gap:12px;align-items:start}
+.step .n{
+  display:grid;place-items:center;width:30px;height:30px;border-radius:50%;
+  font-family:var(--mono);font-weight:700;font-size:14px;color:#120a03;
+  background:var(--grad);box-shadow:0 8px 22px -8px rgba(255,138,61,.9);
+}
+.step h3{font-size:clamp(14px,calc(var(--u)*1.15),18px);margin-bottom:3px}
+.step p{font-size:clamp(11.5px,calc(var(--u)*0.88),14px);line-height:1.65;color:var(--fg-2)}
+.pill{
+  display:inline-block;margin-top:6px;padding:3px 10px;border-radius:99px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.05em;line-height:1.5;
+  border:1px solid rgba(255,200,87,.4);color:var(--gold);background:rgba(255,200,87,.09);
+}
+.pill.warn{border-color:rgba(91,184,255,.42);color:var(--sky);background:rgba(91,184,255,.09)}
+
+.tpass{
+  position:relative;overflow:hidden;border-radius:var(--r);padding:clamp(13px,calc(var(--u)*1.4),19px);
+  background:linear-gradient(128deg,#12324a,#0b2033 42%,#1c1330);
+  border:1px solid rgba(91,184,255,.32);
+  box-shadow:0 26px 60px -28px rgba(0,0,0,.9);
+}
+.tpass::before{
+  content:"";position:absolute;inset:-40% -10% auto auto;width:70%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,rgba(91,184,255,.35),transparent 62%);
+}
+.tpass-top{position:relative;display:flex;justify-content:space-between;align-items:flex-start;gap:14px}
+.tpass-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--sky)}
+.tpass-price{margin-top:6px;font-family:var(--mono);font-size:clamp(17px,calc(var(--u)*1.5),23px);color:var(--fg-2);display:flex;align-items:baseline;gap:3px}
+.tpass-price b{font-size:clamp(32px,calc(var(--u)*3.6),54px);font-weight:700;line-height:1;letter-spacing:-.03em;color:#fff}
+.tpass-price small{font-size:12px;color:var(--fg-3);margin-left:5px}
+.tpass-chip{
+  width:44px;height:34px;border-radius:6px;flex:none;
+  background:linear-gradient(140deg,#ffd98a,#c99433);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25);position:relative;
+}
+.tpass-chip::after{
+  content:"";position:absolute;inset:7px 5px;border-radius:2px;
+  background:repeating-linear-gradient(90deg,transparent 0 6px,rgba(0,0,0,.28) 6px 7px),
+             repeating-linear-gradient(0deg,transparent 0 9px,rgba(0,0,0,.28) 9px 10px);
+}
+.tpass-note{position:relative;margin-top:9px;font-size:clamp(11px,calc(var(--u)*0.86),13.5px);line-height:1.6;color:var(--fg-2)}
+
+.slide[data-dense] h2{font-size:clamp(23px,calc(var(--u)*2.6),40px)}
+.slide[data-dense] .lead{font-size:clamp(12.5px,calc(var(--u)*0.95),15.5px);line-height:1.72;max-width:64ch}
+.slide[data-dense] .step p{font-size:clamp(11px,calc(var(--u)*0.84),13px);line-height:1.6}
+.slide[data-dense] .pts li{font-size:clamp(11.5px,calc(var(--u)*0.86),13.5px);line-height:1.6;padding-left:22px}
+.slide[data-dense] .pts li::before{width:7px;height:7px;top:.6em}
+.slide[data-dense] .slide-in{padding:clamp(16px,calc(var(--u)*2.7),48px)}
+.brandline{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;padding-bottom:6px;border-bottom:1px solid var(--edge)}
+.brandline b{font-size:clamp(19px,calc(var(--u)*2.05),33px);font-weight:900;letter-spacing:-.015em;line-height:1.05}
+.brandline em{
+  font-family:var(--mono);font-style:normal;font-weight:700;line-height:1;letter-spacing:.01em;
+  font-size:clamp(17px,calc(var(--u)*1.85),30px);
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.brandline .bl-note{margin-left:auto;font-size:clamp(10.5px,calc(var(--u)*0.8),12.5px);line-height:1.4;color:var(--fg-3);text-align:right}
+.brandline.ipass b{color:var(--fg)}
+.tpass-brand{position:relative;border-bottom-color:rgba(91,184,255,.28);padding-bottom:5px;margin-bottom:7px}
+.tpass-brand b{
+  font-family:var(--mono);font-weight:700;letter-spacing:-.02em;
+  font-size:clamp(24px,calc(var(--u)*2.5),42px);
+  background:var(--grad-cool);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.tpass-brand .bl-note{color:var(--sky);opacity:.85}
+@media(max-width:600px){.brandline .bl-note{margin-left:0;text-align:left;width:100%}}
+
+.steprow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(7px,calc(var(--u)*0.8),12px)}
+@media(max-width:900px){.steprow{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.steprow{grid-template-columns:1fr}}
+.step2{
+  position:relative;padding:clamp(10px,calc(var(--u)*1.05),15px);border-radius:var(--r-s);
+  border:1px solid var(--edge);background:linear-gradient(158deg,rgba(255,255,255,.065),rgba(255,255,255,.015));
+  display:grid;align-content:start;gap:3px;transition:.3s cubic-bezier(.2,.8,.2,1);
+}
+.step2:hover{border-color:var(--edge-2);transform:translateY(-3px)}
+.step2::after{
+  content:"";position:absolute;right:-7px;top:50%;width:14px;height:14px;margin-top:-7px;z-index:2;
+  background:var(--gold);opacity:.55;
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/></svg>") center/contain no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M9 5l7 7-7 7'/></svg>") center/contain no-repeat;
+}
+.steprow .step2:last-child::after{display:none}
+@media(max-width:900px){.step2::after{display:none}}
+.step2 .n{
+  display:grid;place-items:center;width:26px;height:26px;border-radius:50%;margin-bottom:3px;
+  font-family:var(--mono);font-weight:700;font-size:12.5px;color:#120a03;background:var(--grad);
+}
+.step2 h3{font-size:clamp(13px,calc(var(--u)*1.05),16.5px)}
+.step2 p{font-size:clamp(10.5px,calc(var(--u)*0.78),12.5px);line-height:1.58;color:var(--fg-2)}
+
+.passgrid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.15fr) minmax(0,.95fr);gap:clamp(7px,calc(var(--u)*0.8),12px);min-height:0}
+@media(max-width:1000px){.passgrid{grid-template-columns:1fr}}
+.passhead .ph{max-height:clamp(92px,calc(var(--u)*7.6),124px)}
+.passhead{display:grid;grid-template-columns:minmax(0,1.28fr) minmax(0,.72fr);gap:clamp(16px,calc(var(--u)*2.4),40px);align-items:center}
+.passhead .ph{aspect-ratio:16/9}
+@media(max-width:900px){.passhead{grid-template-columns:1fr}.passhead .ph{display:none}}
+
+.tphead{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,.5fr);gap:clamp(14px,calc(var(--u)*2),30px);align-items:center}
+.tphead .ph{aspect-ratio:16/10}
+@media(max-width:820px){.tphead{grid-template-columns:1fr}.tphead .ph{aspect-ratio:21/9}}
+
+.covergrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:5px}
+.cov{
+  display:flex;align-items:center;gap:6px;padding:6px 9px;border-radius:8px;
+  font-size:clamp(10.5px,calc(var(--u)*0.8),12px);line-height:1.3;
+  border:1px solid var(--edge);background:rgba(255,255,255,.035);color:var(--fg-2);
+}
+.cov::before{
+  content:"";width:15px;height:15px;flex:none;border-radius:50%;display:block;
+  background:rgba(255,255,255,.1);
+}
+.cov.ok{border-color:rgba(46,230,197,.3);background:rgba(46,230,197,.08);color:#d6fff6}
+.cov.ok::before{background:var(--aqua);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round' d='M5 13l4.5 4.5L19 7'/></svg>") center/78% no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round' d='M5 13l4.5 4.5L19 7'/></svg>") center/78% no-repeat;}
+.cov.no{border-color:rgba(255,84,112,.3);background:rgba(255,84,112,.07);color:#ffd3db}
+.cov.no::before{background:var(--ember);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round' d='M6 6l12 12M18 6L6 18'/></svg>") center/70% no-repeat;
+  mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round' d='M6 6l12 12M18 6L6 18'/></svg>") center/70% no-repeat;}
+
+/* ============================================================
+   SLIDE 12 — quiz
+   ============================================================ */
+.quiz{display:grid;gap:12px;padding:clamp(16px,calc(var(--u)*1.8),26px);align-content:start}
+.qprog{display:flex;gap:5px}
+.qprog i{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.14);transition:.3s}
+.qprog i.done{background:var(--aqua)}
+.qprog i.now{background:var(--gold)}
+.qopts{display:grid;gap:7px}
+.qopt{
+  padding:11px 15px;border-radius:var(--r-s);border:1px solid var(--edge-2);
+  text-align:left;font-size:clamp(12.5px,calc(var(--u)*0.95),15.5px);line-height:1.5;color:var(--fg-2);
+  background:rgba(255,255,255,.03);transition:.22s cubic-bezier(.2,.8,.2,1);
+}
+.qopt:hover:not(:disabled){border-color:var(--fg-2);background:rgba(255,255,255,.075);transform:translateX(4px)}
+.qopt.right{border-color:var(--aqua);background:rgba(46,230,197,.16);color:#fff}
+.qopt.wrong{border-color:var(--ember);background:rgba(255,84,112,.14);color:#fff}
+.qopt:disabled{cursor:default}
+.qfb{font-size:clamp(11.5px,calc(var(--u)*0.9),14px);line-height:1.6;color:var(--fg-2);min-height:2.6em}
+
+.endcard{position:relative;overflow:hidden;border-radius:var(--r);padding:clamp(18px,calc(var(--u)*2),30px);border:1px solid rgba(255,200,87,.3);background:linear-gradient(150deg,rgba(255,200,87,.14),rgba(255,84,112,.07))}
+
+/* ============================================================
+   OVERVIEW / LIGHTBOX / HELP
+   ============================================================ */
+.overlay{
+  position:fixed;inset:0;z-index:60;background:rgba(3,7,12,.93);backdrop-filter:blur(22px);
+  opacity:0;visibility:hidden;transition:.32s cubic-bezier(.2,.8,.2,1);
+  display:grid;place-items:center;padding:clamp(16px,calc(var(--u)*3),44px);
+}
+.overlay.open{opacity:1;visibility:visible}
+.ov-close{position:absolute;top:16px;right:18px;width:40px;height:40px;border-radius:50%;border:1px solid var(--edge-2);display:grid;place-items:center;font-size:20px;color:var(--fg-2);transition:.2s}
+.ov-close:hover{background:var(--fg);color:var(--void)}
+
+.ovgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:11px;width:min(1180px,100%);max-height:100%;overflow:auto;scrollbar-width:none}
+.ovact{
+  grid-column:1/-1;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  padding-bottom:5px;margin-top:6px;border-bottom:1px solid var(--edge);
+}
+.ovact:first-child{margin-top:0}
+.ovact span{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.ovact b{font-size:14px;font-weight:700;color:var(--fg-2)}
+.ovgrid::-webkit-scrollbar{display:none}
+.ovcard{
+  position:relative;border-radius:var(--r-s);overflow:hidden;border:1px solid var(--edge);
+  aspect-ratio:16/10;text-align:left;background:var(--ink-2);transition:.28s cubic-bezier(.2,.8,.2,1);
+}
+.ovcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.4;transition:.4s}
+.ovcard:hover{transform:translateY(-5px);border-color:var(--gold)}
+.ovcard:hover img{opacity:.66;transform:scale(1.06)}
+.ovcard.now{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold)}
+.ovcard .g{position:absolute;inset:0;background:linear-gradient(transparent 20%,rgba(4,9,15,.92))}
+.ovcard .t{position:absolute;inset:auto 0 0 0;padding:11px 13px}
+.ovcard .n{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--gold)}
+.ovcard .h{display:block;margin-top:3px;font-size:13.5px;font-weight:700;line-height:1.3}
+
+.lightbox{cursor:zoom-out}
+.lightbox figure{margin:0;display:grid;gap:12px;justify-items:center;max-width:min(1300px,100%);max-height:100%}
+.lightbox img{max-width:100%;max-height:78vh;object-fit:contain;border-radius:var(--r-s);box-shadow:var(--shadow)}
+.lightbox figcaption{text-align:center;font-size:13.5px;color:var(--fg-2);max-width:70ch}
+.lightbox figcaption b{display:block;color:var(--fg);font-size:16px;margin-bottom:3px}
+
+.helpbox{width:min(560px,100%);padding:clamp(20px,calc(var(--u)*2.4),34px);border-radius:var(--r);border:1px solid var(--edge-2);background:var(--ink)}
+.helpbox h3{margin-bottom:14px}
+.kbd{display:grid;gap:8px}
+.kbd div{display:grid;grid-template-columns:130px 1fr;gap:12px;align-items:center;font-size:13px;color:var(--fg-2)}
+.kbd kbd{
+  display:inline-block;padding:3px 8px;margin-right:4px;border-radius:6px;
+  border:1px solid var(--edge-2);border-bottom-width:2px;background:rgba(255,255,255,.06);
+  font-family:var(--mono);font-size:11px;color:var(--fg);
+}
+
+/* sources */
+.srcbox{width:min(760px,100%);max-height:100%;overflow:auto;padding:clamp(20px,calc(var(--u)*2.4),34px);border-radius:var(--r);border:1px solid var(--edge-2);background:var(--ink);scrollbar-width:none}
+.srcbox::-webkit-scrollbar{display:none}
+.srcbox a{display:block;padding:8px 0;border-bottom:1px solid var(--edge);font-size:13px;color:var(--fg-2);text-decoration:none;transition:.2s}
+.srcbox a:hover{color:var(--gold);padding-left:6px}
+.srcbox a small{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin-top:2px}
+
+/* presenting mode hides chrome until hover */
+body.presenting .topbar,body.presenting .botbar{opacity:0;transition:opacity .4s}
+body.presenting .topbar:hover,body.presenting .botbar:hover{opacity:1}
+
+.vstack{min-height:0}
+@media(max-width:1000px){
+  .vstack{height:auto!important;grid-template-rows:none!important}
+  .pillars{max-height:none;height:auto}
+  .pillar{min-height:190px}
+}
+@media(max-width:960px){
+  .slide.is-active .hero{overflow-y:auto;scrollbar-width:none}
+  .slide.is-active .hero::-webkit-scrollbar{display:none}
+  .slide.is-active .hero{overflow-x:hidden}
+  .hero-in{height:auto;min-height:100%;align-content:start;padding:34px 20px 60px;gap:26px}
+  .hero-bg{position:fixed}
+  .hero-bg::after{background:linear-gradient(180deg,rgba(4,9,15,.88) 0%,rgba(4,9,15,.72) 38%,rgba(4,9,15,.9) 78%,rgba(4,9,15,.97) 100%)}
+  .hero-copy h1,html[data-lang="zh"] .hero-copy h1{max-width:100%}
+  .scrollhint{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+@media(max-width:700px){
+  :root{--bar-t:50px;--bar-b:56px}
+  body{line-height:1.65}
+  .mark span,.count{display:none}
+  .slide-in{padding:18px 16px 26px}
+}
+</style>
+</head>
+<body>
+<div class="ambience"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+
+<div class="deck">
+  <!-- ================= TOP BAR ================= -->
+  <header class="topbar">
+    <div class="mark">
+      <img src="assets/opt/isu-logo.png" alt="義守大學 I-Shou University">
+      <div class="mark-t">
+        <b><t-x zh="高雄，你的新城市" en="Kaohsiung, Your New City"></t-x></b>
+        <span>I-Shou University</span>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="chapter"><i></i><span id="chapterName"></span></div>
+    <div class="spacer"></div>
+    <div class="langswitch" role="group" aria-label="Language">
+      <button data-lang="zh" aria-pressed="true">中文</button>
+      <button data-lang="en" aria-pressed="false">EN</button>
+    </div>
+    <button class="tool" id="btnOverview" title="Overview (O)">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      <span><t-x zh="總覽" en="Overview"></t-x></span>
+    </button>
+    <button class="tool" id="btnFull" title="Fullscreen (F)">
+      <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      <span><t-x zh="全螢幕" en="Full"></t-x></span>
+    </button>
+  </header>
+
+  <!-- ================= STAGE ================= -->
+  <main class="stage" id="stage">
+
+  <!-- ─────────────── SLIDE 1 ─────────────── -->
+  <section class="slide is-active" data-title-zh="世界看見高雄" data-title-en="The World Notices" data-thumb="assets/opt/kaohsiung-music-center.jpg">
+    <div class="hero">
+      <div class="hero-bg">
+        <img src="assets/opt/kaohsiung-music-center.jpg" alt="高雄港灣日落，遠處是高雄流行音樂中心的珊瑚礁造型建築">
+      </div>
+      <div class="hero-in">
+        <div class="hero-copy">
+          <span class="eyebrow" data-anim style="--d:0">01 — <t-x zh="開場" en="Opening"></t-x></span>
+          <h1 data-anim style="--d:1">
+            <t-x zh="世界剛剛發現高雄。<br>而你，<em>已經住在這裡</em>。" en="The world just found <em>Kaohsiung</em>.<br>You already live here."></t-x>
+          </h1>
+          <p class="lead" data-anim style="--d:3"><t-x zh="英國《The Times》旅遊版把高雄選進「11 月最值得去的 20 個地方」。對觀光客來說，那是一趟旅行；對你來說，那是接下來幾年的日常。" en="The Travel section of the UK newspaper The Times picked Kaohsiung as one of 20 of the best places to visit in November. For a tourist, that is one trip. For you, it is the next few years of everyday life."></t-x></p>
+          <div class="chips" data-anim style="--d:4">
+            <span class="chip on"><t-x zh="英國 The Times · Travel" en="The Times · Travel"></t-x></span>
+            <span class="chip"><t-x zh="2026 / 07 / 27" en="27 Jul 2026"></t-x></span>
+            <span class="chip"><t-x zh="台灣唯一入選" en="Taiwan&#39;s only entry"></t-x></span>
+          </div>
+        </div>
+
+        <article class="clip" data-anim style="--d:5">
+          <div class="masthead"><span>The Times</span><small>Travel</small></div>
+          <h3>20 of the best places to visit in November</h3>
+          <div class="byline">Siobhan Grogan &amp; Qin Xie · 27 July 2026, 5:00am BST</div>
+          <div class="body">
+            <t-x zh="報導把高雄列為 11 月的推薦目的地之一，理由是這座城市在秋末天氣舒服、適合騎車與慢慢逛：沿著愛河騎自行車、在蓮池潭散步、逛夜市、走訪佛光山，再搭一趟短短的渡輪到旗津。" en="The piece lists Kaohsiung as a November destination for its comfortable late-autumn weather and easy pace: cycling along the Love River, walking around Lotus Pond, browsing night markets, visiting Fo Guang Shan, and taking a short ferry across to Cijin."></t-x>
+          </div>
+          <div class="stampwrap"><div class="stamp"><b><t-x zh="唯一" en="ONLY"></t-x></b><span><t-x zh="台灣入選" en="Taiwan entry"></t-x></span></div></div>
+        </article>
+      </div>
+      <div class="scrollhint"><i></i><t-x zh="按 → 或空白鍵繼續" en="Press → or Space"></t-x></div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 2 ─────────────── -->
+  <section class="slide" data-title-zh="那份名單" data-title-en="The List" data-thumb="assets/opt/love-river.jpg">
+    <div class="slide-in">
+      <div class="two wide-left">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">02 — <t-x zh="報導本身" en="The Report"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="在 20 個城市之中，<br>高雄是名單上唯一的台灣。" en="Among 20 destinations,<br>Kaohsiung is the only one in Taiwan."></t-x></h2>
+          <p class="lead" data-anim style="--d:2"><t-x zh="這不是「全球最佳城市排名」，而是一份 11 月的旅遊推薦清單 — 名單沒有名次高低之分。重點不是第幾名，而是：一份英國主流媒體的旅遊編輯，會在秋天叫讀者飛一趟高雄。" en="This is not a ranking of the world&#39;s best cities. It is a list of places worth visiting in November, and the order carries no score. The point is not the number — it is that travel editors at a major UK paper are telling readers to fly to Kaohsiung this autumn."></t-x></p>
+          <ul class="pts" data-anim style="--d:3">
+            <li><t-x zh="刊登平台：英國《The Times》報紙／新聞網站的 Travel 版。" en="Where: the Travel section of The Times, the UK newspaper and news website."></t-x></li>
+            <li><t-x zh="推薦重點：秋末氣候溫和、適合騎自行車與慢速觀光。" en="Why: mild late-autumn weather, cycling, and unhurried sightseeing."></t-x></li>
+            <li><t-x zh="文中點名：愛河、蓮池潭、夜市、佛光山，以及往旗津的渡輪。" en="Named in the article: Love River, Lotus Pond, night markets, Fo Guang Shan, and the ferry to Cijin."></t-x></li>
+          </ul>
+          <div class="statrow" data-anim style="--d:4">
+            <div class="stat"><b data-count="20">20</b><span><t-x zh="11 月推薦目的地" en="November destinations"></t-x></span></div>
+            <div class="stat"><b data-count="1">1</b><span><t-x zh="來自台灣的城市" en="from Taiwan"></t-x></span></div>
+            <div class="stat cool"><b>7·27</b><span><t-x zh="2026 年刊出" en="published 2026"></t-x></span></div>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="card" style="padding:clamp(14px,calc(var(--u)*1.6),24px)" data-anim style="--d:2">
+            <div class="eyebrow" style="margin-bottom:12px">20 Destinations · November</div>
+            <div class="ranklist" id="rankList"></div>
+            <p class="tiny" style="margin-top:14px"><t-x zh="※ 依原文刊載順序排列，不代表名次。" en="※ Listed in the order they appear in the article; the order is not a ranking."></t-x></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 3 · WONDERLAND ─────────────── -->
+  <section class="slide" data-dense data-title-zh="冬日遊樂園" data-title-en="Wonderland" data-thumb="assets/opt/wl-bay-night.jpg">
+    <div class="slide-in">
+      <div class="vstack" style="display:grid;gap:clamp(9px,calc(var(--u)*1.05),16px);height:100%;grid-template-rows:auto auto auto;align-content:center">
+        <div class="passhead">
+          <div class="col" style="gap:8px">
+            <span class="eyebrow" data-anim style="--d:0">03 &mdash; <t-x zh="冬日遊樂園" en="Kaohsiung Wonderland"></t-x></span>
+            <h2 data-anim style="--d:1"><t-x zh="每年冬天，<br>愛河灣會整個變成遊樂園" en="Every winter, the whole bay<br>turns into a theme park"></t-x></h2>
+            <p class="lead" data-anim style="--d:2"><t-x zh="高雄市政府每年冬天在愛河灣蓋一座<b>限時的免費遊樂園</b>，再找一個世界級 IP 當主角。連續三年，三個完全不同的主題。" en="Every winter the city builds a <b>free, temporary theme park</b> on Love River Bay and hands it to a world-class character licence. Three years running, three completely different themes."></t-x></p>
+          </div>
+          <figure class="ph zoomable" data-anim style="--d:2" data-cap-zh="活動場地實景：愛河灣．高雄流行音樂中心與大港橋，攝於 2022 台灣燈會期間｜Tiouraren (Y.-C. Tsai), CC BY-SA 4.0" data-cap-en="The venue: Love River Bay, the Music Center and the Great Harbour Bridge, photographed during the 2022 Taiwan Lantern Festival｜Tiouraren (Y.-C. Tsai), CC BY-SA 4.0">
+            <img src="assets/opt/wl-bay-night.jpg" alt="夜晚的愛河灣，高雄流行音樂中心與大港橋在燈節期間打上光束">
+            <span class="tag"><t-x zh="場地實景" en="The venue"></t-x></span>
+          </figure>
+        </div>
+
+        <div class="editions" data-anim style="--d:3">
+          <article class="edition e1">
+            <figure class="ed-shot zoomable" data-cap-zh="2024 冬日遊樂園：黃色小鴨浮在高雄港上，背景是入夜後的市區天際線與 85 大樓" data-cap-en="Kaohsiung Wonderland 2024: the Rubber Duck on the harbour at dusk, with the city skyline and the 85 Tower behind">
+              <img style="--op:64% 34%" src="assets/opt/wl-duck-2024.jpg" alt="夜晚的高雄港水面上一隻巨大的黃色小鴨，背景是點燈的市區高樓" loading="lazy">
+              <span class="shot-tag ok"><t-x zh="2024 實景" en="2024 · real"></t-x></span>
+            </figure>
+            <div class="ed-top"><span class="ed-year">2024</span><span class="ed-tag"><t-x zh="光榮碼頭" en="Glory Pier"></t-x></span></div>
+            <h3><t-x zh="黃色小鴨" en="Rubber Duck"></t-x><span class="ed-en">Rubber Duck</span></h3>
+            <p class="ed-body"><t-x zh="荷蘭藝術家的巨型黃色小鴨睽違十年再度回到高雄港，一次來了兩隻。整個城市突然被一隻鴨子塞滿。" en="The Dutch artist’s giant duck came back after ten years — two of them. The whole city filled up with one duck."></t-x></p>
+            <div class="ed-stat"><b><t-x zh="900<small>萬</small>" en="9<small>M</small>"></t-x></b><span><t-x zh="以上觀光人潮" en="visitors, reported"></t-x></span></div>
+          </article>
+          <article class="edition e2">
+            <figure class="ed-shot zoomable" data-cap-zh="2025 冬日遊樂園：愛河灣上的兩座巨型吉伊卡哇充氣裝置，開幕當天現場擠滿人" data-cap-en="Kaohsiung Wonderland 2025: the two giant Chiikawa balloons on Love River Bay, packed out on opening day">
+              <img style="--op:center 40%" src="assets/opt/wl-chiikawa-2025.jpg" alt="愛河灣水面上兩座巨型吉伊卡哇充氣裝置，前方是舉著手機拍照的人群" loading="lazy">
+              <span class="shot-tag ok"><t-x zh="2025 實景" en="2025 · real"></t-x></span>
+            </figure>
+            <div class="ed-top"><span class="ed-year">2025</span><span class="ed-tag"><t-x zh="愛河灣" en="Love River Bay"></t-x></span></div>
+            <h3><t-x zh="吉伊卡哇" en="Chiikawa"></t-x><span class="ed-en">Chiikawa</span></h3>
+            <p class="ed-body"><t-x zh="1/25&ndash;2/16，全球最大的吉伊卡哇主題展區落在愛河灣，加上 25 項大型遊樂設施，春節連假免費玩。" en="25 Jan – 16 Feb. The world’s largest Chiikawa zone, plus 25 full-size rides, free over Lunar New Year."></t-x></p>
+            <div class="ed-stat"><b><t-x zh="320<small>萬</small>" en="3.2<small>M</small>"></t-x></b><span><t-x zh="春節期間累計人次" en="visits over New Year"></t-x></span></div>
+          </article>
+          <article class="edition e3">
+            <figure class="ed-shot zoomable" data-cap-zh="2026 冬日遊樂園：愛河灣邊的巨型超人力霸王充氣裝置與開幕活動舞台" data-cap-en="Kaohsiung Wonderland 2026: the colossal Ultraman installation and launch stage on Love River Bay">
+              <img style="--op:center 44%" src="assets/opt/wl-ultraman-2026.jpg" alt="愛河灣邊一座巨型超人力霸王充氣裝置，前方舞台上站著兩位超人力霸王人偶" loading="lazy">
+              <span class="shot-tag ok"><t-x zh="2026 實景" en="2026 · real"></t-x></span>
+            </figure>
+            <div class="ed-top"><span class="ed-year">2026</span><span class="ed-tag now"><t-x zh="今年" en="This year"></t-x></span></div>
+            <h3><t-x zh="超人力霸王" en="Ultraman"></t-x><span class="ed-en">Ultraman</span></h3>
+            <p class="ed-body"><t-x zh="2/7&ndash;3/1，愛河灣與高雄港 16&ndash;18 號碼頭。兩尊巨型超人力霸王直接站在水面上，正好碰上這個角色的 60 週年。" en="7 Feb – 1 Mar, Love River Bay and Piers 16–18. Two colossal Ultraman figures on the water, for the 60th anniversary."></t-x></p>
+            <div class="ed-stat"><b>22<small>+</small></b><span><t-x zh="項免費遊樂設施" en="free attractions"></t-x></span></div>
+          </article>
+        </div>
+
+        <div class="wl-foot" data-anim style="--d:4">
+          <div class="statrow" style="flex:1">
+            <div class="stat"><b data-count="2231" data-suffix="萬" data-comma="1" data-count-en="22.3" data-suffix-en="M" data-dec-en="1">0</b><span><t-x zh="冬日遊樂園累計參與人次（市府統計）" en="cumulative Wonderland visits (city figures)"></t-x></span></div>
+            <div class="stat"><b data-count="366" data-suffix="億" data-count-en="36.6" data-prefix-en="NT$" data-suffix-en="B" data-dec-en="1">0</b><span><t-x zh="估計觀光效益（元）" en="NT$ estimated tourism impact"></t-x></span></div>
+            <div class="stat cool"><b><t-x zh="免費" en="FREE"></t-x></b><span><t-x zh="多數設施與裝置不收門票" en="most rides and installations, no ticket"></t-x></span></div>
+          </div>
+          <p class="tiny" style="max-width:42ch"><t-x zh="※ 三張皆為各該屆活動實景照片。舉辦時間、主題與設施每年公布，出發前請查高雄市政府觀光局最新公告。" en="※ All three photographs are from the editions they label. Dates, themes and attractions are announced each year — check the Kaohsiung Tourism Bureau before you go."></t-x></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 4 · STAGE CITY ─────────────── -->
+  <section class="slide" data-dense data-title-zh="演唱會經濟" data-title-en="Stage City" data-thumb="assets/opt/guide-concert.jpg">
+    <div class="slide-in">
+      <div class="two fill" style="grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">04 &mdash; <t-x zh="演唱會經濟" en="The Concert Economy"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="高雄乾脆<br>把自己變成一座舞台" en="Kaohsiung simply<br>turned itself into a stage"></t-x></h2>
+          <p class="lead" data-anim style="--d:2"><t-x zh="Coldplay、BLACKPINK、Ed Sheeran &mdash; 這幾年他們的台灣場，很多都不在台北，在高雄。原因很簡單：這裡有全台灣最大的戶外場館，而且市府把場租壓到最低來換人流。" en="Coldplay, BLACKPINK, Ed Sheeran — in recent years their Taiwan dates have often not been in Taipei. They were here. The reason is blunt: Kaohsiung has the island’s largest outdoor venue, and the city keeps rental low to trade it for footfall."></t-x></p>
+          <div class="statrow" data-anim style="--d:3">
+            <div class="stat"><b data-count="189" data-suffix="億" data-count-en="18.9" data-prefix-en="NT$" data-suffix-en="B" data-dec-en="1">0</b><span><t-x zh="市府估算演唱會相關活動帶動的觀光產值（元）" en="NT$ tourism output the city credits to concert-related activity"></t-x></span></div>
+            <div class="stat cool"><b>4</b><span><t-x zh="座撐起這座城市的場館" en="venues carrying the whole scene"></t-x></span></div>
+          </div>
+          <div class="venuelist" id="venueList" data-anim style="--d:4"></div>
+        </div>
+        <div class="col" style="align-content:center;gap:10px">
+          <figure class="ph zoomable" id="venueFig" style="flex:1;min-height:0" data-anim style="--d:3">
+            <img id="venueImg" src="assets/opt/guide-concert.jpg" alt="">
+            <span class="tag" id="venueTag">Venue</span>
+            <figcaption><b id="venueName"></b><span id="venueCap"></span></figcaption>
+          </figure>
+          <div class="factgrid" id="venueFacts" style="--tc:var(--gold)" data-anim style="--d:4"></div>
+          <p class="tiny"><t-x zh="※ 場館規模與活動資訊以各場館官方公告為準。" en="※ Venue details and event listings follow each venue’s official announcements."></t-x></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 3 ─────────────── -->
+  <section class="slide" data-title-zh="不只是工業城市" data-title-en="Beyond Industry" data-thumb="assets/opt/dagang-bridge.jpg">
+    <div class="slide-in">
+      <div class="vstack" style="display:grid;gap:clamp(9px,calc(var(--u)*1.1),18px);height:100%;grid-template-rows:auto auto minmax(0,1fr) auto">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:clamp(18px,calc(var(--u)*2.6),44px);align-items:end" class="head-split">
+          <div class="col" style="gap:10px">
+            <span class="eyebrow" data-anim style="--d:0">03 — <t-x zh="城市轉型" en="The Shift"></t-x></span>
+            <h2 data-anim style="--d:1"><t-x zh="所以，高雄早就不是<br>你想像中的工業城市" en="So no — this is not<br>the industrial city you imagined"></t-x></h2>
+          </div>
+          <div class="idxcard" data-anim style="--d:2">
+            <div class="idx-head">
+              <b data-count="4" data-suffix="項" data-count-en="4" data-suffix-en="">0</b>
+              <span><t-x zh="成長指標<br>增幅居六都第一" en="growth indicators<br>ranked 1st of the six municipalities"></t-x></span>
+            </div>
+            <div class="idxgrid">
+              <div class="idx"><b><t-x zh="旅宿業營業額" en="Lodging revenue"></t-x></b><small>2025 vs 2020</small></div>
+              <div class="idx"><b><t-x zh="餐飲收入" en="Food &amp; beverage revenue"></t-x></b><small>2025 vs 2020</small></div>
+              <div class="idx"><b><t-x zh="國際旅客人次" en="International arrivals"></t-x></b><small>2025 vs 2024</small></div>
+              <div class="idx"><b><t-x zh="國際旅客消費" en="International visitor spending"></t-x></b><small>2025 vs 2024</small></div>
+            </div>
+            <p class="idx-extra"><t-x zh="另外，觀光滿意度連續 3 年全國第一（《遠見雜誌》評比）。" en="Tourism satisfaction has also ranked first nationally for three years running (Global Views Monthly survey)."></t-x></p>
+          </div>
+        </div>
+
+        <div class="fivelead" data-anim style="--d:3">
+          <span class="eyebrow"><t-x zh="五個面向" en="Five dimensions"></t-x></span>
+          <p><t-x zh="港 · 文化 · 吃 · 活動 · 山與自然 &mdash; 撐起現在高雄的，就是下面這五件事。" en="Harbour · Culture · Food · Events · Nature &mdash; these five are what hold today&rsquo;s Kaohsiung up."></t-x></p>
+        </div>
+        <div class="pillars" data-anim style="--d:3">
+          <figure class="pillar zoomable" data-cap-zh="大港橋與高雄港灣｜空拍" data-cap-en="Great Harbour Bridge and the port｜aerial">
+            <img style="--op:center 62%" src="assets/opt/dagang-bridge.jpg" alt="高雄港灣空拍，可見大港橋與港區">
+            <div class="glaze"></div>
+            <div class="txt"><div class="k">Port</div><h3><t-x zh="港" en="Harbour"></t-x></h3><p><t-x zh="愛河灣、港區、旗津 — 城市與海真正連在一起。" en="Love River Bay, the port, Cijin — the city meets the sea."></t-x></p></div>
+          </figure>
+          <figure class="pillar zoomable" data-cap-zh="駁二的 VR 體感劇院｜整廳觀眾戴著頭顯，坐在會動的座椅上看同一部片" data-cap-en="The VR theatre at Pier-2: a whole room in headsets, watching the same film from motion seats">
+            <img style="--op:center 46%" src="assets/opt/pier2-vr.jpg" alt="一整間觀眾戴著 VR 頭顯坐在體感座椅上">
+            <div class="glaze"></div>
+            <div class="txt"><div class="k">Culture</div><h3><t-x zh="文化" en="Culture"></t-x></h3><p><t-x zh="駁二的 VR 劇院、哈瑪星、衛武營、左營舊城。" en="Pier-2&rsquo;s VR theatre, Hamasen, Weiwuying, old Zuoying."></t-x></p></div>
+          </figure>
+          <figure class="pillar zoomable" data-cap-zh="六合夜市的夜晚街景" data-cap-en="Liuhe Night Market after dark">
+            <img style="--op:center 50%" src="assets/opt/liuhe-night-market.jpg" alt="六合夜市入夜後的攤位與霓虹招牌">
+            <div class="glaze"></div>
+            <div class="txt"><div class="k">Food</div><h3><t-x zh="吃" en="Food"></t-x></h3><p><t-x zh="鹽埕小吃、夜市、海鮮、早餐與冰品。" en="Yancheng snacks, night markets, seafood, breakfast, ice."></t-x></p></div>
+          </figure>
+          <figure class="pillar zoomable" data-cap-zh="日落時分的高雄流行音樂中心與港灣" data-cap-en="Kaohsiung Music Center at sunset">
+            <img style="--op:center 72%" src="assets/opt/kaohsiung-music-center.jpg" alt="日落中的高雄流行音樂中心">
+            <div class="glaze"></div>
+            <div class="txt"><div class="k">Events</div><h3><t-x zh="活動" en="Events"></t-x></h3><p><t-x zh="演唱會、跨年、大型城市活動與球賽。" en="Concerts, festivals, big city events, games."></t-x></p></div>
+          </figure>
+          <figure class="pillar zoomable" data-cap-zh="佛光山：東高雄的宗教與山景地標" data-cap-en="Fo Guang Shan in eastern Kaohsiung">
+            <img style="--op:center 46%" src="assets/opt/fo-guang-shan.jpg" alt="佛光山的大佛與塔群">
+            <div class="glaze"></div>
+            <div class="txt"><div class="k">Nature</div><h3><t-x zh="山與自然" en="Nature"></t-x></h3><p><t-x zh="壽山、旗山、美濃、茂林，還有東高雄的山線。" en="Shoushan, Qishan, Meinong, Maolin, the eastern hills."></t-x></p></div>
+          </figure>
+        </div>
+        <p class="tiny" data-anim style="--d:4"><t-x zh="※ 四項指標為高雄市政府觀光局公布之成長幅度比較（旅宿業營業額與餐飲收入為 2025 對 2020，國際旅客人次與消費為 2025 對 2024）；滿意度評比出自《遠見雜誌》。實際數字以官方最新公告為準。" en="※ The four indicators are growth comparisons published by the Kaohsiung Tourism Bureau (lodging and F&amp;B revenue 2025 vs 2020; international arrivals and spending 2025 vs 2024). The satisfaction ranking comes from Global Views Monthly. Refer to the latest official release."></t-x></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 4 ─────────────── -->
+  <section class="slide" data-dense data-title-zh="學會下山" data-title-en="Get Off the Hill" data-thumb="assets/opt/eda-bus-8501.jpg">
+    <div class="slide-in">
+      <div class="two">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">04 — <t-x zh="第一個任務" en="First Mission"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="義守新生的第一課：<br>學會「下山」" en="Your first ISU lesson:<br>learn how to get off the hill"></t-x></h2>
+          <p class="sub" data-anim style="--d:2"><t-x zh="只要會到左營，你就解鎖了大半個高雄。" en="Once you can reach Zuoying, most of Kaohsiung opens up."></t-x></p>
+          <ul class="pts" data-anim style="--d:3">
+            <li><t-x zh="新生版公式，只有三個字：<mark>義守 → 8501 → 左營</mark>。" en="The formula for week one: <mark>ISU → bus 8501 → Zuoying</mark>."></t-x></li>
+            <li><t-x zh="到了左營，捷運、台鐵、高鐵、公車、YouBike 全部接得上。" en="At Zuoying you can transfer to the metro, TRA, high-speed rail, buses and YouBike."></t-x></li>
+            <li><t-x zh="第一週不用背整張路網圖，先把這一條走熟就好。" en="Do not memorise the whole network in week one. Learn this one line properly."></t-x></li>
+            <li><t-x zh="晚上回校的末班車、寒暑假減班 — 出門前一定先查當天時刻表。" en="Evening last buses and holiday timetables change. Always check the schedule before you head out."></t-x></li>
+          </ul>
+          <figure class="ph zoomable" style="aspect-ratio:16/6" data-anim data-cap-zh="義大客運接駁車｜往返義大世界與高鐵左營站的 8501 路線" data-cap-en="E-Da Bus shuttle｜route 8501 links E-Da World with Zuoying HSR station">
+            <img src="assets/opt/eda-bus-8501.jpg" alt="義大客運 8501 接駁車">
+            <span class="tag">8501</span>
+            <figcaption>
+              <b><t-x zh="義大客運 8501" en="E-Da Bus 8501"></t-x></b>
+              <span><t-x zh="義大世界 ⇄ 高鐵左營站，是義守學生最常用的一條進城路線。" en="E-Da World ⇄ Zuoying HSR — the route ISU students use most to get downtown."></t-x></span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <div class="col">
+          <div class="mapwrap" data-anim style="--d:2">
+            <svg viewBox="40 96 950 545" role="img" aria-label="高雄簡化路線圖：義守大學、佛光山、左營、蓮池潭、凹子底、高雄車站、美麗島、哈瑪星、駁二、旗津、凱旋、衛武營">
+              <path class="wat" d="M40 292 C104 316 148 366 176 412 C208 464 224 540 232 641 L40 641 Z"/>
+              <path class="wat" d="M40 452 C92 474 132 516 154 566 C168 598 174 620 176 641 L40 641 Z" opacity=".45"/>
+              <path class="grn" d="M786 96 C868 124 946 114 1000 96 L1000 346 C934 316 856 336 782 302 C724 276 752 158 786 96 Z"/>
+              <path class="grn" d="M118 322 C158 298 192 314 214 346 C180 368 140 358 118 322 Z" opacity=".5"/>
+              <path class="grn" d="M74 430 C90 456 100 496 104 542 C92 544 80 532 74 510 C64 476 64 446 74 430 Z" opacity=".45"/>
+
+              <path class="ln draw" d="M858 148 C710 96 512 106 386 146 C366 154 348 162 340 168" stroke="#a98bff" stroke-width="9"/>
+              <path class="ln" d="M858 148 C892 182 904 224 906 256" stroke="#a98bff" stroke-width="5" opacity=".5" stroke-dasharray="8 8"/>
+              <path class="ln draw d2" d="M340 176 C350 214 362 254 370 286 C380 310 398 334 404 348 C400 368 395 390 392 404 C384 440 376 480 370 514 C378 544 392 578 400 594" stroke="#ff5470" stroke-width="9"/>
+              <path class="ln draw d3" d="M160 400 L250 401 L330 403 L392 404 L520 404 L700 404 L784 404" stroke="#ff9f2e" stroke-width="9"/>
+              <ellipse class="ln draw-loop" cx="300" cy="400" rx="140" ry="132" stroke="#2ee6c5" stroke-width="7"/>
+              <path class="ln" d="M148 418 C126 442 108 464 98 482" stroke="#5bb8ff" stroke-width="5" stroke-dasharray="9 9"/>
+
+              <text class="lbl-s" x="58" y="126">Kaohsiung · simplified</text>
+              <text class="lbl-s" x="58" y="146" style="fill:#8ea6b8">TAP THE DOTS</text>
+              <circle cx="400" cy="596" r="7" fill="#ff5470"/>
+              <text class="lbl-s" x="416" y="600" style="fill:#8ea6b8">小港機場 AIRPORT</text>
+
+              <g class="node on" data-k="isu" tabindex="0" role="button" aria-label="義守大學">
+                <circle class="pulse" cx="858" cy="148" r="18"/>
+                <circle class="dot" cx="858" cy="148" r="18"/><text class="ic" x="858" y="154" text-anchor="middle">義</text>
+                <circle class="hit" cx="858" cy="148" r="34"/>
+                <text class="lbl" x="858" y="110" text-anchor="middle">義守大學</text>
+              </g>
+              <g class="node" data-k="fgs" tabindex="0" role="button" aria-label="佛光山">
+                <circle class="pulse" cx="906" cy="262" r="18"/>
+                <circle class="dot" cx="906" cy="262" r="18"/><text class="ic" x="906" y="268" text-anchor="middle">佛</text>
+                <circle class="hit" cx="906" cy="262" r="34"/>
+                <text class="lbl" x="906" y="308" text-anchor="middle">佛光山</text>
+              </g>
+              <g class="node" data-k="zuoying" tabindex="0" role="button" aria-label="左營">
+                <circle class="pulse" cx="340" cy="170" r="18"/>
+                <circle class="dot" cx="340" cy="170" r="18"/><text class="ic" x="340" y="176" text-anchor="middle">左</text>
+                <circle class="hit" cx="340" cy="170" r="34"/>
+                <text class="lbl" x="340" y="130" text-anchor="middle">左營／高鐵</text>
+              </g>
+              <g class="node" data-k="lotus" tabindex="0" role="button" aria-label="蓮池潭">
+                <circle class="pulse" cx="410" cy="222" r="18"/>
+                <circle class="dot" cx="410" cy="222" r="18"/><text class="ic" x="410" y="228" text-anchor="middle">蓮</text>
+                <circle class="hit" cx="410" cy="222" r="34"/>
+                <text class="lbl" x="440" y="214" text-anchor="start">蓮池潭</text>
+              </g>
+              <g class="node" data-k="aozihdi" tabindex="0" role="button" aria-label="凹子底 愛河之心">
+                <circle class="pulse" cx="370" cy="286" r="18"/>
+                <circle class="dot" cx="370" cy="286" r="18"/><text class="ic" x="370" y="292" text-anchor="middle">凹</text>
+                <circle class="hit" cx="370" cy="286" r="34"/>
+                <text class="lbl" x="330" y="256" text-anchor="end">凹子底</text>
+              </g>
+              <g class="node" data-k="main" tabindex="0" role="button" aria-label="高雄車站">
+                <circle class="pulse" cx="404" cy="348" r="18"/>
+                <circle class="dot" cx="404" cy="348" r="18"/><text class="ic" x="404" y="354" text-anchor="middle">站</text>
+                <circle class="hit" cx="404" cy="348" r="34"/>
+                <text class="lbl" x="436" y="344" text-anchor="start">高雄車站</text>
+              </g>
+              <g class="node" data-k="formosa" tabindex="0" role="button" aria-label="美麗島">
+                <circle class="pulse" cx="392" cy="404" r="18"/>
+                <circle class="dot" cx="392" cy="404" r="18"/><text class="ic" x="392" y="410" text-anchor="middle">美</text>
+                <circle class="hit" cx="392" cy="404" r="34"/>
+                <text class="lbl" x="368" y="454" text-anchor="end">美麗島</text>
+              </g>
+              <g class="node" data-k="kaisyuan" tabindex="0" role="button" aria-label="凱旋 前鎮之星">
+                <circle class="pulse" cx="370" cy="514" r="18"/>
+                <circle class="dot" cx="370" cy="514" r="18"/><text class="ic" x="370" y="520" text-anchor="middle">凱</text>
+                <circle class="hit" cx="370" cy="514" r="34"/>
+                <text class="lbl" x="400" y="524" text-anchor="start">凱旋</text>
+              </g>
+              <g class="node" data-k="hamasen" tabindex="0" role="button" aria-label="哈瑪星">
+                <circle class="pulse" cx="160" cy="400" r="18"/>
+                <circle class="dot" cx="160" cy="400" r="18"/><text class="ic" x="160" y="406" text-anchor="middle">哈</text>
+                <circle class="hit" cx="160" cy="400" r="34"/>
+                <text class="lbl" x="132" y="396" text-anchor="end">哈瑪星</text>
+              </g>
+              <g class="node" data-k="pier2" tabindex="0" role="button" aria-label="駁二 愛河灣">
+                <circle class="pulse" cx="201" cy="493" r="18"/>
+                <circle class="dot" cx="201" cy="493" r="18"/><text class="ic" x="201" y="499" text-anchor="middle">駁</text>
+                <circle class="hit" cx="201" cy="493" r="34"/>
+                <text class="lbl" x="224" y="542" text-anchor="start">駁二／愛河灣</text>
+              </g>
+              <g class="node" data-k="cijin" tabindex="0" role="button" aria-label="旗津">
+                <circle class="pulse" cx="88" cy="496" r="18"/>
+                <circle class="dot" cx="88" cy="496" r="18"/><text class="ic" x="88" y="502" text-anchor="middle">旗</text>
+                <circle class="hit" cx="88" cy="496" r="34"/>
+                <text class="lbl" x="88" y="542" text-anchor="middle">旗津</text>
+              </g>
+              <g class="node" data-k="wwy" tabindex="0" role="button" aria-label="衛武營 鳳山">
+                <circle class="pulse" cx="700" cy="404" r="18"/>
+                <circle class="dot" cx="700" cy="404" r="18"/><text class="ic" x="700" y="410" text-anchor="middle">衛</text>
+                <circle class="hit" cx="700" cy="404" r="34"/>
+                <text class="lbl" x="712" y="450" text-anchor="middle">衛武營／鳳山</text>
+              </g>
+            </svg>
+          </div>
+          <div class="maplegend" data-anim style="--d:3">
+            <span><i style="background:#a98bff"></i>8501</span>
+            <span><i style="background:#ff5470"></i><t-x zh="捷運紅線" en="Metro Red"></t-x></span>
+            <span><i style="background:#ff9f2e"></i><t-x zh="捷運橘線" en="Metro Orange"></t-x></span>
+            <span><i style="background:#2ee6c5"></i><t-x zh="環狀輕軌" en="Light Rail"></t-x></span>
+            <span><i style="background:#5bb8ff"></i><t-x zh="渡輪" en="Ferry"></t-x></span>
+          </div>
+          <div class="mapinfo" id="mapInfo" data-anim style="--d:4"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 5 ─────────────── -->
+  <section class="slide" data-dense data-title-zh="交通就是體驗" data-title-en="Transit as Experience" data-thumb="assets/opt/light-rail-pier2.jpg">
+    <div class="slide-in">
+      <div class="vstack" style="display:grid;gap:clamp(13px,calc(var(--u)*1.5),22px);min-height:100%;align-content:center">
+        <div class="col" style="gap:9px">
+          <span class="eyebrow" data-anim style="--d:0">05 — <t-x zh="四種移動方式" en="Four Ways to Move"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="在高雄，交通工具本身就是行程" en="In Kaohsiung, getting there is part of the trip"></t-x></h2>
+          <p class="quote" data-anim style="--d:2"><t-x zh="軌道負責距離，YouBike 負責街區，渡輪負責浪漫。" en="Rail covers distance. YouBike reveals neighbourhoods. The ferry supplies the romance."></t-x></p>
+        </div>
+
+        <div class="tabs" role="tablist" data-anim style="--d:3">
+          <button role="tab" aria-selected="true" data-tab="red" style="--tc:#ff5470"><i></i><t-x zh="捷運紅線" en="Metro Red"></t-x></button>
+          <button role="tab" aria-selected="false" data-tab="orange" style="--tc:#ff9f2e"><i></i><t-x zh="捷運橘線" en="Metro Orange"></t-x></button>
+          <button role="tab" aria-selected="false" data-tab="lrt" style="--tc:#2ee6c5"><i></i><t-x zh="環狀輕軌" en="Light Rail"></t-x></button>
+          <button role="tab" aria-selected="false" data-tab="ferry" style="--tc:#5bb8ff"><i></i><t-x zh="渡輪＋YouBike" en="Ferry + YouBike"></t-x></button>
+        </div>
+
+        <div id="tabPanels" data-anim style="--d:4"></div>
+        <p class="tiny"><t-x zh="※ 票價與班距為概略參考值，實際以高雄捷運公司、輪船公司與 YouBike 官方公告為準。" en="※ Fares and frequencies are approximate. Always check the official KRTC, ferry and YouBike announcements."></t-x></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 6 ─────────────── -->
+  <section class="slide" data-title-zh="玩法一：看港" data-title-en="Route 1 · The Harbour" data-thumb="assets/opt/pier2.jpg">
+    <div class="slide-in">
+      <div class="two fill" style="grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr)">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">06 — <t-x zh="玩法一" en="Route 1"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="第一次玩高雄，<br>先去看「港」" en="First time out?<br>Start with the harbour"></t-x></h2>
+          <div class="routeline" data-anim style="--d:2">
+            <b>哈瑪星</b><i>→</i><b>駁二</b><i>→</i><b><t-x zh="大港橋" en="Great Harbour Bridge"></t-x></b><i>→</i><b><t-x zh="愛河灣" en="Love River Bay"></t-x></b><i>→</i><b>旗津</b>
+          </div>
+          <ul class="pts" data-anim style="--d:3">
+            <li><t-x zh="哈瑪星是高雄港與縱貫鐵路的起點，整個城市從這裡長出來。" en="Hamasen is where the port and the island&#39;s main railway began — the city grew out of this block."></t-x></li>
+            <li><t-x zh="駁二把舊倉庫變成展覽、市集、塗鴉與腳踏車道。" en="Pier-2 turned disused warehouses into galleries, markets, murals and bike paths."></t-x></li>
+            <li><t-x zh="大港橋、愛河灣、高雄流行音樂中心，構成新的水岸天際線。" en="The Great Harbour Bridge, Love River Bay and the Music Center form the new waterfront skyline."></t-x></li>
+            <li><t-x zh="最後從鼓山搭渡輪到旗津 — 老街、燈塔、海岸、夕陽，一次收齊。" en="Finish with the ferry from Gushan to Cijin: old street, lighthouse, coast, sunset."></t-x></li>
+          </ul>
+          <p class="tiny" data-anim style="--d:4"><t-x zh="建議時段：下午三點出發，讓夕陽剛好落在渡輪上。" en="Best timing: leave around 3pm so the sunset lands while you are on the water."></t-x></p>
+        </div>
+        <div class="mosaic" data-anim style="--d:2">
+          <figure class="ph m1 zoomable" data-cap-zh="高雄港灣空拍｜畫面中央為大港橋，右側為亞洲新灣區" data-cap-en="Kaohsiung harbour from the air｜the Great Harbour Bridge at centre">
+            <img src="assets/opt/dagang-bridge.jpg" alt="高雄港灣空拍，中央為大港橋">
+            <span class="tag">Harbour</span>
+            <figcaption><b><t-x zh="大港橋 · 亞洲新灣區" en="Great Harbour Bridge"></t-x></b><span><t-x zh="全台第一座水平旋轉橋，橫跨愛河灣與駁二之間。" en="Taiwan&#39;s first horizontal swing bridge, linking Pier-2 across the bay."></t-x></span></figcaption>
+          </figure>
+          <figure class="ph m2 zoomable" data-cap-zh="日落中的高雄流行音樂中心與港區水岸" data-cap-en="Kaohsiung Music Center at sunset">
+            <img src="assets/opt/kaohsiung-music-center.jpg" alt="日落中的高雄流行音樂中心">
+            <span class="tag">Sunset</span>
+            <figcaption><b><t-x zh="高雄流行音樂中心" en="Kaohsiung Music Center"></t-x></b><span><t-x zh="珊瑚礁造型的表演場館，晚上是散步與看演唱會的地方。" en="Coral-shaped venues on the water; walk here at dusk, or catch a show."></t-x></span></figcaption>
+          </figure>
+          <figure class="ph m3 zoomable" data-cap-zh="駁二藝術特區示意插畫｜倉庫、壁畫、舊鐵道與腳踏車道" data-cap-en="Illustration of the Pier-2 Art Center: warehouses, murals, old rails, bike paths">
+            <img src="assets/opt/guide-pier2.jpg" alt="駁二藝術特區的插畫：倉庫牆面壁畫、舊鐵軌與腳踏車">
+            <span class="tag">Illustration</span>
+            <figcaption><b>駁二 Pier-2</b><span><t-x zh="倉庫、壁畫、舊鐵軌與腳踏車道。" en="Warehouses, murals, disused rails, bike paths."></t-x></span></figcaption>
+          </figure>
+          <figure class="ph m4 zoomable" data-cap-zh="旗津輪渡站前的老街與紅磚市場建築" data-cap-en="The old street and brick market building by Cijin ferry pier">
+            <img src="assets/opt/cijin-ferry.jpg" alt="旗津輪渡站前的紅磚建築與街道">
+            <figcaption><b><t-x zh="旗津渡船頭" en="Cijin Pier"></t-x></b></figcaption>
+          </figure>
+          <figure class="ph m5 zoomable" data-cap-zh="愛河沿岸與市區天際線" data-cap-en="The Love River and the downtown skyline">
+            <img src="assets/opt/love-river.jpg" alt="愛河與兩岸市區建築">
+            <figcaption><b><t-x zh="愛河 Love River" en="Love River"></t-x></b><span><t-x zh="報導點名的自行車路線，沿河一路騎到出海口。" en="The cycling route the article named — ride it all the way to the river mouth."></t-x></span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 7 ─────────────── -->
+  <section class="slide" data-title-zh="玩法二：左營" data-title-en="Route 2 · Zuoying" data-thumb="assets/opt/lotus-pond.jpg">
+    <div class="slide-in">
+      <div class="two fill" style="grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr)">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">07 &mdash; <t-x zh="玩法二" en="Route 2"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="想看懂台灣文化，<br>去左營" en="To understand Taiwan,<br>go to Zuoying"></t-x></h2>
+          <p class="lead" data-anim style="--d:2"><t-x zh="蓮池潭常常只被當成拍照景點。但如果你願意多站三分鐘，它其實是一堂免費的台灣民間信仰課 &mdash; 而且離高鐵站只有兩站。點下面的卡片，右邊會換圖。" en="Lotus Pond usually gets treated as a photo stop. Stand there three minutes longer and it becomes a free lesson in Taiwanese folk religion — two stops from the high-speed rail station. Tap a card and the photo changes."></t-x></p>
+          <div class="flipgrid" id="zyGrid" data-anim style="--d:3"></div>
+          <p class="tiny" data-anim style="--d:4"><t-x zh="小提醒：進廟拍照前先看有沒有禁止標示；跨門檻不要踩，繞過去。" en="Etiquette: check for no-photo signs before shooting, and step over — never on — the raised door sill."></t-x></p>
+        </div>
+        <div class="col" style="align-content:stretch">
+          <figure class="ph zoomable" id="zyFig" style="min-height:0" data-anim>
+            <img id="zyImg" src="assets/opt/lotus-pond.jpg" alt="">
+            <span class="tag" id="zyTag">Photo</span>
+            <figcaption><b id="zyName"></b><span id="zyCap"></span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 8 ─────────────── -->
+  <section class="slide" data-dense data-title-zh="玩法三：吃" data-title-en="Route 3 · Eat" data-thumb="assets/opt/liuhe-night-market.jpg">
+    <div class="slide-in">
+      <div class="two fill" style="grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr)">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">08 — <t-x zh="玩法三" en="Route 3"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="高雄真正的文化，<br>是「吃」" en="Kaohsiung&#39;s real culture<br>is what it eats"></t-x></h2>
+          <p class="lead" data-anim style="--d:2"><t-x zh="不要一開始就問「哪一家最好吃」。先學會怎麼吃 — 一天分成三段，一晚分成十小份。" en="Do not start by asking which stall is best. Learn the rhythm first: three windows a day, ten small portions a night."></t-x></p>
+          <div class="dayparts" data-anim style="--d:3">
+            <div class="dp"><span class="dp-k">07:00</span><b><t-x zh="早上" en="Morning"></t-x></b><p><t-x zh="蛋餅、燒餅、飯糰、豆漿。傳統早餐店七點就開。" en="Egg crepes, flatbread, rice rolls, soy milk. Open from 7am."></t-x></p></div>
+            <div class="dp"><span class="dp-k">15:00</span><b><t-x zh="下午" en="Afternoon"></t-x></b><p><t-x zh="雞蛋糕、紅豆餅、剉冰、手搖飲。" en="Egg cakes, red bean cakes, shaved ice, bubble tea."></t-x></p></div>
+            <div class="dp"><span class="dp-k">19:00</span><b><t-x zh="晚上" en="Evening"></t-x></b><p><t-x zh="夜市、熱炒、燒烤；旗津吃海鮮。" en="Night markets, stir-fry, barbecue; seafood on Cijin."></t-x></p></div>
+          </div>
+          <p class="quote" data-anim style="--d:3"><t-x zh="<b>分食策略</b>：3–4 人同行，每樣只買一份 — 一晚就能吃到十種。" en="<b>Sharing strategy</b>: go in a group of 3–4 and buy one portion of everything — ten dishes in one night."></t-x></p>
+          <div class="card" style="padding:clamp(11px,calc(var(--u)*1.2),18px);display:grid;gap:8px" data-anim style="--d:4">
+            <div class="eyebrow"><t-x zh="點餐生存包 · 點一下，手機會念給你聽" en="Ordering survival kit · tap and your device says it"></t-x></div>
+            <div class="phrasebook" id="phrasebook"></div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="foodgrid" data-anim style="--d:2">
+            <figure class="ph zoomable" data-cap-zh="台式早餐：現磨豆漿配油條，永和豆漿式的經典組合" data-cap-en="Taiwanese breakfast: freshly ground soy milk with youtiao, the classic Yonghe combination">
+              <img style="--op:center 52%" src="assets/opt/breakfast-soymilk.jpg" alt="一碗現磨豆漿與兩根油條">
+              <span class="tag">07:00</span>
+              <figcaption><b><t-x zh="豆漿 · 油條" en="Soy milk &amp; youtiao"></t-x></b><span><t-x zh="24 小時的豆漿店到處都有，一份不到 60 元就吃得很飽。" en="24-hour soy milk shops are everywhere; under NT$60 fills you up."></t-x></span></figcaption>
+            </figure>
+            <figure class="ph zoomable" data-cap-zh="台式早餐：蛋餅配一杯飲料，早餐店最常見的點法" data-cap-en="Taiwanese breakfast: a danbing egg crepe with a drink, the standard order">
+              <img style="--op:center 46%" src="assets/opt/breakfast-danbing.jpg" alt="盤子上的蛋餅與一杯飲料">
+              <span class="tag">07:00</span>
+              <figcaption><b><t-x zh="蛋餅 · 奶茶" en="Danbing &amp; milk tea"></t-x></b><span><t-x zh="再加飯糰或蘿蔔糕，就是完整的台式早餐。" en="Add a rice roll or turnip cake and the set is complete."></t-x></span></figcaption>
+            </figure>
+            <figure class="ph zoomable" data-cap-zh="現做的紅豆餅（車輪餅）攤位" data-cap-en="A red-bean-cake stall, made to order">
+              <img src="assets/opt/red-bean-cake.jpg" alt="現做紅豆餅攤位">
+              <figcaption><b><t-x zh="紅豆餅" en="Red bean cake"></t-x></b></figcaption>
+            </figure>
+            <figure class="ph zoomable" data-cap-zh="夜市點餐示意插畫｜指著想吃的，比出數量，就成交了" data-cap-en="Illustration: point at what you want, hold up the number, done">
+              <img src="assets/opt/guide-order.jpg" alt="夜市攤位前點餐的插畫">
+              <span class="tag">Illustration</span>
+              <figcaption><b><t-x zh="怎麼點" en="How to order"></t-x></b></figcaption>
+            </figure>
+            <figure class="ph zoomable" data-cap-zh="芒果剉冰｜鹽埕" data-cap-en="Mango shaved ice, Yancheng">
+              <img src="assets/opt/yancheng-shaved-ice.jpg" alt="芒果剉冰">
+              <figcaption><b><t-x zh="芒果剉冰" en="Mango ice"></t-x></b></figcaption>
+            </figure>
+            <figure class="ph zoomable" data-cap-zh="珍珠奶茶" data-cap-en="Bubble tea">
+              <img src="assets/opt/bubble-tea.jpg" alt="一杯珍珠奶茶">
+              <figcaption><b><t-x zh="珍珠奶茶" en="Bubble tea"></t-x></b></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 9 ─────────────── -->
+  <section class="slide" data-dense data-title-zh="玩法四：山的高雄" data-title-en="Route 4 · The Mountains" data-thumb="assets/opt/fo-guang-shan.jpg">
+    <div class="slide-in">
+      <div class="two fill">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">09 — <t-x zh="玩法四" en="Route 4"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="別忘了 — 義守本來<br>就在「山的高雄」" en="Remember: ISU already sits<br>in mountain Kaohsiung"></t-x></h2>
+          <p class="lead" data-anim style="--d:2"><t-x zh="外地遊客要花一整天才到得了的「郊區行程」，對你來說可能只是校門口往東的一段公車。" en="The day-trip that costs a visitor a whole day is, for you, a short bus ride east of campus."></t-x></p>
+          <div class="mtnpicker" data-anim style="--d:3" id="mtnGrid"></div>
+          <p class="quote" data-anim style="--d:4"><t-x zh="觀光客的「郊區一日遊」，可能就在你的生活圈旁邊。" en="Somebody else&#39;s countryside day trip is your neighbourhood."></t-x></p>
+        </div>
+        <div class="col" style="align-content:stretch">
+          <figure class="ph zoomable" id="mtnFig" style="min-height:0" data-anim>
+            <img id="mtnImg" src="assets/opt/fo-guang-shan.jpg" alt="">
+            <span class="tag" id="mtnTag">Photo</span>
+            <figcaption><b id="mtnName"></b><span id="mtnCap"></span></figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 10 ─────────────── -->
+  <section class="slide" data-dense data-title-zh="一日實戰" data-title-en="One Perfect Day" data-thumb="assets/opt/cijin-ferry.jpg">
+    <div class="slide-in">
+      <div class="two fill" style="grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">10 — <t-x zh="一日實戰" en="One Day"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="如果你只有一天，<br>我會這樣帶你走" en="If you only had one day,<br>here is the route I&#39;d take"></t-x></h2>
+          <div class="timeline" id="timeline" data-anim style="--d:2"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center" data-anim style="--d:3">
+            <button class="tool" id="btnPlayDay">
+              <svg viewBox="0 0 24 24"><path d="M7 4l12 8-12 8V4z"/></svg>
+              <span><t-x zh="播放這一天" en="Play the day"></t-x></span>
+            </button>
+            <span class="tiny"><t-x zh="全程只用一張一卡通就走得完。" en="One iPASS card covers the entire day."></t-x></span>
+          </div>
+        </div>
+        <div class="col" style="align-content:stretch;gap:8px">
+          <figure class="ph zoomable" id="dayFig" style="min-height:0" data-anim>
+            <img id="dayImg" src="assets/opt/eda-bus-8501.jpg" alt="">
+            <span class="tag" id="dayTime">09:00</span>
+            <figcaption><b id="dayName"></b><span id="dayCap"></span></figcaption>
+          </figure>
+          <p class="tiny" data-anim style="--d:4"><t-x zh="※ 回程請務必先確認 8501 末班車時間，或改搭捷運到左營再轉乘。" en="※ Check the last 8501 departure before you set out, or take the metro back to Zuoying and transfer."></t-x></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 13 · iPASS / T-PASS ─────────────── -->
+  <section class="slide" data-dense data-title-zh="一卡通與 T-PASS" data-title-en="iPASS &amp; T-PASS" data-thumb="assets/opt/guide-metro.jpg">
+    <div class="slide-in">
+      <div class="vstack" style="display:grid;gap:clamp(10px,calc(var(--u)*1.2),20px);height:100%;grid-template-rows:auto auto minmax(0,1fr) auto;align-content:center">
+
+        <div class="passhead">
+          <div class="col" style="gap:6px">
+            <span class="eyebrow" data-anim style="--d:0">13 &mdash; <t-x zh="開學第一週要辦的事" en="Week One Admin"></t-x></span>
+            <h2 data-anim style="--d:1"><t-x zh="先辦一張卡，<br>整座城市才會對你打開" en="Get the card first.<br>The city opens after that."></t-x></h2>
+            <p class="lead" data-anim style="--d:2"><t-x zh="下面這兩張，決定你在高雄移動有多順。捷運、輕軌、公車、渡輪、YouBike、台鐵，一張卡全部刷得過去 &mdash; 第一週就去辦。" en="These two decide how easily you move around Kaohsiung. Metro, light rail, buses, the ferry, YouBike, TRA trains &mdash; one card taps through all of it. Sort it out in week one."></t-x></p>
+          </div>
+          <figure class="ph zoomable" data-anim style="--d:2" data-cap-zh="美麗島站的圓形彩繪玻璃穹頂（示意插畫）｜紅線與橘線在這裡交會" data-cap-en="The circular stained-glass dome at Formosa Boulevard station, where the Red and Orange lines meet (illustration)">
+            <img src="assets/opt/guide-metro.jpg" alt="捷運站內圓形彩繪玻璃穹頂下拿著一卡通的插畫">
+            <span class="tag">Illustration</span>
+          </figure>
+        </div>
+
+        <div class="brandline ipass" data-anim style="--d:3">
+          <b><t-x zh="一卡通" en="iPASS"></t-x></b><em><t-x zh="iPASS" en="一卡通"></t-x></em>
+          <span class="bl-note"><t-x zh="全高雄通用的交通卡 · 四個步驟辦好" en="The card that works on everything · four steps"></t-x></span>
+        </div>
+        <div class="steprow" data-anim style="--d:3">
+          <div class="step2">
+            <span class="n">1</span>
+            <h3><t-x zh="買一張空卡" en="Buy a blank card"></t-x></h3>
+            <p><t-x zh="7-ELEVEN、全家、萊爾富、OK，或捷運站服務台與售票機。不需要證件。" en="7-ELEVEN, FamilyMart, Hi-Life, OK Mart, or any metro counter or ticket machine. No ID needed."></t-x></p>
+            <span class="pill"><t-x zh="卡片費 NT$100" en="NT$100 for the card"></t-x></span>
+          </div>
+          <div class="step2">
+            <span class="n">2</span>
+            <h3><t-x zh="加值" en="Top it up"></t-x></h3>
+            <p><t-x zh="超商 1 元起就能加；捷運加值機要 100 元或其倍數。也可用 iPASS MONEY App。" en="Stores take any amount from NT$1; metro machines take NT$100 or multiples. Or use the iPASS MONEY app."></t-x></p>
+            <span class="pill"><t-x zh="第一次先加 NT$300–500" en="Start with NT$300–500"></t-x></span>
+          </div>
+          <div class="step2">
+            <span class="n">3</span>
+            <h3><t-x zh="記名（很重要）" en="Register it"></t-x></h3>
+            <p><t-x zh="到 i-pass.com.tw 或 App 記名。沒記名的卡掉了就沒了；記名後可掛失、餘額能轉。" en="Register at i-pass.com.tw or in the app. An unregistered lost card is simply gone; a registered one can be blocked and its balance moved."></t-x></p>
+            <span class="pill"><t-x zh="五分鐘，當天就做" en="Five minutes. Same day."></t-x></span>
+          </div>
+          <div class="step2">
+            <span class="n">4</span>
+            <h3><t-x zh="換成學生卡" en="Go student"></t-x></h3>
+            <p><t-x zh="高雄學生識別卡也是 NT$100，需要已註冊學生證。公車每段折 NT$10、渡輪約 6 折。" en="The Kaohsiung student card is also NT$100 and needs a registered student ID. NT$10 off each bus segment, about 40% off the ferry."></t-x></p>
+            <span class="pill warn"><t-x zh="外籍生帶學生證＋居留證，先問國際處" en="International students: student ID + ARC; ask the OIA first"></t-x></span>
+          </div>
+        </div>
+
+        <div class="passgrid" data-anim style="--d:4">
+          <div class="tpass">
+            <div class="tpass-top">
+              <div>
+                <div class="brandline tpass-brand"><b>T&#8209;PASS</b><span class="bl-note"><t-x zh="高雄市區通勤月票" en="Kaohsiung commuter pass"></t-x></span></div>
+                <div class="tpass-price">NT$<b>399</b><small>/ 30<t-x zh=" 天" en=" days"></t-x></small></div>
+              </div>
+              <div class="tpass-chip"></div>
+            </div>
+            <p class="tpass-note"><t-x zh="90 天季票 NT$1,197。直接存進你原本的一卡通，卡片不用換。一週有三四天進市區，第二週就回本。" en="90-day season ticket NT$1,197. It loads onto the iPASS you already have — come into town three or four days a week and it pays for itself by week two."></t-x></p>
+          </div>
+
+          <div class="card" style="padding:clamp(11px,calc(var(--u)*1.2),18px);display:grid;gap:8px;align-content:start">
+            <div class="eyebrow"><t-x zh="399 元包含什麼" en="What NT$399 covers"></t-x></div>
+            <div class="covergrid">
+              <span class="cov ok"><t-x zh="高雄捷運" en="Metro"></t-x></span>
+              <span class="cov ok"><t-x zh="環狀輕軌" en="Light rail"></t-x></span>
+              <span class="cov ok"><t-x zh="公車與客運" en="Buses &amp; coaches"></t-x></span>
+              <span class="cov ok"><t-x zh="渡輪" en="The ferry"></t-x></span>
+              <span class="cov ok"><t-x zh="台鐵（市內）" en="TRA in the city"></t-x></span>
+              <span class="cov ok"><t-x zh="YouBike 前 30 分" en="YouBike, 1st 30 min"></t-x></span>
+              <span class="cov no"><t-x zh="不含高鐵、對號車" en="No HSR / reserved seats"></t-x></span>
+            </div>
+            <p class="tiny"><t-x zh="全台唯一把渡輪包進去的通勤月票。" en="The only commuter pass in Taiwan that includes a ferry."></t-x></p>
+          </div>
+
+          <div class="card" style="padding:clamp(11px,calc(var(--u)*1.2),18px);display:grid;gap:7px;align-content:start">
+            <div class="eyebrow"><t-x zh="怎麼買、怎麼開通" en="Buy &amp; activate"></t-x></div>
+            <ul class="pts" style="gap:6px">
+              <li><t-x zh="高捷站服務台、7-ELEVEN ibon、MeN Go App、iPASS MONEY App、TPASS 售票機。" en="Metro counters, 7-ELEVEN ibon, the MeN Go app, the iPASS MONEY app, TPASS machines."></t-x></li>
+              <li><t-x zh="<b>買完一定要開卡啟用</b>，否則搭車會直接扣電子錢包餘額。" en="<b>You must activate it</b>, or rides just deduct your stored value instead."></t-x></li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="tiny" data-anim style="--d:5"><t-x zh="※ 票價與申辦規定可能調整，請以 i-pass.com.tw、tpass.tw 與高雄捷運公司公告為準。" en="※ Fares and rules can change — check i-pass.com.tw, tpass.tw and the KRTC announcements."></t-x></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── SLIDE 12 ─────────────── -->
+  <section class="slide" data-title-zh="你的高雄" data-title-en="Your Kaohsiung" data-thumb="assets/opt/guide-city-map.jpg">
+    <div class="slide-in">
+      <div class="two">
+        <div class="col">
+          <span class="eyebrow" data-anim style="--d:0">12 — <t-x zh="收束" en="Closing"></t-x></span>
+          <h2 data-anim style="--d:1"><t-x zh="世界推薦的是一座城市。<br>你帶走的，會是自己的地圖。" en="The world recommended a city.<br>What you keep is your own map."></t-x></h2>
+          <ul class="pts" data-anim style="--d:2">
+            <li><t-x zh="第一個週末 — 去看海港。" en="Weekend one — see the harbour."></t-x></li>
+            <li><t-x zh="第二個週末 — 去吃夜市。" en="Weekend two — eat at a night market."></t-x></li>
+            <li><t-x zh="第三個週末 — 去廟宇與老城。" en="Weekend three — temples and the old city."></t-x></li>
+            <li><t-x zh="第四個週末 — 往山裡走。" en="Weekend four — head into the hills."></t-x></li>
+          </ul>
+          <div class="endcard" data-anim style="--d:3">
+            <p class="sub" style="margin-bottom:8px"><t-x zh="半年之後 —" en="Six months from now —"></t-x></p>
+            <p style="font-size:clamp(15px,calc(var(--u)*1.4),23px);line-height:1.55;font-weight:700"><t-x zh="如果你的朋友第一次來台灣，你會帶他去哪一個高雄？" en="If a friend visits Taiwan for the first time, which Kaohsiung will you show them?"></t-x></p>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card quiz" data-anim style="--d:2">
+            <div class="eyebrow"><t-x zh="快問快答" en="Quick check"></t-x></div>
+            <div class="qprog" id="qProg"></div>
+            <h3 id="qText" style="min-height:2.6em"></h3>
+            <div class="qopts" id="qOpts"></div>
+            <p class="qfb" id="qFb"></p>
+          </div>
+          <button class="tool" id="btnSources" style="justify-self:start">
+            <svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h10"/></svg>
+            <span><t-x zh="資料與照片來源" en="Sources &amp; credits"></t-x></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ================= BOTTOM BAR ================= -->
+  <footer class="botbar">
+    <div class="nav">
+      <button id="btnPrev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button id="btnNext" aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="rail" id="rail"></div>
+    <div class="count"><b id="cNow">1</b> / <span id="cAll">12</span></div>
+    <button class="tool" id="btnHelp" aria-label="Shortcuts">?</button>
+  </footer>
+</div>
+
+<!-- ================= OVERLAYS ================= -->
+<div class="overlay" id="ovOverview">
+  <button class="ov-close" data-close aria-label="Close">×</button>
+  <div class="ovgrid" id="ovGrid"></div>
+</div>
+
+<div class="overlay lightbox" id="ovLightbox">
+  <button class="ov-close" data-close aria-label="Close">×</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+</div>
+
+<div class="overlay" id="ovHelp">
+  <button class="ov-close" data-close aria-label="Close">×</button>
+  <div class="helpbox">
+    <h3><t-x zh="鍵盤快捷鍵" en="Keyboard shortcuts"></t-x></h3>
+    <div class="kbd">
+      <div><span><kbd>→</kbd><kbd>Space</kbd></span><span><t-x zh="下一張" en="Next slide"></t-x></span></div>
+      <div><span><kbd>←</kbd></span><span><t-x zh="上一張" en="Previous slide"></t-x></span></div>
+      <div><span><kbd>O</kbd></span><span><t-x zh="所有投影片總覽" en="Slide overview"></t-x></span></div>
+      <div><span><kbd>F</kbd></span><span><t-x zh="全螢幕" en="Fullscreen"></t-x></span></div>
+      <div><span><kbd>L</kbd></span><span><t-x zh="切換中文／English" en="Switch 中文 / English"></t-x></span></div>
+      <div><span><kbd>P</kbd></span><span><t-x zh="演講模式（隱藏工具列）" en="Presenting mode (hide chrome)"></t-x></span></div>
+      <div><span><kbd>Esc</kbd></span><span><t-x zh="關閉視窗" en="Close overlay"></t-x></span></div>
+      <div><span><kbd>1</kbd>–<kbd>9</kbd></span><span><t-x zh="直接跳到第 N 張" en="Jump to slide N"></t-x></span></div>
+    </div>
+    <p class="tiny" style="margin-top:16px"><t-x zh="也可以在手機上左右滑動翻頁；點任何照片可放大。" en="On a phone, swipe left and right. Tap any photo to enlarge."></t-x></p>
+  </div>
+</div>
+
+<div class="overlay" id="ovSources">
+  <button class="ov-close" data-close aria-label="Close">×</button>
+  <div class="srcbox">
+    <h3 style="margin-bottom:14px"><t-x zh="資料與照片來源" en="Sources &amp; credits"></t-x></h3>
+    <a href="https://www.thetimes.com/travel/advice/best-places-to-go-on-holiday-in-november-cf370hztr" target="_blank" rel="noreferrer">20 of the best places to visit in November<small>The Times · Travel</small></a>
+    <a href="https://city.gvm.com.tw/article/132018" target="_blank" rel="noreferrer">城市學：The Times 名單整理<small>遠見 · City</small></a>
+    <a href="https://www.krtc.com.tw/Guide/guide_map?OpBrowser=1" target="_blank" rel="noreferrer">高雄捷運營運路線圖<small>Kaohsiung Rapid Transit Corp.</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:%E7%BE%A9%E5%A4%A7%E5%AE%A2%E9%81%8B_046FQ_8501.JPG" target="_blank" rel="noreferrer">義大客運 8501<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Kaohsiung_Love_River_IMG_2728.JPG" target="_blank" rel="noreferrer">愛河 Love River<small>Benjiho · Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Dragon_and_Tiger_Pagodas_in_Lotus_Pond,_Kaohsiung.jpg" target="_blank" rel="noreferrer">蓮池潭龍虎塔<small>高雄市政府水利局 · Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/Category:Pier-2_Art_Center" target="_blank" rel="noreferrer">駁二藝術特區<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/Category:Dagang_Bridge" target="_blank" rel="noreferrer">大港橋 Great Harbour Bridge<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/Category:Kaohsiung_Music_Center" target="_blank" rel="noreferrer">高雄流行音樂中心<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/Category:Qijin_Ferry_Station" target="_blank" rel="noreferrer">旗津輪渡站<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/Category:Liouho_Night_Market" target="_blank" rel="noreferrer">六合夜市<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Mango_shaved_ice_Yancheng_Kaohsiung.jpg" target="_blank" rel="noreferrer">鹽埕芒果剉冰<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Pearl_Milk_Tea_in_Chun_Shui_Tang.jpg" target="_blank" rel="noreferrer">珍珠奶茶<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/Category:Fo_Guang_Shan" target="_blank" rel="noreferrer">佛光山<small>Wikimedia Commons</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:%E7%BE%A9%E5%AE%88%E5%A4%A7%E5%AD%B8%E6%A0%A1%E6%9C%AC%E9%83%A8%E6%A0%A1%E9%96%80%E5%85%A5%E5%8F%A3%E8%99%95.jpg" target="_blank" rel="noreferrer">義守大學校本部校門<small>cb67783 · Public domain</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:THSR_700T_at_Platform_2B,_Zuoying_Station_20070305.jpg" target="_blank" rel="noreferrer">高鐵 700T 列車．左營站月台<small>Elapin · CC BY-SA 3.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Rooftop_amusement_park_at_Kaohsiung_Dream_Mall.jpg" target="_blank" rel="noreferrer">夢時代屋頂摩天輪「高雄之眼」<small>slayer · CC BY 2.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Kaohsiung_Lotus_Pond_Fr%C3%BChling-_%26_Herbst-Pavillon_07.jpg" target="_blank" rel="noreferrer">春秋閣．觀音騎龍<small>Zairon · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Kaohsiung_Lotus_Pond_Xuantian_Shangdi_(2026)_-_img_02.jpg" target="_blank" rel="noreferrer">蓮池潭．北極玄天上帝<small>Chainwit. · CC BY 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:%E9%B3%B3%E5%B1%B1%E7%B8%A3%E5%B7%A6%E7%87%9F%E8%88%8A%E5%9F%8E%E5%8D%97%E9%96%80.jpg" target="_blank" rel="noreferrer">左營舊城南門<small>Jennifer25172466 · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:%E6%93%B2%E7%AD%8A_(4684775644).jpg" target="_blank" rel="noreferrer">擲筊．筊杯<small>Hsiung · CC BY 2.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:%E5%BD%B0%E5%8C%96%E9%B4%A8%E8%82%89%E9%A3%AF_20170408.jpg" target="_blank" rel="noreferrer">鴨肉飯<small>王新漢 · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Taipei_breakfast_with_fresh_soymilk_20071023.jpg" target="_blank" rel="noreferrer">台式早餐．豆漿與油條<small>Yun Huang Yong · CC BY 2.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Food_%E9%9B%99%E8%9B%8B%E8%9B%8B%E9%A4%85,_%E4%B8%89%E9%87%8D%E8%9B%8B%E9%A4%85%E5%A4%A7%E7%8E%8B,_%E6%AD%A3%E7%BE%A9%E5%8C%97%E8%B7%AF,_%E6%96%B0%E5%8C%97%E5%B8%82_(16446568306).jpg" target="_blank" rel="noreferrer">台式早餐．蛋餅<small>bryan · CC BY-SA 2.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:%E6%97%97%E5%B1%B1%E8%BB%8A%E7%AB%99_Qishan_Station_-_panoramio.jpg" target="_blank" rel="noreferrer">旗山車站（舊旗山驛）<small>lienyuan lee · CC BY 3.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:%E7%BE%8E%E6%BF%83%E6%B2%B9%E7%B4%99%E5%82%98103.jpg" target="_blank" rel="noreferrer">美濃油紙傘<small>WEI, WAN-CHEN · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:2023_Duona_Bridge_Maolin_District_Kaohsiung_O.jpg" target="_blank" rel="noreferrer">茂林．濁口溪縱谷<small>Taiwankengo · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:TRA_Kaohsiung_Station_2019-09-08.jpg" target="_blank" rel="noreferrer">高雄車站．雲朵天棚<small>Foxy1219 · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:National_Kaohsiung_Center_for_the_Arts.JPG" target="_blank" rel="noreferrer">衛武營國家藝術文化中心<small>Jimmy3357569 · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Wei-Wu-Ying_Center_for_the_Arts_01.jpg" target="_blank" rel="noreferrer">衛武營空拍<small>高雄市政府觀光局．高雄旅遊網 · Attribution</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Dome_of_Light_at_Formosa_Boulevard_Station_20240919.jpg" target="_blank" rel="noreferrer">美麗島站．光之穹頂<small>Suicasmo · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:%E6%84%9B%E6%B2%B3%E4%B9%8B%E5%BF%83%E6%A9%8B%E7%89%B9%E5%AF%AB.jpg" target="_blank" rel="noreferrer">愛河之心<small>Guanting Chen · CC BY-SA 4.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:Hamasen_Station_Takao_Railway_Museum_20160105.jpg" target="_blank" rel="noreferrer">哈瑪星．打狗鐵道故事館<small>Rsa · CC BY-SA 3.0</small></a>
+    <a href="https://commons.wikimedia.org/wiki/File:2025%E5%A4%A7%E6%B8%AF%E9%96%8B%E5%94%B1-%E5%8D%97%E9%9C%B8%E5%A4%A9_MEGAPORT_FEST.jpg" target="_blank" rel="noreferrer">2025 大港開唱．南霸天舞台<small>Xi.you 1010.2008 · CC BY 4.0</small></a>
+
+    <a href="https://commons.wikimedia.org/wiki/File:Kaohsiung_Music_Center_and_Great_Tiger_Bridge_during_2022_Taiwan_Lantern_Festival.jpg" target="_blank" rel="noreferrer">2022 台灣燈會．愛河灣夜景<small>Tiouraren (Y.-C. Tsai) · CC BY-SA 4.0</small></a>
+
+
+    <p class="tiny" style="margin-top:14px"><t-x zh="冬日遊樂園三屆實景照片為高雄市政府活動影像，於本簡報作校內教學說明使用。" en="The three Kaohsiung Wonderland photographs are Kaohsiung City Government event imagery, used here for campus teaching."></t-x></p>
+    <p class="tiny" style="margin-top:10px"><t-x zh="插圖角色與情境圖：以使用者授權之頭像為參考，透過 OpenAI 影像模型生成，僅作為示意插圖，非實景照片。" en="Illustrated character and scene art: generated with an OpenAI image model from the user&#39;s own authorised avatar reference. These are illustrations, not photographs."></t-x></p>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   i18n
+   ============================================================ */
+class TX extends HTMLElement{
+  connectedCallback(){this.paint()}
+  paint(){const v=this.getAttribute(document.documentElement.dataset.lang);if(v!=null)this.innerHTML=v}
+}
+customElements.define('t-x',TX);
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const L=()=>document.documentElement.dataset.lang;
+
+function setLang(lang){
+  document.documentElement.dataset.lang=lang;
+  document.documentElement.lang = lang==='zh' ? 'zh-Hant' : 'en';
+  $$('t-x').forEach(el=>el.paint());
+  $$('.langswitch button').forEach(b=>b.setAttribute('aria-pressed', String(b.dataset.lang===lang)));
+  $$('[data-count]').forEach(el=>delete el.dataset.done);
+  renderAll();
+  onEnter(cur);
+}
+$$('.langswitch button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+
+/* ============================================================
+   DATA
+   ============================================================ */
+const TIMES_LIST=["Curaçao","Oaxaca, Mexico","Sharm el-Sheikh, Egypt","Buenos Aires, Argentina","Chiang Mai, Thailand","Victoria, Australia","New York City, US","Kyoto, Japan","Patagonia, Chile","Kaohsiung, Taiwan","Antigua, Guatemala","Santo Domingo, Dominican Rep.","Muscat, Oman","Lanzarote, Spain","Athens, Greece","Douro Valley, Portugal","Vatnajökull, Iceland","Lyon, France","York, UK","Florence, Italy"];
+
+const STOPS={
+  isu:{zh:["義守大學","出發點","住在山上不是問題 — 問題是你有沒有踏出第一步。把 8501 當成你進城的鑰匙。"],
+       en:["I-Shou University","Start here","Living up the hill is fine. The only issue is taking the first step. Treat bus 8501 as your key into the city."],
+       img:"assets/opt/isu-gate.jpg",op:"58% 55%"},
+  fgs:{zh:["佛光山","山的高雄","離校園很近的大型宗教與文化園區，是最容易到達的「第一個景點」。"],
+       en:["Fo Guang Shan","Mountain side","A large religious and cultural complex close to campus — the easiest first destination you have."],
+       img:"assets/opt/fo-guang-shan.jpg"},
+  zuoying:{zh:["左營／高鐵站","轉乘核心","8501 的終點，也是整趟旅程的起點。捷運、台鐵、高鐵、公車、YouBike 都在這裡交會 &mdash; 從這個月台到台北只要 90 分鐘。"],
+       en:["Zuoying / HSR","The interchange","Where bus 8501 ends and everything else begins: metro, TRA, high-speed rail, city buses and YouBike all meet here. Taipei is 90 minutes from this platform."],
+       img:"assets/opt/hsr-zuoying.jpg",op:"42% 50%"},
+  lotus:{zh:["蓮池潭","文化入門","龍虎塔、春秋閣、孔廟與左營舊城都在步行範圍內，環潭一圈約 1.5 小時。"],
+       en:["Lotus Pond","Culture 101","Dragon and Tiger Pagodas, the Spring and Autumn Pavilions, the Confucius Temple and the old city wall, all walkable. A loop takes about 90 minutes."],
+       img:"assets/opt/lotus-pond.jpg"},
+  aozihdi:{zh:["凹子底／愛河之心","紅線 × 輕軌（北）","北邊的轉乘點：捷運紅線和環狀輕軌在這裡交會。旁邊的愛河之心是一座心形人工湖，晚上會打燈。"],
+       en:["Aozihdi / Heart of Love River","Red × Light Rail (north)","The northern interchange, where the Red Line meets the light-rail loop. Beside it, the Heart of Love River is a heart-shaped lake that lights up after dark."],
+       img:"assets/opt/heart-of-love-river.jpg",op:"center 50%"},
+  kaisyuan:{zh:["凱旋／前鎮之星","紅線 × 輕軌（南）","南邊的轉乘點。旁邊就是夢時代，屋頂那座摩天輪叫「高雄之眼」，晚上會整圈變色。"],
+       en:["Kaisyuan / Cianjhen Star","Red × Light Rail (south)","The southern interchange, right beside Dream Mall. The wheel on its roof is the Kaohsiung Eye, and it changes colour all night."],
+       img:"assets/opt/dream-mall-wheel.jpg",op:"30% 42%"},
+  main:{zh:["高雄車站","城市中軸","台鐵、捷運紅線與公車總站的交會點，往北往南都從這裡出發。"],
+       en:["Kaohsiung Main Station","The spine","TRA trains, the metro Red Line and the main bus terminal converge here — everything north and south starts from this point."],
+       img:"assets/opt/kaohsiung-station.jpg",op:"center 55%"},
+  formosa:{zh:["美麗島站","紅橘線交會","站體內的圓形彩繪玻璃穹頂是高雄最有名的地標之一；出站就是六合夜市。"],
+       en:["Formosa Boulevard","Red meets Orange","The circular stained-glass dome inside is one of Kaohsiung’s best-known sights, and Liuhe Night Market is right outside."],
+       img:"assets/opt/dome-of-light.jpg",op:"center 40%"},
+  hamasen:{zh:["哈瑪星","港與鐵道的起點","舊打狗驛、鐵道園區與港邊倉庫街廓，高雄這座城市就是從這裡長出來的。"],
+       en:["Hamasen","Where the city began","The old Takao railway station, the rail park and the harbour warehouses — modern Kaohsiung grew out of this block."],
+       img:"assets/opt/hamasen-railway.jpg",op:"center 52%"},
+  pier2:{zh:["駁二／愛河灣","城市轉型現場","倉庫變成展場、市集與塗鴉牆；輕軌就在旁邊，往北是大港橋與流行音樂中心。"],
+       en:["Pier-2 / Love River Bay","The transformation","Warehouses turned into galleries, markets and murals. The light rail runs alongside; north of here are the swing bridge and the Music Center."],
+       img:"assets/opt/dagang-bridge.jpg"},
+  cijin:{zh:["旗津","渡輪與夕陽","從鼓山搭一趟短短的渡輪就到；老街、燈塔、海岸線與海鮮，都在下船之後。"],
+       en:["Cijin","Ferry and sunset","A short ferry from Gushan. Old street, lighthouse, coastline and seafood all start the moment you step off the boat."],
+       img:"assets/opt/cijin-ferry.jpg"},
+  wwy:{zh:["衛武營／鳳山","表演與老城","衛武營國家藝術文化中心是亞洲大型表演場館之一；鳳山則保留了另一段清代舊城。"],
+       en:["Weiwuying / Fongshan","Stage and old town","Weiwuying is one of Asia’s largest performing arts centres; Fongshan preserves another stretch of Qing-era city."],
+       img:"assets/opt/weiwuying.jpg",op:"72% 42%"}
+};
+
+const LINES={
+  red:{color:"#ff5470",img:"assets/opt/guide-metro.jpg",imgcap:{zh:"美麗島站的圓形彩繪玻璃穹頂（示意插畫）",en:"The circular stained-glass dome at Formosa Boulevard (illustration)"},
+    name:{zh:"捷運紅線 · 南北縱貫",en:"Metro Red Line · north–south spine"},
+    desc:{zh:"從岡山一路貫穿到小港機場，是外地進城與出城的主幹。左營轉高鐵、高雄車站轉台鐵、美麗島轉橘線。",
+          en:"Runs from Gangshan all the way to the airport. Transfer to high-speed rail at Zuoying, to TRA at Main Station, and to the Orange Line at Formosa Boulevard."},
+    stations:[["岡山車站","Gangshan",0],["橋頭糖廠","Ciaotou Sugar",0],["左營／高鐵","Zuoying HSR",1],["巨蛋","Kaohsiung Arena",0],["高雄車站","Main Station",1],["美麗島","Formosa Blvd",1],["中央公園","Central Park",0],["三多商圈","Sanduo",0],["小港機場","Airport",1]],
+    facts:[["單程票價","Single fare","NT$20–65"],["營運時間","Service","06:00–24:00"],["尖峰班距","Peak headway","4–6 min"],["左營→美麗島","Zuoying→Formosa","≈ 15 min"]]},
+  orange:{color:"#ff9f2e",img:"assets/opt/guide-pier2.jpg",imgcap:{zh:"橘線鹽埕埔站走出來就是駁二（示意插畫）",en:"Yanchengpu station opens straight onto Pier-2 (illustration)"},
+    name:{zh:"捷運橘線 · 東西橫貫",en:"Metro Orange Line · east–west"},
+    desc:{zh:"西邊是港與老城，東邊是表演場館與鳳山。要去哈瑪星、駁二、衛武營，走這條。",
+          en:"The harbour and old town to the west, the arts centre and Fongshan to the east. This is the line for Hamasen, Pier-2 and Weiwuying."},
+    stations:[["西子灣／哈瑪星","Sizihwan",1],["鹽埕埔","Yanchengpu",1],["市議會","City Council",0],["美麗島","Formosa Blvd",1],["文化中心","Cultural Center",0],["衛武營","Weiwuying",1],["鳳山","Fongshan",0],["大東","Dadong",0]],
+    facts:[["單程票價","Single fare","NT$20–65"],["營運時間","Service","06:00–24:00"],["下車去駁二","For Pier-2","鹽埕埔 Yanchengpu"],["下車去渡輪","For the ferry","西子灣 Sizihwan"]]},
+  lrt:{color:"#2ee6c5",img:"assets/opt/light-rail-pier2.jpg",imgcap:{zh:"輕軌沿線的草地綠廊，遠處是市區天際線",en:"The grassed light-rail corridor, with the skyline behind"},
+    name:{zh:"環狀輕軌 · 繞城市一圈",en:"Circular Light Rail · a loop around the city"},
+    desc:{zh:"路面電車，繞行整座城市一圈。沒有隧道、沒有閘門 — 直接上車，窗外就是港灣、綠廊與駁二。慢，但那正是重點。",
+          en:"A street-level tram that loops the whole city. No tunnels, no gates — you step on and the harbour, the green corridor and Pier-2 slide past the window. Slow, and that is the point."},
+    stations:[["哈瑪星","Hamasen",1],["駁二蓬萊","Penglai Pier-2",1],["駁二大義","Dayi Pier-2",1],["真愛碼頭","Glory Pier",0],["夢時代","Dream Mall",1],["凱旋公園","Kaisyuan Park",0],["愛河之心","Love River Heart",0],["美術館","Museum of Fine Arts",1]],
+    facts:[["單程票價","Single fare","NT$30"],["繞行一圈","Full loop","≈ 90 min"],["班距","Headway","10–15 min"],["最佳時段","Best time","日落前 Before sunset"]]},
+  ferry:{color:"#5bb8ff",img:"assets/opt/guide-ferry.jpg",imgcap:{zh:"渡輪甲板上看見的旗後燈塔與港灣（示意插畫）",en:"The Cijin lighthouse and the harbour, seen from the ferry deck (illustration)"},
+    name:{zh:"渡輪＋YouBike · 最後一哩",em:"",en:"Ferry + YouBike · the last mile"},
+    desc:{zh:"鼓山輪渡站到旗津，一趟很短的航程，卻是整天最好看的一段。上岸後租一台 YouBike，沿著海岸線騎。",
+          en:"Gushan pier to Cijin is a very short crossing and the best-looking part of the day. Grab a YouBike on the other side and ride the coast road."},
+    stations:[["鼓山輪渡站","Gushan Pier",1],["＝＝ 渡輪 ＝＝","= ferry =",0],["旗津輪渡站","Cijin Pier",1],["旗津老街","Old Street",0],["旗後燈塔","Lighthouse",1],["旗津海岸","Cijin Beach",1]],
+    facts:[["渡輪票價","Ferry fare","≈ NT$40"],["可帶機車／單車","Bikes allowed","✓"],["YouBike","YouBike","30 min NT$10 起"],["建議","Tip","黃昏班次最美 Go at dusk"]]}
+};
+
+const VENUES=[
+  {k:"stadium",c:"#ff5470",img:"assets/opt/guide-concert.jpg",tag:"Illustration",
+   zh:["國家體育場（世運主場館）","2009 世運留下的場館，現在是台灣最大的演唱會舞台","捷運紅線 世運站",
+       "Coldplay 當年評估後選了高雄，理由是永續。屋頂鋪了 8,844 片太陽能板，一年自發電約 110 萬度 &mdash; 一座會自己發電的體育場，剛好也很適合放煙火。"],
+   en:["National Stadium","Built for the 2009 World Games; now Taiwan’s biggest concert stage","Metro Red, World Games stn",
+       "Coldplay picked Kaohsiung on sustainability grounds. The roof carries 8,844 solar panels generating roughly 1.1 million kWh a year — a stadium that powers itself, and happens to be great for fireworks."],
+   facts:[["容納","Capacity","≈ 40k–55k"],["太陽能板","Solar panels","8,844"],["年發電","Annual output","≈ 1.1M kWh"],["開唱過","Played here","Coldplay · BLACKPINK"]]},
+  {k:"kmc",c:"#ffc857",img:"assets/opt/kaohsiung-music-center.jpg",tag:"Photo",
+   zh:["高雄流行音樂中心","2021 啟用，愛河灣邊的珊瑚礁造型建築群","輕軌 真愛碼頭站",
+       "白天是免費散步的水岸，晚上就變成展演場。大的在海音館，小的在 LIVE WAREHOUSE &mdash; 那是很多台灣獨立樂團第一次站上的舞台。"],
+   en:["Kaohsiung Music Center","Opened 2021; coral-reef forms along Love River Bay","Light rail, Glory Pier",
+       "By day it is a free waterfront walk; by night it is a venue. Big shows in the main hall, small ones in the LIVE WAREHOUSE — the stage where a lot of Taiwanese indie bands play their first proper gig."],
+   facts:[["啟用","Opened","2021"],["室內展演","Indoor hall","∼3,500"],["戶外廣場","Outdoor plaza","10,000+"],["最佳時段","Best time","日落 · Sunset"]]},
+  {k:"wwy",c:"#2ee6c5",img:"assets/opt/weiwuying-aerial.jpg",tag:"Photo",
+   zh:["衛武營國家藝術文化中心","2018 開幕，前身是一座軍營","捷運橘線 衛武營站",
+       "荷蘭建築師 Francine Houben 設計，被稱為全世界最大單一屋頂的表演藝術中心。裡面有四座廳院，音樂廳還有台灣最大的管風琴。不看表演也可以進去 &mdash; 榕樹廣場是開放的。"],
+   en:["Weiwuying Arts Centre","Opened 2018 on the site of a former military base","Metro Orange, Weiwuying stn",
+       "Designed by Dutch architect Francine Houben and billed as the world’s largest performing arts centre under a single roof. Four halls inside, and Taiwan’s largest pipe organ in the concert hall. You can walk in without a ticket — the Banyan Plaza is open to everyone."],
+   facts:[["開幕","Opened","2018"],["廳院","Halls","4"],["管風琴","Pipe organ","No.1 in TW"],["榕樹廣場","Banyan Plaza","免費 · Free"]]},
+  {k:"megaport",c:"#a98bff",img:"assets/opt/megaport-2025.jpg",tag:"Photo",
+   zh:["大港開唱 Megaport","2006 年由台灣搖滾聯盟創辦的音樂祭","捷運橘線 鹽埕埔／輕軌 駁二",
+       "台灣最指標的搖滾音樂祭，舞台就架在駁二的倉庫與港邊之間。圖為 2025 年的南霸天舞台。2026 年是 3/21&ndash;3/22 &mdash; 那兩天整個鹽埕都在震。"],
+   en:["Megaport Festival","Founded 2006 by the Taiwan Rock Alliance","Metro Orange, Yanchengpu",
+       "Taiwan’s flagship rock festival, with stages wedged between the Pier-2 warehouses and the harbour — this is the Nanbatian stage in 2025. In 2026 it runs 21–22 March; for those two days the whole of Yancheng vibrates."],
+   facts:[["創辦","Founded","2006"],["2026 場次","2026 dates","3/21–3/22"],["場地","Site","駁二 Pier-2"],["類型","Type","Rock Festival"]]}
+];
+
+const ZUOYING=[
+  {c:"#ff5470",img:"assets/opt/lotus-pond.jpg",op:"center 45%",
+   zh:["龍虎塔","一定要從龍口進、虎口出？","龍口進，虎口出。",
+       "龍代表吉、虎代表凶，走這個方向象徵把厄運留在身後。塔內壁面畫著地獄與二十四孝，走一圈其實是走完一套勸世故事。走反了？在地人會笑你。"],
+   en:["Dragon &amp; Tiger","Enter the dragon, exit the tiger?","In the dragon, out the tiger.",
+       "The dragon brings luck, the tiger takes it away, so walking this direction means leaving misfortune behind. Inside, the walls are painted with hell scenes and morality tales — the walk is the story. Do it backwards and locals will tease you."]},
+  {c:"#2ee6c5",img:"assets/opt/chunqiu-guanyin.jpg",op:"center 52%",
+   zh:["春秋閣","為什麼有龍從水裡衝出來？","觀音騎龍顯靈，就照著蓋。",
+       "傳說觀音曾騎龍在此顯現，信眾便照著那個畫面蓋了一座出來。台灣廟宇常常把神話直接做成建築 &mdash; 你看到的不是裝飾，是有人真的相信過的一幕。"],
+   en:["Spring &amp; Autumn","Why is a dragon bursting from the water?","Guanyin appeared riding it — so they built it.",
+       "Legend says Guanyin appeared here riding a dragon, and believers built exactly that scene. Taiwanese temples turn myth straight into architecture — this is not decoration, it is a moment someone genuinely believed in."]},
+  {c:"#a98bff",img:"assets/opt/xuantian-shangdi.jpg",op:"center 46%",
+   zh:["玄天上帝","水上那尊巨神像是誰？","北方之神，腳踩龜蛇。",
+       "北極玄天上帝，道教的北方之神，手持七星劍、腳下踩著龜與蛇。這尊高逾 20 公尺，站在潭面上，是蓮池潭從最遠處就看得到的地標。"],
+   en:["Xuantian Shangdi","Who is the giant on the water?","God of the north, treading turtle and snake.",
+       "The Supreme Emperor of the Dark Heaven, the Taoist god of the north, holding a seven-star sword and standing on a turtle and a snake. Over 20 metres tall and rising straight out of the pond — the landmark you spot from furthest away."]},
+  {c:"#ffc857",img:"assets/opt/zuoying-oldcity.jpg",op:"center 52%",
+   zh:["左營舊城","城市裡為什麼有古城牆？","清代石城，城門到現在還在用。",
+       "清代留下的石造城牆與城門，是台灣現存最完整的古城之一。東門、南門、北門都還在，就夾在住宅區和學校中間 &mdash; 你會看到有人牽著腳踏車，從兩百年的城門下穿過去。"],
+   en:["Zuoying Old City","Why is there a city wall here?","A Qing stone city — the gates are still in use.",
+       "Qing-dynasty stone walls and gates, among the most complete surviving anywhere in Taiwan. The east, south and north gates all still stand, wedged between apartment blocks and schools — you will see people wheeling bicycles through a two-hundred-year-old gate."]},
+  {c:"#ff8a3d",img:"assets/opt/jiaobei.jpg",op:"center 50%",
+   zh:["拜拜怎麼看","外國學生可以看什麼？","那兩片紅木塊叫筊杯。",
+       "信眾把筊杯擲在地上，用一正一反的組合問神明「可以嗎」。香的數量、供桌上的水果、擲筊的手勢 &mdash; 這些細節比任何導覽牌都更能說明台灣人的日常信仰。"],
+   en:["Reading a temple","What should a visitor look for?","Those two red blocks are moon blocks.",
+       "People drop the blocks on the floor and read how they land as a yes or no from the god. Incense counts, the fruit on the altar, the way the blocks are thrown — these details explain everyday belief better than any information board."]}
+];
+
+const PHRASES=[
+  ["內用","nèi yòng","For here"],
+  ["外帶","wài dài","To go"],
+  ["這個一份","zhè ge yí fèn","One of these"],
+  ["不要辣","bú yào là","Not spicy"],
+  ["少冰","shǎo bīng","Less ice"],
+  ["去冰","qù bīng","No ice"],
+  ["多少錢","duō shǎo qián","How much?"],
+  ["謝謝","xiè xie","Thank you"]
+];
+
+const MOUNTAIN=[
+  {k:"fgs",c:"#ffc857",img:"assets/opt/fo-guang-shan.jpg",op:"center 46%",
+   zh:["佛光山","大型佛教園區與佛陀紀念館",
+       "離義守最近的大景點。佛陀紀念館的中軸線上排著八座塔，盡頭是一尊巨大的坐佛。園區不收門票，看展、吃素齋、走一整個下午都可以。"],
+   en:["Fo Guang Shan","Buddhist complex and museum",
+       "The major sight closest to campus. Eight pagodas line the axis of the Buddha Museum, ending at a colossal seated Buddha. No entry fee — exhibitions, vegetarian food, a whole afternoon."]},
+  {k:"qishan",c:"#ffd23f",img:"assets/opt/qishan-station.jpg",op:"center 52%",
+   zh:["旗山","老街、香蕉產業與巴洛克街屋",
+       "台灣香蕉最有名的產地。老街上是一整排巴洛克立面的街屋，街尾是這座 1913 年的舊旗山驛，站前種著香蕉、立著香蕉造型的看板。"],
+   en:["Qishan","Old street, bananas, baroque shopfronts",
+       "Taiwan&rsquo;s most famous banana town. The old street is a run of baroque shopfronts, and at its end stands the 1913 Qishan railway station, with banana plants and banana mascots out front."]},
+  {k:"meinong",c:"#ff8fc8",img:"assets/opt/meinong-umbrella.jpg",op:"center 46%",
+   zh:["美濃","客家文化、油紙傘與田園",
+       "高雄最完整的客家聚落。油紙傘是這裡的招牌工藝 &mdash; 竹骨、棉紙、桐油，一把要做上好幾天，工坊可以現場看師傅畫傘面。"],
+   en:["Meinong","Hakka culture, oil-paper umbrellas, farmland",
+       "Kaohsiung&rsquo;s best-preserved Hakka town. The oil-paper umbrella is its signature craft — bamboo ribs, cotton paper, tung oil, days of work per umbrella. You can watch them being painted in the workshops."]},
+  {k:"maolin",c:"#2ee6c5",img:"assets/opt/maolin-valley.jpg",op:"center 50%",
+   zh:["茂林","魯凱族部落、濁口溪縱谷與紫蝶幽谷",
+       "濁口溪把山切出一道很深的縱谷，公路沿著溪谷盤上去，沿線是魯凱族的部落。每年冬天有上百萬隻紫斑蝶飛進谷裡過冬。"],
+   en:["Maolin","Rukai villages, the Zhuokou valley, purple butterflies",
+       "The Zhuokou River has cut a deep valley through the mountains; the road winds up along it past Rukai villages. Every winter, over a million purple crow butterflies come here to overwinter."]}
+];
+
+const DAY=[
+  {t:"09:00",img:"assets/opt/eda-bus-8501.jpg",op:"center 55%",
+   zh:["義守大學出發","搭 8501 下山往左營，車上補眠 45 分鐘。"],en:["Leave ISU","Bus 8501 down to Zuoying. Sleep for 45 minutes on board."],m:{zh:"8501 公車",en:"Bus 8501"}},
+  {t:"10:00",img:"assets/opt/lotus-pond.jpg",op:"center 45%",
+   zh:["蓮池潭","龍進虎出，環潭散步，順路看左營舊城的城門。"],en:["Lotus Pond","In the dragon, out the tiger. Loop the pond, take in the old city gate."],m:{zh:"步行",en:"On foot"}},
+  {t:"12:00",img:"assets/opt/duck-rice.jpg",op:"center 52%",
+   note:{zh:"（圖為彰化一家鴨肉飯店的餐桌，非鹽埕店家）",en:"(photographed at a duck-rice shop in Changhua, not in Yancheng)"},
+   zh:["鹽埕吃午餐","捷運橘線到鹽埕埔，這一區是高雄小吃的老本營 — 招牌是鴨肉飯：一碗肉燥飯鋪上切得薄薄的鴨肉，再點一盤切盤和一碗湯。"],
+   en:["Lunch in Yancheng","Orange Line to Yanchengpu, the old heartland of Kaohsiung street food. The signature is duck rice: thin-sliced duck over savoury rice, with a sliced-meat plate and a bowl of soup on the side."],
+   m:{zh:"捷運紅線→橘線",en:"Metro Red → Orange"}},
+  {t:"14:00",img:"assets/opt/dagang-bridge.jpg",op:"center 55%",
+   zh:["駁二＋大港橋","看展、走倉庫街，再沿水岸騎到愛河灣。"],en:["Pier-2 and the bridge","See a show, walk the warehouses, ride along the bay."],m:{zh:"YouBike",en:"YouBike"}},
+  {t:"16:30",img:"assets/opt/guide-ferry.jpg",op:"center 50%",
+   zh:["渡輪到旗津","從鼓山上船。甲板上是這一天最好的位置。"],en:["Ferry to Cijin","Board at Gushan. The deck is the best seat of the day."],m:{zh:"渡輪",en:"Ferry"}},
+  {t:"19:00",img:"assets/opt/liuhe-night-market.jpg",op:"center 50%",
+   zh:["夜市晚餐","回市區逛六合或瑞豐，三四個人分著吃最划算。"],en:["Night market dinner","Back downtown to Liuhe or Ruifeng. Split everything three or four ways."],m:{zh:"捷運＋步行",en:"Metro + walk"}},
+  {t:"21:30",img:"assets/opt/isu-gate.jpg",op:"58% 55%",
+   zh:["回校","確認 8501 末班車，或搭捷運回左營再轉乘。"],en:["Head home","Check the last 8501, or metro back to Zuoying and transfer."],m:{zh:"8501 公車",en:"Bus 8501"}}
+];
+
+const QUIZ=[
+  {q:{zh:"這篇讓高雄被看見的報導，出自哪裡？",en:"Where did the article that put Kaohsiung on the list appear?"},
+   o:[{zh:"一份城市生活成本排行榜",en:"A cost-of-living ranking"},
+      {zh:"英國《The Times》旅遊版的 11 月推薦清單",en:"The Times (UK) Travel — its November list"},
+      {zh:"一份亞洲唯一城市的評選",en:"A vote for Asia’s single best city"}],a:1,
+   fb:{zh:"對。是英國《The Times》Travel 版的〈20 of the best places to visit in November〉，不是排名榜。",en:"Correct — The Times Travel section, “20 of the best places to visit in November.” It is a list, not a ranking."}},
+  {q:{zh:"從義守大學進市區，最簡單的第一步是什麼？",en:"What is the simplest first step from ISU into the city?"},
+   o:[{zh:"先走到最近的捷運站",en:"Walk to the nearest metro station"},
+      {zh:"搭 8501 到左營，再換捷運",en:"Take bus 8501 to Zuoying, then transfer to the metro"},
+      {zh:"搭台鐵到高雄車站",en:"Take a TRA train to Main Station"}],a:1,
+   fb:{zh:"沒錯。義守 → 8501 → 左營，這一條先走熟，其他自然會通。",en:"Right. ISU → 8501 → Zuoying. Learn this one line and the rest follows."}},
+  {q:{zh:"想從鼓山到旗津，最經典的方式是？",en:"What is the classic way to get from Gushan to Cijin?"},
+   o:[{zh:"搭渡輪",en:"Take the ferry"},
+      {zh:"搭輕軌繞過去",en:"Ride the light rail around"},
+      {zh:"走過大港橋",en:"Walk across the Great Harbour Bridge"}],a:0,
+   fb:{zh:"就是渡輪。短短一趟，卻是很多人對高雄印象最深的一段。",en:"The ferry. A short crossing, and the part of Kaohsiung most people remember."}}
+];
+
+/* ============================================================
+   DECK ENGINE
+   ============================================================ */
+const ACTS=[
+  {from:0, key:0, zh:['第一幕','世界為什麼開始看高雄'], en:['Act I','Why the world started looking']},
+  {from:5, key:1, zh:['第二幕','先學會怎麼移動'],       en:['Act II','Learn how to move first']},
+  {from:7, key:2, zh:['第三幕','四種玩法'],             en:['Act III','Four ways to play']},
+  {from:11,key:3, zh:['第四幕','把高雄變成你的'],       en:['Act IV','Make it yours']}
+];
+const slides=$$('.slide');
+const rail=$('#rail'), ovGrid=$('#ovGrid');
+let cur=0, seen=new Set([0]);
+
+slides.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.innerHTML='<span class="tip"></span>';
+  b.addEventListener('click',()=>go(i));
+  rail.appendChild(b);
+
+  const act=ACTS.find(a=>a.from===i);
+  if(act){
+    const hdr=document.createElement('div');
+    hdr.className='ovact'; hdr.dataset.act=act.key;
+    ovGrid.appendChild(hdr);
+  }
+  const c=document.createElement('button');
+  c.className='ovcard';
+  c.innerHTML=`<img src="${s.dataset.thumb}" alt="" loading="lazy"><div class="g"></div><div class="t"><span class="n">${String(i+1).padStart(2,'0')}</span><span class="h"></span></div>`;
+  c.addEventListener('click',()=>{go(i);closeAll()});
+  ovGrid.appendChild(c);
+});
+$('#cAll').textContent=slides.length;
+
+function titleOf(i){return slides[i].dataset['title'+(L()==='zh'?'Zh':'En')]}
+
+function paintActs(){
+  $$('.ovact').forEach(el=>{
+    const a=ACTS[+el.dataset.act], d=a[L()];
+    el.innerHTML=`<span>${d[0]}</span><b>${d[1]}</b>`;
+  });
+}
+function paintChrome(){
+  [...rail.children].forEach((b,i)=>{
+    b.className = i===cur?'now':(seen.has(i)?'seen':'');
+    b.firstChild.textContent = `${i+1}. ${titleOf(i)}`;
+  });
+  $$('.ovcard',ovGrid).forEach((c,i)=>{
+    c.classList.toggle('now',i===cur);
+    c.querySelector('.h').textContent=titleOf(i);
+  });
+  $('#cNow').textContent=cur+1;
+  $('#chapterName').textContent=titleOf(cur);
+}
+
+const GLOW=[
+  ["#ff8a3d","#ff5470","#ffc857"],
+  ["#ffc857","#5bb8ff","#a98bff"],
+  ["#ffd23f","#ff8fc8","#5bb8ff"],
+  ["#ff5470","#a98bff","#5bb8ff"],
+  ["#2ee6c5","#ff8a3d","#5bb8ff"],
+  ["#a98bff","#ff5470","#2ee6c5"],
+  ["#ff5470","#ff9f2e","#2ee6c5"],
+  ["#5bb8ff","#2ee6c5","#ffc857"],
+  ["#ff5470","#ffc857","#ff8a3d"],
+  ["#ff8a3d","#ffc857","#ff5470"],
+  ["#2ee6c5","#4fbf7f","#ffc857"],
+  ["#ff8a3d","#5bb8ff","#ffc857"],
+  ["#5bb8ff","#2ee6c5","#a98bff"],
+  ["#ffc857","#ff8a3d","#a98bff"]
+];
+const blobs=[$('.ambience .b1'),$('.ambience .b2'),$('.ambience .b3')];
+function setGlow(i){
+  const g=GLOW[i%GLOW.length];
+  blobs.forEach((b,n)=>{
+    if(!b)return;
+    b.style.backgroundColor=g[n];
+    b.style.transform=`translate3d(${(i%3-1)*4}%, ${((i+1)%3-1)*4}%,0) scale(${1+((i%4)*.05)})`;
+  });
+}
+
+function go(i){
+  cur=(i+slides.length)%slides.length;
+  seen.add(cur);
+  slides.forEach((s,n)=>s.classList.toggle('is-active',n===cur));
+  paintChrome();
+  setGlow(cur);
+  onEnter(cur);
+}
+const next=()=>go(cur+1), prev=()=>go(cur-1);
+$('#btnNext').addEventListener('click',next);
+$('#btnPrev').addEventListener('click',prev);
+
+/* overlays */
+const overlays=$$('.overlay');
+function closeAll(){overlays.forEach(o=>o.classList.remove('open'))}
+function open(id){closeAll();$(id).classList.add('open')}
+overlays.forEach(o=>{
+  o.addEventListener('click',e=>{if(e.target===o||e.target.hasAttribute('data-close'))closeAll()});
+});
+$('#btnOverview').addEventListener('click',()=>open('#ovOverview'));
+$('#btnHelp').addEventListener('click',()=>open('#ovHelp'));
+$('#btnSources').addEventListener('click',()=>open('#ovSources'));
+
+$('#btnFull').addEventListener('click',()=>{
+  document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();
+});
+
+/* keyboard */
+addEventListener('keydown',e=>{
+  if(e.target.matches('input,textarea'))return;
+  const anyOpen=overlays.some(o=>o.classList.contains('open'));
+  if(e.key==='Escape'){closeAll();return}
+  if(anyOpen && !['o','O'].includes(e.key))return;
+  switch(e.key){
+    case 'ArrowRight':case 'PageDown':case ' ':e.preventDefault();next();break;
+    case 'ArrowLeft':case 'PageUp':prev();break;
+    case 'o':case 'O':$('#ovOverview').classList.contains('open')?closeAll():open('#ovOverview');break;
+    case 'f':case 'F':$('#btnFull').click();break;
+    case 'l':case 'L':setLang(L()==='zh'?'en':'zh');break;
+    case 'p':case 'P':document.body.classList.toggle('presenting');break;
+    default:
+      if(/^[1-9]$/.test(e.key))go(+e.key-1);
+  }
+});
+
+/* touch swipe */
+let tx=0,ty=0;
+addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx, dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>62&&Math.abs(dx)>Math.abs(dy)*1.6){dx<0?next():prev()}
+},{passive:true});
+
+/* lightbox */
+const lbImg=$('#lbImg'), lbCap=$('#lbCap');
+function bindZoom(){
+  $$('.zoomable').forEach(el=>{
+    if(el.dataset.bound)return; el.dataset.bound='1';
+    el.style.cursor='zoom-in';
+    if(!el.hasAttribute('tabindex')) el.tabIndex=0;
+    if(!el.hasAttribute('role')) el.setAttribute('role','button');
+    const openIt=()=>{
+      const img=el.matches('img')?el:el.querySelector('img');
+      if(!img)return;
+      lbImg.src=img.currentSrc||img.src; lbImg.alt=img.alt||'';
+      lbCap.innerHTML=el.dataset['cap'+(L()==='zh'?'Zh':'En')]||img.alt||'';
+      open('#ovLightbox');
+    };
+    el.addEventListener('click',openIt);
+    el.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();openIt()}
+    });
+  });
+}
+
+/* ============================================================
+   RENDERERS
+   ============================================================ */
+function renderRank(){
+  const box=$('#rankList'); box.innerHTML='';
+  TIMES_LIST.forEach((c,i)=>{
+    const d=document.createElement('div');
+    d.className='rank'+(i===9?' star':'');
+    d.style.setProperty('--i',i);
+    d.innerHTML=`<b>${String(i+1).padStart(2,'0')}</b><span>${c}</span>`;
+    box.appendChild(d);
+  });
+}
+
+function renderMapInfo(k){
+  const s=STOPS[k], [t,sub,body]=s[L()];
+  $('#mapInfo').innerHTML=`<figure class="mapshot zoomable" data-cap-zh="${STOPS[k].zh[0]}｜${STOPS[k].zh[1]}" data-cap-en="${STOPS[k].en[0]} — ${STOPS[k].en[1]}"><img src="${s.img}" alt="${t}" style="object-position:${s.op||'center'}"><span class="zoomdot" aria-hidden="true"></span></figure><div><div class="k">${sub}</div><h3>${t}</h3><p>${body}</p></div>`;
+  bindZoom();
+}
+$$('.node').forEach(n=>{
+  const act=()=>{$$('.node').forEach(x=>x.classList.remove('on'));n.classList.add('on');renderMapInfo(n.dataset.k)};
+  n.addEventListener('click',act);
+  n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act()}});
+});
+
+function renderTabs(){
+  const wrap=$('#tabPanels'); wrap.innerHTML='';
+  Object.entries(LINES).forEach(([k,d],idx)=>{
+    const p=document.createElement('div');
+    p.className='tpanel'+(idx===0?' on':'');
+    p.dataset.panel=k; p.style.setProperty('--tc',d.color);
+    p.innerHTML=`
+      <div class="tphead">
+        <div style="display:grid;gap:6px;align-content:center">
+          <h3 style="color:${d.color}">${d.name[L()]}</h3>
+          <p class="lead">${d.desc[L()]}</p>
+        </div>
+        <figure class="ph zoomable" data-cap-zh="${d.imgcap.zh}" data-cap-en="${d.imgcap.en}">
+          <img src="${d.img}" alt="" loading="lazy">
+        </figure>
+      </div>
+      <div class="card stripmap"><div class="strip">${
+        d.stations.map(([zh,en,key])=>`<div class="stn${key?' key':''}"><i></i><span>${L()==='zh'?zh:en}</span>${L()==='zh'?`<small>${en}</small>`:''}</div>`).join('')
+      }</div></div>
+      <div class="factgrid">${
+        d.facts.map(([fz,fe,v])=>`<div class="fact"><div class="k">${L()==='zh'?fz:fe}</div><b>${v}</b></div>`).join('')
+      }</div>`;
+    wrap.appendChild(p);
+  });
+  bindZoom();
+}
+$$('.tabs [data-tab]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    $$('.tabs [data-tab]').forEach(x=>x.setAttribute('aria-selected','false'));
+    b.setAttribute('aria-selected','true');
+    $$('.tpanel').forEach(p=>p.classList.toggle('on',p.dataset.panel===b.dataset.tab));
+  });
+});
+
+function renderPhrases(){
+  const box=$('#phrasebook'); box.innerHTML='';
+  PHRASES.forEach(([zh,py,en])=>{
+    const b=document.createElement('button');
+    b.className='pcard';
+    b.innerHTML=`<b>${zh}</b><span class="py">${py}</span><span class="en">${en}</span>`;
+    b.addEventListener('click',()=>say(zh,b));
+    box.appendChild(b);
+  });
+}
+let voice=null;
+function pickVoice(){
+  const vs=speechSynthesis.getVoices();
+  voice=vs.find(v=>/zh[-_]TW/i.test(v.lang))||vs.find(v=>/^zh/i.test(v.lang))||null;
+}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function say(text,btn){
+  if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='zh-TW'; if(voice)u.voice=voice; u.rate=.82;
+  btn.classList.add('say');
+  u.onend=u.onerror=()=>btn.classList.remove('say');
+  speechSynthesis.speak(u);
+  setTimeout(()=>btn.classList.remove('say'),2600);
+}
+
+let zyIdx=0;
+function renderZuoying(){
+  const box=$('#zyGrid'); if(!box)return;
+  box.innerHTML='';
+  ZUOYING.forEach((z,i)=>{
+    const d=z[L()];
+    const b=document.createElement('button');
+    b.className='flip'+(i===zyIdx?' on':''); b.style.setProperty('--zc',z.c);
+    b.innerHTML=`<div class="flip-in">
+        <div class="flip-f"><h3>${d[0]}</h3><p>${d[1]}</p><span class="turn">Tap</span></div>
+        <div class="flip-b"><p class="flip-a">${d[2]}</p></div>
+      </div>`;
+    b.addEventListener('click',()=>showZy(i));
+    box.appendChild(b);
+  });
+  showZy(zyIdx);
+}
+function showZy(i){
+  zyIdx=i; const z=ZUOYING[i], d=z[L()];
+  $$('#zyGrid .flip').forEach((b,n)=>b.classList.toggle('on',n===i));
+  const fig=$('#zyFig'); if(!fig)return;
+  const img=$('#zyImg');
+  if(img.getAttribute('src')!==z.img){img.style.opacity=0;setTimeout(()=>{img.src=z.img;img.style.opacity=1},140)}
+  img.alt=d[0].replace(/&amp;/g,'&'); img.style.objectPosition=z.op||'center';
+  $('#zyName').innerHTML=d[0]+' <span class="zy-q">'+d[1]+'</span>';
+  $('#zyCap').innerHTML=d[3];
+  fig.dataset.capZh=z.zh[0].replace(/&amp;/g,'&')+'｜蓮池潭．左營';
+  fig.dataset.capEn=z.en[0].replace(/&amp;/g,'&')+' — Lotus Pond, Zuoying';
+  fig.style.setProperty('--tc',z.c);
+  bindZoom();
+}
+
+function renderVenues(){
+  const box=$('#venueList'); if(!box)return;
+  box.innerHTML='';
+  VENUES.forEach((v,i)=>{
+    const d=v[L()];
+    const b=document.createElement('button');
+    b.className='venue'+(i===0?' on':''); b.style.setProperty('--vc',v.c);
+    b.innerHTML=`<i></i><span class="vn"><b>${d[0]}</b><small>${d[1]}</small></span><em>${d[2]}</em>`;
+    b.addEventListener('click',()=>showVenue(i));
+    b.addEventListener('mouseenter',()=>showVenue(i));
+    box.appendChild(b);
+  });
+  showVenue(venueIdx);
+}
+let venueIdx=0;
+function showVenue(i){
+  venueIdx=i; const v=VENUES[i], d=v[L()];
+  $$('#venueList .venue').forEach((b,n)=>b.classList.toggle('on',n===i));
+  const fig=$('#venueFig'); if(!fig)return;
+  const img=$('#venueImg');
+  if(img.getAttribute('src')!==v.img){img.style.opacity=0;setTimeout(()=>{img.src=v.img;img.style.opacity=1},140)}
+  img.alt=d[0];
+  $('#venueTag').textContent=v.tag;
+  $('#venueName').innerHTML=d[0];
+  $('#venueCap').innerHTML=d[3];
+  fig.dataset.capZh=v.zh[0]+'｜'+v.zh[1];
+  fig.dataset.capEn=v.en[0]+' — '+v.en[1];
+  fig.style.setProperty('--tc',v.c);
+  $('#venueFacts').innerHTML=v.facts.map(([fz,fe,val])=>
+    `<div class="fact" style="--tc:${v.c}"><div class="k">${L()==='zh'?fz:fe}</div><b>${val}</b></div>`).join('');
+  bindZoom();
+}
+
+let mtnIdx=0;
+function renderMountain(){
+  const box=$('#mtnGrid'); if(!box)return;
+  box.innerHTML='';
+  MOUNTAIN.forEach((m,i)=>{
+    const [t,d]=m[L()];
+    const b=document.createElement('button');
+    b.className='mtnpick'+(i===mtnIdx?' on':''); b.style.setProperty('--mc',m.c);
+    b.innerHTML=`<i></i><b>${t}</b><span>${d}</span>`;
+    b.addEventListener('click',()=>showMtn(i));
+    b.addEventListener('mouseenter',()=>showMtn(i));
+    box.appendChild(b);
+  });
+  showMtn(mtnIdx);
+}
+function showMtn(i){
+  mtnIdx=i; const m=MOUNTAIN[i], d=m[L()];
+  $$('#mtnGrid .mtnpick').forEach((b,n)=>b.classList.toggle('on',n===i));
+  const fig=$('#mtnFig'); if(!fig)return;
+  const img=$('#mtnImg');
+  if(img.getAttribute('src')!==m.img){img.style.opacity=0;setTimeout(()=>{img.src=m.img;img.style.opacity=1},140)}
+  img.alt=d[0]; img.style.objectPosition=m.op||'center';
+  $('#mtnTag').textContent='Photo';
+  $('#mtnName').innerHTML=d[0]+' <span class="mtn-sub">'+d[1]+'</span>';
+  $('#mtnCap').innerHTML=d[2];
+  fig.dataset.capZh=m.zh[0]+'｜'+m.zh[1];
+  fig.dataset.capEn=m.en[0]+' — '+m.en[1];
+  fig.style.setProperty('--tc',m.c);
+  bindZoom();
+}
+
+let dayIdx=0;
+function renderDay(){
+  const box=$('#timeline'); if(!box)return;
+  box.innerHTML='';
+  DAY.forEach((d,i)=>{
+    const [t,body]=d[L()];
+    const el=document.createElement('button');
+    el.className='leg'+(i===dayIdx?' hot':''); el.dataset.i=i;
+    el.innerHTML=`<time>${d.t}</time><div class="dot"><i></i></div><div class="body"><div class="legtop"><h3>${t}</h3><span class="cost">${d.m[L()]}</span></div><p>${body}</p></div>`;
+    el.addEventListener('click',()=>{clearInterval(dayTimer);$('#btnPlayDay').classList.remove('playing');showDay(i)});
+    box.appendChild(el);
+  });
+  showDay(dayIdx);
+}
+function showDay(i){
+  dayIdx=i; const d=DAY[i], c=d[L()];
+  $$('#timeline .leg').forEach((l,n)=>l.classList.toggle('hot',n===i));
+  const fig=$('#dayFig'); if(!fig)return;
+  const img=$('#dayImg');
+  if(img.getAttribute('src')!==d.img){img.style.opacity=0;setTimeout(()=>{img.src=d.img;img.style.opacity=1},140)}
+  img.alt=c[0]; img.style.objectPosition=d.op||'center';
+  $('#dayTime').textContent=d.t;
+  $('#dayName').innerHTML=c[0];
+  $('#dayCap').innerHTML=c[1];
+  fig.dataset.capZh=d.t+'｜'+d.zh[0]+'：'+d.zh[1]+(d.note?' '+d.note.zh:'');
+  fig.dataset.capEn=d.t+' — '+d.en[0]+': '+d.en[1]+(d.note?' '+d.note.en:'');
+  bindZoom();
+}
+let dayTimer=null;
+$('#btnPlayDay').addEventListener('click',()=>{
+  clearInterval(dayTimer);
+  const btn=$('#btnPlayDay'); btn.classList.add('playing');
+  let i=0;
+  const step=()=>{
+    if(i>=DAY.length){clearInterval(dayTimer);btn.classList.remove('playing');return}
+    showDay(i);
+    $$('#timeline .leg')[i].scrollIntoView({block:'nearest',behavior:'smooth'});
+    i++;
+  };
+  step();
+  dayTimer=setInterval(step,2000);
+});
+
+/* quiz */
+let qi=0,qScore=0;
+function renderQuiz(){
+  $('#qProg').innerHTML=QUIZ.map((_,i)=>`<i class="${i<qi?'done':i===qi?'now':''}"></i>`).join('');
+  if(qi>=QUIZ.length){
+    $('#qText').innerHTML = L()==='zh'
+      ? `答對 ${qScore} / ${QUIZ.length} 題。`
+      : `${qScore} / ${QUIZ.length} correct.`;
+    $('#qOpts').innerHTML='';
+    $('#qFb').innerHTML = L()==='zh'
+      ? '重點從來不是考試 — 是你已經知道怎麼從山上走進這座城市了。<br><button class="tool" id="qAgain" style="margin-top:10px">再試一次</button>'
+      : 'The quiz was never the point — you now know how to get from the hill into the city.<br><button class="tool" id="qAgain" style="margin-top:10px">Try again</button>';
+    $('#qAgain')?.addEventListener('click',()=>{qi=0;qScore=0;renderQuiz()});
+    return;
+  }
+  const q=QUIZ[qi];
+  $('#qText').innerHTML=q.q[L()];
+  $('#qFb').innerHTML='';
+  $('#qOpts').innerHTML='';
+  q.o.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='qopt'; b.innerHTML=o[L()];
+    b.addEventListener('click',()=>{
+      $$('#qOpts .qopt').forEach(x=>x.disabled=true);
+      const ok=i===q.a;
+      b.classList.add(ok?'right':'wrong');
+      if(!ok)$$('#qOpts .qopt')[q.a].classList.add('right');
+      if(ok)qScore++;
+      $('#qFb').innerHTML=q.fb[L()];
+      setTimeout(()=>{qi++;renderQuiz()},2100);
+    });
+    $('#qOpts').appendChild(b);
+  });
+}
+
+/* flip cards */
+$$('.flip').forEach(f=>f.addEventListener('click',()=>f.classList.toggle('on')));
+
+/* count-up */
+function countUp(el){
+  const en = L()==='en' && el.dataset.countEn!==undefined;
+  const target = +(en?el.dataset.countEn:el.dataset.count);
+  const sfx = (en?el.dataset.suffixEn:el.dataset.suffix)||'';
+  const pre = (en?el.dataset.prefixEn:el.dataset.prefix)||'';
+  const dec = +((en?el.dataset.decEn:el.dataset.dec)||0);
+  const comma = en?el.dataset.commaEn:el.dataset.comma;
+  const t0=performance.now(), dur=1100;
+  function step(t){
+    const p=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-p,3);
+    let n=target*e;
+    let txt = dec ? n.toFixed(dec) : String(Math.round(n));
+    if(comma) txt = Number(txt).toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec});
+    el.textContent=pre+txt+sfx;
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+function onEnter(i){
+  $$('[data-count]',slides[i]).forEach(el=>{if(!el.dataset.done){el.dataset.done='1';setTimeout(()=>countUp(el),320)}});
+}
+
+function renderAll(){
+  renderRank();
+  renderMapInfo($('.node.on')?.dataset.k||'isu');
+  renderTabs();
+  renderPhrases();
+  renderZuoying();
+  renderVenues();
+  renderMountain();
+  renderDay();
+  renderQuiz();
+  paintChrome();
+  paintActs();
+  bindZoom();
+}
+
+/* eyebrow numbers follow slide order */
+slides.forEach((s,i)=>{
+  const e=s.querySelector('.eyebrow');
+  if(e && e.firstChild && e.firstChild.nodeType===3) e.firstChild.textContent=String(i+1).padStart(2,'0')+' — ';
+});
+
+/* honour ?lang=en */
+{
+  const q=new URLSearchParams(location.search).get('lang');
+  if(q==='en'||q==='zh') document.documentElement.dataset.lang=q;
+  const l=document.documentElement.dataset.lang;
+  document.documentElement.lang = l==='zh' ? 'zh-Hant' : 'en';
+  $$('.langswitch button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.lang===l)));
+  $$('t-x').forEach(e=>e.paint());
+}
+
+/* boot */
+renderAll();
+setGlow(0);
+onEnter(0);
+</script>
+</body>
+</html>
