@@ -7,7 +7,7 @@
 ## 使用方式
 
 ```sh
-cd /Users/weisfx/Desktop/Cursor/chiawei/chiawei/isu-tree-hollow
+cd /Users/weisfx/Desktop/Cursor/html/OICA/isu-tree-hollow
 python3 -m http.server 4173 --bind 127.0.0.1
 ```
 
@@ -34,7 +34,7 @@ Google 表單的原生檔案上傳需要登入 Google。這版採 Apps Script �
 
 ## 先完成 Google 設定
 
-1. 到 <https://script.google.com/home> 建立 Apps Script 專案，貼上 [google/Code.gs](google/Code.gs)。本次已準備 [ISU Tree Hollow — 私人輔導收件](https://script.google.com/home/projects/1VmvKx4kgV0W_PFGP8cdroaiKq51ob3EoMRnmDggDAvhWsJW4Ifk9uJK9/edit)，授權與初始化已完成。請沿用，避免重複建立；收件端仍需建立網頁應用程式部署。
+1. 到 <https://script.google.com/home> 建立 Apps Script 專案，貼上 [google/Code.gs](google/Code.gs)。本次已準備 [ISU Tree Hollow — 私人輔導收件](https://script.google.com/home/projects/1VmvKx4kgV0W_PFGP8cdroaiKq51ob3EoMRnmDggDAvhWsJW4Ifk9uJK9/edit)，授權與初始化已完成。請沿用，避免重複建立；收件網頁應用程式已部署，並已接上正式網站。
 2. 執行 `setupTreeHollow`。第一次需由你審查 Google 授權。它只建立此工作的資料夾、表單與試算表，不寄信。
 3. 執行記錄只列出新建立的文件網址；打開 `records` 連結並收藏。請保持表單回覆、試算表和音檔資料夾的分享權限受限。
 4. 選「部署 → 新增部署 → 網頁應用程式」，執行身分為你自己，存取者選「所有人」。公開的是只供提交的程式入口，沒有查詢學生資料的功能。
@@ -84,7 +84,7 @@ Google 收件程式預設允許 `https://weisfx0705.github.io`、`http://127.0.0
 - 服務錯誤不回傳個人資料；試算表文字避免被當作公式執行。
 - `node tests/receiver.test.mjs`：模擬 Google 服務，涵蓋身份／同意／來源驗證、音檔、重送與部分失敗後恢復。
 
-Google 帳號授權與正式 `/exec` 部署完成前，仍不能認定雲端收件已通過。正式網站上線後，另用 iPhone Safari 與 Android Chrome 各試一筆錄音。LINE 內建瀏覽器若無法取得麥克風，改以外部瀏覽器開啟或上傳音檔。
+Google 授權與正式 `/exec` 部署已完成；2026-10-01 已實測本機文字加音檔收件、正式網站純音檔收件，以及免登入 Google 的收件端存取。真實 iPhone Safari 與 Android Chrome 的麥克風錄音仍建議各試一筆。LINE 內建瀏覽器若無法取得麥克風，改以外部瀏覽器開啟或上傳音檔。
 
 錄音和文字目前只在當頁記憶體，重新整理或關閉頁面可能遺失未送出的內容。Google Apps Script 服務配額或尖峰排隊會造成暫時失敗；頁面會提示重試，不假裝收件成功。
 
@@ -96,14 +96,19 @@ Google 帳號授權與正式 `/exec` 部署完成前，仍不能認定雲端收�
 - Google Forms 原生檔案上傳登入要求：<https://support.google.com/docs/answer/15473134?hl=en>
 - Google HTML 回覆框架：<https://developers.google.com/apps-script/reference/html/html-output>
 
-## 目前 repository 位置（2026-10-01）
+## 正式上線驗證（2026-10-01）
 
-- 實際網站 checkout：`/Users/weisfx/Desktop/Cursor/chiawei/chiawei`
-- 樹洞專案：`/Users/weisfx/Desktop/Cursor/chiawei/chiawei/isu-tree-hollow`
-- GitHub：<https://github.com/weisfx0705/chiawei>，分支 `main`。
-- 既有 Pages 網站：<https://weisfx0705.github.io/chiawei/>，已確認可正常開啟。
-- 發布後的樹洞子路徑預計為 `/chiawei/isu-tree-hollow/`；目前尚未發布。
-- 外層 `/Users/weisfx/Desktop/Cursor/chiawei` 另有僅追蹤 `.DS_Store` 的 Git repository。請從上述實際網站 checkout 操作此網站。
-- `verification/` 已排除 Git 追蹤，避免將本機檢查畫面上傳。
+- 目前 checkout：`/Users/weisfx/Desktop/Cursor/html/OICA`。
+- 樹洞專案：`/Users/weisfx/Desktop/Cursor/html/OICA/isu-tree-hollow`。
+- GitHub：<https://github.com/weisfx0705/OICA>，分支 `main`。
+- 學生正式入口：<https://weisfx0705.github.io/OICA/isu-tree-hollow/>。
+- Google 收件網頁應用程式已部署，`config.js` 已連接 `/exec` 網址。
+- 文字與一秒合成靜音音檔一起送出：成功，收件編號 `TH-20261001-6C5F85C7`。
+- 正式網站僅送出合成音檔、學號留空：成功，收件編號 `TH-20261001-9D4B61BA`。
+- 兩筆測試均已在 `Support records` 確認原文／音檔連結／表單回覆 ID 與 `complete` 保存狀態。
+- 錄音檔為 `audio/wav`，Google Drive 權限只列出 owner，未啟用公開分享。
+- 以未攜帶 Google 登入資訊的請求讀取收件端：HTTP 200，正常回傳收件程式頁面。
+- 配置檔加上版本查詢，讓新版網站重新載入已連接的收件設定。
+- `verification/` 保留檢查畫面並排除 Git 追蹤。
 
-這次搬移尚未 commit 或 push。Google 收件設定完成後，請先以測試資料確認文字與音檔都實際保存，再公開學生連結。
+測試只使用明確標示的假姓名、`test@example.invalid` 和合成靜音檔，未擷取任何真人麥克風音訊，也未寄送 Email。測試紀錄目前保留，方便你核對；正式輔導時可辨識這兩筆測試資料。
