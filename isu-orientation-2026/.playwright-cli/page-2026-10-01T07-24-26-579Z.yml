@@ -1,0 +1,30 @@
+- generic [active] [ref=e1]:
+  - main "新生說明會簡報 / Orientation presentation / Bài trình chiếu định hướng" [ref=e2]:
+    - region "第 4 頁：即時翻譯與跨文化交流" [ref=e4]:
+      - generic [ref=e6]:
+        - generic [ref=e7]: 義守大學
+        - generic [ref=e8]: I-SHOU UNIVERSITY
+      - heading "科技，讓我們更靠近" [level=2] [ref=e9]
+      - generic [ref=e10]:
+        - paragraph [ref=e11]: Technology brings us closer
+        - paragraph [ref=e12]: Công nghệ giúp chúng ta gần nhau hơn
+      - generic [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - paragraph [ref=e16]: 我正在使用即時翻譯，讓我們聽懂彼此。
+            - paragraph [ref=e17]: I'm using live translation so we can understand each other.
+            - paragraph [ref=e18]: Tôi đang dùng công cụ dịch trực tiếp để chúng ta hiểu nhau.
+          - generic [ref=e19]:
+            - paragraph [ref=e20]: 善用科技，勇敢跨文化交流。
+            - paragraph [ref=e21]: Connect across cultures with technology.
+            - paragraph [ref=e22]: Hãy dùng công nghệ để tự tin giao lưu giữa các nền văn hóa.
+        - figure "交流情境插圖 / Illustration / Hình minh họa" [ref=e23]:
+          - img "不同文化的人用不同語言交流的插圖 / Illustration of people from different cultures sharing ideas in different languages / Minh họa những người từ nhiều nền văn hóa chia sẻ ý tưởng bằng các ngôn ngữ khác nhau" [ref=e24]
+      - generic [ref=e26]: "04"
+  - navigation "簡報操作 / Presentation controls / Điều khiển trình chiếu" [ref=e29]:
+    - button "上一頁 / Previous / Trang trước" [ref=e30] [cursor=pointer]: ←
+    - status [ref=e31]: 04 / 07
+    - button "下一頁 / Next / Trang sau" [ref=e32] [cursor=pointer]: →
+    - button "全螢幕 / Full screen / Toàn màn hình" [ref=e33] [cursor=pointer]: ⛶
+    - button "講者提示 / Speaker notes / Ghi chú" [ref=e34] [cursor=pointer]: "N"
+    - generic [ref=e35]: ← → 換頁 F 全螢幕 N 講者提示

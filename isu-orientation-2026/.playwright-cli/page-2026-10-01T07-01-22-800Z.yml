@@ -1,0 +1,31 @@
+- generic [active] [ref=f2e1]:
+  - main "新生說明會簡報 / Orientation presentation / Bài trình chiếu định hướng" [ref=f2e2]:
+    - region "第 6 頁：加入嘉暐主任的 LINE Channel" [ref=f2e4]:
+      - generic [ref=f2e6]:
+        - generic [ref=f2e7]: 義守大學
+        - generic [ref=f2e8]: I-SHOU UNIVERSITY
+      - heading "加入嘉暐主任的 LINE Channel" [level=2] [ref=f2e9]
+      - generic [ref=f2e10]:
+        - paragraph [ref=f2e11]: Join Director Chia-Wei’s LINE Channel
+        - paragraph [ref=f2e12]: Tham gia LINE Channel của Chủ nhiệm Chia-Wei
+      - generic [ref=f2e13]:
+        - generic [ref=f2e15]:
+          - paragraph [ref=f2e16]: 請加入我的 LINE Channel，讓我們保持聯繫。
+          - paragraph [ref=f2e17]: Join my LINE Channel and stay connected.
+          - paragraph [ref=f2e18]: Hãy tham gia LINE Channel của tôi để giữ liên lạc.
+        - generic [ref=f2e19]:
+          - link "開啟嘉暐主任的 LINE Channel / Open Director Chia-Wei’s LINE Channel / Mở LINE Channel của Chủ nhiệm Chia-Wei" [ref=f2e20] [cursor=pointer]:
+            - /url: https://line.me/ti/g2/OkLw7071VhAAEJP4AsO57MDP2BSlICvvnxL17w?utm_source=invitation&utm_medium=QR_code&utm_campaign=default
+            - img "嘉暐主任的 LINE Channel QR Code / Director Chia-Wei’s LINE Channel QR code / Mã QR LINE Channel của Chủ nhiệm Chia-Wei" [ref=f2e21]
+          - paragraph [ref=f2e22]:
+            - text: 掃描 QR Code，加入 Channel
+            - generic [ref=f2e23]: Scan to join the Channel
+            - generic [ref=f2e24]: Quét mã để tham gia Channel
+      - generic [ref=f2e25]: "06"
+  - navigation "簡報操作 / Presentation controls / Điều khiển trình chiếu" [ref=f2e28]:
+    - button "上一頁 / Previous / Trang trước" [ref=f2e29] [cursor=pointer]: ←
+    - status [ref=f2e30]: 06 / 07
+    - button "下一頁 / Next / Trang sau" [ref=f2e31] [cursor=pointer]: →
+    - button "全螢幕 / Full screen / Toàn màn hình" [ref=f2e32] [cursor=pointer]: ⛶
+    - button "講者提示 / Speaker notes / Ghi chú" [ref=f2e33] [cursor=pointer]: "N"
+    - generic [ref=f2e34]: ← → 換頁 F 全螢幕 N 講者提示

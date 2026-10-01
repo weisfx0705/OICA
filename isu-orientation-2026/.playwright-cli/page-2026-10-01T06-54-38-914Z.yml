@@ -1,0 +1,33 @@
+- generic [active] [ref=e1]:
+  - main "新生說明會簡報 / Orientation presentation / Bài trình chiếu định hướng" [ref=e2]:
+    - region "第 1 頁：歡迎來到義守大學" [ref=e4]:
+      - generic [ref=e5]:
+        - img "義守大學校徽 / I-Shou University logo / Biểu trưng Đại học I-Shou" [ref=e6]
+        - generic [ref=e7]:
+          - generic [ref=e8]: 義守大學
+          - generic [ref=e9]: I-SHOU UNIVERSITY
+      - heading "歡迎來到 義守大學" [level=1] [ref=e10]: 歡迎來到義守大學
+      - generic [ref=e11]:
+        - paragraph [ref=e12]: Welcome to I-Shou University
+        - paragraph [ref=e13]: Chào mừng các bạn đến với Đại học I-Shou
+      - generic [ref=e15]:
+        - paragraph [ref=e16]: 國際專修部新生說明會
+        - paragraph [ref=e17]: International Foundation ProgramNew Student Orientation
+        - paragraph [ref=e18]: Buổi định hướng tân sinh viênChương trình dự bị quốc tế
+      - generic [ref=e19]:
+        - paragraph [ref=e20]: 2026.10.02 09:30
+        - generic [ref=e21]:
+          - paragraph [ref=e22]: 115 學年度 第 1 學期
+          - paragraph [ref=e23]: Fall Semester 2026
+          - paragraph [ref=e24]: Học kỳ 1, năm học 2026–2027
+        - paragraph [ref=e25]: 陳嘉偉 主任
+        - paragraph [ref=e26]: Director Chia-Wei Chen
+        - paragraph [ref=e27]: Chủ nhiệm Chia-Wei Chen
+      - generic [ref=e28]: "01"
+  - navigation "簡報操作 / Presentation controls / Điều khiển trình chiếu" [ref=e31]:
+    - button "上一頁 / Previous / Trang trước" [disabled] [ref=e32]: ←
+    - status [ref=e33]: 01 / 07
+    - button "下一頁 / Next / Trang sau" [ref=e34] [cursor=pointer]: →
+    - button "全螢幕 / Full screen / Toàn màn hình" [ref=e35] [cursor=pointer]: ⛶
+    - button "講者提示 / Speaker notes / Ghi chú" [ref=e36] [cursor=pointer]: "N"
+    - generic [ref=e37]: ← → 換頁 F 全螢幕 N 講者提示

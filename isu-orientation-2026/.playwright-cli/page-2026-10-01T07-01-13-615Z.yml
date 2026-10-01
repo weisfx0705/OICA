@@ -1,0 +1,31 @@
+- generic [active] [ref=f1e1]:
+  - main "新生說明會簡報 / Orientation presentation / Bài trình chiếu định hướng" [ref=f1e2]:
+    - region "第 6 頁：加入 LINE 社群" [ref=f1e4]:
+      - generic [ref=f1e6]:
+        - generic [ref=f1e7]: 義守大學
+        - generic [ref=f1e8]: I-SHOU UNIVERSITY
+      - heading "加入 LINE 社群" [level=2] [ref=f1e9]
+      - generic [ref=f1e10]:
+        - paragraph [ref=f1e11]: Join our LINE community
+        - paragraph [ref=f1e12]: Tham gia cộng đồng LINE của chúng ta
+      - generic [ref=f1e13]:
+        - generic [ref=f1e15]:
+          - paragraph [ref=f1e16]: 請加入 LINE 社群，讓我們保持聯繫。
+          - paragraph [ref=f1e17]: Join our LINE community and stay connected.
+          - paragraph [ref=f1e18]: Hãy tham gia cộng đồng LINE để giữ liên lạc với chúng tôi.
+        - generic [ref=f1e19]:
+          - link "開啟 LINE 社群 / Open LINE community / Mở cộng đồng LINE" [ref=f1e20] [cursor=pointer]:
+            - /url: https://line.me/ti/g2/OkLw7071VhAAEJP4AsO57MDP2BSlICvvnxL17w?utm_source=invitation&utm_medium=QR_code&utm_campaign=default
+            - img "LINE 社群邀請 QR Code / LINE invitation QR code / Mã QR mời tham gia LINE" [ref=f1e21]
+          - paragraph [ref=f1e22]:
+            - text: 掃描 QR Code，加入社群
+            - generic [ref=f1e23]: Scan to join on LINE
+            - generic [ref=f1e24]: Quét mã để tham gia LINE
+      - generic [ref=f1e25]: "06"
+  - navigation "簡報操作 / Presentation controls / Điều khiển trình chiếu" [ref=f1e28]:
+    - button "上一頁 / Previous / Trang trước" [ref=f1e29] [cursor=pointer]: ←
+    - status [ref=f1e30]: 06 / 07
+    - button "下一頁 / Next / Trang sau" [ref=f1e31] [cursor=pointer]: →
+    - button "全螢幕 / Full screen / Toàn màn hình" [ref=f1e32] [cursor=pointer]: ⛶
+    - button "講者提示 / Speaker notes / Ghi chú" [ref=f1e33] [cursor=pointer]: "N"
+    - generic [ref=f1e34]: ← → 換頁 F 全螢幕 N 講者提示
