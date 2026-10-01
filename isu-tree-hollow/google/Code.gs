@@ -9,7 +9,7 @@ const SETTINGS = {
   maxAudioBytes: 10 * 1024 * 1024,
   consentVersion: '2026-10-01'
 };
-const HEADERS = ['Request ID','Reference','Received (Taipei)','Name 姓名','Email','Nationality 國籍','Student ID 學號 (optional)','Reply language 回覆語言','Feeling 心情','Message 原文','Audio 錄音連結','Audio file ID','Form response ID','Transcript 逐字稿','Translation 中文摘要','Need / referral 需求與轉介','Status 處理狀態','Reply draft 回覆草稿','Replied at 回覆時間','Save state','Consent version','Consent 同意'];
+const HEADERS = ['Request ID','Reference','Received (Taipei)','Name 姓名','Email','Nationality 國籍','Student ID 學號 (optional)','Reply language 回覆語言','Feeling 心情','Message 原文','Audio 錄音連結','Audio file ID','Form response ID','Transcript 逐字稿','Translation 中文摘要','Need / referral 需求與轉介','Status 處理狀態','Reply draft 回覆草稿','Replied at 回覆時間','Save state','Consent version','Consent 同意','Future department 預計就讀科系（學生備註）'];
 const QUESTIONS = {
   requestId: 'Reference ID · 收件識別碼 · Mã tham chiếu',
   name: 'Name · 姓名 · Họ và tên',
@@ -87,7 +87,7 @@ function doPost(e) {
     const receipt = values ? values[1] : 'TH-' + Utilities.formatDate(now,'Asia/Taipei','yyyyMMdd') + '-' + data.requestId.slice(0,8).toUpperCase();
     if (!row) {
       enforceRateLimit(sheet,data.email,now);
-      const cells = [data.requestId,receipt,now,data.name,data.email,data.nationality,data.studentId,data.language,data.mood,data.message,'','','','','','','New','','','saving',data.consentVersion,'Agreed'];
+      const cells = [data.requestId,receipt,now,data.name,data.email,data.nationality,data.studentId,data.language,data.mood,data.message,'','','','','','','New','','','saving',data.consentVersion,'Agreed',data.futureDepartment || ''];
       sheet.appendRow(cells.map(safeCell)); row = sheet.getLastRow();
       sheet.getRange(row,3).setNumberFormat('yyyy-mm-dd hh:mm:ss');
       values = sheet.getRange(row,1,1,HEADERS.length).getValues()[0];
@@ -113,7 +113,8 @@ function doPost(e) {
       if (existing) responseId = existing.getId();
       else {
         let response = form.createResponse();
-        const answers = Object.assign({},data,{audioUrl,consent:'Agreed · 同意 · Đồng ý'});
+        const formMessage = data.futureDepartment ? 'Future department · 預計就讀科系 · Ngành học dự định: ' + data.futureDepartment + '\n\n' + data.message : data.message;
+        const answers = Object.assign({},data,{message:formMessage,audioUrl,consent:'Agreed · 同意 · Đồng ý'});
         Object.keys(QUESTIONS).forEach(key => {
           const value = String(answers[key] || ''); const item = form.getItemById(Number(ids[key]));
           response = response.withItemResponse(key === 'message' ? item.asParagraphTextItem().createResponse(value) : item.asTextItem().createResponse(value));
@@ -136,6 +137,9 @@ function validatePayload(data) {
   const required = {name:100,email:254,nationality:100};
   Object.keys(required).forEach(key => { if (typeof data[key] !== 'string' || !data[key].trim() || data[key].length > required[key]) throw new Error('invalid_identity'); });
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) throw new Error('invalid_email');
+  // Existing open tabs can still submit the previous payload shape.
+  // The current student page requires a self-written department name.
+  if (data.futureDepartment !== undefined && (typeof data.futureDepartment !== 'string' || !data.futureDepartment.trim() || data.futureDepartment.length > 120 || /[\r\n]/.test(data.futureDepartment))) throw new Error('invalid_department');
   const optional = {studentId:40,language:80,mood:100,message:10000};
   Object.keys(optional).forEach(key => { if (typeof data[key] !== 'string' || data[key].length > optional[key]) throw new Error('invalid_text'); });
   if (data.consent !== true || data.consentVersion !== SETTINGS.consentVersion) throw new Error('consent_required');

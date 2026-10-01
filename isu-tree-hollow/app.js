@@ -111,7 +111,7 @@
   if (validLineUrl(config.lineGroupUrl)) { $('line-group').href = config.lineGroupUrl; $('line-group').hidden = false; }
   function collect() {
     return {requestId, origin: location.origin, name: $('name').value.trim(), email: $('email').value.trim(), nationality: $('nationality').value === 'other' ? $('other-nationality').value.trim() : $('nationality').value,
-      studentId: $('studentId').value.trim(), language: $('language').value, mood: document.querySelector('[name="mood"]:checked')?.value || '', message: $('message').value.trim(), consent: $('consent').checked, consentVersion: '2026-10-01'};
+      studentId: $('studentId').value.trim(), futureDepartment: $('futureDepartment').value.trim(), language: $('language').value, mood: document.querySelector('[name="mood"]:checked')?.value || '', message: $('message').value.trim(), consent: $('consent').checked, consentVersion: '2026-10-01'};
   }
   function normalizedAudioType(file) {
     const aliases = {'audio/x-m4a':'audio/mp4','audio/wave':'audio/wav','audio/vnd.wave':'audio/wav'};
@@ -155,7 +155,7 @@
   $('identity-form').addEventListener('submit', async event => {
     event.preventDefault(); if (sending || recording || finalizing || !$('identity-form').reportValidity()) return;
     clearFeedback(); const data = collect();
-    if (!data.name || !data.nationality || !$('consent').checked || (!data.message && !audioFile)) { feedback('empty'); return; }
+    if (!data.name || !data.nationality || !data.futureDepartment || !$('consent').checked || (!data.message && !audioFile)) { feedback('empty'); return; }
     if (config.mode === 'google-form') { await openGoogleForm(data); return; }
     if (!validScriptUrl(config.appsScriptUrl)) { feedback('unavailable'); return; }
     setBusy(true);
