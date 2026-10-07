@@ -57,13 +57,16 @@
     }
 
     /* ══════════════ LANG SYSTEM ══════════════ */
-    [data-lang-en], [data-lang-vi] { display: none; }
-    body.lang-en [data-lang-zh] { display: none; }
-    body.lang-en [data-lang-en] { display: revert; }
-    body.lang-en [data-lang-vi] { display: none; }
-    body.lang-vi [data-lang-zh] { display: none; }
-    body.lang-vi [data-lang-en] { display: none; }
-    body.lang-vi [data-lang-vi] { display: revert; }
+    [data-lang-zh], [data-lang-vi] { display: none !important; }
+    [data-lang-en] { display: revert !important; }
+    body.lang-zh [data-lang-zh] { display: revert !important; }
+    body.lang-zh [data-lang-en], body.lang-zh [data-lang-vi] { display: none !important; }
+    body.lang-en [data-lang-zh] { display: none !important; }
+    body.lang-en [data-lang-en] { display: revert !important; }
+    body.lang-en [data-lang-vi] { display: none !important; }
+    body.lang-vi [data-lang-zh] { display: none !important; }
+    body.lang-vi [data-lang-en] { display: none !important; }
+    body.lang-vi [data-lang-vi] { display: revert !important; }
 
     /* ══════════════ PAGE HEADER ══════════════ */
     .page-header {
@@ -1255,12 +1258,24 @@
         justify-content: center;
       }
     }
+    .admission-notice {
+      margin: 0 0 18px;
+      padding: 12px 16px;
+      border-left: 3px solid var(--primary);
+      background: #f0f2fa;
+      color: var(--primary);
+      font-size: .85rem;
+      line-height: 1.7;
+    }
+    .admission-notice h2 { margin: 0 0 4px; font-size: inherit; }
+    .admission-notice p { margin: 0; }
+
   </style>
 
 
 
 <!-- Scroll Progress -->
-<div id="progress-bar" style="width: 100%;"></div>
+<div id="progress-bar"></div>
 
 <!-- ══════════════ PAGE HEADER ══════════════ -->
 <header class="page-header">
@@ -1276,10 +1291,22 @@
       <h1 data-lang-vi="">Khoa Dự bị Quốc tế <em>2026-2027</em></h1>
     </div>
     <div class="lang-bar">
-      <button class="lang-btn active" onclick="setLang('zh')">中文</button>
-      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('zh')">中文</button>
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
       <button class="lang-btn" onclick="setLang('vi')">Tiếng Việt</button>
     </div>
+  </div>
+  <div class="admission-notice" data-lang-zh="">
+    <h2>招生審查與錄取說明</h2>
+    <p>為保障您的就學權益與招生公平，本校之申請審查、面試及錄取決定，均由義守大學自行辦理，<strong>未委託任何校外機構、團體或個人進行招生審查或錄取作業</strong>。如有招生相關問題，歡迎直接與本校聯繫。</p>
+  </div>
+  <div class="admission-notice" data-lang-en="">
+    <h2>Application Review &amp; Admission Decisions</h2>
+    <p>To protect your rights and ensure a fair admissions process, all application reviews, interviews, and admission decisions are handled directly by I-Shou University. <strong>The University does not authorize any external agency, organization, or individual to conduct admission screening or make admission decisions on its behalf.</strong> Please contact the University directly if you have any questions regarding admission.</p>
+  </div>
+  <div class="admission-notice" data-lang-vi="">
+    <h2>Thông tin xét tuyển và quyết định trúng tuyển</h2>
+    <p>Nhằm bảo đảm quyền lợi của sinh viên và sự công bằng trong tuyển sinh, toàn bộ quá trình xét hồ sơ, phỏng vấn và quyết định trúng tuyển đều do Đại học Nghĩa Thủ trực tiếp thực hiện. <strong>Nhà trường không ủy quyền cho bất kỳ tổ chức, đơn vị hoặc cá nhân bên ngoài nào thực hiện việc xét tuyển hoặc quyết định trúng tuyển thay cho trường.</strong> Nếu có thắc mắc về tuyển sinh, vui lòng liên hệ trực tiếp với nhà trường.</p>
   </div>
   <p class="page-header-sub" data-lang-zh="">
     為外國學生打造<strong>一年華語先修 + 四年學士學位</strong>的完整升學路徑。免報名費、提供獎學金與住宿，讓你安心學習，順利銜接大學專業課程。
@@ -1378,7 +1405,7 @@
       <span data-lang-en="">Financial</span>
       <span data-lang-vi="">Tài chính</span>
     </a>
-    <a class="nav-link active" href="#contact">
+    <a class="nav-link" href="#contact">
       <span data-lang-zh="">聯絡我們</span>
       <span data-lang-en="">Contact</span>
       <span data-lang-vi="">Liên hệ</span>
@@ -1666,7 +1693,7 @@
     </div>
   </section>
 
-    <!-- ═══ SECTION 3: ADMISSION ═══ -->
+  <!-- ═══ SECTION 3: ADMISSION ═══ -->
   <section id="admission">
     <div class="sec-head">
       <div class="sec-icon-box" style="background:var(--blue-light);">03</div>
@@ -1691,11 +1718,6 @@
           <li>申請來臺於專修部先修華語每人以一次為限</li>
           <li>申請入學暫免提供語言能力證明（如有 TOCFL 成績可提交，有利分班）</li>
         </ul>
-      </div>
-
-      <div class="info-box blue">
-        <h4>招生審查與錄取說明</h4>
-        <p>為保障您的就學權益與招生公平，本校之申請審查、面試及錄取決定，均由義守大學自行辦理，<strong>未委託任何校外機構、團體或個人進行招生審查或錄取作業</strong>。如有招生相關問題，歡迎直接與本校聯繫。</p>
       </div>
 
       <div class="info-box red">
@@ -1750,11 +1772,6 @@
         </ul>
       </div>
 
-      <div class="info-box blue">
-        <h4>Application Review &amp; Admission Decisions</h4>
-        <p>To protect your rights and ensure a fair admissions process, all application reviews, interviews, and admission decisions are handled directly by I-Shou University. <strong>The University does not authorize any external agency, organization, or individual to conduct admission screening or make admission decisions on its behalf.</strong> Please contact the University directly if you have any questions regarding admission.</p>
-      </div>
-
       <div class="info-box red">
         <h4>Important Dates</h4>
         <p><strong>Fall Intake (September 2026):</strong></p>
@@ -1805,11 +1822,6 @@
           <li>Mỗi người chỉ được tham gia chương trình dự bị một lần</li>
           <li>Không cần chứng chỉ ngôn ngữ khi nộp đơn (có TOCFL sẽ giúp xếp lớp)</li>
         </ul>
-      </div>
-
-      <div class="info-box blue">
-        <h4>Thông tin xét tuyển và quyết định trúng tuyển</h4>
-        <p>Nhằm bảo đảm quyền lợi của sinh viên và sự công bằng trong tuyển sinh, toàn bộ quá trình xét hồ sơ, phỏng vấn và quyết định trúng tuyển đều do Đại học Nghĩa Thủ trực tiếp thực hiện. <strong>Nhà trường không ủy quyền cho bất kỳ tổ chức, đơn vị hoặc cá nhân bên ngoài nào thực hiện việc xét tuyển hoặc quyết định trúng tuyển thay cho trường.</strong> Nếu có thắc mắc về tuyển sinh, vui lòng liên hệ trực tiếp với nhà trường.</p>
       </div>
 
       <div class="info-box red">
@@ -1971,10 +1983,10 @@
         <button class="dept-tag" type="button" data-major="bme"><span class="dot dot-red"></span><span class="dept-name">Kỹ thuật Y sinh</span></button>
       </div>
     </div>
-    <div class="dept-hover-card" id="deptHoverCard" aria-hidden="true" style="left: 1064px; top: 336px;">
-      <div class="dept-hover-kicker" id="deptHoverKicker">科系簡介</div>
-      <div class="dept-hover-title" id="deptHoverTitle">Culinary Arts &amp; Gastronomy</div>
-      <div class="dept-hover-body" id="deptHoverBody">廚藝暨美食學學系以廚藝科學、美學與健康飲食為主軸，涵蓋中西餐、烘焙、飲調與餐飲服務，適合想投入主廚、產品研發與餐飲管理的學生。</div>
+    <div class="dept-hover-card" id="deptHoverCard" aria-hidden="true">
+      <div class="dept-hover-kicker" id="deptHoverKicker">Department Overview</div>
+      <div class="dept-hover-title" id="deptHoverTitle"></div>
+      <div class="dept-hover-body" id="deptHoverBody"></div>
     </div>
   </section>
 
@@ -2177,7 +2189,6 @@
     </div>
   </section>
 
-
   <!-- ═══ SECTION 6: HOUSING ═══ -->
   <section id="housing">
     <div class="sec-head">
@@ -2238,7 +2249,6 @@
           <li>每週日至週四晚間 10:30 進行點名</li>
           <li>如需外宿須事先申請</li>
           <li>住校期間應遵守學生宿舍生活公約與管理要點</li>
-          <li>境外生住宿保留金 1,500 元須於入境前繳交，截止時間請留意電子郵件通知</li>
         </ul>
       </div>
     </div>
@@ -2280,7 +2290,6 @@
           <li>Roll call every Sun–Thu at 10:30 PM</li>
           <li>Off-campus stays require prior approval</li>
           <li>Follow all dormitory regulations and guidelines</li>
-          <li>The NT$1,500 housing reservation fee for international students must be paid before you arrive in Taiwan; please watch your email for the deadline</li>
         </ul>
       </div>
     </div>
@@ -2322,7 +2331,6 @@
           <li>Điểm danh mỗi CN–T5 lúc 22:30</li>
           <li>Ở ngoài qua đêm phải xin phép trước</li>
           <li>Tuân thủ tất cả quy định ký túc xá</li>
-          <li>Phí giữ chỗ ký túc xá dành cho sinh viên quốc tế là 1.500 Đài tệ, phải nộp trước khi nhập cảnh; vui lòng theo dõi email để biết thời hạn</li>
         </ul>
       </div>
     </div>
@@ -2557,9 +2565,10 @@ const departmentDescriptions = {
 };
 
 function getCurrentLang() {
+  if (document.body.classList.contains('lang-zh')) return 'zh';
   if (document.body.classList.contains('lang-en')) return 'en';
   if (document.body.classList.contains('lang-vi')) return 'vi';
-  return 'zh';
+  return 'en';
 }
 
 const deptHoverCard = document.getElementById('deptHoverCard');
@@ -2611,7 +2620,8 @@ function hideDeptCard() {
 
 /* ══════════════ LANGUAGE SWITCHER ══════════════ */
 function setLang(lang) {
-  document.body.classList.remove('lang-en', 'lang-vi');
+  document.body.classList.remove('lang-zh', 'lang-en', 'lang-vi');
+  if (lang === 'zh') document.body.classList.add('lang-zh');
   if (lang === 'en') document.body.classList.add('lang-en');
   if (lang === 'vi') document.body.classList.add('lang-vi');
 
@@ -2664,7 +2674,6 @@ function toggleMobileDesc(tag) {
   const content = departmentDescriptions[key];
   if (!content) return;
 
-  // Check if this tag already has an open panel
   let panel = tag.nextElementSibling;
   if (panel && panel.classList.contains('dept-mobile-desc')) {
     if (panel.classList.contains('is-open')) {
@@ -2673,10 +2682,8 @@ function toggleMobileDesc(tag) {
     }
   }
 
-  // Close any other open panels
   closeMobileDesc();
 
-  // Create or update panel
   if (!panel || !panel.classList.contains('dept-mobile-desc')) {
     panel = document.createElement('div');
     panel.className = 'dept-mobile-desc';
@@ -2690,7 +2697,6 @@ function toggleMobileDesc(tag) {
 }
 
 document.querySelectorAll('.dept-tag[data-major]').forEach(tag => {
-  // Desktop: hover card
   tag.addEventListener('mouseenter', event => {
     if (!isMobileView()) showDeptCard(tag, event.clientX, event.clientY);
   });
@@ -2707,7 +2713,6 @@ document.querySelectorAll('.dept-tag[data-major]').forEach(tag => {
     if (!isMobileView()) hideDeptCard();
   });
 
-  // Mobile: click to expand inline description
   tag.addEventListener('click', (e) => {
     if (isMobileView()) {
       e.preventDefault();

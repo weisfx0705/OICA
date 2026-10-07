@@ -72,6 +72,7 @@ section{padding:34px 0 8px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid2>*,.grid3>*{min-width:0}
 .tag{display:inline-block;font-size:12px;padding:2px 9px;border-radius:99px;background:var(--surface-2);color:var(--ink-2);margin:0 4px 4px 0;white-space:nowrap}
 .tag.t{background:var(--accent-soft);color:var(--accent)}
 .tag.s{background:var(--saffron-soft);color:var(--saffron)}
@@ -92,6 +93,25 @@ section{padding:34px 0 8px}
 .callout b{color:var(--ink)}
 ul.tight{margin:8px 0 0;padding-left:20px}
 ul.tight li{margin:3px 0}
+
+/* Latest source-backed updates */
+.update-strip{margin-top:18px;padding:16px 18px;border-left:4px solid var(--accent)}
+.update-strip p{margin:0 0 8px;font-size:13px;color:var(--muted)}
+.airport-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.flow-step{padding:14px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line)}
+.flow-step b{display:block;font-size:15px;margin-bottom:4px}
+.flow-step span{font-size:13px;color:var(--ink-2)}
+.table-scroll{overflow-x:auto}
+.table-scroll table{min-width:580px}
+.source-note{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+@media(max-width:600px){
+  .airport-flow{grid-template-columns:1fr 1fr}
+  .table-scroll .return-table{min-width:0;table-layout:fixed;font-size:13px}
+  .return-table th:first-child{width:46%}
+  .return-table th:nth-child(2){width:29%}
+  .return-table th:nth-child(3){width:25%}
+  .return-table td,.return-table th{padding:8px 4px;overflow-wrap:anywhere}
+}
 
 /* Flight cards */
 .flight{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:12px 0 4px}
@@ -231,6 +251,7 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
 <nav class="tabs" aria-label="章節">
   <div class="wrap" id="navwrap">
     <a href="#overview">總覽</a>
+    <a href="#airport-guide">抵達換匯／Grab</a>
     <a href="#itinerary">每日行程</a>
     <a href="#map-sec">互動地圖</a>
     <a href="#gala">晚宴與出席友人</a>
@@ -242,6 +263,11 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
 </nav>
 
 <main class="wrap">
+<div class="card update-strip">
+  <p>更新於 2026/10/7 · 已整合 <a href="https://app.notion.com/p/3eeb524378fb81c6bbb2e49b9442909c" target="_blank" rel="noopener">Notion 最新筆記</a>與資料夾文件</p>
+  <span class="tag g">✓ 去回程登機證已取得</span><span class="tag g">✓ MDAC 確認信已收到</span><span class="tag g">✓ eSIM 已購買</span><span class="tag g">✓ 旅平險收據已備</span>
+  <div class="callout alert"><b>10/10 晚宴當晚就要赴機場：</b>最晚 <b>22:30 離開 KCCC</b> → 建議 <b>22:45–23:00</b> 從飯店出發（最晚 <b>23:15</b>）→ 10/11 <b>02:15 登機</b>。回程登機證要求 <b>01:55 前完成證件查驗</b>。</div>
+</div>
 
 <!-- ===== 總覽 ===== -->
 <section id="overview">
@@ -254,7 +280,11 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
         <div class="mid">4h25m<span class="plane"></span>直飛</div>
         <div class="ap r"><b>KUL</b><span>吉隆坡 KLIA 第二航廈</span><div class="time-big">21:25</div></div>
       </div>
-      <dl class="kv"><dt>訂位代號</dt><dd class="mono">BD2GQZ</dd><dt>建議抵機場</dt><dd>15:00 前（國際線需查驗護照）</dd></dl>
+      <dl class="kv"><dt>訂位代號</dt><dd class="mono">BD2GQZ</dd><dt>建議抵機場</dt><dd>15:00 前（國際線需查驗護照）</dd>
+        <dt>登機／座位</dt><dd><b>16:20 · 17E</b> · Zone 3</dd>
+        <dt>證件查驗</dt><dd><b>16:00 前</b>到 Document Check Counter</dd>
+        <dt>登機門關閉</dt><dd><b>16:40</b>；登機門尚未指定，現場看螢幕</dd></dl>
+      <div class="btns"><a class="btn primary" href="1%20%E6%A9%9F%E7%A5%A8/boarding_pass_1009.pdf" target="_blank" rel="noopener">📄 去程登機證</a><span class="tag g">已報到 · 10/7 取得</span></div>
     </div>
     <div class="card">
       <span class="tag r">回程</span><span class="tag">10/11（日）凌晨</span><span class="tag">AirAsia AK170</span>
@@ -263,7 +293,11 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
         <div class="mid">4h35m<span class="plane"></span>直飛</div>
         <div class="ap r"><b>KHH</b><span>高雄小港</span><div class="time-big">07:30</div></div>
       </div>
-      <dl class="kv"><dt>訂位代號</dt><dd class="mono">Q6RVRR</dd><dt>⚠ 日期</dt><dd>是 <b>10/10 晚宴當晚</b>深夜前往機場，不是 10/11 晚上！</dd></dl>
+      <dl class="kv"><dt>訂位代號</dt><dd class="mono">Q6RVRR</dd><dt>⚠ 日期</dt><dd>是 <b>10/10 晚宴當晚</b>深夜前往機場，不是 10/11 晚上！</dd>
+        <dt>登機／座位</dt><dd><b>02:15 · 22A</b> · Zone 3</dd>
+        <dt>證件查驗</dt><dd><b>01:55 前</b>到 Document Check Counter</dd>
+        <dt>登機門關閉</dt><dd><b>02:35</b>；登機門尚未指定，現場看螢幕</dd></dl>
+      <div class="btns"><a class="btn primary" href="1%20%E6%A9%9F%E7%A5%A8/boarding_pass_1011.pdf" target="_blank" rel="noopener">📄 回程登機證</a><span class="tag g">已報到 · 10/7 取得</span></div>
     </div>
     <div class="card">
       <span class="tag s">住宿</span><span class="tag">2 晚 · 10/9–10/11</span><span class="tag">Standard Twin Room 27㎡</span>
@@ -276,7 +310,7 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
         <dt>住客姓名</dt><dd>CHIA WEI CHEN（需與護照相符）</dd>
         <dt>現場另付</dt><dd>約 TWD 78 附加費（備少量馬幣現金）</dd>
       </dl>
-      <div class="callout info"><b>已與櫃台確認：24 小時開放。</b>10/9 預計 23:00 後才抵達入住；10/10 約 22:00–22:30 退房趕飛機。網路資訊仍寫「櫃台 07:00–23:00」，建議 10/9 登機前再用 WhatsApp 傳一次預計抵達時間。</div>
+      <div class="callout info"><b>已與櫃台確認：24 小時開放。</b>10/9 預計 23:15–23:45 抵達入住；10/10 晚宴後約 22:15–22:45 換裝、取行李並提前退房（延誤時最晚 23:10 完成）。網路資訊仍寫「櫃台 07:00–23:00」，建議 10/9 登機前再用 WhatsApp 傳一次預計抵達時間。</div>
       <div class="btns"><a class="btn primary" target="_blank" rel="noopener" href="https://wa.me/60146244596?text=Hi%2C%20this%20is%20CHIA%20WEI%20CHEN%20(booking%205651199848260965072).%20My%20flight%20lands%20at%20KLIA2%2021%3A25%20on%209%20Oct%2C%20I%20expect%20to%20arrive%20around%2023%3A15.%20Thank%20you!">💬 WhatsApp 預告晚到</a></div>
     </div>
     <div class="card">
@@ -291,6 +325,35 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
       </dl>
       <div class="btns"><a class="btn" href="#gala">查看流程與出席友人 →</a></div>
     </div>
+  </div>
+</section>
+
+<!-- ===== 抵達機場 ===== -->
+<section id="airport-guide">
+  <div class="sec-head"><span class="num">↳</span><h2>抵達 KLIA2 · 先換馬幣，再搭 Grab</h2><p>10/9 21:25 落地；出關時間先抓 22:00–22:15，實際依入境排隊情況調整。</p></div>
+  <div class="card">
+    <div class="airport-flow">
+      <div class="flow-step"><b>① 入境、海關</b><span>備妥護照與 MDAC 確認信；無託運行李，出關後到 Level 2 到達公共區。</span></div>
+      <div class="flow-step"><b>② Level 2 換匯</b><span>先找 CIMB 紅色招牌。Arrival Concourse 與 gateway@klia2 的櫃台均列為 24 小時營業。</span></div>
+      <div class="flow-step"><b>③ 下到 Level 1</b><span>跟 Transportation Hub / e-Hailing 指標，搭電梯或手扶梯到 Door 5。</span></div>
+      <div class="flow-step"><b>④ Door 5 叫 Grab</b><span>走到等候區再叫車，核對車牌；目的地 The Estella Hotel Klang。</span></div>
+    </div>
+    <div class="grid2">
+      <div>
+        <h3 style="font-size:17px">💱 泰銖 THB → 馬幣 MYR</h3>
+        <ul class="tight">
+          <li>依 Notion 規劃，先拿 <b>฿2,500–3,000</b> 詢價；日常現金目標約 <b>RM300</b>，實得金額依現場匯率與費用。</li>
+          <li>看到第一個 CIMB 就先確認換匯；若錯過，gateway@klia2 Level 2 也有櫃台。</li>
+        </ul>
+        <p class="mono" style="margin:10px 0 0">“I'd like to exchange Thai baht for Malaysian ringgit.”<br>“How much will I get for 3,000 baht?”</p>
+      </div>
+      <div>
+        <h3 style="font-size:17px">🚕 上車後前往巴生飯店</h3>
+        <p style="font-size:14px;margin:8px 0">106, Jalan Tengku Kelana, 41000 Klang。車程預估約 50–75 分鐘，另留等車與換匯時間；入住抓 23:15–23:45。若抵達延誤，用 WhatsApp 更新飯店。</p>
+        <div class="btns"><a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=CIMB+Currency+Exchange+Gateway%40KLIA2" target="_blank" rel="noopener">📍 CIMB 換匯</a><a class="btn" href="https://www.google.com/maps/search/?api=1&amp;query=KLIA2+Level+1+Door+5+Grab+e-Hailing" target="_blank" rel="noopener">📍 Door 5 上車處</a></div>
+      </div>
+    </div>
+    <p class="source-note">2026/10/7 核對：<a href="https://www.cimb.com.my/en/personal/day-to-day-banking/currency-exchange/cimb-travel-currency/cce-counters.html" target="_blank" rel="noopener">CIMB 官方櫃台資訊</a>、<a href="https://www.grab.com/global/airport-rides/klia2-kuala-lumpur-international-airport-2/" target="_blank" rel="noopener">Grab 官方上車點</a>；當天仍以現場與 App 指示為準。</p>
   </div>
 </section>
 
@@ -342,7 +405,7 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
         <li>幸運抽獎、<b>第 1 屆華教傳承守護獎</b></li>
         <li>籌委會主席黃印發博士致謝詞 → 約 22:00 結束</li>
       </ul>
-      <div class="callout warn"><b>離場時間：</b>預計 22:00 結束後離場；若流程延誤，<b>最晚 22:30 須離開會場</b>（回飯店換裝取行李，23:00 前出發往機場）。離場前記得向主辦與友人致意道別。</div>
+      <div class="callout warn"><b>離場時間：</b>預計 22:00 結束後離場；若流程延誤，<b>最晚 22:30 須離開會場</b>（回飯店換裝取行李，建議 22:45–23:00 出發，最晚 23:15）。離場前記得向主辦與友人致意道別。</div>
     </div>
     <div class="card">
       <h3 style="font-size:17px">我要帶到會場的東西</h3>
@@ -355,6 +418,24 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
       </ul>
       <div class="callout info"><b>建議準備：</b>30 秒自我介紹，代表古源光校長致意、感謝留台聯總邀請，並帶出「強化合作交流、建立穩定交流管道」（公文出差目的）。拍下校旗合照，回來寫出國報告用得到。</div>
     </div>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <h3 style="font-size:17px">晚宴後回程 · 時間底線</h3>
+    <div class="table-scroll"><table class="budget return-table">
+      <thead><tr><th>節點</th><th>建議時間</th><th>最晚時間</th></tr></thead>
+      <tbody>
+        <tr><td>離開 KCCC</td><td>10/10 22:00</td><td class="over">22:30</td></tr>
+        <tr><td>回到飯店</td><td>22:15</td><td>22:45</td></tr>
+        <tr><td>換裝、取行李、提前退房</td><td>22:15–22:45</td><td>23:10 完成</td></tr>
+        <tr><td>飯店出發往 KLIA2</td><td>22:45–23:00</td><td class="over">23:15</td></tr>
+        <tr><td>抵達 KLIA2（車程預留 50–75 分）</td><td>約 23:50–00:15</td><td>10/11 00:30</td></tr>
+        <tr><td>Document Check Counter 證件查驗</td><td>抵達後先完成，再出境安檢</td><td class="over">01:55 前</td></tr>
+        <tr><td>到登機門／登機（Zone 3，22A）</td><td>02:00 前到登機門</td><td class="over">02:15 登機</td></tr>
+        <tr><td>登機門關閉 → AK170 起飛</td><td>02:35 關門</td><td>02:55 起飛</td></tr>
+      </tbody>
+    </table></div>
+    <p class="source-note">赴機場時間依 Notion 規劃；證件查驗、登機與關門時間以 10/7 取得的回程登機證核對。線上報到已完成，仍須按登機證完成證件查驗。</p>
   </div>
 
   <h3 style="font-size:18px;margin:22px 0 10px">出席友人名單（依出席統計）</h3>
@@ -416,24 +497,24 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
   <div class="sec-head"><span class="num">07</span><h2>旅行注意事項</h2></div>
   <div class="grid2">
     <div class="card">
-      <h3 style="font-size:17px">🛂 馬來西亞數位入境卡 MDAC（尚未填寫）</h3>
+      <h3 style="font-size:17px">🛂 MDAC 已送出 · 確認信已收到</h3>
       <ul class="tight" style="font-size:14px">
-        <li><b>可填時間：抵達前 3 天內</b>，即 <b>10/6（二）起</b>到 10/9 登機前</li>
-        <li>官方網站免費：<a href="https://imigresen-online.imi.gov.my/mdac/main" target="_blank" rel="noopener">imigresen-online.imi.gov.my/mdac</a>，<b>小心收費的山寨網站</b></li>
-        <li>需填：護照資料、航班 <span class="mono">AK171</span>、抵達日 10/9、離境日 10/11、住宿地址 106 Jalan Tengku Kelana, 41000 Klang</li>
-        <li>送出後確認信會寄到 email，截圖存手機</li>
-        <li>第一次入境大多走人工櫃檯，依現場指示排隊</li>
+        <li><b>2026/10/7 10:28</b> 已收到馬來西亞移民局 Registration Acknowledgement。</li>
+        <li>確認內容：<b>10/9 入境、10/11 離境、AK171</b>；住宿地址 106, Jalan Tengku Kelana, Klang, 41000。</li>
+        <li>出發前將確認信另存手機離線，入境時備用。</li>
+        <li>如需查詢，使用<a href="https://imigresen-online.imi.gov.my/mdac/main" target="_blank" rel="noopener">移民局官方 MDAC 網站</a>。</li>
+        <li>入境通道依現場指示排隊。</li>
       </ul>
-      <div class="callout alert" id="mdacStatus"><b>提醒：</b>10/6 起就去填 MDAC，填完到清單打勾。</div>
+      <div class="callout info" id="mdacStatus"><b>✓ 文件已確認。</b>清單保留「離線保存確認信」待辦。</div>
     </div>
     <div class="card">
       <h3 style="font-size:17px">✈ 航班與機場</h3>
       <ul class="tight" style="font-size:14px">
-        <li>出發前用 AirAsia App <b>線上報到</b>；國際線櫃台可能仍需查驗護照，提早到</li>
-        <li><b>回程 AK170 的線上報到請在 10/10 白天完成</b>（國際線報到可能在起飛前 1–4 小時截止，別拖到深夜）</li>
+        <li><b>去回程已線上報到</b>，兩張登機證皆於 10/7 取得；仍須完成證件查驗</li>
+        <li>去程 <b>16:00 前</b>、回程 <b>01:55 前</b>到 Document Check Counter 查驗證件（依登機證）</li>
         <li>AirAsia <b>不含餐</b>：去程建議在小港機場先吃晚餐，或事先加購機上餐</li>
         <li>KLIA 第二航廈（舊稱 klia2）登機門很遠，安檢後步行可能 15–20 分鐘</li>
-        <li>登機門起飛前約 20 分鐘關閉 → 回程 <b>02:35 前一定要在登機門</b></li>
+        <li>去程 <b>16:20 登機／16:40 關門</b>；回程 <b>02:15 登機／02:35 關門</b>。在登機時間前抵達，不要以關門時間作到場目標</li>
         <li>電子登機證截圖保存（出差核銷可能需要）</li>
       </ul>
     </div>
@@ -442,7 +523,7 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
       <ul class="tight" style="font-size:14px">
         <li>主力用 <b>Grab</b>（出發前在台灣先下載、綁卡、確認能用）</li>
         <li>KLIA2 → 巴生飯店：約 55–60 km、50–60 分鐘，車資約 RM 70–110（深夜可能加價）</li>
-        <li>KLIA2 出關後依 App 指示到 e-hailing 上車處</li>
+        <li>KLIA2 出關先在 <b>Level 2 換匯</b>，再下到 <b>Level 1 Door 5</b>；<a href="#airport-guide">查看完整動線</a></li>
         <li>飯店 ↔ KCCC：Grab 約 5–10 分鐘，車資約 RM 6–12</li>
         <li>Grab 電子收據會寄到信箱，<b>保留作核銷</b></li>
       </ul>
@@ -451,9 +532,28 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
       <h3 style="font-size:17px">💰 錢、網路、電源</h3>
       <ul class="tight" style="font-size:14px">
         <li>幣別：馬幣 MYR（RM）。建議換現金約 <b>RM 300</b>（小吃、老咖啡店多收現金），Grab 可刷卡</li>
-        <li>網路：建議出發前買好 <b>eSIM</b>（3 天方案即可），落地即用，叫車不卡關</li>
+        <li><b>eSIM 已購買：</b>UMobile、3 日無限流量方案，使用日 10/9，NT$122；出發前確認安裝，抵達後啟用。大量流量仍受公平使用政策限制</li>
         <li>插座 <b>英規三孔 G 型、230V</b> → 一定要帶轉接頭；手機、筆電充電器多為 100–240V 可直接用</li>
         <li>小費非必要</li>
+      </ul>
+    </div>
+    <div class="card" id="phone-guide">
+      <h3 style="font-size:17px">📱 iPhone 15 Plus · 收台灣 SMS／OTP</h3>
+      <ul class="tight" style="font-size:14px">
+        <li>Notion 記錄中華電信 <b>Wi-Fi 通話已開啟</b>；路徑：設定 → 行動服務 → 中華電信 → Wi-Fi 通話。</li>
+        <li>平常上網選 <b>馬來西亞 eSIM</b>；中華電信「數據漫遊」關閉，「允許行動數據切換」關閉。</li>
+        <li>需要收 OTP：<b>飛航模式 ON → 手動開 Wi-Fi → 連飯店 Wi-Fi 或別人的熱點 → 等待中華電信 Wi-Fi Calling 連線 → 收 SMS</b>。</li>
+        <li>飛航模式會暫停 eSIM 行動數據，這時須用外部 Wi-Fi；完成後關閉飛航模式，恢復 eSIM 上網。</li>
+        <li>出發前在台灣用「飛航模式＋Wi-Fi」測試一般 SMS。若無法建立連線，換另一個 Wi-Fi 或熱點；OTP 是否送達仍依門號、網路及發送端。</li>
+      </ul>
+      <p class="source-note">依 Notion 個人設定；<a href="https://www.cht.com.tw/zh-tw/home/cht/messages/2023/0328-1700" target="_blank" rel="noopener">中華電信官方說明</a>確認支援 Wi-Fi 通話收發簡訊，並建議海外以飛航模式使用。</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:17px">🛡 旅平險文件已備</h3>
+      <ul class="tight" style="font-size:14px">
+        <li>國泰人壽「e悠遊旅平險死亡失能」，收據保費 <b>NT$167</b>。</li>
+        <li>收據記載：<b>2026/10/9 17:00 起計 2 日</b>（台灣標準時間）。</li>
+        <li>保單與繳費收據已存資料夾；保障項目、期間與條款以正式保單為準。</li>
       </ul>
     </div>
     <div class="card">
@@ -497,23 +597,24 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
       </dl>
     </div>
     <div class="card">
-      <h3 style="font-size:17px">預估 vs. 實際（已發生）</h3>
-      <table class="budget">
-        <thead><tr><th>項目</th><th class="n">預估</th><th class="n">實際</th><th class="n">差額</th></tr></thead>
+      <h3 style="font-size:17px">預估 vs. 已知費用（10/7）</h3>
+      <div class="table-scroll"><table class="budget">
+        <thead><tr><th>項目</th><th class="n">預估</th><th class="n">已知費用</th><th class="n">差額</th></tr></thead>
         <tbody>
           <tr><td>機票（含手續費）</td><td class="n">8,500</td><td class="n">9,432</td><td class="n over">+932</td></tr>
           <tr><td>住宿（含現場附加費）</td><td class="n">3,000</td><td class="n">2,640</td><td class="n under">−360</td></tr>
           <tr><td>膳雜費 USD40×3×32</td><td class="n">3,840</td><td class="n">—</td><td class="n">依規定</td></tr>
-          <tr><td>雜項（交通/禮品/網路/保險）</td><td class="n">3,500</td><td class="n" id="miscActual">待記</td><td class="n"></td></tr>
-          <tr><th>合計</th><th class="n">18,840</th><th class="n">12,072+</th><th class="n"></th></tr>
+          <tr><td>雜項（交通/禮品/網路/保險）</td><td class="n">3,500</td><td class="n" id="miscActual">289＋待記</td><td class="n"></td></tr>
+          <tr><th>合計</th><th class="n">18,840</th><th class="n">12,361＋待記</th><th class="n"></th></tr>
         </tbody>
-      </table>
-      <div class="callout warn"><b>注意：</b>機票單項超出預估 NT$932，住宿省 NT$360，總額仍在 18,840 內；核銷時若需逐項比對，可先跟會計確認能否流用。</div>
+      </table></div>
+      <p class="source-note">住宿 TWD 2,562 已付，TWD 78 為預計現場另付，合列 2,640。雜項已確認 eSIM 122＋保險 167＝289；<b>kkgift收據.pdf 是 eSIM 收據，並非禮品費</b>。交通、禮品與膳雜費尚未完整入帳。</p>
+      <div class="callout warn"><b>目前可掌握費用 NT$12,361</b>（含住宿待付附加費）；距預估 NT$18,840 尚餘 NT$6,479，但還要計入膳雜、交通與禮品。機票超出預估 NT$932、住宿較預估少 NT$360；最終核銷依校內規定確認。</div>
       <h4 style="margin:14px 0 4px;font-size:15px">核銷要留的單據</h4>
       <ul class="tight" style="font-size:14px">
-        <li>機票收據（Airpaz 1037418070）＋去回程<b>登機證</b></li>
+        <li>機票收據（Airpaz 1037418070）＋去回程<b>登機證已備</b>；實際搭乘後仍保留紀錄</li>
         <li>住宿收據；<b>發票約退房後 30 天</b>寄到 seanweibowyoung@gmail.com</li>
-        <li>Grab 電子收據、禮品收據、eSIM / 保險收據</li>
+        <li>eSIM 收據 NT$122、保險收據 NT$167 已備；Grab 電子收據與禮品收據待補</li>
         <li>晚宴照片（校旗合照）→ 出國報告用</li>
       </ul>
       <p style="font-size:12.5px;color:var(--muted);margin:8px 0 0">註：機票收據寄到 chiawei.studio@gmail.com，訂房信寄到 seanweibowyoung@gmail.com，兩個信箱都要查。</p>
@@ -522,7 +623,7 @@ footer{padding:30px 0 50px;color:var(--muted);font-size:13px;text-align:center}
 </section>
 
 </main>
-<footer>個人行程規劃 · 資料來源：核准公文、機票收據、Booking.com 訂房明細、留台聯總邀請函與出席名單。營業時間等資訊以現場為準。</footer>
+<footer>更新：2026/10/7 · 個人行程規劃<br>資料來源：Notion「2026 巴生出差」、去回程登機證、MDAC 確認信、eSIM 憑證與收據、保險文件、核准公文、機票收據、Booking.com 訂房明細、留台聯總邀請函與出席名單。<br>航班與登機門以航空公司當天公告為準；交通與店家時間為規劃值。</footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
@@ -547,11 +648,14 @@ document.getElementById('themeBtn').addEventListener('click',()=>{
 /* ---------- Countdown ---------- */
 const T=s=>new Date(s+'+08:00');
 const milestones=[
-  {t:T('2026-10-06T00:00:00'),label:'可開始填寫 MDAC'},
   {t:T('2026-10-09T15:00:00'),label:'抵達小港機場'},
+  {t:T('2026-10-09T16:20:00'),label:'AK171 登機 · 17E'},
   {t:T('2026-10-09T17:00:00'),label:'AK171 起飛'},
   {t:T('2026-10-10T18:00:00'),label:'文華之夜來賓蒞臨'},
-  {t:T('2026-10-10T23:00:00'),label:'最晚出發往機場'},
+  {t:T('2026-10-10T22:30:00'),label:'最晚離開 KCCC'},
+  {t:T('2026-10-10T23:15:00'),label:'最晚從飯店出發往機場'},
+  {t:T('2026-10-11T01:55:00'),label:'AK170 證件查驗截止'},
+  {t:T('2026-10-11T02:15:00'),label:'AK170 登機 · 22A'},
   {t:T('2026-10-11T02:55:00'),label:'AK170 起飛'},
   {t:T('2026-10-11T07:30:00'),label:'抵達高雄'}
 ];
@@ -567,21 +671,21 @@ tickCountdown();setInterval(tickCountdown,30000);
 const H='The Estella Hotel Klang, 106 Jalan Tengku Kelana, 41000 Klang';
 const days={
  d1:{date:'2026-10-09',items:[
-  {t:'出發前',h:'最後確認',p:'MDAC 已送出 ✓、AirAsia 去程線上報到 ✓、eSIM 已安裝 ✓、Grab 可用 ✓、10 份禮品與校旗已裝箱 ✓、行李秤重 ≤ 7 kg ✓'},
-  {t:'15:00',s:'2026-10-09T15:00',e:'2026-10-09T16:30',h:'抵達高雄小港機場 國際線',p:'AirAsia 櫃台查驗護照（線上報到後仍可能需要）→ 安檢 → 出境。AirAsia 不含餐，先在機場吃晚餐。',q:'高雄國際機場 國際航廈'},
-  {t:'16:30',s:'2026-10-09T16:30',e:'2026-10-09T17:00',h:'登機',p:'用 WhatsApp 傳訊息給飯店，告知約 23:15 抵達。'},
+  {t:'出發前',h:'最後確認',p:'文件已確認：MDAC 已送出、去回程登機證已取得、eSIM 已購買、旅平險收據已備。仍要確認：eSIM 安裝、Grab 登入與綁卡、禮品校旗裝箱、行李 ≤ 7 kg、手機離線文件。'},
+  {t:'15:00',s:'2026-10-09T15:00',e:'2026-10-09T16:20',h:'抵達高雄小港機場 國際線',p:'已取得登機證，仍須在 16:00 前完成 Document Check Counter 證件查驗 → 安檢 → 出境。先在機場吃晚餐；登機前 WhatsApp 飯店預告約 23:15–23:45 抵達。',q:'高雄國際機場 國際航廈'},
+  {t:'16:20',s:'2026-10-09T16:20',e:'2026-10-09T17:00',h:'AK171 登機 · 17E / Zone 3',p:'16:20 前抵達登機門，16:40 關門。登機門未指定，依機場螢幕與 AirAsia App 確認。',alert:1},
   {t:'17:00',s:'2026-10-09T17:00',e:'2026-10-09T21:25',h:'AK171 高雄 → 吉隆坡',p:'飛行約 4 小時 25 分，可在機上小睡。',key:1},
-  {t:'21:25',s:'2026-10-09T21:25',e:'2026-10-09T22:15',h:'抵達 KLIA 第二航廈',p:'入境（備妥 MDAC 確認）。無託運行李，直接出關。開啟 eSIM；若需要可在入境大廳 ATM 領少量馬幣。',q:'KLIA Terminal 2'},
-  {t:'22:15',s:'2026-10-09T22:15',e:'2026-10-09T23:15',h:'Grab 前往巴生飯店',p:'約 55–60 km、50–60 分鐘。依 App 指示到 e-hailing 上車處，核對車牌。',q:H,mode:'driving'},
-  {t:'23:15',s:'2026-10-09T23:15',e:'2026-10-10T08:30',h:'The Estella Hotel 入住',p:'櫃台已確認 24 小時開放。出示護照、Check-in 號碼 18651111191。順便告知櫃台：明晚約 22:00–22:30 會提前退房。',q:H,key:1},
+  {t:'21:25',s:'2026-10-09T21:25',e:'2026-10-09T22:15',h:'抵達 KLIA 第二航廈',p:'備妥 MDAC 確認信，入境後出關到 Level 2 Arrival 公共區。先啟用 UMobile eSIM，找 CIMB 換泰銖為馬幣；兩處 Level 2 櫃台皆列為 24 小時營業。',q:'KLIA Terminal 2'},
+  {t:'22:15',s:'2026-10-09T22:15',e:'2026-10-09T23:15',h:'Grab 前往巴生飯店',p:'換匯後依 Transportation Hub / e-Hailing 指標下到 Level 1 Door 5，走到等候區再叫車，核對車牌。車程抓 50–75 分，視入境及等車時間入住約 23:15–23:45。',q:H,mode:'driving'},
+  {t:'23:15',s:'2026-10-09T23:15',e:'2026-10-10T08:00',h:'The Estella Hotel 入住',p:'櫃台已確認 24 小時開放。出示護照、Check-in 號碼 18651111191。順便告知櫃台：明晚約 22:15–22:45 提前退房（流程延誤時最晚 23:10），確認還房卡方式。',q:H,key:1},
  ]},
  d2:{date:'2026-10-10',items:[
-  {t:'08:30',s:'2026-10-10T08:00',e:'2026-10-10T09:00',h:'睡到自然醒',p:'訂兩晚就是為了這天能好好休息。先完成「回程 AK170 線上報到」。'},
-  {t:'09:00',s:'2026-10-10T09:00',e:'2026-10-10T10:00',h:'🍲 盛發肉骨茶 Seng Huat（橋底肉骨茶）',p:'步行約 13–15 分。巴生是肉骨茶發源地，在地人習慣早上吃。營業約 07:30–12:30，常 11 點前賣完，早點去。',q:'Seng Huat Bak Kut Teh 9 Jalan Besar Klang',key:1},
-  {t:'10:00',s:'2026-10-10T10:00',e:'2026-10-10T10:30',h:'🏛 皇城橋 Jambatan Kota、巴生河畔',p:'飯後散步看巴生河與老橋。Gedung Raja Abdullah（錫礦博物館舊址）正在遷建，只能看外觀。',q:'Jambatan Kota Klang'},
-  {t:'10:30',s:'2026-10-10T10:30',e:'2026-10-10T11:10',h:'☕ 中國茶室 Chong Kok Kopitiam',p:'近百年老咖啡店，來杯 kopi 配咖椰吐司。旁邊就是巴生火車站老建築，可拍照。',q:'Chong Kok Kopitiam 5 Jalan Stesen Klang'},
-  {t:'11:10',s:'2026-10-10T11:10',e:'2026-10-10T12:10',h:'🏛 蘇丹阿都阿茲皇家藝廊 Galeri Diraja',p:'免費、有冷氣，週二至週日 10:00–17:00。認識雪蘭莪王室歷史，適合避開正午高溫。',q:'Galeri Diraja Sultan Abdul Aziz Klang'},
-  {t:'12:10',s:'2026-10-10T12:10',e:'2026-10-10T13:00',h:'🍛 小印度 Jalan Tengku Kelana 午餐',p:'飯店就在小印度街上。挑一家人多的店吃香蕉葉飯或印度煎餅；有興趣可順便看峇迪衫。',q:'Little India Jalan Tengku Kelana Klang'},
+  {t:'08:00',s:'2026-10-10T08:00',e:'2026-10-10T08:15',h:'走到 Jalan Besar / Jalan Stesen 老城區',p:'依 Notion 最新輕鬆版：少走路、別吃太飽。步行約 10–15 分；若太累就晚起，刪減景點。去回程已報到，今天只需再核對班機與登機證。',q:'Seng Huat Bak Kut Teh 9 Jalan Besar Klang'},
+  {t:'08:15',s:'2026-10-10T08:15',e:'2026-10-10T09:00',h:'🍲 盛發橋底肉骨茶早餐',p:'9 Jalan Besar。點一人份、少飯，建議 9 點前到；營業時間與是否售完以當日店家為準。',q:'Seng Huat Bak Kut Teh 9 Jalan Besar Klang',key:1},
+  {t:'09:00',s:'2026-10-10T09:00',e:'2026-10-10T09:45',h:'☕ 中國酒家茶餐室 Chong Kok Kopitiam',p:'5 Jalan Stesen。吃過肉骨茶就只喝 kopi；如果改在這裡吃早餐，可點咖椰吐司。附近火車站可順便拍照。',q:'Chong Kok Kopitiam 5 Jalan Stesen Klang'},
+  {t:'10:00',s:'2026-10-10T10:00',e:'2026-10-10T10:45',h:'🏛 皇家藝廊 Galeri Diraja',p:'Jalan Stesen。觀光局列週二至週日 10:00–17:00，室內休息看展約 30–45 分。票價與臨時休館以現場公告為準。',q:'Galeri Diraja Sultan Abdul Aziz Klang'},
+  {t:'10:45',s:'2026-10-10T10:45',e:'2026-10-10T12:00',h:'☕ Blackstone Café 坐下休息',p:'28 Jalan Stesen 1。Notion 記錄週六 09:30–18:00，出門前再確認。喝咖啡、坐著休息，不再安排長距離散步。',q:'Blackstone Cafe 28 Jalan Stesen 1 Klang'},
+  {t:'12:00',s:'2026-10-10T12:00',e:'2026-10-10T13:00',h:'Grab 回飯店 · 小份午餐',p:'中午熱，搭 Grab 回 Little India 飯店；午餐吃小份，保留晚宴食慾。',q:H,mode:'driving'},
   {t:'13:00',s:'2026-10-10T13:00',e:'2026-10-10T17:00',h:'回飯店休息',p:'午睡補眠（今晚要熬夜趕紅眼班機）。整燙正裝、清點禮品與校旗、先把行李打包好，退房時拿了就走。',key:1},
   {t:'(備選)',h:'精力充足再去：皇宮外觀與皇家清真寺',p:'Istana Alam Shah（只能看外觀）、蘇丹蘇萊曼皇家清真寺（步行約 12–15 分，需穿著得體、避開禮拜時間）。累了就跳過。',q:'Masjid Diraja Sultan Sulaiman Klang'},
   {t:'17:00',s:'2026-10-10T17:00',e:'2026-10-10T17:45',h:'盥洗、換正裝或峇迪',p:'帶上：10 份禮品、校旗、名片、行動電源、手提袋。行李先留在房間。'},
@@ -589,12 +693,12 @@ const days={
   {t:'18:00',s:'2026-10-10T18:00',e:'2026-10-10T19:00',h:'🎉 來賓蒞臨：致贈禮品、校旗合照',p:'和 5 位友人、洪進興會長、黃印發籌委會主席致意並贈禮，拍校旗合照。',q:'KCCC Convention Centre PT 1921 Lorong Gopeng Klang',key:1},
   {t:'19:00',s:'2026-10-10T19:00',e:'2026-10-10T22:00',h:'文華之夜晚宴',p:'開幕、致詞、理事就職、頒獎、抽獎。交流重點記在「出席友人」欄位。',key:1},
   {t:'22:00',s:'2026-10-10T22:00',e:'2026-10-10T22:15',h:'離場 → Grab 回飯店',p:'若流程延誤，最晚 22:30 離場。',alert:1},
-  {t:'22:15',s:'2026-10-10T22:15',e:'2026-10-10T23:00',h:'換輕便衣服、取行李、退房',p:'正裝收好，換上搭機的舒適衣服，歸還房卡。',q:H},
-  {t:'23:00',s:'2026-10-10T23:00',e:'2026-10-11T00:00',h:'⚠ 最晚出發：Grab → KLIA 第二航廈',p:'約 50–60 分鐘，深夜車少但預留緩衝。',q:'KLIA Terminal 2 Departure',mode:'driving',alert:1},
+  {t:'22:15',s:'2026-10-10T22:15',e:'2026-10-10T22:45',h:'換輕便衣服、取行李、退房',p:'正裝收好，換舒適衣服、歸還房卡。建議 22:45 完成；若晚宴延誤，最晚 23:10 完成，不要影響 23:15 出發底線。',q:H},
+  {t:'22:45',s:'2026-10-10T22:45',e:'2026-10-11T00:15',h:'Grab → KLIA2 · 最晚 23:15 出發',p:'建議 22:45–23:00 出發；車程抓 50–75 分，預計 23:50–00:15 抵達，最晚 00:30 到機場。',q:'KLIA Terminal 2 Departure',mode:'driving',alert:1},
  ]},
  d3:{date:'2026-10-11',items:[
-  {t:'00:00',s:'2026-10-11T00:00',e:'2026-10-11T02:15',h:'抵達 KLIA 第二航廈',p:'已線上報到 + 無託運 → 若 App 要求查驗證件先到櫃台，否則直接出境安檢。登機門很遠，抓 20 分鐘走路。',q:'KLIA Terminal 2'},
-  {t:'02:15',s:'2026-10-11T02:15',e:'2026-10-11T02:55',h:'登機（02:35 登機門關閉）',p:'',alert:1},
+  {t:'00:15',s:'2026-10-11T00:15',e:'2026-10-11T02:00',h:'KLIA2 證件查驗 → 出境安檢',p:'回程登機證已取得；先到 Document Check Counter，登機證要求 01:55 前完成。完成後出境安檢、往登機門，預留至少 20 分鐘步行。',q:'KLIA Terminal 2'},
+  {t:'02:00',s:'2026-10-11T02:00',e:'2026-10-11T02:55',h:'到登機門 · 02:15 登機 / 22A',p:'Zone 3；登機門未指定，依現場螢幕確認。02:35 關門，務必在 02:15 登機時間前就定位。',alert:1},
   {t:'02:55',s:'2026-10-11T02:55',e:'2026-10-11T07:30',h:'AK170 吉隆坡 → 高雄',p:'紅眼班機，眼罩、頸枕派上用場。',key:1},
   {t:'07:30',s:'2026-10-11T07:30',e:'2026-10-11T12:00',h:'抵達高雄 · 回家補眠',p:'登機證留好。之後整理單據、寫出國報告。',key:1},
  ]}
@@ -629,13 +733,14 @@ const HOTEL=[3.0392,101.4462];
 const places=[
  {id:'hotel',cat:'base',icon:'🏨',color:'#0f6b6b',name:'The Estella Hotel Klang',zh:'住宿飯店',ll:HOTEL,q:H,note:'櫃台 24 小時（已確認）。+60 14-624 4596'},
  {id:'kccc',cat:'base',icon:'🎉',color:'#d9822b',name:'KCCC Convention Centre',zh:'巴生皇城會展中心 · 文華之夜',ll:[3.0504,101.4459],q:'KCCC Convention Centre PT 1921 Lorong Gopeng Kawasan 18 41400 Klang',note:'10/10 18:00 來賓蒞臨、19:00 開始。建議 Grab 前往。',drive:1},
- {id:'bkt',cat:'food',icon:'🍲',color:'#b8433a',name:'Seng Huat Bak Kut Teh',zh:'盛發肉骨茶（橋底）',ll:[3.0467,101.4479],q:'Seng Huat Bak Kut Teh 9 Jalan Besar Klang',note:'約 07:30–12:30，常 11 點前賣完。',route:3},
- {id:'chongkok',cat:'food',icon:'☕',color:'#b8433a',name:'Chong Kok Kopitiam',zh:'中國茶室 · 百年老咖啡店',ll:[3.04255,101.44961],q:'Chong Kok Kopitiam 5 Jalan Stesen Klang',note:'kopi、咖椰吐司、半熟蛋。早上營業。',route:5},
- {id:'littleindia',cat:'food',icon:'🍛',color:'#b8433a',name:'Little India Klang',zh:'巴生小印度（飯店所在街區）',ll:[3.04037,101.4470],q:'Little India Jalan Tengku Kelana Klang',note:'香蕉葉飯、印度煎餅、甜點、峇迪衫。',route:1},
+ {id:'bkt',cat:'food',icon:'🍲',color:'#b8433a',name:'Seng Huat Bak Kut Teh',zh:'盛發肉骨茶（橋底）',ll:[3.0467,101.4479],q:'Seng Huat Bak Kut Teh 9 Jalan Besar Klang',note:'Notion 規劃 08:15 到，點一人份、少飯。營業及售完時間以店家為準。',route:1},
+ {id:'chongkok',cat:'food',icon:'☕',color:'#b8433a',name:'Chong Kok Kopitiam',zh:'中國茶室 · 百年老咖啡店',ll:[3.04255,101.44961],q:'Chong Kok Kopitiam 5 Jalan Stesen Klang',note:'5 Jalan Stesen。09:00 喝咖啡；吃過肉骨茶就不再加餐。',route:2},
+ {id:'blackstone',cat:'food',icon:'☕',color:'#b8433a',name:'Blackstone Café',zh:'Blackstone Café · 坐下休息',ll:[3.042616,101.448535],q:'Blackstone Cafe 28 Jalan Stesen 1 Klang',note:'28 Jalan Stesen 1。Notion 記錄週六 09:30–18:00，出門前再確認。',route:4},
+ {id:'littleindia',cat:'food',icon:'🍛',color:'#b8433a',name:'Little India Klang',zh:'巴生小印度（飯店所在街區）',ll:[3.04037,101.4470],q:'Little India Jalan Tengku Kelana Klang',note:'香蕉葉飯、印度煎餅、甜點、峇迪衫。中午回飯店時順看。'},
  {id:'shinlok',cat:'food',icon:'🍜',color:'#b8433a',name:'Shin Lok Kopitiam',zh:'新樂茶室（會場旁）',ll:[3.0500,101.44458],q:'Shin Lok Kopitiam 17 Jalan Gopeng Klang',note:'位在 KCCC 附近，提早到可在這裡喝杯飲料。'},
- {id:'galeri',cat:'sight',icon:'👑',color:'#5b4b9a',name:'Galeri Diraja Sultan Abdul Aziz',zh:'蘇丹阿都阿茲皇家藝廊',ll:[3.04128,101.44919],q:'Galeri Diraja Sultan Abdul Aziz Klang',note:'免費、冷氣。週二至週日 10:00–17:00。',route:6},
- {id:'bridge',cat:'sight',icon:'🌉',color:'#5b4b9a',name:'Jambatan Kota',zh:'皇城橋 · 巴生河',ll:[3.04754,101.44762],q:'Jambatan Kota Klang',note:'巴生河上的老橋，看河景。',route:4},
- {id:'gedung',cat:'sight',icon:'🏚',color:'#5b4b9a',name:'Gedung Raja Abdullah',zh:'拉惹阿都拉貨倉（錫礦博物館舊址）',ll:[3.04347,101.44756],q:'Gedung Raja Abdullah Klang',note:'2026 年遷建中，僅能看外觀。',route:2},
+ {id:'galeri',cat:'sight',icon:'👑',color:'#5b4b9a',name:'Galeri Diraja Sultan Abdul Aziz',zh:'蘇丹阿都阿茲皇家藝廊',ll:[3.04128,101.44919],q:'Galeri Diraja Sultan Abdul Aziz Klang',note:'觀光局列週二至週日 10:00–17:00；票價以現場為準。',route:3},
+ {id:'bridge',cat:'sight',icon:'🌉',color:'#5b4b9a',name:'Jambatan Kota',zh:'皇城橋 · 巴生河',ll:[3.04754,101.44762],q:'Jambatan Kota Klang',note:'巴生河上的老橋，看河景。精力足夠再去。'},
+ {id:'gedung',cat:'sight',icon:'🏚',color:'#5b4b9a',name:'Gedung Raja Abdullah',zh:'拉惹阿都拉貨倉（錫礦博物館舊址）',ll:[3.04347,101.44756],q:'Gedung Raja Abdullah Klang',note:'Notion 舊行程列為外觀備選；開放情況需另確認。'},
  {id:'mahadi',cat:'sight',icon:'🏰',color:'#5b4b9a',name:'Kota Raja Mahadi',zh:'拉惹馬哈迪古堡遺址',ll:[3.04505,101.44508],q:'Kota Raja Mahadi Klang',note:'19 世紀雪蘭莪內戰古堡遺址，順路可看。'},
  {id:'masjidindia',cat:'sight',icon:'🕌',color:'#5b4b9a',name:'Masjid India Klang',zh:'巴生印度清真寺',ll:[3.04187,101.44748],q:'Masjid India Klang Jalan Tengku Kelana',note:'小印度街上地標，看外觀即可。'},
  {id:'park',cat:'sight',icon:'🌳',color:'#5b4b9a',name:'Taman Bandar Diraja Klang',zh:'巴生皇城公園',ll:[3.03643,101.44583],q:'Taman Bandar Diraja Klang',note:'飯店旁的公園，傍晚散步。'},
@@ -777,21 +882,24 @@ document.getElementById('exportNotes').addEventListener('click',()=>{
 /* ---------- Checklist ---------- */
 const lists=[
  {h:'⏰ 出發前待辦',items:[
-  ['mdac','填寫 MDAC 馬來西亞數位入境卡','10/6（二）起可填，官方網站免費'],
-  ['ins','投保旅平險 / 海外醫療險','保留收據核銷'],
-  ['esim','購買並安裝 eSIM（3 天）',''],
+  ['mdac','填寫 MDAC（已收到確認信）','10/7 10:28 已收到；入境 10/9、離境 10/11、AK171'],
+  ['ins','投保旅平險（收據已備）','國泰人壽，保費 NT$167；保障依正式保單'],
+  ['esim','確認 UMobile eSIM 已安裝','已購買 3 日方案 NT$122；購買完成不代表已安裝'],
   ['grab','下載 Grab、綁信用卡、測試登入',''],
-  ['cash','換馬幣現金約 RM 300',''],
-  ['ci1','AirAsia 去程 AK171 線上報到','開放後即可完成'],
+  ['cash','抵達 Level 2 換馬幣，目標約 RM300','泰銖先詢價；換完下到 Level 1 Door 5 叫 Grab'],
+  ['ci1','去程 AK171 線上報到（已完成）','17E / Zone 3，16:20 登機、16:40 關門'],
   ['hotelmsg','WhatsApp 飯店預告 23:15 抵達',''],
   ['weigh','行李秤重 ≤ 7 kg（目標 6.5 kg）',''],
-  ['ci2','10/10 白天完成回程 AK170 線上報到','別拖到深夜'],
+  ['hotelout','確認晚宴後提前退房與房卡歸還','建議 22:15–22:45，最晚 23:10 完成'],
+  ['sms','台灣先測試飛航模式＋Wi-Fi 收 SMS','中華電信 Wi-Fi 通話；關閉數據漫遊與數據切換'],
+  ['ci2','回程 AK170 線上報到（已完成）','22A / Zone 3，02:15 登機；01:55 前證件查驗'],
  ]},
  {h:'🪪 證件與文件',items:[
   ['pp','護照（效期 6 個月以上）',''],
   ['pp2','護照照片頁電子檔 / 影本',''],
-  ['bp','電子登機證截圖','去程、回程都要'],
+  ['bp','去回程登機證另存手機離線','兩張 PDF 已備；確認手機無網路時可開啟'],
   ['hb','訂房確認（確認號、Check-in 號碼）',''],
+  ['mdacsave','MDAC 確認信另存手機離線','文件已收到，仍需確認手機保存'],
   ['inv','邀請函與晚宴流程（手機存檔）',''],
   ['card','信用卡 ×2（分開放）',''],
  ]},
@@ -821,6 +929,12 @@ const lists=[
  ]},
 ];
 const checks=store.get('checks',{});
+// Only document-proven completed actions are migrated; installation and packing remain user checks.
+const confirmedChecks={mdac:true,ins:true,ci1:true,ci2:true};
+if(store.get('sourceRevision',null)!=='2026-10-07-documents'){
+  Object.assign(checks,confirmedChecks);
+  store.set('checks',checks);store.set('sourceRevision','2026-10-07-documents');
+}
 document.getElementById('clgrid').innerHTML=lists.map((l,i)=>`<div class="card cl"><h3>${l.h}<span class="cnt" id="cnt${i}"></span></h3>${l.items.map(([k,t,s])=>`<label><input type="checkbox" data-k="${k}" ${checks[k]?'checked':''}><span>${esc(t)}${s?`<small>${esc(s)}</small>`:''}</span></label>`).join('')}</div>`).join('');
 function updProg(){
   const all=document.querySelectorAll('#clgrid input');const done=[...all].filter(x=>x.checked).length;
@@ -828,8 +942,8 @@ function updProg(){
   document.getElementById('progBar').style.width=(all.length?done/all.length*100:0)+'%';
   document.querySelectorAll('#clgrid .cl').forEach((c,i)=>{const ins=c.querySelectorAll('input');document.getElementById('cnt'+i).textContent=[...ins].filter(x=>x.checked).length+'/'+ins.length});
   const ms=document.getElementById('mdacStatus');
-  if(checks.mdac){ms.className='callout info';ms.innerHTML='<b>✓ MDAC 已完成。</b>確認信截圖存在手機，入境時備用。'}
-  else{ms.className='callout alert';ms.innerHTML='<b>尚未完成：</b>'+(new Date()<T('2026-10-06T00:00:00')?'10/6（二）起才能填，到時記得填寫並回來打勾。':'現在已可填寫 MDAC，請盡快完成並回來打勾。')}
+  ms.className='callout info';
+  ms.innerHTML=checks.mdacsave?'<b>✓ MDAC 已送出，確認信已另存手機。</b>入境時備用。':'<b>✓ MDAC 已送出，10/7 已收到確認信。</b>請另存手機離線，完成後勾選「MDAC 確認信另存手機離線」。';
 }
 document.getElementById('clgrid').addEventListener('change',e=>{const k=e.target.dataset.k;if(!k)return;checks[k]=e.target.checked;store.set('checks',checks);updProg()});
 document.getElementById('resetChecks').addEventListener('click',()=>{if(!confirm('確定清除所有勾選？'))return;for(const k in checks)delete checks[k];store.set('checks',checks);document.querySelectorAll('#clgrid input').forEach(x=>x.checked=false);updProg()});
