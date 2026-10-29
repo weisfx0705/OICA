@@ -20,6 +20,33 @@ function landmark(id, k, island, anim) {
       for (let i = 0; i < 3; i++) {
         k.box(1, 0.2 + i * 0.3, 1, '#F2C46D', { x: -2.8 + i * 1.1, y: at(-2, 3), z: 3 });
       }
+      // a red moon gate: the threshold into Mandarin
+      const gx = 2.6, gz = 2.4, gy = at(gx, gz);
+      const gate = new THREE.TorusGeometry(0.9, 0.22, 6, 24);
+      k.add(gate, '#C8463C', { x: gx, y: gy + 0.9, z: gz, ry: -0.6 });
+      break;
+    }
+    case 'intense-stop': {
+      // a small industrial estate: sawtooth-roof factories, an overhead crane and the partners' flags.
+      // INTENSE starts here: a company interview comes before campus study.
+      for (const [x, z, ry] of [[-2.2, -1.2, 0.2], [0.6, -2.4, 0.2], [-0.4, 1.2, 0.2]]) {
+        const y = at(x, z);
+        k.box(2.4, 1.1, 1.7, '#EEF1F4', { x, y, z, ry });
+        for (let s = 0; s < 3; s++) k.gable(0.8, 0.45, 1.75, s % 2 ? '#F7F4EC' : '#D9A23B', { x: x + (s - 1) * 0.78 * Math.cos(ry), y: y + 1.1, z: z - (s - 1) * 0.78 * Math.sin(ry), ry });
+      }
+      // overhead gantry crane over the yard
+      const cy = at(2.2, 0.6);
+      for (const dz of [-1, 1]) k.box(0.18, 2.2, 0.18, '#3A4A6B', { x: 1.2, y: cy, z: 0.6 + dz }).box(0.18, 2.2, 0.18, '#3A4A6B', { x: 3.2, y: cy, z: 0.6 + dz });
+      k.box(2.3, 0.2, 0.25, '#D9A23B', { x: 2.2, y: cy + 2.2, z: -0.4 }).box(2.3, 0.2, 0.25, '#D9A23B', { x: 2.2, y: cy + 2.2, z: 1.6 });
+      k.box(0.5, 0.3, 2.2, '#3A4A6B', { x: 2.4, y: cy + 2.0, z: 0.6 });
+      // the interview pavilion where the student meets the company
+      k.box(1.4, 1, 1.2, '#FFFFFF', { x: -2.6, y: at(-2.6, 2.6), z: 2.6 });
+      k.roof(1.7, 0.6, 1.5, '#D9A23B', { x: -2.6, y: at(-2.6, 2.6) + 1, z: 2.6 });
+      ['#2F6FA8', '#C8463C', '#3E9E86', '#E07A5F', '#6B5BB8'].forEach((c, i) => {
+        const fx = -0.6 + i * 0.75, fz = 3.4, fy = at(fx, fz);
+        k.cyl(0.03, 0.03, 1.6, '#FFFFFF', { x: fx, y: fy, z: fz }, 5);
+        k.box(0.45, 0.28, 0.03, c, { x: fx + 0.24, y: fy + 1.25, z: fz });
+      });
       break;
     }
     case 'chip': {
@@ -218,16 +245,26 @@ export class Archipelago {
       const pos = new THREE.Vector3(Math.cos(a) * ringR, (i % 2 ? 6 : -2) + Math.sin(i * 1.7) * 3, Math.sin(a) * ringR);
       this.islands.push(this.buildIsland(def, pos, i));
     });
-    this.foundation = this.buildIsland({ id: 'ifp-stop', name: { zh: '華語先修島 · IFP', en: 'Mandarin foundation · IFP' }, color: '#8FD0B0', accent: '#3E9E86', programs: [] }, new THREE.Vector3(-8, -13, 8), 9);
-    this.setLit(this.foundation, true, 0.01);
+    // Two route hubs. IFP floats on the inner ring, off to the left so the program lines from the
+    // campus don't look like they start there; the INTENSE industry island sits beside the outer ring,
+    // smaller than the degree islands, between the chip and code islands.
+    const hub = (angle, r, y) => new THREE.Vector3(Math.cos(angle) * r, y, Math.sin(angle) * r);
+    this.foundation = this.buildIsland({ id: 'ifp-stop', name: { zh: '華語先修島 · IFP', en: 'Mandarin foundation · IFP' }, color: '#E7A7A0', accent: '#3E9E86', programs: [], radius: 8.5,
+      grass: '#F7DCCB', grass2: '#F0CBB6', trees: ['#F2A7B8', '#F7C6D0', '#FFFFFF'] }, hub(THREE.MathUtils.degToRad(155), 30, -8), 9);
+    this.enterprise = this.buildIsland({ id: 'intense-stop', name: { zh: '企業島 · INTENSE', en: 'Industry island · INTENSE' }, color: '#D9A23B', accent: '#D9A23B', programs: [], radius: 7,
+      grass: '#E9D9A6', grass2: '#DDC88E', trees: ['#7FAE6E', '#6C9C62'] }, hub(THREE.MathUtils.degToRad(-50), 60, 3), 10);
+    this.hubs = [this.foundation, this.enterprise];
+    for (const h of this.hubs) this.setLit(h, true, 0.01);
   }
+
+  hubFor(bridgeId) { return bridgeId === 'ifp' ? this.foundation : bridgeId === 'intense' ? this.enterprise : null; }
 
   buildIsland(def, pos, index) {
     const q = this.quality;
-    const radius = def.programs.length > 6 ? 11.5 : 9.5;
+    const radius = def.radius ?? (def.programs.length > 6 ? 11.5 : 9.5);
     const tint = new THREE.Color(def.color);
-    const grass = new THREE.Color('#A8D08C').lerp(tint, 0.28).getStyle();
-    const grass2 = new THREE.Color('#8FC27A').lerp(tint, 0.22).getStyle();
+    const grass = def.grass ?? new THREE.Color('#A8D08C').lerp(tint, 0.28).getStyle();
+    const grass2 = def.grass2 ?? new THREE.Color('#8FC27A').lerp(tint, 0.22).getStyle();
     const hillSeed = index * 3.3;
     const base = floatingBase({ radius, seed: 20 + index * 7, segments: 34, rings: 6, grass, grass2, depth: 9 + (index % 3) * 2,
       hill: (x, z) => 0.9 * Math.exp(-((x + Math.cos(hillSeed) * 3) ** 2 + (z + Math.sin(hillSeed) * 3) ** 2) / 18), lite: q.lite });
@@ -281,11 +318,13 @@ export class Archipelago {
 
     // trees
     const r = rng(100 + index);
-    for (let i = 0; i < (q.lite ? 10 : 20); i++) {
+    const treeColors = def.trees ?? ['#6DAF6B', '#5E9E63'];
+    for (let i = 0; i < (q.lite ? 10 : 20) * (radius / 9.5); i++) {
       const a = r() * Math.PI * 2, d = radius * (0.35 + r() * 0.55);
       const x = Math.cos(a) * d, z = Math.sin(a) * d;
-      if (Math.abs(d - rr) < 1.6) continue;
-      k.tree(r() > 0.5 ? '#6DAF6B' : '#5E9E63', { x, y: base.surfaceY(x, z) - 0.12, z, s: 0.5 + r() * 0.5 }, r() > 0.7 ? 'pine' : 'round');
+      if (progs.length && Math.abs(d - rr) < 1.6) continue;
+      if (def.id === 'intense-stop' && d < radius * 0.75) continue; // keep the estate clear
+      k.tree(treeColors[Math.floor(r() * treeColors.length)], { x, y: base.surfaceY(x, z) - 0.12, z, s: 0.5 + r() * 0.5 }, def.trees ? 'round' : r() > 0.7 ? 'pine' : 'round');
     }
     const props = k.build(lambert({ color: DIM.clone() }));
     props.userData.islandId = def.id;
@@ -424,9 +463,10 @@ export class Archipelago {
     const color = new THREE.Color(BRIDGES[bridgeId].color);
     const reach = this.islands.filter((isl) => isl.def.programs.some((p) => p.bridges.includes(bridgeId)));
     const local = from.clone().sub(this.center);
-    const stops = bridgeId === 'ifp' ? [this.foundation, ...reach] : reach;
+    const hub = this.hubFor(bridgeId);
+    const stops = hub ? [hub, ...reach] : reach;
     stops.forEach((isl, i) => {
-      const start = bridgeId === 'ifp' && i > 0 ? this.foundation.group.position.clone() : local;
+      const start = hub && i > 0 ? hub.group.position.clone() : local;
       const end = isl.group.position.clone().add(new THREE.Vector3(0, -1.2, 0));
       const mid = start.clone().lerp(end, 0.5);
       mid.y += 10;
@@ -458,8 +498,8 @@ export class Archipelago {
     this.clearConnections();this.clearBridges();
     this.group.updateWorldMatrix(true,true);
     const color=BRIDGES[filter]?.color||'#4A8BD6';
-    const foundationStart=this.foundation.group.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0,3,0));
-    const startWorld=filter==='ifp'?foundationStart:(from||this.center.clone().add(new THREE.Vector3(0,1,0)));
+    const hub=this.hubFor(filter);
+    const startWorld=hub?hub.group.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0,3,0)):(from||this.center.clone().add(new THREE.Vector3(0,1,0)));
     const start=this.group.worldToLocal(startWorld.clone());
     for(const record of records){
       const island=this.byId(record.islandId),anchor=island?.programAnchors[record.programId];if(!anchor)continue;
@@ -485,7 +525,7 @@ export class Archipelago {
 
   update(dt, t) {
     this.anchoredChoice?.effect.update(dt);
-    for (const isl of [...this.islands, this.foundation]) {
+    for (const isl of [...this.islands, ...this.hubs]) {
       isl.group.position.y = isl.home.y + Math.sin(t * 0.5 + isl.phase) * 0.45 + (isl.offset ?? 0);
       isl.waterfall.userData.mat.uniforms.time.value = t;
     }

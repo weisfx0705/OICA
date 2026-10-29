@@ -62,7 +62,7 @@ with sync_playwright() as p:
  page.get_by_role('button',name='確認科系，定錨',exact=True).click();page.wait_for_function('document.querySelector(".route-preview")?.src.startsWith("data:image/jpeg")')
  assert '回家鄉創業' in page.locator('.panel.in .summary-life').inner_text()
  assert '回家鄉創業' in page.evaluate('__cardText.join(" ")')
- page.get_by_role('button',name='Language',exact=True).click();expect(page.locator('.panel.in .summary-life')).to_contain_text('Start something back home')
+ page.get_by_role('button',name='Language',exact=True).click();expect(page.locator('.panel.in .summary-life')).to_contain_text('Skills to start something back home')
  page.set_viewport_size({'width':390,'height':844});page.wait_for_timeout(300);page.screenshot(path=str(OUT/'mobile-life-summary.png'))
  assert not errors,errors
  assert not bad,bad

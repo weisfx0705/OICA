@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { ISLANDS, BRIDGES } from '../js/content.js';
 import { PROGRAM_PROFILES } from '../js/program-profiles.js';
-import { resolveBridge, programStatus, programJourney, routeEligible, studyPath } from '../js/logic.js';
+import { resolveBridge, programStatus, programJourney, routeEligible, studyPath, routeBlockers } from '../js/logic.js';
 const programs = ISLANDS.flatMap(i => i.programs);
 assert.equal(programs.length, 38);
 assert.equal(new Set(programs.map(p => p.id)).size, 38);
@@ -37,6 +37,14 @@ assert.equal(programJourney(byId('scm'),'zh').length,5);
 // the learning card keeps the whole road: IFP comes before the degree
 assert.deepEqual(studyPath(byId('che'),'ifp').map(s=>s.kind),['ifp','program']);
 assert.deepEqual(studyPath(byId('che'),'zh').map(s=>s.kind),['program']);
+assert.deepEqual(studyPath(byId('intense-mae'),'intense').map(s=>s.kind),['intense','program']);
+// a high-school answer rules INTENSE out as soon as it is given, before the other answers
+assert.deepEqual(routeBlockers('intense',{answers:{edu:'hs'}}).map(b=>b.key),['edu']);
+assert.deepEqual(routeBlockers('intense',{answers:{edu:'bachelor',lang:'zh'},country:'VN'}),[]);
+assert.deepEqual(routeBlockers('intense',{answers:{edu:'bachelor',lang:'none'},country:'US'}).map(b=>b.key),['lang','country']);
+assert.deepEqual(routeBlockers('ifp',{answers:{bg:'tw'}}).map(b=>b.key),['bg']);
+{const answers={edu:'hs',lang:'zh',bg:'none',route:'industry'};const r=resolveBridge(answers,'VN');assert.notEqual(r.primary,'intense');assert.ok(!r.alts.includes('intense'));
+ assert.ok(!byId('intense-mae')||!programStatus(byId('intense-mae'),{answers,country:'VN',bridge:r.primary}).ready);}
 assert.equal(programStatus(byId('equip'),state('en','bachelor','intense')).ready,true);
 assert.equal(routeEligible('ifp',state('none','hs','ifp','tw')),false);
 assert.equal(routeEligible('intense',state('en','college','intense')),true);

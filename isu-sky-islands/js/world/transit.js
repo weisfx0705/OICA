@@ -17,8 +17,16 @@ export function transitRoute(group, { id, points, color, closed = false, speed =
   const dots=new THREE.InstancedMesh(new THREE.SphereGeometry(radius*2.4,6,4),new THREE.MeshBasicMaterial({color:'#FFFFFF'}),stopPoints.length);
   const dummy=new THREE.Object3D();stopPoints.forEach((p,i)=>{dummy.position.copy(p);dummy.position.y+=0.08;dummy.updateMatrix();dots.setMatrixAt(i,dummy.matrix);});route.add(dots);
   const mover=new THREE.Group(); mover.name='vehicle-'+id;
-  const hull=new THREE.Mesh(new THREE.BoxGeometry(vehicle==='ferry'?0.85:0.45,0.32,vehicle==='ferry'?1.55:1.5),new THREE.MeshLambertMaterial({color}));
-  const roof=new THREE.Mesh(new THREE.BoxGeometry(vehicle==='ferry'?0.6:0.47,0.22,0.9),new THREE.MeshLambertMaterial({color:'#F8FAFC'}));roof.position.y=0.25;
-  mover.add(hull,roof);mover.position.copy(points[0]);route.add(mover);group.add(route);
+  if(vehicle==='hsr') {
+    // long white bullet train with a coloured stripe and tapered noses
+    const body=new THREE.Mesh(new THREE.CapsuleGeometry(0.17,2.4,4,10).rotateX(Math.PI/2).scale(1.15,1,1),new THREE.MeshLambertMaterial({color:'#FBFAF6'}));body.position.y=0.05;
+    const stripe=new THREE.Mesh(new THREE.BoxGeometry(0.4,0.06,2.3),new THREE.MeshLambertMaterial({color}));stripe.position.y=0.02;
+    mover.add(body,stripe);
+  } else {
+    const hull=new THREE.Mesh(new THREE.BoxGeometry(vehicle==='ferry'?0.85:0.45,0.32,vehicle==='ferry'?1.55:1.5),new THREE.MeshLambertMaterial({color}));
+    const roof=new THREE.Mesh(new THREE.BoxGeometry(vehicle==='ferry'?0.6:0.47,0.22,0.9),new THREE.MeshLambertMaterial({color:'#F8FAFC'}));roof.position.y=0.25;
+    mover.add(hull,roof);
+  }
+  mover.position.copy(points[0]);route.add(mover);group.add(route);
   return {id,group:route,curve,mover,update(t){const phase=(t*speed)%1;const k=closed?phase:(Math.sin(t*speed*Math.PI*2-Math.PI/2)+1)/2;const direction=closed?1:Math.cos(t*speed*Math.PI*2-Math.PI/2)>=0?1:-1;const p=curve.getPointAt(k);const tangent=curve.getTangentAt(k).multiplyScalar(direction);mover.position.copy(p);mover.position.y+=0.25;mover.rotation.y=Math.atan2(tangent.x,tangent.z);}};
 }

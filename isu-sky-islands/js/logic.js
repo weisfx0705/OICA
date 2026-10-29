@@ -11,6 +11,28 @@ export function routeEligible(bridge, { answers = {}, country } = {}) {
   return bg !== 'oc';
 }
 
+// What already-given answers rule a route out? Works on partial answers, so the question panel can
+// grey out a conflicting choice the moment it appears (e.g. high school + INTENSE).
+const blockReasons = {
+  'intense:edu': bi('INTENSE 需專科（D3）以上學歷，高中畢業不能選', 'INTENSE needs a D3 diploma or higher, not high school'),
+  'intense:lang': bi('INTENSE 需能以中文或英文上課', 'INTENSE needs Chinese or English study ability'),
+  'intense:bg': bi('僑生、港澳生請走僑生管道，不適用 INTENSE', 'Overseas Chinese and HK/Macau students apply through their own route, not INTENSE'),
+  'intense:country': bi('INTENSE 目前招收菲律賓、印度、印尼、越南、馬來西亞、泰國', 'INTENSE currently recruits from the Philippines, India, Indonesia, Vietnam, Malaysia and Thailand'),
+  'ifp:bg': bi('IFP 限未曾在台就學或工作的外國學生', 'IFP is for international students who have not studied or worked in Taiwan'),
+};
+export function routeBlockers(bridge, { answers = {}, country } = {}) {
+  const out = [];
+  if (bridge === 'intense') {
+    if (answers.edu && !['college', 'bachelor', 'master'].includes(answers.edu)) out.push('edu');
+    if (answers.lang && !['en', 'zh'].includes(answers.lang)) out.push('lang');
+    if (answers.bg === 'oc') out.push('bg');
+    if (country && !INTENSE_COUNTRIES.includes(country)) out.push('country');
+  }
+  if (bridge === 'ifp' && answers.bg && answers.bg !== 'none') out.push('bg');
+  return out.map((key) => ({ key, reason: blockReasons[bridge + ':' + key] }));
+}
+export const routeOfAnswer = (route) => route === 'industry' ? 'intense' : route === 'mandarin' ? 'ifp' : null;
+
 export function resolveBridge(answers, country) {
   const { lang, bg, route } = answers;
   const state = { answers, country };
@@ -53,10 +75,12 @@ export function programJourney(p, bridge) {
   return steps;
 }
 
-// The whole road the student actually takes, in order: a foundation stop (IFP) comes before the degree.
+// The whole road the student actually takes, in order: a hub stop (IFP Mandarin year, or the INTENSE
+// company interview) comes before the program itself.
 export function studyPath(program, bridge) {
   const path = [];
   if (bridge === 'ifp' && program.bridges.includes('ifp')) path.push({ kind: 'ifp', name: bi('國際專修部 IFP', 'International Foundation Program'), note: bi('1 年華語先修 · TOCFL A2', '1 Mandarin year · TOCFL A2') });
+  if (bridge === 'intense' && program.bridges.includes('intense')) path.push({ kind: 'intense', name: bi('企業島 · 合作企業面試', 'Industry island · Partner company interview'), note: bi('先取得企業認同', 'Gain company approval first') });
   path.push({ kind: 'program', name: program.name, note: levelLabel(program) });
   return path;
 }

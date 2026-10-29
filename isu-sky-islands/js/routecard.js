@@ -66,9 +66,10 @@ export async function drawRouteCard(canvas, state) {
   const name = state.name?.trim() || (zh ? '我的學習路線' : 'My route to Taiwan');
   wrap(ctx, name, W - 144).slice(0, 2).forEach((l, i) => ctx.fillText(l, 72, 300 + i * 92));
 
-  // flight route: home → Kaohsiung → (IFP Mandarin island) → degree island
+  // flight route: home → Kaohsiung → (IFP Mandarin island or INTENSE industry island) → degree island
   const path = studyPath(program, state.bridge);
-  const viaIfp = path[0].kind === 'ifp';
+  const via = path.length > 1 ? path[0].kind : null, viaIfp = !!via;
+  const hubLabel = via === 'ifp' ? [zh ? '華語島 IFP' : 'IFP Mandarin', zh ? '先修 1 年' : 'YEAR 0'] : [zh ? '企業島 INTENSE' : 'INTENSE Industry', zh ? '企業面試' : 'INTERVIEW'];
   const ry = 470;
   const pts = viaIfp ? [[130, ry + 80], [W * 0.37, ry - 4], [W * 0.63, ry - 4], [W - 130, ry + 80]] : [[150, ry + 80], [W / 2, ry - 10], [W - 150, ry + 80]];
   ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 5; ctx.setLineDash([2, 16]); ctx.lineCap = 'round';
@@ -87,7 +88,7 @@ export async function drawRouteCard(canvas, state) {
   };
   node(...pts[0], '#FFFFFF', state.homeLabel, t(UI.routeFrom).toUpperCase());
   node(...pts[1], '#FFC53A', t(UI.khh), t(UI.guanyin));
-  if (viaIfp) node(...pts[2], bridge.color, zh ? '華語島 IFP' : 'IFP Mandarin', zh ? '先修 1 年' : 'YEAR 0');
+  if (viaIfp) node(...pts[2], bridge.color, ...hubLabel);
   node(...pts[pts.length - 1], island.color, t(island.name), t(UI.future).toUpperCase());
 
   // main island card
@@ -99,12 +100,12 @@ export async function drawRouteCard(canvas, state) {
   ctx.fillText((viaIfp ? (zh ? '我的學習路徑' : 'My study path') : t(UI.program)).toUpperCase(), 110, y + 66);
   let top = y + 136;
   if (viaIfp) {
-    // step 1: the foundation year, drawn as a chip that leads into the degree
+    // step 1: the hub stop (Mandarin year or company interview), drawn as a chip that leads into the program
     const step = `① ${t(path[0].name)} · ${t(path[0].note)}`;
     ctx.font = FB(700, 25);
     const sw = Math.min(ctx.measureText(step).width + 48, W - 220);
     ctx.fillStyle = bridge.color + '22'; rr(ctx, 110, y + 92, sw, 50, 25); ctx.fill();
-    ctx.fillStyle = '#2A6E5D'; ctx.fillText(step, 134, y + 126);
+    ctx.fillStyle = via === 'ifp' ? '#2A6E5D' : '#7A5410'; ctx.fillText(step, 134, y + 126);
     ctx.fillStyle = '#36348E'; ctx.font = FB(700, 30); ctx.fillText('↓', 122, y + 182);
     top = y + 236;
   }
@@ -126,7 +127,7 @@ export async function drawRouteCard(canvas, state) {
     tx += tw + 12;
   }
   yy += 66;
-  // bridge chip (the IFP route already shows its bridge as step ①)
+  // bridge chip (IFP and INTENSE routes already show their hub as step ①)
   if (!viaIfp) {
     ctx.font = FB(700, 26);
     const bt = `${t(bridge.name)} · ${t(bridge.tag)}`;

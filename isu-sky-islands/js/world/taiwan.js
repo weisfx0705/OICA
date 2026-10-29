@@ -39,7 +39,10 @@ export const TW_PLACES = {
   hsinchu: twXZ(120.97, 24.8),
   taichung: twXZ(120.68, 24.15),
   tainan: twXZ(120.2, 23.0),
+  yunlin: twXZ(120.45, 23.7),
   kaohsiung: twXZ(120.3, 22.63),
+  eastRift: twXZ(121.5, 23.72),
+  taitung: twXZ(121.13, 22.76),
   yushan: YUSHAN,
 };
 
@@ -233,20 +236,34 @@ export function buildTaiwan(quality) {
   cities.castShadow = cities.receiveShadow = true;
   group.add(cities);
 
-  // Full western HSR corridor: Nangang/Taipei to Zuoying, sampled against the terrain.
+  // Full western HSR corridor: Nangang/Taipei to Zuoying. High-speed rail runs on a viaduct,
+  // so the deck is a smoothed envelope over the plain instead of a line that hugs every hill.
   const hsrStations = [
     ['nangang',121.607,25.053],['taipei',121.517,25.048],['banqiao',121.464,25.014],
     ['taoyuan',121.215,25.013],['hsinchu',121.040,24.808],['miaoli',120.825,24.606],
     ['taichung',120.615,24.112],['changhua',120.575,23.874],['yunlin',120.417,23.737],
     ['chiayi',120.323,23.459],['tainan',120.286,22.925],['zuoying',120.308,22.687],
   ];
-  const hsrPoints=[];
+  const hsrFlat=[];
   for(let i=0;i<hsrStations.length-1;i++) {
     const a=hsrStations[i],b=hsrStations[i+1];
-    for(let j=0;j<20;j++){const k=j/20;const p=twXZ(a[1]+(b[1]-a[1])*k,a[2]+(b[2]-a[2])*k);hsrPoints.push(new THREE.Vector3(p.x,sampleH(p)+0.45,p.y));}
+    for(let j=0;j<20;j++){const k=j/20;hsrFlat.push(twXZ(a[1]+(b[1]-a[1])*k,a[2]+(b[2]-a[2])*k));}
   }
-  const last=hsrStations[hsrStations.length-1],end=twXZ(last[1],last[2]);hsrPoints.push(new THREE.Vector3(end.x,sampleH(end)+0.45,end.y));
-  const hsr=transitRoute(group,{id:'hsr',points:hsrPoints,color:'#E66A21',radius:0.14,speed:0.018,stops:hsrStations.map(([,lon,lat])=>{const p=twXZ(lon,lat);return new THREE.Vector3(p.x,sampleH(p)+0.45,p.y);}),segments:460,surfaceHeight:(x,z)=>sampleH(new THREE.Vector2(x,z))+0.55});
+  const last=hsrStations[hsrStations.length-1],end=twXZ(last[1],last[2]);hsrFlat.push(end);
+  // ease the bends at each station into long, gentle curves (end stations stay put)
+  for(let pass=0;pass<40;pass++){const prev=hsrFlat.map(p=>p.clone());for(let i=1;i<prev.length-1;i++)hsrFlat[i].set((prev[i-1].x+2*prev[i].x+prev[i+1].x)/4,(prev[i-1].y+2*prev[i].y+prev[i+1].y)/4);}
+  const ground=hsrFlat.map(sampleH),N=ground.length;
+  const smooth=(a)=>a.map((h,i)=>(a[Math.max(0,i-1)]+2*h+a[Math.min(N-1,i+1)])/4);
+  let deck=ground.slice();
+  for(let round=0;round<5;round++){for(let pass=0;pass<30;pass++)deck=smooth(deck);deck=deck.map((h,i)=>Math.max(h,ground[i]+0.3));}
+  for(let pass=0;pass<20;pass++)deck=smooth(deck);
+  deck=deck.map(h=>h+0.3);
+  const hsrPoints=hsrFlat.map((p,i)=>new THREE.Vector3(p.x,deck[i],p.y));
+  const hsr=transitRoute(group,{id:'hsr',points:hsrPoints,color:'#E66A21',radius:0.13,speed:0.034,vehicle:'hsr',stops:hsrStations.map((_,i)=>hsrPoints[Math.min(i*20,N-1)]),segments:520});
+  // slim piers under the deck
+  const piers=[];
+  for(let i=4;i<N-2;i+=5){const p=hsrPoints[i],h=p.y-ground[i]+0.1;if(h>0.25)piers.push(place(new THREE.CylinderGeometry(0.05,0.07,h,5),{x:p.x,y:ground[i]-0.1+h/2,z:p.z}));}
+  if(piers.length){const pierMesh=new THREE.Mesh(mergeGeometries(piers),new THREE.MeshLambertMaterial({color:'#EDE6DA'}));pierMesh.castShadow=true;group.add(pierMesh);}
 
   const traCoords = [[121.52,25.04],[121.75,25.12],[121.86,24.6],[121.6,23.99],[121.4,23.35],[121.14,22.76],[120.98,22.61],[120.73,22.36],[120.54,22.36],[120.49,22.55],[120.35,22.65],[120.23,23.0],[120.32,23.47],[120.54,24.05],[120.72,24.28],[120.94,24.8],[121.25,24.95]];
   const traPoints = [];
@@ -254,7 +271,7 @@ export function buildTaiwan(quality) {
     const from=traCoords[i],to=traCoords[(i+1)%traCoords.length];
     for(let j=0;j<4;j++){const k=j/4;const p=twXZ(from[0]+(to[0]-from[0])*k,from[1]+(to[1]-from[1])*k);traPoints.push(new THREE.Vector3(p.x,sampleH(p)+0.35,p.y));}
   }
-  const tra = transitRoute(group,{id:'tra',points:traPoints,color:'#236AA7',closed:true,speed:0.018,radius:0.08});
+  const tra = transitRoute(group,{id:'tra',points:traPoints,color:'#236AA7',closed:true,speed:0.011,radius:0.08});
 
   // Tropic of Cancer as a dashed golden line across the island
   const tropicA = twXZ(119.95, 23.44), tropicB = twXZ(121.75, 23.44);
@@ -269,17 +286,19 @@ export function buildTaiwan(quality) {
   beacon.position.set(khh.x, sampleH(khh) + 3, khh.y);
   group.add(beacon);
 
+  // One topic per region, spread around the island so the labels never pile up:
+  // north Taipei, north-west Hsinchu, west Taichung, south-west Yunlin, the east rift valley, south-east Taitung.
+  const over = (p, lift) => new THREE.Vector3(p.x, sampleH(p) + lift, p.y);
   const anchors = {
-    tech: new THREE.Vector3(TW_PLACES.hsinchu.x, 6.5, TW_PLACES.hsinchu.y),
-    safe: new THREE.Vector3(TW_PLACES.taipei.x, 5.5, TW_PLACES.taipei.y),
-    food: new THREE.Vector3(TW_PLACES.tainan.x - 2, 5, TW_PLACES.tainan.y),
-    breakfast: new THREE.Vector3(TW_PLACES.taipei.x + 3, 3, TW_PLACES.taipei.y + 1),
-    travel: new THREE.Vector3(TW_PLACES.taichung.x + 5, 7, TW_PLACES.taichung.y + 4),
-    free: new THREE.Vector3(TW_PLACES.taichung.x - 1, 6, TW_PLACES.taichung.y),
+    free: over(TW_PLACES.taipei, 3.2),
+    tech: over(TW_PLACES.hsinchu, 3),
+    breakfast: over(TW_PLACES.taichung, 2.8),
+    food: over(TW_PLACES.yunlin, 2.8),
+    travel: over(TW_PLACES.eastRift, 3),
+    safe: over(TW_PLACES.taitung, 3),
     yushan: new THREE.Vector3(YUSHAN.x, sampleH(YUSHAN) + 1.2, YUSHAN.y),
     kaohsiung: new THREE.Vector3(khh.x, sampleH(khh) + 6.3, khh.y),
-    hsrTaipei: new THREE.Vector3(hsrPoints[20].x, hsrPoints[20].y + 1.5, hsrPoints[20].z),
-    hsrZuoying: new THREE.Vector3(end.x, sampleH(end)+1.8, end.y),
+    hsrTaipei: new THREE.Vector3(hsrPoints[0].x, hsrPoints[0].y + 1.1, hsrPoints[0].z),
     tropic: new THREE.Vector3(tropicB.x, 1.4, tropicB.y),
   };
 

@@ -83,12 +83,12 @@
       "zh": {
         "file": "assets/narration/life-zh.mp3",
         "ready": true,
-        "transcript": "如果你的生活有一段發生在台灣，你希望它是什麼樣子？先選一種讓你嚮往的生活。接著，我們會一起看看你想學什麼，以及哪些科系能成為這段旅程的起點。"
+        "transcript": "來台灣讀書，你最想得到什麼？是在台灣工作的機會、回家鄉創業的本事、成為兩地橋梁的能力，還是一段珍貴的相遇？先選一個。接著，我們會一起看看你想學什麼，以及哪些科系能成為這段旅程的起點。"
       },
       "en": {
         "file": "assets/narration/life-en.mp3",
         "ready": true,
-        "transcript": "Imagine part of your life taking place in Taiwan. What would you like it to be? Choose a possibility that appeals to you. Next, we’ll explore what you want to learn and the programs that could begin that journey."
+        "transcript": "What do you most hope to gain from studying in Taiwan? A chance to build a career here, the skills to start something back home, the ability to bridge two places, or meaningful friendships? Choose one. Next, we’ll explore what you want to learn and the programs that could begin that journey."
       }
     },
     "bridges": {
@@ -143,12 +143,12 @@
       "zh": {
         "file": "assets/narration/bridge-intense-zh.mp3",
         "ready": true,
-        "transcript": "新型專班 INTENSE，是與企業合作的入學路徑。2026 到 2027 年的簡章列出兩個專班：英語授課的設備工程，以及中文授課的機械與自動化工程。申請時需要符合學歷、國家與語言條件。先在校學習，再進入企業實習。在這裡選定路徑後，下一頁只需要確認你的起點條件，不用再選一次 INTENSE。"
+        "transcript": "新型專班 INTENSE，是從企業出發的入學路徑。第一站是企業島：先通過合作企業的面試、取得企業認同，才會來義守就讀。申請者需要已完成專科以上學歷，並符合國家與語言條件。2026 到 2027 年的簡章列出兩個專班：英語授課的設備工程，以及中文授課的機械與自動化工程。先在校學習一年，再到企業實習一年。選定這條路後，只要確認你的起點條件就可以了。"
       },
       "en": {
         "file": "assets/narration/bridge-intense-en.mp3",
         "ready": true,
-        "transcript": "INTENSE connects university study with industry. The 2026–27 prospectuses list two programs: Equipment Engineering taught in English, and Mechanical and Automation Engineering taught in Chinese. Applicants must meet the education, country and language requirements. Study on campus, then join a company internship. Choose this route here, and the next page will check your starting-point requirements without asking you to choose INTENSE again."
+        "transcript": "INTENSE is an admission route that starts with industry. Its first stop is the industry island: pass an interview with a partner company and gain its approval before you come to I-Shou. Applicants need a D3 diploma or higher and must meet the country and language requirements. The 2026–27 prospectuses list two programs: Equipment Engineering taught in English, and Mechanical and Automation Engineering taught in Chinese. Study on campus for one year, then intern with the company for a year. Once you choose this route, you only need to confirm your starting point."
       }
     },
     "bridge-oc": {

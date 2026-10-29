@@ -39,7 +39,7 @@ with sync_playwright() as p:
  assert page.evaluate('__app.arch.anchoredChoice.programId')=='ipai'
  page.get_by_role('button',name='Language',exact=True).click();assert page.locator('html').get_attribute('lang')=='en'
  expect(page.locator('.panel.in .journey-summary h3')).to_have_text('Your new starting point')
- expect(page.locator('.panel.in .summary-life')).to_contain_text('Start something back home')
+ expect(page.locator('.panel.in .summary-life')).to_contain_text('Skills to start something back home')
  page.set_viewport_size({'width':390,'height':844});page.wait_for_timeout(300)
  box=page.locator('.home-button').bounding_box();assert box['x']>=0 and box['x']+box['width']<=390
  with page.expect_navigation(wait_until='networkidle'):page.locator('.home-button').click()

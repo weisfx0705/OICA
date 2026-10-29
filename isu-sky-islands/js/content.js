@@ -132,10 +132,10 @@ export { TAIWAN, KAOHSIUNG_STAGE, CAMPUS } from './prelude-content.js';
 
 // 第二章：人生卡
 export const LIFE_CARDS = [
-  { id: 'stay', title: { zh: '留在台灣工作', en: 'Build a career in Taiwan' }, scene: { zh: '在高雄的科技廊帶工作，週末去旗津看海。畢業後居留證可延長找工作，留台採評點制。', en: 'working in Kaohsiung’s tech corridor, weekends by the sea in Cijin. After graduating you can extend your residence to job-hunt.' } },
-  { id: 'home', title: { zh: '回家鄉創業', en: 'Start something back home' }, scene: { zh: '帶著在台灣學到的技術與人脈，回家鄉開自己的公司。', en: 'back home, running your own company with the skills and network you built in Taiwan.' } },
-  { id: 'bridge', title: { zh: '成為兩地之間的橋梁', en: 'Be a bridge between two places' }, scene: { zh: '說兩種語言，往返兩個國家，讓兩邊的合作因你發生。', en: 'speaking two languages, flying between two countries, making things happen between them.' } },
-  { id: 'love', title: { zh: '在台灣遇見一個人', en: 'Meet someone in Taiwan' }, scene: { zh: '和在社團認識的那個人，一起在愛河邊看夕陽。', en: 'watching the sunset over Love River with the person you met in a student club.' } },
+  { id: 'stay', title: { zh: '在台灣工作的機會', en: 'A chance to build a career in Taiwan' }, scene: { zh: '在高雄的科技廊帶工作，週末去旗津看海。畢業後居留證可延長找工作，留台採評點制。', en: 'working in Kaohsiung’s tech corridor, weekends by the sea in Cijin. After graduating you can extend your residence to job-hunt.' } },
+  { id: 'home', title: { zh: '回家鄉創業的本事', en: 'Skills to start something back home' }, scene: { zh: '帶著在台灣學到的技術與人脈，回家鄉開自己的公司。', en: 'back home, running your own company with the skills and network you built in Taiwan.' } },
+  { id: 'bridge', title: { zh: '成為兩地橋梁的能力', en: 'The ability to bridge two places' }, scene: { zh: '說兩種語言，往返兩個國家，讓兩邊的合作因你發生。', en: 'speaking two languages, flying between two countries, making things happen between them.' } },
+  { id: 'love', title: { zh: '一段珍貴的相遇', en: 'Meaningful friendships and encounters' }, scene: { zh: '和在社團認識的那個人，一起在愛河邊看夕陽。', en: 'watching the sunset over Love River with the person you met in a student club.' } },
   { id: 'unsure', title: { zh: '還不確定', en: 'Not sure yet' }, scene: { zh: '還在探索，但已經知道自己能去很多地方。', en: 'still exploring — and knowing how many doors are open.' } },
 ];
 
@@ -169,9 +169,9 @@ export const QUESTIONS = [
     id: 'bg',
     title: { zh: '你的背景？', en: 'Your background?' },
     options: [
+      { id: 'none', label: { zh: '其他（例如：美國、泰國、越南、印尼等）', en: 'Others (e.g. USA, Thailand, Vietnam, Indonesia, etc.)' } },
       { id: 'oc', label: { zh: '華裔僑生，或香港、澳門學生', en: 'Overseas Chinese, or from Hong Kong / Macau' } },
       { id: 'tw', label: { zh: '以前在台灣讀書或工作過', en: 'I’ve studied or worked in Taiwan before' } },
-      { id: 'none', label: { zh: '都不是', en: 'Neither' } },
     ],
   },
 ];
@@ -374,7 +374,7 @@ export const UI = {
   narr1: { zh: '這些島，是你可能的未來。', en: 'These islands are your possible futures.' },
   futureTitle: { zh:'選一座學習島，先看看裡面有哪些科系。找到喜歡的方向後，再來認識你的出發點與入學橋。', en:'Choose a field of study and preview its programs. Then explore your starting point and admission bridge.' },
   learningPick: { zh:'想探索哪一種學習？', en:'What would you like to learn?' },
-  lifePick: { zh: '你想過什麼樣的生活？', en: 'What kind of life do you want?' },
+  lifePick: { zh: '你想在台灣得到什麼？', en: 'What do you hope to gain in Taiwan?' },
   bridgeTitle: { zh:'從你的出發點，找到入學橋', en:'Find a bridge from your starting point' },
   yourBridge: { zh: '你的橋', en: 'Your bridge' },
   otherBridges: { zh: '其他可能的路', en: 'Other paths' },
@@ -416,7 +416,7 @@ export const UI = {
   routeFrom: { zh: '從', en: 'From' },
   routeTo: { zh: '飛向高雄', en: 'to Kaohsiung' },
   future: { zh: '未來', en: 'Future' },
-  life: { zh: '人生', en: 'Life' },
+  life: { zh: '我想得到', en: 'I hope to gain' },
   program: { zh: '系所', en: 'Program' },
   timeline: { zh: '時間線', en: 'Timeline' },
   askSubject: { zh: '我的空中群島路線卡', en: 'My Islands in the Sky route' },
