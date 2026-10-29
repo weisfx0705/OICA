@@ -489,3 +489,30 @@ html[lang^='zh'] .caption { letter-spacing: 0.06em; }
 .phase-ribbon { display:flex; align-items:center; gap:9px; }
 .phase-ribbon svg { width:32px; height:27px; flex-shrink:0; }
 .anchor-hint { padding:12px 14px; border-radius:12px; background:#FFF2C8; color:#73531C !important; font-size:12px !important; line-height:1.7; }
+/* Saved hearts stay visible in the list as well as inside the topic. */
+.topic-choices { display:grid; gap:8px; margin:8px 0 16px; }
+.topic-choice { display:flex; align-items:stretch; border:1px solid #CCD0EA; border-radius:18px; overflow:hidden; background:#FFFFFFBD; }
+.topic-choice .topic-open { flex:1; min-width:0; text-align:left; box-shadow:none; border-radius:0; background:transparent; padding:12px 14px; }
+.topic-choice .topic-open.on { background:#36348E; color:#FFF; }
+.topic-choice.saved { border-color:#BC6985; background:#FFF0F5; box-shadow:inset 0 0 0 1px #BC6985; }
+.topic-heart { flex-shrink:0; width:48px; min-width:48px; padding:0; border:0; border-left:1px solid #E5CCD5; border-radius:0; background:#FFF7FA; justify-content:center; }
+.topic-heart.on { background:#B94F70; }
+.chapter-like-row .heart-button:not(.on) .heart-icon { animation:heart-invite 1.5s ease-in-out infinite; }
+.topic-heart:not(.on) .heart-icon { animation:heart-invite-small 2s ease-in-out infinite; }
+@keyframes heart-invite { 0%,65%,100%{transform:translateY(0) scale(1)} 25%{transform:translateY(-6px) scale(1.16)} 43%{transform:translateY(0) scale(1.04)} }
+@keyframes heart-invite-small { 0%,75%,100%{transform:translateY(0)} 30%{transform:translateY(-3px)} }
+.summary-life { padding:10px 0; margin-bottom:8px !important; font-size:13px !important; border-top:1px solid #DFC3CC; color:#674B58 !important; }
+@media(prefers-reduced-motion:reduce) { .heart-icon { animation:none !important; } }
+.map-tools { position:fixed;left:20px;bottom:78px;display:flex;gap:7px;z-index:4; }
+.map-tools .btn { min-height:40px;padding:0 14px;font-size:12px;background:#FFFFF4ED;box-shadow:var(--shadow); }
+.connection-controls { margin:12px 0 18px;padding:12px;border:1px solid #B6C8D7;border-radius:14px;background:#F2F8FDDD; }
+.connection-controls .note { font-size:11px!important;margin-bottom:8px; }
+.connection-controls .chip { padding:8px 11px;font-size:12px;min-height:38px; }
+@media(max-width:760px) { .map-tools {top:142px;bottom:auto;left:10px;flex-wrap:wrap;max-width:calc(100vw - 100px);}.map-tools .btn{font-size:10px;min-height:34px;padding:0 10px;} }
+.route-requirement { padding:12px 14px; border:1px solid #C99439; border-radius:12px; background:#FFF1CE; color:#6E4A15!important; font-size:12px!important; line-height:1.7; }
+.selected-route { display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+.selected-route .btn { min-height:32px; font-size:11px; padding:0 10px; }
+.chip[data-map-filter=en].on { background:#3477B7; color:#FFF; }
+.chip[data-map-filter=zh].on { background:#AA5845; color:#FFF; }
+.chip[data-map-filter=ifp].on { background:#2B8068; color:#FFF; }
+.chip[data-map-filter=intense].on { background:#A77722; color:#FFF; }

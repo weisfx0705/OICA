@@ -6,7 +6,7 @@ const bi = (zh, en) => ({ zh, en });
 export function routeEligible(bridge, { answers = {}, country } = {}) {
   const { edu, bg } = answers;
   if (bridge === 'ifp') return bg === 'none' && !!edu;
-  if (bridge === 'intense') return bg !== 'oc' && INTENSE_COUNTRIES.includes(country) && ['bachelor', 'master'].includes(edu);
+  if (bridge === 'intense') return answers.lang === 'en' && bg !== 'oc' && INTENSE_COUNTRIES.includes(country) && ['bachelor', 'master'].includes(edu);
   if (bridge === 'oc') return bg === 'oc';
   return bg !== 'oc';
 }
@@ -51,4 +51,11 @@ export function programJourney(p, bridge) {
     steps[2] = { ...steps[2], body: bi(steps[2].body.zh + '；升大二須達 TOCFL B1。', steps[2].body.en + '; TOCFL B1 is required for Year 2.') };
   }
   return steps;
+}
+
+export function matchesConnectionFilter(program,filter) {
+  if(filter==='all')return true;
+  if(filter==='ifp')return program.bridges.includes('ifp');
+  if(filter==='intense')return program.bridges.includes('intense') && program.lang==='en';
+  return program.lang===filter;
 }

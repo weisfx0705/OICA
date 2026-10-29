@@ -117,15 +117,15 @@ export async function drawRouteCard(canvas, state) {
 
   // A concise, deterministic record of the player's own hearts and choices.
   y=1196;
-  ctx.fillStyle='rgba(255,255,255,0.92)';rr(ctx,60,y,W-120,190,32);ctx.fill();
-  ctx.fillStyle='#A64862';ctx.font=FB(700,22);const savedLikes=likedSummary(state.likes,I18N.lang);ctx.fillText(savedLikes.length?(zh?'♥ 我帶走的喜歡':'♥ WHAT I LOVE'):(zh?'我的學習選擇':'MY STUDY CHOICE'),94,y+40);
-  let rows=savedLikes.map(r=>r.label+' · '+r.text);
-  if(!rows.length)rows=[t(UI.life)+' · '+t(life.title),t(island.name),zh?'帶著好奇，向新的學習生活出發。':'Begin a new chapter with curiosity.'];
+  ctx.fillStyle='rgba(255,255,255,0.92)';rr(ctx,60,y,W-120,230,32);ctx.fill();
+  ctx.fillStyle='#A64862';ctx.font=FB(700,22);const savedLikes=likedSummary(state.likes,I18N.lang);ctx.fillText(savedLikes.length?(zh?'我的生活與喜歡':'MY LIFE & WHAT I LOVE'):(zh?'我的學習選擇':'MY STUDY CHOICE'),94,y+40);
+  let rows=[t(UI.life)+' · '+t(life.title),...savedLikes.map(r=>r.label+' · '+r.text)];
+  if(!savedLikes.length)rows=[t(UI.life)+' · '+t(life.title),t(island.name),zh?'帶著好奇，向新的學習生活出發。':'Begin a new chapter with curiosity.'];
   ctx.fillStyle='#23215F';ctx.font=FB(500,26);
-  rows.slice(0,3).forEach((row,i)=>{let line=row;while(ctx.measureText(line).width>W-190&&line.length>3)line=line.slice(0,-2);if(line!==row)line+='…';ctx.fillText(line,94,y+80+i*39);});
+  rows.slice(0,4).forEach((row,i)=>{let line=row;while(ctx.measureText(line).width>W-190&&line.length>3)line=line.slice(0,-2);if(line!==row)line+='…';ctx.fillText(line,94,y+80+i*39);});
 
   // timeline
-  y = 1430;
+  y = 1470;
   ctx.fillStyle = '#23215F'; ctx.font = FB(700, 22);
   ctx.fillText(t(UI.timeline).toUpperCase(), 72, y);
   const steps = programJourney(program, state.bridge).map(s => t(s.title));
@@ -143,8 +143,8 @@ export async function drawRouteCard(canvas, state) {
   });
 
   // footer with QR
-  y = 1600;
-  ctx.fillStyle = 'rgba(255,255,255,0.9)'; rr(ctx, 60, y, W - 120, 250, 36); ctx.fill();
+  y = 1630;
+  ctx.fillStyle = 'rgba(255,255,255,0.9)'; rr(ctx, 60, y, W - 120, 220, 36); ctx.fill();
   const qr = window.qrcode ? window.qrcode(0, 'M') : null;
   if (qr) {
     qr.addData(META.site); qr.make();

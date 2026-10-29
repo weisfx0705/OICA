@@ -449,6 +449,31 @@ export class Archipelago {
     return reach;
   }
 
+  clearConnections() {
+    for(const mesh of this.connectionMeshes||[]){mesh.removeFromParent();mesh.geometry.dispose();mesh.material.dispose();}
+    this.connectionMeshes=[];this.connectionPreview=null;
+  }
+
+  showProgramConnections(records,{filter='en',from=null}={}) {
+    this.clearConnections();this.clearBridges();
+    this.group.updateWorldMatrix(true,true);
+    const color=BRIDGES[filter]?.color||'#4A8BD6';
+    const foundationStart=this.foundation.group.getWorldPosition(new THREE.Vector3()).add(new THREE.Vector3(0,3,0));
+    const startWorld=filter==='ifp'?foundationStart:(from||this.center.clone().add(new THREE.Vector3(0,1,0)));
+    const start=this.group.worldToLocal(startWorld.clone());
+    for(const record of records){
+      const island=this.byId(record.islandId),anchor=island?.programAnchors[record.programId];if(!anchor)continue;
+      const end=this.group.worldToLocal(anchor.getWorldPosition(new THREE.Vector3()));end.y-=1;
+      const mid=start.clone().lerp(end,.55);mid.y=Math.max(start.y,end.y)+10;
+      const curve=new THREE.CatmullRomCurve3([start,start.clone().lerp(mid,.4),mid,end]);
+      const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,55,.085,5,false),new THREE.MeshBasicMaterial({color,transparent:true,opacity:.8,depthWrite:false}));
+      mesh.name='connection-'+record.programId;mesh.userData={filter,programId:record.programId,islandId:record.islandId};
+      this.group.add(mesh);this.connectionMeshes.push(mesh);
+    }
+    this.connectionPreview={filter,programIds:records.map(r=>r.programId),islandIds:[...new Set(records.map(r=>r.islandId))]};
+    return this.connectionPreview;
+  }
+
   // islands float up through the clouds, one after another
   rise(duration = 3.2) {
     this.group.visible = true;

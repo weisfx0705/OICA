@@ -14,14 +14,14 @@ with sync_playwright() as p:
  page.goto('http://127.0.0.1:8000');page.wait_for_load_state('networkidle');page.wait_for_timeout(1000)
  page.evaluate('()=>{const a=__app,f=a.flow;f.titleEl.remove();a.updaters=[];f.narrator.pause();f.toTaiwan();f.taiwanStep();}')
  for label in ['民主、自由','從早餐店']:
-  page.locator('.panel.in .chip').filter(has_text=label).click();page.locator('.panel.in .heart-button').click()
+  page.locator('.panel.in .chip').filter(has_text=label).click();page.locator('.panel.in .chapter-like-row .heart-button').click()
  assert page.evaluate('__app.flow.s.likes.size')==2
- page.locator('.panel.in .heart-button').click();assert page.evaluate('__app.flow.s.likes.size')==1
- page.locator('.panel.in .heart-button').click()
+ page.locator('.panel.in .chapter-like-row .heart-button').click();assert page.evaluate('__app.flow.s.likes.size')==1
+ page.locator('.panel.in .chapter-like-row .heart-button').click()
  page.locator('.panel.in .panel-foot button').last.click();page.wait_for_selector('.panel.in[data-key="khh-overview"]')
- page.locator('.panel.in .chip').filter(has_text='柴山').click();page.locator('.panel.in .heart-button').click()
+ page.locator('.panel.in .chip').filter(has_text='柴山').click();page.locator('.panel.in .chapter-like-row .heart-button').click()
  page.locator('.panel.in .panel-foot button').last.click();page.wait_for_selector('.panel.in[data-key="campus-overview"]')
- page.locator('.panel.in .chip').filter(has_text='元宇宙').click();page.locator('.panel.in .heart-button').click()
+ page.locator('.panel.in .chip').filter(has_text='元宇宙').click();page.locator('.panel.in .chapter-like-row .heart-button').click()
  assert page.evaluate('__app.flow.s.likes.size')==4
  page.screenshot(path=str(OUT/'heart.png'))
  page.locator('.panel.in .panel-foot button').last.click();page.wait_for_selector('.panel.in[data-key=life]')

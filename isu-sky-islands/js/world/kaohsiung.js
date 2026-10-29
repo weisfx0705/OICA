@@ -20,9 +20,9 @@ export function buildKaohsiung(quality) {
 
   // harbor basin on the west side
   const basin = new THREE.Shape();
-  basin.moveTo(-25, -12); basin.lineTo(-13, -12); basin.quadraticCurveTo(-11, 0, -13, 12); basin.lineTo(-24, 12); basin.quadraticCurveTo(-27, 0, -25, -12);
-  const water = new THREE.Mesh(new THREE.ShapeGeometry(basin, 12).rotateX(-Math.PI / 2).translate(0, y0 + 0.05, 0), new THREE.MeshLambertMaterial({ color: '#6FB3DE', emissive: '#2C6E9E', emissiveIntensity: 0.25 }));
-  water.receiveShadow = true;
+  basin.moveTo(-38,14);basin.bezierCurveTo(-30,19,-16,18,-11,12);basin.lineTo(-11,-15);basin.bezierCurveTo(-17,-22,-31,-23,-39,-15);basin.bezierCurveTo(-43,-4,-43,5,-38,14);
+  const water = new THREE.Mesh(new THREE.ShapeGeometry(basin, 12).rotateX(-Math.PI / 2).translate(0, 0.32, 0), new THREE.MeshLambertMaterial({ color: '#6FB3DE', emissive: '#2C6E9E', emissiveIntensity: 0.25 }));
+  water.receiveShadow = true;water.name='continuous-harbour-sea';water.userData.surface='sea';
   group.add(water);
   // Chaishan rises on the city's western edge; Sizihwan lies at its coastal foot.
   const chaishan = new THREE.Group();chaishan.name='chaishan-landscape';
@@ -36,7 +36,7 @@ export function buildKaohsiung(quality) {
   chaishan.add(hills.build());group.add(chaishan);
   const bayShape=new THREE.Shape();bayShape.moveTo(-31,14);bayShape.bezierCurveTo(-21,16,-20,10,-22,5);bayShape.lineTo(-30,3);bayShape.quadraticCurveTo(-34,8,-31,14);
   const bay=new THREE.Mesh(new THREE.ShapeGeometry(bayShape,24).rotateX(-Math.PI/2),new THREE.MeshLambertMaterial({color:'#70C9DC',side:THREE.DoubleSide}));
-  bay.position.y=0.18;bay.name='sizihwan-bay';group.add(bay);
+  bay.position.y=0.34;bay.name='sizihwan-bay';group.add(bay);
   const shorePoints=[];
   for(let i=0;i<=18;i++){
     const angle=Math.PI+0.12+i/18*0.36,rad=base.radiusAt(angle)*0.96;
@@ -154,10 +154,10 @@ export function buildKaohsiung(quality) {
   const orange=transitRoute(group,{id:'orange',points:[point(-11,-1),point(-5,-1),point(2,-1),point(9,-1),point(16,-1),point(22,-1)],color:'#EF8D2E',speed:0.022,radius:0.12});
   // Cijin lies across the harbour; the dotted ferry line is a schematic crossing.
   const cijinBase=floatingBase({radius:5.5,seed:31,segments:22,rings:4,depth:5,grass:'#D7DFA2',grass2:'#BED196',lite:quality.lite});
-  const cijin=new THREE.Group();cijin.position.set(-31,0.1,6);cijin.name='cijin-island';
+  const cijin=new THREE.Group();cijin.position.set(-31,0.9,6);cijin.name='cijin-island';
   cijin.add(new THREE.Mesh(cijinBase.geometry,lambert()));
   const ck=new Kit();ck.box(3,1.4,1.5,'#B9634A',{x:0,y:0.25,z:0});ck.roof(3.3,0.55,1.7,'#8E4532',{x:0,y:1.65,z:0});ck.cyl(0.5,0.7,3.3,'#FFFFFF',{x:-2,y:0.3,z:-2},10);ck.cyl(0.65,0.65,0.5,'#36348E',{x:-2,y:3.6,z:-2},10);cijin.add(ck.build());group.add(cijin);
-  const ferry=transitRoute(group,{id:'ferry',points:[point(-12,6,0.8),point(-19,7,0.8),point(-26,6,0.8)],color:'#148BB5',speed:0.025,radius:0.11,vehicle:'ferry'});
+  const ferry=transitRoute(group,{id:'ferry',points:[point(-12,6,0.28),point(-19,7,0.28),point(-26,6,0.28)],color:'#148BB5',speed:0.025,radius:0.11,vehicle:'ferry'});
   const interchange=new THREE.Mesh(new THREE.TorusGeometry(0.65,0.15,5,20).rotateX(Math.PI/2),new THREE.MeshBasicMaterial({color:'#FFFFFF'}));interchange.position.set(2,1.65,-1);group.add(interchange);
 
   // concert lights over the stadium
@@ -198,5 +198,5 @@ export function buildKaohsiung(quality) {
     beams.children.forEach((b, i) => { if (b.isMesh) b.rotation.z = Math.sin(t * 0.8 + i * 1.7) * 0.45; });
     group.position.y = Math.sin(t * 0.5) * 0.3;
   };
-  return { group, anchors, update, routes:{red,orange,ferry,lightRail:rail}, landscapes:{chaishan,sizihwan:bay,shore}, radius: R + 10 };
+  return { group, anchors, update, routes:{red,orange,ferry,lightRail:rail}, landscapes:{chaishan,sizihwan:bay,shore,harbor:water,cijin}, radius: R + 10 };
 }

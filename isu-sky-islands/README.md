@@ -112,3 +112,13 @@ API 憑證不寫入遊戲。生成資料寫入 `assets/narration/manifest.json`�
 
 驗證：`node tests/catalog.test.mjs`、`node tests/preferences.test.mjs`、`python3 tests/narrator_test.py`、`python3 tests/catalog_views_test.py`、`python3 tests/journey_test.py`。
 發布檢查：`python3 tests/deployment_test.py --game-url https://weisfx0705.github.io/OICA/isu-sky-islands/`。
+
+
+## 收藏清單與連線預覽
+
+- 台灣、高雄、校園總覽及介紹卡片，使用同一份愛心紀錄。清單右側可直接收藏，卡片內也能收藏／取消；實心愛心與粉色邊框同步顯示。未收藏愛心有輕跳提示，減少動態偏好時停用。
+- 生活想像會與收藏短摘要一起出現在定錨頁和分享圖，包含「留台工作」、「回家鄉創業」、「兩地橋梁」等原始選擇。
+- 「鳥瞰所有島嶼」切到近乎垂直的地圖視角；可回到原島。中文、英文、IFP 的連線是課程關係預覽，不會改寫玩家的背景答案；IFP 僅連到 13 個核定科系的小屋。
+- IFP／INTENSE 介紹頁可直接選擇路徑。起點頁保留它並省略重複的路徑問題；已有完整且符合的背景時直接套用，仍保留語言、學歷及身分檢核。
+- 依本次使用者確認，本版 INTENSE 僅提供英語設備工程，必須明確確認英語授課能力。舊資料中的中文機械專班不列為本版可選課程；一般機械系仍保留。現行共 37 個科系／學程入口。
+- 新檢查：`python3 tests/usability_test.py`。

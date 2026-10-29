@@ -82,7 +82,7 @@ export const BRIDGES = {
       { zh: '第 1 年・在校', en: 'Year 1 · Campus' }, { zh: '第 2 年・企業實習', en: 'Year 2 · Internship' }, { zh: '畢業・依約就業', en: 'Graduate · Employment' },
     ],
     scholarship: { zh: '政府獎學金：學雜費最長 2 年、每學期最高 NT$50,000；首次來台行政費最高 1 萬、單程機票最高 9 千。企業在校期間每月至少 NT$10,000 生活津貼；校外實習津貼不低於基本工資。', en: 'Government scholarship: tuition for up to two years (max NT$50,000 per semester), up to NT$10,000 for arrival costs and NT$9,000 for a one-way flight. Companies pay at least NT$10,000 a month while you study, and at least minimum wage during internships.' },
-    chinese: { zh: '2027 春季班：設備工程為英語授課（申請需 CEFR B1，第二年需中文 A2）；機械與自動化工程為中文授課（申請需 A2，第二年需 B1）。', en: 'Spring 2027: Equipment Engineering is English-taught (CEFR B1 at entry, Chinese A2 in Year 2); Mechanical and Automation Engineering is Chinese-taught (A2 at entry, B1 in Year 2).' },
+    chinese: { zh: '目前本遊戲的 INTENSE 僅提供英語設備工程。申請需英語 CEFR B1 以上，第二年須達中文 TOCFL A2；中文一般科系或 IFP 請選其他路徑。', en: 'This edition offers the English-taught Equipment Engineering INTENSE option. Entry requires CEFR B1 English; Chinese TOCFL A2 is required in Year 2. Explore other routes for Chinese-taught degrees or IFP.' },
   },
   oc: {
     color: '#8A6CC4',
@@ -236,7 +236,6 @@ export const ISLANDS = [
     programs: [
       { id: 'mae', name: { zh: '機械與自動化工程學系', en: 'Dept. of Mechanical and Automation Engineering' }, url: 'https://mae.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '機電整合、智慧製造、3D 列印', en: 'Mechatronics, smart manufacturing, 3D printing' } },
       { id: 'civil', name: { zh: '土木工程學系', en: 'Dept. of Civil Engineering' }, url: 'https://civil.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '結構營建、防災、永續與數位工程', en: 'Structures, disaster resilience, digital construction' } },
-      { id: 'intense-mae', name: { zh: 'INTENSE 機械與自動化工程二年制學士專班', en: 'INTENSE · Mechanical and Automation Engineering' }, url: 'https://mae.isu.edu.tw/en-US', bridges: ['intense'], lang: 'zh', campus: 'main', fee: null, level: 'intense', focus: { zh: '2027 春季班：中文授課，1 年在校＋1 年企業實習', en: 'Spring 2027: Chinese-taught, one year on campus plus one year of company internship' } },
     ],
   },
   {

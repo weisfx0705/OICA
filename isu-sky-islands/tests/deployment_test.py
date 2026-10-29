@@ -18,7 +18,11 @@ with sync_playwright() as p:
  assert urlsplit(page.evaluate('__app.flow.narrator.audio.src')).path.startswith(urlsplit(game).path+'assets/narration/')
  page.locator('.voice-toggle').click();page.wait_for_function('__app.flow.narrator.audio.paused')
  page.get_by_role('button',name='略過',exact=True).click();page.wait_for_selector('.panel.in[data-key=life]')
- page.locator('[data-life-id=unsure]').click();page.locator('.panel.in .panel-foot button').last.click()
+ page.locator('[data-life-id=home]').click();page.locator('.panel.in .panel-foot button').last.click()
+ page.locator('.panel.in [data-map-filter=ifp]').click();page.wait_for_function('__app.controls.enabled')
+ assert page.evaluate('__app.arch.connectionPreview.programIds.length')==13
+ assert page.evaluate('__app.flow.s.bridge') is None
+ page.locator('.panel.in [data-map-filter=all]').click();
  page.locator('[data-island-id=code]').click();page.wait_for_function('__app.controls.enabled')
  assert page.locator('.panel.in .program-choice.preview').count()==3
  assert page.evaluate('__app.flow.s.bridge===null')
@@ -35,6 +39,7 @@ with sync_playwright() as p:
  assert page.evaluate('__app.arch.anchoredChoice.programId')=='ipai'
  page.get_by_role('button',name='Language',exact=True).click();assert page.locator('html').get_attribute('lang')=='en'
  expect(page.locator('.panel.in .journey-summary h3')).to_have_text('Your new starting point')
+ expect(page.locator('.panel.in .summary-life')).to_contain_text('Start something back home')
  page.set_viewport_size({'width':390,'height':844});page.wait_for_timeout(300)
  box=page.locator('.home-button').bounding_box();assert box['x']>=0 and box['x']+box['width']<=390
  with page.expect_navigation(wait_until='networkidle'):page.locator('.home-button').click()
