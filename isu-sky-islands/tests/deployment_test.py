@@ -14,9 +14,9 @@ with sync_playwright() as p:
  page.goto(portal,wait_until='networkidle');card=page.locator('.nav-grid .card').first
  assert card.get_attribute('href')=='isu-sky-islands/index.html';card.click();page.wait_for_load_state('networkidle')
  page.wait_for_function('window.__app?.flow && document.querySelector(".title")');page.wait_for_timeout(900)
- page.locator('.voice-toggle').click();page.wait_for_function('!__app.flow.narrator.audio.paused&&__app.flow.narrator.audio.currentTime>0')
+ page.locator('.narration .voice-play').click();page.wait_for_function('!__app.flow.narrator.audio.paused&&__app.flow.narrator.audio.currentTime>0')
  assert urlsplit(page.evaluate('__app.flow.narrator.audio.src')).path.startswith(urlsplit(game).path+'assets/narration/')
- page.locator('.voice-toggle').click();page.wait_for_function('__app.flow.narrator.audio.paused')
+ page.locator('.narration .voice-play').click();page.wait_for_function('__app.flow.narrator.audio.paused')
  page.get_by_role('button',name='略過',exact=True).click();page.wait_for_selector('.panel.in[data-key=life]')
  page.locator('[data-life-id=home]').click();page.locator('.panel.in .panel-foot button').last.click()
  page.locator('.panel.in [data-map-filter=ifp]').click();page.wait_for_function('__app.controls.enabled')

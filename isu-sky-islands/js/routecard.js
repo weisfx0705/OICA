@@ -1,6 +1,6 @@
 import { t, I18N } from './util.js';
 import { BRIDGES, ISLANDS, LIFE_CARDS, UI, META } from './content.js';
-import { programJourney } from './logic.js';
+import { programJourney, studyPath } from './logic.js';
 import { likedSummary } from './preferences.js';
 import { PROGRAM_PROFILES } from './program-profiles.js';
 
@@ -66,22 +66,29 @@ export async function drawRouteCard(canvas, state) {
   const name = state.name?.trim() || (zh ? '我的學習路線' : 'My route to Taiwan');
   wrap(ctx, name, W - 144).slice(0, 2).forEach((l, i) => ctx.fillText(l, 72, 300 + i * 92));
 
-  // flight route: home → Kaohsiung → island
+  // flight route: home → Kaohsiung → (IFP Mandarin island) → degree island
+  const path = studyPath(program, state.bridge);
+  const viaIfp = path[0].kind === 'ifp';
   const ry = 470;
-  const pts = [[150, ry + 80], [W / 2, ry - 10], [W - 150, ry + 80]];
+  const pts = viaIfp ? [[130, ry + 80], [W * 0.37, ry - 4], [W * 0.63, ry - 4], [W - 130, ry + 80]] : [[150, ry + 80], [W / 2, ry - 10], [W - 150, ry + 80]];
   ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 5; ctx.setLineDash([2, 16]); ctx.lineCap = 'round';
-  ctx.beginPath(); ctx.moveTo(...pts[0]); ctx.quadraticCurveTo(W * 0.28, ry - 60, ...pts[1]); ctx.quadraticCurveTo(W * 0.72, ry - 60, ...pts[2]); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(...pts[0]);
+  for (let i = 1; i < pts.length; i++) ctx.quadraticCurveTo((pts[i - 1][0] + pts[i][0]) / 2, ry - 60, ...pts[i]);
+  ctx.stroke();
   ctx.setLineDash([]);
   const node = (x, y, c, label, sub) => {
     ctx.fillStyle = c; ctx.beginPath(); ctx.arc(x, y, 20, 0, Math.PI * 2); ctx.fill();
     ctx.strokeStyle = '#fff'; ctx.lineWidth = 6; ctx.stroke();
-    ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.font = F(800, 34); ctx.fillText(label, x, y + 70);
-    ctx.font = FB(500, 21); ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.fillText(sub, x, y + 102);
+    ctx.textAlign = 'center'; ctx.fillStyle = '#fff'; ctx.font = F(800, viaIfp ? 30 : 34);
+    const lines = wrap(ctx, label, viaIfp ? 230 : 300).slice(0, 2);
+    lines.forEach((l, i) => ctx.fillText(l, x, y + 66 + i * 36));
+    ctx.font = FB(500, 21); ctx.fillStyle = 'rgba(255,255,255,0.7)'; ctx.fillText(sub, x, y + 66 + lines.length * 36);
     ctx.textAlign = 'left';
   };
   node(...pts[0], '#FFFFFF', state.homeLabel, t(UI.routeFrom).toUpperCase());
   node(...pts[1], '#FFC53A', t(UI.khh), t(UI.guanyin));
-  node(...pts[2], island.color, t(island.name), t(UI.future).toUpperCase());
+  if (viaIfp) node(...pts[2], bridge.color, zh ? '華語島 IFP' : 'IFP Mandarin', zh ? '先修 1 年' : 'YEAR 0');
+  node(...pts[pts.length - 1], island.color, t(island.name), t(UI.future).toUpperCase());
 
   // main island card
   let y = 700;
@@ -89,11 +96,22 @@ export async function drawRouteCard(canvas, state) {
   rr(ctx, 60, y, W - 120, 470, 40); ctx.fill();
   ctx.fillStyle = island.color; rr(ctx, 60, y, 18, 470, 9); ctx.fill();
   ctx.fillStyle = '#36348E'; ctx.font = FB(700, 22);
-  ctx.fillText(t(UI.program).toUpperCase(), 110, y + 66);
-  ctx.fillStyle = '#23215F'; ctx.font = F(zh ? 900 : 800, zh ? 54 : 48);
-  const pl = wrap(ctx, t(program.name), W - 220).slice(0, 2);
-  pl.forEach((l, i) => ctx.fillText(l, 110, y + 136 + i * 62));
-  let yy = y + 136 + pl.length * 62 + 8;
+  ctx.fillText((viaIfp ? (zh ? '我的學習路徑' : 'My study path') : t(UI.program)).toUpperCase(), 110, y + 66);
+  let top = y + 136;
+  if (viaIfp) {
+    // step 1: the foundation year, drawn as a chip that leads into the degree
+    const step = `① ${t(path[0].name)} · ${t(path[0].note)}`;
+    ctx.font = FB(700, 25);
+    const sw = Math.min(ctx.measureText(step).width + 48, W - 220);
+    ctx.fillStyle = bridge.color + '22'; rr(ctx, 110, y + 92, sw, 50, 25); ctx.fill();
+    ctx.fillStyle = '#2A6E5D'; ctx.fillText(step, 134, y + 126);
+    ctx.fillStyle = '#36348E'; ctx.font = FB(700, 30); ctx.fillText('↓', 122, y + 182);
+    top = y + 236;
+  }
+  ctx.fillStyle = '#23215F'; ctx.font = F(zh ? 900 : 800, viaIfp ? (zh ? 46 : 42) : (zh ? 54 : 48));
+  const pl = wrap(ctx, (viaIfp ? '② ' : '') + t(program.name), W - 220).slice(0, viaIfp ? 1 : 2);
+  pl.forEach((l, i) => ctx.fillText(l, 110, top + i * 62));
+  let yy = top + pl.length * 62 + (viaIfp ? -10 : 8);
   ctx.fillStyle = '#545454'; ctx.font = FB(400, 26);
   const fl = wrap(ctx, t(program.focus), W - 220).slice(0, 1);
   fl.forEach((l, i) => ctx.fillText(l, 110, yy + i * 38));
@@ -108,19 +126,21 @@ export async function drawRouteCard(canvas, state) {
     tx += tw + 12;
   }
   yy += 66;
-  // bridge chip
-  ctx.font = FB(700, 26);
-  const bt = `${t(bridge.name)} · ${t(bridge.tag)}`;
-  const bw = ctx.measureText(bt).width + 64;
-  ctx.fillStyle = bridge.color; rr(ctx, 110, yy, Math.min(bw, W - 220), 56, 28); ctx.fill();
-  ctx.fillStyle = '#fff'; ctx.fillText(bt, 142, yy + 37);
+  // bridge chip (the IFP route already shows its bridge as step ①)
+  if (!viaIfp) {
+    ctx.font = FB(700, 26);
+    const bt = `${t(bridge.name)} · ${t(bridge.tag)}`;
+    const bw = ctx.measureText(bt).width + 64;
+    ctx.fillStyle = bridge.color; rr(ctx, 110, yy, Math.min(bw, W - 220), 56, 28); ctx.fill();
+    ctx.fillStyle = '#fff'; ctx.fillText(bt, 142, yy + 37);
+  }
 
   // A concise, deterministic record of the player's own hearts and choices.
   y=1196;
   ctx.fillStyle='rgba(255,255,255,0.92)';rr(ctx,60,y,W-120,230,32);ctx.fill();
   ctx.fillStyle='#A64862';ctx.font=FB(700,22);const savedLikes=likedSummary(state.likes,I18N.lang);ctx.fillText(savedLikes.length?(zh?'我的生活與喜歡':'MY LIFE & WHAT I LOVE'):(zh?'我的學習選擇':'MY STUDY CHOICE'),94,y+40);
   let rows=[t(UI.life)+' · '+t(life.title),...savedLikes.map(r=>r.label+' · '+r.text)];
-  if(!savedLikes.length)rows=[t(UI.life)+' · '+t(life.title),t(island.name),zh?'帶著好奇，向新的學習生活出發。':'Begin a new chapter with curiosity.'];
+  if(!savedLikes.length)rows=[t(UI.life)+' · '+t(life.title),t(island.name)+' · '+path.map(step=>t(step.name)).join(' → '),zh?'帶著好奇，向新的學習生活出發。':'Begin a new chapter with curiosity.'];
   ctx.fillStyle='#23215F';ctx.font=FB(500,26);
   rows.slice(0,4).forEach((row,i)=>{let line=row;while(ctx.measureText(line).width>W-190&&line.length>3)line=line.slice(0,-2);if(line!==row)line+='…';ctx.fillText(line,94,y+80+i*39);});
 

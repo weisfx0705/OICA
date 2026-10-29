@@ -142,26 +142,79 @@ export class Narrator {
     catch {if(token===this.request){this.failed=true;sound.duck(false);this.update();}}
   }
 
+  // A small player that stays out of the way: one round play button with a progress ring,
+  // everything else (language, replay, auto-play, transcript) folded into a popover.
   draw() {
-    this.panel?.remove(); this.playButton=null; this.status=null;
+    this.panel?.remove(); this.playButton=null; this.status=null; this.pop=null;
     if (!this.key) return;
-    this.playButton = el('button', { type: 'button', class: 'voice-toggle', onclick: () => this.isPlaying() ? this.pause() : this.play() });
-    const languages = el('div', { class: 'voice-languages', role: 'group', 'aria-label': I18N.lang === 'zh' ? '旁白語言' : 'Narration language' }, ...['zh','en'].map(lang => el('button', { type: 'button', class: lang === I18N.lang ? 'on' : '', 'aria-pressed': String(lang === I18N.lang), onclick: () => { this.unlock(); if (lang !== I18N.lang) this.onLanguage(lang); else this.play(true); } }, lang === 'zh' ? '中文' : 'EN')));
+    const zh = I18N.lang === 'zh';
+    const wrap = document.createElement('span');
+    wrap.innerHTML = '<svg class="voice-ring" viewBox="0 0 44 44" aria-hidden="true"><circle class="track" cx="22" cy="22" r="19"/><circle class="bar" cx="22" cy="22" r="19" pathLength="100"/></svg>';
+    const ring = wrap.firstChild;
+    this.ringBar = ring.querySelector('.bar');
+    this.playButton = el('button', { type: 'button', class: 'voice-play', onclick: () => this.isPlaying() ? this.pause() : this.play() },
+      ring, el('span', { class: 'voice-glyph', 'aria-hidden': 'true' }));
+    this.label = el('span', { class: 'voice-label' });
+    const more = el('button', { type: 'button', class: 'voice-more', 'aria-haspopup': 'true', 'aria-expanded': 'false', 'aria-label': zh ? '旁白選項' : 'Narration options', onclick: (e) => { e.stopPropagation(); this.togglePop(); } }, el('i'), el('i'), el('i'));
+    const languages = el('div', { class: 'voice-languages', role: 'group', 'aria-label': zh ? '旁白語言' : 'Narration language' }, ...['zh','en'].map(lang => el('button', { type: 'button', class: lang === I18N.lang ? 'on' : '', 'aria-pressed': String(lang === I18N.lang), onclick: () => { this.unlock(); if (lang !== I18N.lang) this.onLanguage(lang); else this.play(true); } }, lang === 'zh' ? '中文' : 'EN')));
+    this.autoSwitch = el('button', { type: 'button', class: 'voice-switch', role: 'switch', onclick: () => this.setAuto(!this.enabled) }, el('i'));
     this.status = el('span', { class: 'voice-status', role: 'status' });
-    this.panel = el('aside', { class: 'narration', 'aria-label': I18N.lang === 'zh' ? '語音導覽' : 'Audio guide' },
-      el('div', { class: 'voice-row' }, this.playButton, languages,
-        el('button', { class: 'voice-replay', type: 'button', 'aria-label': I18N.lang === 'zh' ? '重播旁白' : 'Replay narration', onclick: () => this.play(true) }, '↺'),
-        el('button', { class: 'voice-replay', type: 'button', 'aria-label': I18N.lang === 'zh' ? '關閉自動旁白' : 'Turn off automatic narration', onclick: () => { this.pause(); this.enabled = false; storage.set('isu-narration', false); this.update(); } }, '×')),
-      el('details', {}, el('summary', {}, I18N.lang === 'zh' ? '旁白逐字稿 · AI 語音' : 'Transcript · AI voice'), el('p', {}, t(NARRATION[this.key]))), this.status);
+    this.pop = el('div', { class: 'voice-pop', hidden: true, onclick: (e) => e.stopPropagation() },
+      el('div', { class: 'voice-pop-row' }, languages,
+        el('button', { class: 'voice-replay', type: 'button', onclick: () => this.play(true) }, zh ? '↺ 從頭播放' : '↺ Replay')),
+      el('label', { class: 'voice-pop-row voice-auto' }, el('span', {}, zh ? '進入新場景時自動播放' : 'Auto-play in new scenes'), this.autoSwitch),
+      el('details', {}, el('summary', {}, zh ? '旁白逐字稿 · AI 語音' : 'Transcript · AI voice'), el('p', {}, t(NARRATION[this.key]))),
+      this.status);
+    this.panel = el('aside', { class: 'narration', 'aria-label': zh ? '語音導覽' : 'Audio guide' },
+      el('div', { class: 'voice-bar' }, this.playButton, this.label, more), this.pop);
+    this.moreButton = more;
     this.root.append(this.panel);
+    if (!this.bound) {
+      this.bound = true;
+      this.audio.addEventListener('timeupdate', () => this.progress());
+      this.audio.addEventListener('loadedmetadata', () => this.progress());
+      document.addEventListener('click', () => this.togglePop(false));
+    }
+    this.progress();
     this.update();
   }
+
+  togglePop(open = this.pop?.hidden) {
+    if (!this.pop) return;
+    this.pop.hidden = !open;
+    this.moreButton?.setAttribute('aria-expanded', String(!!open));
+    this.panel.classList.toggle('open', !!open);
+  }
+
+  setAuto(on) {
+    this.enabled = on; storage.set('isu-narration', on);
+    if (!on) this.pause();
+    this.update();
+  }
+
+  progress() {
+    if (!this.ringBar) return;
+    const same = this.loadedKey === this.key && this.loadedLang === this.lang;
+    const d = this.audio.duration;
+    const f = same && d > 0 && isFinite(d) ? Math.min(1, this.audio.currentTime / d) : 0;
+    this.ringBar.style.strokeDashoffset = String(100 - f * 100);
+  }
+
   isPlaying() { return this.loadedKey===this.key && this.loadedLang===this.lang && !this.audio.paused && !this.transitioning && !this.fadingPromise; }
 
   update() {
     if (!this.playButton) return;
-    this.playButton.textContent = I18N.lang === 'zh' ? !this.isPlaying() ? '▶ 播放旁白' : 'Ⅱ 暫停旁白' : !this.isPlaying() ? '▶ Play guide' : 'Ⅱ Pause guide';
-    this.playButton.setAttribute('aria-pressed', String(this.isPlaying()));
-    this.status.textContent = this.transitioning ? (I18N.lang==='zh'?'正在切換旁白…':'Switching narration…') : this.failed ? I18N.lang === 'zh' ? '點播放重試，或閱讀逐字稿。' : 'Tap play to retry, or read the transcript.' : !this.enabled ? I18N.lang === 'zh' ? '自動旁白已關閉' : 'Automatic narration is off' : '';
+    const zh = I18N.lang === 'zh', playing = this.isPlaying();
+    this.panel.classList.toggle('playing', playing);
+    this.panel.classList.toggle('busy', !!this.transitioning);
+    this.panel.classList.toggle('failed', !!this.failed);
+    this.panel.classList.toggle('off', !this.enabled && !playing);
+    const name = playing ? (zh ? '暫停旁白' : 'Pause guide') : (zh ? '播放旁白' : 'Play guide');
+    this.playButton.setAttribute('aria-label', name);
+    this.playButton.setAttribute('aria-pressed', String(playing));
+    this.label.textContent = this.transitioning ? (zh ? '切換中…' : 'Switching…') : playing ? (zh ? '旁白播放中' : 'Now narrating') : (zh ? '語音導覽' : 'Audio guide');
+    this.autoSwitch.setAttribute('aria-checked', String(!!this.enabled));
+    this.status.textContent = this.failed ? (zh ? '音檔沒有載入，點播放重試，或閱讀逐字稿。' : 'Audio did not load. Tap play to retry, or read the transcript.') : '';
+    this.progress();
   }
 }

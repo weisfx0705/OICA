@@ -2,7 +2,10 @@ import * as THREE from 'three';
 import { transitRoute } from './transit.js';
 import { floatingBase } from './base.js';
 import { Kit, lambert } from './kit.js';
-import { rng, glowTexture } from '../util.js';
+import { rng, glowTexture, noise2 } from '../util.js';
+import { waterMaterial, ribbonGeometry } from './water.js';
+
+const withShore = (geo, v) => { geo.setAttribute('shore', new THREE.Float32BufferAttribute(new Float32Array(geo.attributes.position.count).fill(v), 1)); return geo; };
 
 // Kaohsiung as a floating harbor city: port cranes, 85 Sky Tower, Pier-2 warehouses,
 // Love River, the National Stadium, a chip fab and the circular light rail.
@@ -15,13 +18,46 @@ export function buildKaohsiung(quality) {
   group.add(land);
   const y0 = 0.12;
 
+  // the city floats in a round sea with a porcelain plinth, matching the Taiwan diorama
+  const SEA_R = 50, sc = new THREE.Vector3(-6, -0.45, 0);
+  {
+    const rings = quality.lite ? 22 : 36, segs = quality.lite ? 96 : 150;
+    const sp = [], su = [], ss = [], si = [];
+    for (let i = 0; i <= rings; i++) for (let j = 0; j < segs; j++) {
+      const rad = (i / rings) ** 0.85 * SEA_R, a = (j / segs) * Math.PI * 2;
+      const x = sc.x + Math.cos(a) * rad, z = sc.z + Math.sin(a) * rad;
+      const ang = Math.atan2(z, x), d = Math.hypot(x, z) - base.radiusAt(ang);
+      const cd = Math.hypot(x + 31, z - 6) - 5.2;
+      sp.push(x, 0, z); su.push(i / rings, j / segs);
+      ss.push(Math.max(0, 1 - Math.max(0, d) / 3.4, 1 - Math.max(0, cd) / 2.6));
+    }
+    for (let i = 0; i < rings; i++) for (let j = 0; j < segs; j++) {
+      const a = i * segs + j, b = i * segs + (j + 1) % segs, c = (i + 1) * segs + j, d = (i + 1) * segs + (j + 1) % segs;
+      si.push(a, c, b, b, c, d);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(su, 2));
+    g.setAttribute('shore', new THREE.Float32BufferAttribute(ss, 1));
+    g.setIndex(si);
+    const sea = new THREE.Mesh(g, waterMaterial({ deep: '#2C76B3', shallow: '#86D0D7', scale: 0.4 }));
+    sea.position.copy(sc); sea.name = 'kaohsiung-sea';
+    const wall = new THREE.Mesh(new THREE.CylinderGeometry(SEA_R, SEA_R - 1.4, 3.4, 140, 1, true), new THREE.MeshLambertMaterial({ color: '#F4EEE4', side: THREE.DoubleSide }));
+    wall.position.set(sc.x, sc.y - 1.7, sc.z);
+    const baseCap = new THREE.Mesh(new THREE.CircleGeometry(SEA_R - 1.4, 140), new THREE.MeshLambertMaterial({ color: '#E7DECF', side: THREE.DoubleSide }));
+    baseCap.rotation.x = Math.PI / 2; baseCap.position.set(sc.x, sc.y - 3.4, sc.z);
+    const rim = new THREE.Mesh(new THREE.TorusGeometry(SEA_R, 0.16, 8, 180), new THREE.MeshLambertMaterial({ color: '#E5BE62', emissive: '#7A5A10', emissiveIntensity: 0.35 }));
+    rim.rotation.x = Math.PI / 2; rim.position.set(sc.x, sc.y + 0.02, sc.z);
+    group.add(sea, wall, baseCap, rim);
+  }
+
   const k = new Kit();
   const r = rng(21);
 
   // harbor basin on the west side
   const basin = new THREE.Shape();
   basin.moveTo(-38,14);basin.bezierCurveTo(-30,19,-16,18,-11,12);basin.lineTo(-11,-15);basin.bezierCurveTo(-17,-22,-31,-23,-39,-15);basin.bezierCurveTo(-43,-4,-43,5,-38,14);
-  const water = new THREE.Mesh(new THREE.ShapeGeometry(basin, 12).rotateX(-Math.PI / 2).translate(0, 0.32, 0), new THREE.MeshLambertMaterial({ color: '#6FB3DE', emissive: '#2C6E9E', emissiveIntensity: 0.25 }));
+  const water = new THREE.Mesh(withShore(new THREE.ShapeGeometry(basin, 24).rotateX(-Math.PI / 2).translate(0, 0.32, 0), 0.32), waterMaterial({ deep: '#2C76B3', shallow: '#86D0D7', scale: 0.4 }));
   water.receiveShadow = true;water.name='continuous-harbour-sea';water.userData.surface='sea';
   group.add(water);
   // Chaishan rises on the city's western edge; Sizihwan lies at its coastal foot.
@@ -35,7 +71,7 @@ export function buildKaohsiung(quality) {
   hills.add(new THREE.DodecahedronGeometry(1.5,0),'#BFC7AB',{x:-18,y:base.surfaceY(-18,-16)-0.5,z:-16,sx:1.2,sy:0.7,sz:0.8});
   chaishan.add(hills.build());group.add(chaishan);
   const bayShape=new THREE.Shape();bayShape.moveTo(-31,14);bayShape.bezierCurveTo(-21,16,-20,10,-22,5);bayShape.lineTo(-30,3);bayShape.quadraticCurveTo(-34,8,-31,14);
-  const bay=new THREE.Mesh(new THREE.ShapeGeometry(bayShape,24).rotateX(-Math.PI/2),new THREE.MeshLambertMaterial({color:'#70C9DC',side:THREE.DoubleSide}));
+  const bay=new THREE.Mesh(withShore(new THREE.ShapeGeometry(bayShape,24).rotateX(-Math.PI/2),0.62),waterMaterial({ deep: '#2C76B3', shallow: '#86D0D7', scale: 0.4 }));
   bay.position.y=0.34;bay.name='sizihwan-bay';group.add(bay);
   const shorePoints=[];
   for(let i=0;i<=18;i++){
@@ -103,22 +139,48 @@ export function buildKaohsiung(quality) {
   for (let i = 0; i < 3; i++) k.cyl(0.7, 0.7, 2.2, '#D9DEE5', { x: fx + 2.4 + i * 1.6, y: y0, z: fz + 4.6 }, 12);
   k.cyl(0.25, 0.3, 4.2, '#C9CFD8', { x: fx + 4, y: y0 + 2.2, z: fz - 1.4 }, 8);
 
-  // city blocks
-  const pal = ['#FFFFFF', '#F6EEE2', '#EFE4D3', '#F7DCCB', '#E6EEF5', '#F2E8F2'];
+  // city fabric: blocks on a street grid; downtown rises around the 85 Sky Tower
+  const pal = ['#FBF7F0', '#F4ECDF', '#EFE2CF', '#F3DCCB', '#E4ECF3', '#F6EBD9', '#E9E4F0'];
+  const glassPal = ['#9EC9D9', '#B5D3E6', '#A9C2DE'];
+  const riverZ = (x) => 2 + Math.sin(x * 0.25) * 2.5;
+  const blocked = (x, z) =>
+    Math.hypot(x, z) > R - 3.5 ||
+    Math.abs(x - 2) < 1.3 || Math.abs(z + 1) < 1.3 ||
+    (x > 3.5 && x < 15 && z > -17 && z < -5) ||
+    (x > 7 && x < 19 && z > 4 && z < 15) ||
+    (x > -7 && x < 0 && z > -10 && z < -4) ||
+    (x < -6 && z > 8.5) ||
+    Math.abs(z - riverZ(x)) < 2.1;
+  const cell = 2.3;
   let placed = 0;
-  for (let i = 0; i < 260 && placed < (quality.lite ? 70 : 120); i++) {
-    const x = -8 + r() * 28, z = -20 + r() * 40;
-    if (Math.hypot(x, z) > R - 4) continue;
-    if (Math.abs(x - 2) < 1.1 || Math.abs(z + 1) < 1.1) continue;
-    if (x > 4 && x < 14.5 && z > -16.5 && z < -5.5) continue; // stadium
-    if (x > 7.5 && x < 18.5 && z > 4.5 && z < 14.5) continue; // fab
-    if (x > -6.5 && x < -0.5 && z > -9.5 && z < -4.5) continue; // tower
-    if (x < -6 && z > 9) continue; // pier-2
-    if (Math.abs(z - (2 + Math.sin(x * 0.25) * 2.5)) < 1.6) continue; // river
-    const h = 0.6 + Math.pow(r(), 2.2) * 5.5;
-    const w = 0.9 + r() * 0.9, d = 0.9 + r() * 0.9;
-    k.box(w, h, d, pal[Math.floor(r() * pal.length)], { x, y: y0, z });
-    if (h > 2.5) k.windows(w, h, d, Math.floor(h * 1.3), '#C8D6E8', { x, y: y0, z });
+  for (let gx = -8.5; gx < 22; gx += cell) for (let gz = -21; gz < 21; gz += cell) {
+    const x = gx + (r() - 0.5) * 0.35, z = gz + (r() - 0.5) * 0.35;
+    if (blocked(x, z) || r() < 0.18) continue;
+    if (placed > (quality.lite ? 60 : 110)) continue;
+    const yb = base.surfaceY(x, z) - 0.05;
+    if (r() < 0.1) { // pocket park
+      k.box(1.8, 0.08, 1.8, '#A9D38E', { x, y: yb, z });
+      k.tree('#5FA06A', { x: x - 0.4, y: yb, z: z - 0.3, s: 0.55 });
+      k.tree('#6DAF6B', { x: x + 0.45, y: yb, z: z + 0.35, s: 0.5 });
+      continue;
+    }
+    const down = Math.exp(-((x + 3) ** 2 + (z + 7) ** 2) / 160);
+    const h = 0.7 + Math.pow(r(), 1.8) * (2.2 + down * 7.5);
+    const w = 1.3 + r() * 0.5, d = 1.3 + r() * 0.5;
+    const c = pal[Math.floor(r() * pal.length)];
+    if (h > 3.2) {
+      // podium + slimmer tower with a glass band and rooftop crown
+      k.box(w + 0.25, 0.9, d + 0.25, c, { x, y: yb, z });
+      const tw = w * 0.72, td = d * 0.72, glass = glassPal[Math.floor(r() * glassPal.length)];
+      k.box(tw, h - 0.9, td, r() < 0.45 ? glass : c, { x, y: yb + 0.9, z });
+      k.windows(tw, h - 0.9, td, Math.floor(h * 1.1), '#FFFFFF', { x, y: yb + 0.9, z });
+      k.box(tw * 0.55, 0.35, td * 0.55, '#D8DDE6', { x, y: yb + h, z });
+    } else {
+      k.box(w, h, d, c, { x, y: yb, z });
+      if (h > 1.4) k.windows(w, h, d, Math.floor(h * 1.4), '#D4DEEA', { x, y: yb, z });
+      if (r() < 0.35) k.box(w * 0.7, 0.06, d * 0.7, '#9FCB86', { x, y: yb + h, z }); // roof garden
+      else if (r() < 0.5) k.box(0.4, 0.3, 0.4, '#C9CED8', { x: x + w * 0.2, y: yb + h, z: z - d * 0.2 });
+    }
     placed++;
   }
   // trees along the Love River
@@ -130,11 +192,26 @@ export function buildKaohsiung(quality) {
   const city = k.build();
   group.add(city);
 
-  // Love River
+  // Love River: flowing water, arched bridges and a slow boat
   const riverPts = [];
-  for (let x = -12; x <= 18; x += 1.5) riverPts.push(new THREE.Vector3(x, 0, 2 + Math.sin(x * 0.25) * 2.5));
-  const river = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(riverPts), 60, 0.9, 6, false).scale(1, 0.12, 1).translate(0, y0 + 0.12, 0),new THREE.MeshLambertMaterial({ color: '#7CC0E6', emissive: '#2C6E9E', emissiveIntensity: 0.2 }));
+  for (let x = -12; x <= 18; x += 0.75) riverPts.push(new THREE.Vector3(x, y0 + 0.16, riverZ(x)));
+  const river = new THREE.Mesh(ribbonGeometry(riverPts, 2.6, 0.55), waterMaterial({ deep: '#3A8CC6', shallow: '#97D8E2', flow: 0.8 }));
+  river.name = 'love-river';
   group.add(river);
+  const bridgeKit = new Kit();
+  for (const bx of [-4.5, 5.5, 12.5]) {
+    const bz = riverZ(bx);
+    const arch = new THREE.TorusGeometry(1.5, 0.16, 6, 16, Math.PI);
+    bridgeKit.add(arch, '#F4EFE6', { x: bx, y: y0 + 0.05, z: bz, ry: Math.PI / 2 + Math.atan(Math.cos(bx * 0.25) * 0.625), sy: 0.55 });
+    bridgeKit.box(0.9, 0.08, 3.4, '#E9E1D3', { x: bx, y: y0 + 0.8, z: bz, ry: Math.atan(Math.cos(bx * 0.25) * 0.625) });
+  }
+  group.add(bridgeKit.build());
+  const boat = new THREE.Group();
+  const hull = new THREE.Mesh(new THREE.CapsuleGeometry(0.28, 1.1, 3, 8).rotateZ(Math.PI / 2), new THREE.MeshLambertMaterial({ color: '#FFFFFF' }));
+  const roofB = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.08, 0.5), new THREE.MeshLambertMaterial({ color: '#E2553F' }));
+  roofB.position.y = 0.45;
+  boat.add(hull, roofB);
+  group.add(boat);
 
   // Circular light rail + tram
   const railCurve = new THREE.EllipseCurve(2, 0, 13, 11, 0, Math.PI * 2);
@@ -190,6 +267,9 @@ export function buildKaohsiung(quality) {
   const update = (dt) => {
     t += dt;
     red.update(t);orange.update(t);ferry.update(t);
+    const bk = (Math.sin(t * 0.06) * 0.5 + 0.5), bxp = -9 + bk * 24;
+    boat.position.set(bxp, y0 + 0.32, riverZ(bxp));
+    boat.rotation.y = -Math.atan(Math.cos(bxp * 0.25) * 0.625) + (Math.cos(t * 0.06) < 0 ? Math.PI : 0);
     const k2 = (t * 0.035) % 1;
     const p = railPath.getPointAt(k2);
     const tan = railPath.getTangentAt(k2);

@@ -21,7 +21,7 @@ with sync_playwright() as p:
    tabs.nth(2).evaluate('(n)=>n.click()');assert panel.locator('.timeline li').count()>=3
    tabs.nth(3).evaluate('(n)=>n.click()');assert panel.locator('.admission-status.preview').count()==1
    assert not panel.locator('.panel-foot').get_by_role('button',name='確認科系，定錨',exact=True).count()
- assert len(set(days))==37
+ assert len(set(days))==38
  assert not errors,errors
- print({'bilingual_preview_views':74,'unique_day_scenarios':37,'admission_required_before_anchor':True,'errors':errors})
+ print({'bilingual_preview_views':76,'unique_day_scenarios':38,'admission_required_before_anchor':True,'errors':errors})
  b.close()

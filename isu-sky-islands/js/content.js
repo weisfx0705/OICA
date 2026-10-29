@@ -72,7 +72,7 @@ export const BRIDGES = {
     color: '#D9A23B',
     name: { zh: '產業橋', en: 'Industry Bridge' },
     tag: { zh: '新型專班 INTENSE', en: 'INTENSE Program' },
-    who: { zh: '2027 春季班：適用招生地區、已有或即將取得學士學位的外國學生；學歷認定依當期簡章。', en: 'Spring 2027: international applicants from eligible recruitment regions who hold, or are completing, a bachelor’s degree; credential recognition follows the intake prospectus.' },
+    who: { zh: '菲律賓、印度、印尼、越南、馬來西亞、泰國的 D3、D4、S1、S2 在學生或畢業生；學歷認定依當期簡章。', en: 'Students and graduates (D3, D4, S1, S2) from the Philippines, India, Indonesia, Vietnam, Malaysia or Thailand; credential recognition follows the intake prospectus.' },
     how: { zh: '2027 春季班：2 年修業（1 年在校＋1 年企業實習）；受獎者畢業後須依約在台工作。', en: 'Spring 2027: two years of study, with one year on campus and one year of company internship; scholarship recipients then work in Taiwan under their agreement.' },
     applyUrl: 'https://forms.gle/W3CEyJ7C61GQtr8a9',
     infoUrl: 'https://international.isu.edu.tw/intense-program/',
@@ -82,7 +82,7 @@ export const BRIDGES = {
       { zh: '第 1 年・在校', en: 'Year 1 · Campus' }, { zh: '第 2 年・企業實習', en: 'Year 2 · Internship' }, { zh: '畢業・依約就業', en: 'Graduate · Employment' },
     ],
     scholarship: { zh: '政府獎學金：學雜費最長 2 年、每學期最高 NT$50,000；首次來台行政費最高 1 萬、單程機票最高 9 千。企業在校期間每月至少 NT$10,000 生活津貼；校外實習津貼不低於基本工資。', en: 'Government scholarship: tuition for up to two years (max NT$50,000 per semester), up to NT$10,000 for arrival costs and NT$9,000 for a one-way flight. Companies pay at least NT$10,000 a month while you study, and at least minimum wage during internships.' },
-    chinese: { zh: '目前本遊戲的 INTENSE 僅提供英語設備工程。申請需英語 CEFR B1 以上，第二年須達中文 TOCFL A2；中文一般科系或 IFP 請選其他路徑。', en: 'This edition offers the English-taught Equipment Engineering INTENSE option. Entry requires CEFR B1 English; Chinese TOCFL A2 is required in Year 2. Explore other routes for Chinese-taught degrees or IFP.' },
+    chinese: { zh: '2026–2027 簡章列出兩個專班：英語授課的設備工程（英語 CEFR B1 以上，第二年中文達 TOCFL A2），以及中文授課的機械與自動化工程（中文 TOCFL A2 以上，第二年達 B1）。', en: 'The 2026–27 prospectuses list two programs: English-taught Equipment Engineering (CEFR B1 English; TOCFL A2 Chinese in Year 2) and Chinese-taught Mechanical and Automation Engineering (TOCFL A2 Chinese; B1 in Year 2).' },
   },
   oc: {
     color: '#8A6CC4',
@@ -236,6 +236,7 @@ export const ISLANDS = [
     programs: [
       { id: 'mae', name: { zh: '機械與自動化工程學系', en: 'Dept. of Mechanical and Automation Engineering' }, url: 'https://mae.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '機電整合、智慧製造、3D 列印', en: 'Mechatronics, smart manufacturing, 3D printing' } },
       { id: 'civil', name: { zh: '土木工程學系', en: 'Dept. of Civil Engineering' }, url: 'https://civil.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '結構營建、防災、永續與數位工程', en: 'Structures, disaster resilience, digital construction' } },
+      { id: 'intense-mae', name: { zh: 'INTENSE 機械與自動化工程二年制學士專班', en: 'INTENSE · Mechanical and Automation Engineering' }, url: 'https://mae.isu.edu.tw/en-US', bridges: ['intense'], lang: 'zh', campus: 'main', fee: null, level: 'intense', focus: { zh: '2027 春季班：中文授課（TOCFL A2 以上），1 年在校＋1 年企業實習', en: 'Spring 2027: Chinese-taught (TOCFL A2+), one year on campus plus one year of company internship' } },
     ],
   },
   {

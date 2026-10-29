@@ -11,6 +11,7 @@ import { Labels } from './labels.js';
 import { UIRoot } from './ui.js';
 import { Flow } from './flow.js';
 import { WORLD } from './world/layout.js';
+import { waterTime } from './world/water.js';
 import { sound } from './audio.js';
 import { Traveler } from './world/traveler.js';
 
@@ -110,11 +111,12 @@ class App {
     this.arch.group.visible = name === 'campus';
     if (inSky) {
       const c = name === 'taiwan' ? WORLD.taiwan : name === 'kaohsiung' ? WORLD.kaohsiung : WORLD.islands.clone().add(new THREE.Vector3(0, -20, 0));
-      this.skyEnv.cloudCenter.copy(c).add(new THREE.Vector3(0, -24, 0));
+      this.skyEnv.cloudCenter.copy(name === 'campus' ? WORLD.campus : c);
+      this.skyEnv.cloudUniforms.fogFar.value = name === 'campus' ? 820 : 620;
       const radius = name === 'campus' ? 95 : name === 'taiwan' ? 30 : 34;
       this.skyEnv.fitShadow(name === 'campus' ? WORLD.campus.clone().add(new THREE.Vector3(0, 18, 0)) : c, radius);
-      this.sky.fog.near = name === 'campus' ? 160 : 90;
-      this.sky.fog.far = name === 'campus' ? 620 : 420;
+      this.sky.fog.near = name === 'campus' ? 180 : 120;
+      this.sky.fog.far = name === 'campus' ? 720 : 520;
     }
   }
 
@@ -142,7 +144,7 @@ class App {
   updateViewOffset() {
     const p = this.ui.panelEl;
     let tx = 0, ty = 0, mode = null;
-    if (p && p.classList.contains('in')) {
+    if (p && p.classList.contains('in') && !p.classList.contains('collapsed')) {
       const r = p.getBoundingClientRect();
       if (r.width > this.w * 0.8) { mode = 'bottom'; ty = Math.min(r.height * 0.5, this.h * 0.3); }
       else { mode = 'side'; tx = Math.min((r.width + 20) * 0.5, this.w * 0.25); }
@@ -161,6 +163,7 @@ class App {
   }
 
   fly(pos, look, duration = 2.4, ease = easeInOut) {
+    this.flyToken = (this.flyToken || 0) + 1;
     const flightId = this.flightId = (this.flightId || 0) + 1;
     this.controls.enabled = false;
     const p0 = this.camera.position.clone(), l0 = this.look.clone();
@@ -174,9 +177,12 @@ class App {
     } });
   }
 
-  orbit(on, { target, min = 20, max = 160, minPolar = 0.35, maxPolar = 1.42, autoRotate = false } = {}) {
+  orbit(on, { target, min = 20, max = 160, minPolar = 0.35, maxPolar = 1.42, autoRotate = false, pan = false } = {}) {
     const c = this.controls;
     if (!on) { c.enabled = false; c.autoRotate = false; return; }
+    c.enablePan = pan;
+    c.screenSpacePanning = false;
+    c.panSpeed = 0.8;
     if (target) { c.target.copy(target); this.look.copy(target); }
     c.minDistance = min; c.maxDistance = max;
     c.minPolarAngle = minPolar; c.maxPolarAngle = maxPolar;
@@ -184,6 +190,73 @@ class App {
     c.autoRotateSpeed = 0.35;
     c.enabled = true;
     c.update();
+  }
+
+  // ---------- free exploration (orbit · pan · zoom) with view presets ----------
+  // cfg: { center, radius, home: {pos, look}, minPolar, maxPolar }
+  explore(cfg) {
+    this.exploreCfg = { minPolar: 0.02, maxPolar: 1.38, ...cfg };
+    const c = this.exploreCfg;
+    const target = c.look ?? c.home?.look ?? c.center;
+    const dist = this.camera.position.distanceTo(target);
+    this.orbit(true, { target, min: c.radius * 0.3, max: Math.max(dist * 1.6, c.radius * 4.5), minPolar: c.minPolar, maxPolar: c.maxPolar, pan: true, autoRotate: !!this.spinning });
+  }
+
+  async flyExplore(pos, look, duration = 1.4) {
+    const flight = this.fly(pos, look, duration);
+    const token = this.flyToken;
+    await flight;
+    if (token !== this.flyToken || !this.exploreCfg) return;
+    this.explore({ ...this.exploreCfg, look });
+  }
+
+  viewBird() {
+    const c = this.exploreCfg; if (!c) return;
+    const pos = this.frameView(c.center, c.radius, new THREE.Vector3(0, 1, 0.035));
+    return this.flyExplore(pos, c.center.clone(), 1.3);
+  }
+
+  viewTilt() {
+    const c = this.exploreCfg; if (!c) return;
+    const from = this.camera.position.clone().sub(c.center).setY(0);
+    if (from.lengthSq() < 1) from.set(0.35, 0, 0.9);
+    from.normalize().setY(0.78);
+    return this.flyExplore(this.frameView(c.center, c.radius, from), c.center.clone(), 1.3);
+  }
+
+  viewHome() {
+    const c = this.exploreCfg; if (!c?.home) return;
+    return this.flyExplore(c.home.pos.clone(), c.home.look.clone(), 1.3);
+  }
+
+  zoomBy(f) {
+    const ctl = this.controls; if (!ctl.enabled) return;
+    const target = ctl.target.clone();
+    const from = this.camera.position.clone();
+    const dir = from.clone().sub(target);
+    const len = Math.min(ctl.maxDistance, Math.max(ctl.minDistance, dir.length() * f));
+    const to = target.clone().add(dir.setLength(len));
+    tween({ duration: 0.45, onUpdate: (e) => { this.camera.position.lerpVectors(from, to, e); } });
+  }
+
+  toggleSpin() {
+    this.spinning = !this.spinning;
+    this.controls.autoRotate = this.spinning && this.controls.enabled;
+    this.controls.autoRotateSpeed = 0.6;
+    return this.spinning;
+  }
+
+  // keep panning inside the current diorama
+  clampPan() {
+    const c = this.exploreCfg, ctl = this.controls;
+    if (!c || !ctl.enabled || !ctl.enablePan) return;
+    const off = ctl.target.clone().sub(c.center);
+    const lim = c.radius * 0.85;
+    const flat = new THREE.Vector2(off.x, off.z);
+    let dx = 0, dz = 0;
+    if (flat.length() > lim) { flat.setLength(lim); dx = c.center.x + flat.x - ctl.target.x; dz = c.center.z + flat.y - ctl.target.z; }
+    const dy = THREE.MathUtils.clamp(ctl.target.y, c.center.y - c.radius * 0.4, c.center.y + c.radius * 0.6) - ctl.target.y;
+    if (dx || dy || dz) { ctl.target.x += dx; ctl.target.y += dy; ctl.target.z += dz; this.camera.position.x += dx; this.camera.position.y += dy; this.camera.position.z += dz; }
   }
 
   // ---------- input ----------
@@ -259,6 +332,7 @@ class App {
     const dt = Math.min(this.clock.getDelta(), 0.05);
     this.time += dt;
     updateTweens(dt);
+    waterTime.value = this.time;
     if (this.stageName === 'globe') this.globe.update(dt);
     else {
       this.skyEnv.update(this.time);
@@ -269,7 +343,7 @@ class App {
     for (const f of this.updaters) f(dt, this.time);
     this.traveler.update(dt);
     this.updateViewOffset();
-    if (this.controls.enabled) { this.controls.update(); this.look.copy(this.controls.target); }
+    if (this.controls.enabled) { this.controls.update(); this.clampPan(); this.look.copy(this.controls.target); }
     this.renderer.render(this.scene, this.camera);
     this.labels.update(this.camera, this.w, this.h);
     this.adapt(dt);

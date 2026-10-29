@@ -143,12 +143,12 @@
       "zh": {
         "file": "assets/narration/bridge-intense-zh.mp3",
         "ready": true,
-        "transcript": "新型專班 INTENSE，是與企業合作的入學路徑。目前這個遊戲提供的是英語授課的設備工程選項，需要已有或即將取得學士學位，並具備英語上課能力。先在校學習，再進入企業實習。在這裡選定路徑後，下一頁只需要確認你的起點條件，不用再選一次 INTENSE。"
+        "transcript": "新型專班 INTENSE，是與企業合作的入學路徑。2026 到 2027 年的簡章列出兩個專班：英語授課的設備工程，以及中文授課的機械與自動化工程。申請時需要符合學歷、國家與語言條件。先在校學習，再進入企業實習。在這裡選定路徑後，下一頁只需要確認你的起點條件，不用再選一次 INTENSE。"
       },
       "en": {
         "file": "assets/narration/bridge-intense-en.mp3",
         "ready": true,
-        "transcript": "INTENSE connects university study with industry. This edition offers Equipment Engineering taught in English, for applicants who hold, or are completing, a bachelor’s degree and can study in English. Study on campus, then join a company internship. Choose this route here, and the next page will check your starting-point requirements without asking you to choose INTENSE again."
+        "transcript": "INTENSE connects university study with industry. The 2026–27 prospectuses list two programs: Equipment Engineering taught in English, and Mechanical and Automation Engineering taught in Chinese. Applicants must meet the education, country and language requirements. Study on campus, then join a company internship. Choose this route here, and the next page will check your starting-point requirements without asking you to choose INTENSE again."
       }
     },
     "bridge-oc": {

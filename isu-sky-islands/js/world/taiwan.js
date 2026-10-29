@@ -3,6 +3,7 @@ import { transitRoute } from './transit.js';
 import { GEO } from '../geo-data.js';
 import { noise2, rng, paint, place } from '../util.js';
 import { mergeGeometries } from '../../vendor/BufferGeometryUtils.js';
+import { waterMaterial, ribbonGeometry } from './water.js';
 
 // Floating diorama of Taiwan built from the real coastline (Natural Earth 1:10m).
 const K = 12; // world units per degree of latitude
@@ -51,19 +52,19 @@ export function buildTaiwan(quality) {
     const ds = distToLine(p, SPINE);
     let ridgeX = SPINE[SPINE.length - 1].x;
     for (let i=0;i<SPINE.length-1;i++) { const a=SPINE[i],b=SPINE[i+1]; if(p.y>=a.y && p.y<=b.y) { const k=(p.y-a.y)/(b.y-a.y); ridgeX=a.x+(b.x-a.x)*k; break; } }
-    const width = p.x < ridgeX ? 1.9 : 2.7;
+    const width = p.x < ridgeX ? 2.4 : 3.1;
     let h = 6.2 * Math.exp(-((ds / width) ** 2));
     h += 1.6 * Math.exp(-((distToLine(p, COASTAL) / 1.2) ** 2));
-    h += 5.4 * Math.exp(-((p.distanceTo(YUSHAN) / 1.05) ** 2));
-    h += 3.3 * Math.exp(-((p.distanceTo(XUESHAN) / 1.05) ** 2));
-    h += (noise2(p.x * 0.35, p.y * 0.35, 3) - 0.5) * 1.2 * Math.min(1, h / 2 + 0.2);
+    h += 2.8 * Math.exp(-((p.distanceTo(YUSHAN) / 1.5) ** 2));
+    h += 1.8 * Math.exp(-((p.distanceTo(XUESHAN) / 1.4) ** 2));
+    h += (noise2(p.x * 0.28, p.y * 0.28, 3) - 0.5) * 0.7 * Math.min(1, h / 2 + 0.2);
     const shore = Math.min(1, dCoast / 1.6);
     return 0.25 + Math.max(0, h) * shore + 0.15 * shore;
   };
 
   // Steiner points: jittered grid inside the island, kept away from the coast
   const r = rng(11);
-  const step = quality.lite ? 1.15 : 0.82;
+  const step = quality.lite ? 1.05 : 0.68;
   const steiner = [];
   const box = new THREE.Box2().setFromPoints(outline);
   for (let x = box.min.x; x < box.max.x; x += step) {
@@ -79,55 +80,77 @@ export function buildTaiwan(quality) {
   const hTop = all.map((p, i) => (isCoast(i) ? 0.22 : heightAt(p, dC[i])));
   const maxD = Math.max(...dC);
 
-  const C = {
-    sand: new THREE.Color('#F0E2BC'), plain: new THREE.Color('#CFE3A0'), field: new THREE.Color('#BCDB92'), hill: new THREE.Color('#93C67F'),
-    forest: new THREE.Color('#6BAA6C'), rock: new THREE.Color('#AEB2A0'), peak: new THREE.Color('#F2F4F1'),
+  // smooth elevation ramp: beach → plains → forest → alpine → summit
+  const RAMP = [[0, '#EFE2BF'], [0.4, '#D9EAAA'], [1.2, '#BBDB8F'], [2.6, '#8EC47B'], [4.2, '#63A66C'], [5.8, '#7FA289'], [7.2, '#B9B8AE'], [8.6, '#F5F4EF']].map(([h, c]) => [h, new THREE.Color(c)]);
+  const ramp = (h) => {
+    for (let i = 1; i < RAMP.length; i++) if (h <= RAMP[i][0]) { const [h0, c0] = RAMP[i - 1], [h1, c1] = RAMP[i]; return c0.clone().lerp(c1, (h - h0) / (h1 - h0)); }
+    return RAMP[RAMP.length - 1][1].clone();
   };
-  const topColor = (h, i) => {
-    if (isCoast(i)) return C.sand;
-    if (h < 1.0) return (noise2(all[i].x * 0.5, all[i].y * 0.5, 9) > 0.5 ? C.plain : C.field);
-    if (h < 2.8) return C.hill;
-    if (h < 5.4) return C.forest;
-    if (h < 7.0) return C.rock;
-    return C.peak;
-  };
-
-  const pos = [], col = [];
-  const push = (x, y, z, c) => { pos.push(x, y, z); col.push(c.r, c.g, c.b); };
-  // top
-  for (const [a, b, c] of faces) {
-    const tri = [a, c, b];
-    const avgH = (hTop[a] + hTop[b] + hTop[c]) / 3;
-    const fc = topColor(avgH, [a, b, c].every(isCoast) ? a : [a, b, c].find((i) => !isCoast(i)));
-    for (const i of tri) push(all[i].x, hTop[i], all[i].y, fc);
-  }
-  // cliffs
-  const cliffTop = new THREE.Color('#EBD3AC'), cliffLow = new THREE.Color('#D2A982');
-  const bandY = -1.4;
-  for (let i = 0; i < outline.length; i++) {
-    const a = outline[i], b = outline[(i + 1) % outline.length];
-    push(a.x, 0.22, a.y, cliffTop); push(b.x, 0.22, b.y, cliffTop); push(a.x, bandY, a.y, cliffLow);
-    push(b.x, 0.22, b.y, cliffTop); push(b.x, bandY, b.y, cliffLow); push(a.x, bandY, a.y, cliffLow);
-  }
-  // underside: hanging rock
-  const deep = new THREE.Color('#A897BE'), mid = new THREE.Color('#D2A982');
-  const hBot = all.map((p, i) => (isCoast(i) ? bandY : bandY - 9 * Math.pow(dC[i] / maxD, 0.75) - (noise2(p.x * 0.4, p.y * 0.4, 5) - 0.5) * 2.2 * (dC[i] / maxD)));
-  for (const [a, b, c] of faces) {
-    const avg = (hBot[a] + hBot[b] + hBot[c]) / 3;
-    const k = Math.min(1, (bandY - avg) / 8);
-    const fc = mid.clone().lerp(deep, k);
-    for (const i of [a, b, c]) push(all[i].x, hBot[i], all[i].y, fc);
-  }
+  const field = new THREE.Color('#E4EDB0');
+  // indexed top surface → smooth normals and soft hill shading
+  const pos = [], col = [], idx = [];
+  all.forEach((p, i) => {
+    const h = hTop[i];
+    const c = ramp(h);
+    if (h > 0.3 && h < 1.4) c.lerp(field, (noise2(p.x * 0.45, p.y * 0.45, 9) - 0.35) * 0.5);
+    pos.push(p.x, h, p.y); col.push(c.r, c.g, c.b);
+  });
+  for (const [a, b, c] of faces) idx.push(a, c, b);
+  // a thin sandy lip at the coast so the island reads cleanly against the water
+  const lip = all.length;
+  const sand = new THREE.Color('#E8D5A6');
+  outline.forEach((p) => { pos.push(p.x, -0.35, p.y); col.push(sand.r, sand.g, sand.b); });
+  for (let i = 0; i < outline.length; i++) { const j = (i + 1) % outline.length; idx.push(i, j, lip + i, j, lip + j, lip + i); }
   const geo = new THREE.BufferGeometry();
   geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
   geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  geo.setIndex(idx);
   geo.computeVertexNormals();
-  const mat = new THREE.MeshLambertMaterial({ vertexColors: true });
-  const land = new THREE.Mesh(geo, mat);
+  const land = new THREE.Mesh(geo, new THREE.MeshLambertMaterial({ vertexColors: true, side: THREE.DoubleSide }));
   land.castShadow = land.receiveShadow = true;
 
+  // the island sits in a round sea, like a museum diorama floating above the clouds
+  const SEA_R = 31;
+  const seaGeo = new THREE.CircleGeometry(SEA_R, 120, 0, Math.PI * 2);
+  {
+    // subdivide radially so the shoreline foam can follow the coast
+    const rings = quality.lite ? 26 : 44, segs = quality.lite ? 110 : 170;
+    const sp = [], su = [], ss = [], si = [];
+    const cx = 0, cz = 1.5;
+    for (let r = 0; r <= rings; r++) for (let k = 0; k < segs; k++) {
+      const rad = (r / rings) ** 0.8 * SEA_R, a = (k / segs) * Math.PI * 2;
+      const x = cx + Math.cos(a) * rad, z = cz + Math.sin(a) * rad;
+      const q = new THREE.Vector2(x, z);
+      const inLand = inside(q, outline);
+      const d = inLand ? 0 : coastD(q);
+      sp.push(x, 0.02, z); su.push(r / rings, k / segs); ss.push(inLand ? 1 : Math.max(0, 1 - d / 3.2));
+    }
+    for (let r = 0; r < rings; r++) for (let k = 0; k < segs; k++) {
+      const a = r * segs + k, b = r * segs + (k + 1) % segs, c = (r + 1) * segs + k, d = (r + 1) * segs + (k + 1) % segs;
+      si.push(a, c, b, b, c, d);
+    }
+    seaGeo.dispose();
+    var sea = new THREE.Mesh(new THREE.BufferGeometry(), waterMaterial({ deep: '#2F78B5', shallow: '#8AD5D6', scale: 0.42 }));
+    sea.geometry.setAttribute('position', new THREE.Float32BufferAttribute(sp, 3));
+    sea.geometry.setAttribute('uv', new THREE.Float32BufferAttribute(su, 2));
+    sea.geometry.setAttribute('shore', new THREE.Float32BufferAttribute(ss, 1));
+    sea.geometry.setIndex(si);
+    sea.position.x = 0;
+    var seaCenter = new THREE.Vector3(cx, 0, cz);
+  }
+  sea.receiveShadow = true;
+  // plinth: soft porcelain wall with a gold rim
+  const plinth = new THREE.Group();
+  const wall = new THREE.Mesh(new THREE.CylinderGeometry(SEA_R, SEA_R - 1.2, 3.2, 120, 1, true), new THREE.MeshLambertMaterial({ color: '#F4EEE4', side: THREE.DoubleSide }));
+  wall.position.set(seaCenter.x, -1.58, seaCenter.z);
+  const base = new THREE.Mesh(new THREE.CircleGeometry(SEA_R - 1.2, 120), new THREE.MeshLambertMaterial({ color: '#E7DECF', side: THREE.DoubleSide }));
+  base.rotation.x = Math.PI / 2; base.position.set(seaCenter.x, -3.18, seaCenter.z);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(SEA_R, 0.14, 8, 160), new THREE.MeshLambertMaterial({ color: '#E5BE62', emissive: '#7A5A10', emissiveIntensity: 0.35 }));
+  rim.rotation.x = Math.PI / 2; rim.position.set(seaCenter.x, 0.04, seaCenter.z);
+  plinth.add(wall, base, rim);
+
   const group = new THREE.Group();
-  group.add(land);
+  group.add(land, sea, plinth);
 
   // height lookup for placing props
   const tris = faces.map(([a, b, c]) => [a, b, c]);
@@ -143,12 +166,33 @@ export function buildTaiwan(quality) {
     return 0.3;
   };
 
+  // rivers: Tamsui, Lanyang, Dajia, Zhuoshui, Gaoping
+  const RIVERS = [
+    [[121.43, 24.86], [121.5, 24.98], [121.47, 25.08], [121.41, 25.17]],
+    [[121.47, 24.58], [121.62, 24.66], [121.73, 24.72], [121.84, 24.73]],
+    [[121.2, 24.28], [121.0, 24.29], [120.8, 24.33], [120.57, 24.38]],
+    [[121.08, 23.72], [120.92, 23.79], [120.68, 23.84], [120.42, 23.85], [120.24, 23.84]],
+    [[120.78, 23.08], [120.66, 22.9], [120.56, 22.72], [120.47, 22.55], [120.42, 22.47]],
+  ];
+  const riverMat = waterMaterial({ deep: '#3E8FC9', shallow: '#9ADBE6', flow: 1 });
+  for (const path of RIVERS) {
+    const pts = [];
+    for (let i = 0; i < path.length - 1; i++) for (let j = 0; j < 8; j++) {
+      const k = j / 8, lo = path[i][0] + (path[i + 1][0] - path[i][0]) * k, la = path[i][1] + (path[i + 1][1] - path[i][1]) * k;
+      const q = twXZ(lo, la); pts.push(new THREE.Vector3(q.x, sampleH(q) + 0.07, q.y));
+    }
+    const endQ = twXZ(...path[path.length - 1]); pts.push(new THREE.Vector3(endQ.x, 0.08, endQ.y));
+    const river = new THREE.Mesh(ribbonGeometry(pts, 0.6), riverMat);
+    river.receiveShadow = true;
+    group.add(river);
+  }
+
   // trees on hills
   const treeGeo = mergeGeometries([
-    paint(place(new THREE.ConeGeometry(0.32, 0.9, 6), { y: 0.65 }), '#4F9160'),
+    paint(place(new THREE.ConeGeometry(0.3, 0.85, 7), { y: 0.62 }), '#4E9566'),
     paint(place(new THREE.CylinderGeometry(0.06, 0.08, 0.3, 5), { y: 0.15 }), '#7B5A43'),
   ]);
-  const treeCount = quality.lite ? 90 : 190;
+  const treeCount = quality.lite ? 80 : 150;
   const trees = new THREE.InstancedMesh(treeGeo, new THREE.MeshLambertMaterial({ vertexColors: true }), treeCount);
   const dummy = new THREE.Object3D();
   let n = 0, guard = 0;
@@ -175,7 +219,7 @@ export function buildTaiwan(quality) {
       if (!inside(q, outline)) continue;
       const h = 0.3 + r() * (count > 10 ? 1.4 : 0.8);
       const base = sampleH(q);
-      cityParts.push(paint(place(new THREE.BoxGeometry(0.32, h, 0.32), { x: q.x, y: base + h / 2, z: q.y }), r() > 0.7 ? '#F4E9DA' : '#FFFFFF'));
+      cityParts.push(paint(place(new THREE.BoxGeometry(0.3, h, 0.3), { x: q.x, y: base + h / 2, z: q.y }), ['#FFFFFF', '#F6EEE3', '#F3E1D3', '#E3ECF5', '#F7E9C9'][Math.floor(r() * 5)]));
     }
   };
   city(TW_PLACES.taipei, 22, 1.8);

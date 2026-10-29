@@ -6,7 +6,7 @@ const bi = (zh, en) => ({ zh, en });
 export function routeEligible(bridge, { answers = {}, country } = {}) {
   const { edu, bg } = answers;
   if (bridge === 'ifp') return bg === 'none' && !!edu;
-  if (bridge === 'intense') return answers.lang === 'en' && bg !== 'oc' && INTENSE_COUNTRIES.includes(country) && ['bachelor', 'master'].includes(edu);
+  if (bridge === 'intense') return ['en', 'zh'].includes(answers.lang) && bg !== 'oc' && INTENSE_COUNTRIES.includes(country) && ['college', 'bachelor', 'master'].includes(edu);
   if (bridge === 'oc') return bg === 'oc';
   return bg !== 'oc';
 }
@@ -28,8 +28,8 @@ export const bridgeColor = (b) => BRIDGES[b]?.color ?? '#999';
 export function programStatus(program, state) {
   const route = programReachable(program, state.bridge);
   const language = state.bridge === 'ifp' && route ? true : program.lang === state.answers.lang;
-  const advanced = ['master', 'postbac', 'intense'].includes(program.level);
-  const education = program.level === 'phd' ? state.answers.edu === 'master' : advanced ? ['bachelor', 'master'].includes(state.answers.edu) : !!state.answers.edu;
+  const advanced = ['master', 'postbac'].includes(program.level);
+  const education = program.level === 'phd' ? state.answers.edu === 'master' : advanced ? ['bachelor', 'master'].includes(state.answers.edu) : program.level === 'intense' ? ['college', 'bachelor', 'master'].includes(state.answers.edu) : !!state.answers.edu;
   const eligible = routeEligible(state.bridge, state);
   return { route, language, education, eligible, ready: route && language && education && eligible };
 }
@@ -53,9 +53,17 @@ export function programJourney(p, bridge) {
   return steps;
 }
 
+// The whole road the student actually takes, in order: a foundation stop (IFP) comes before the degree.
+export function studyPath(program, bridge) {
+  const path = [];
+  if (bridge === 'ifp' && program.bridges.includes('ifp')) path.push({ kind: 'ifp', name: bi('國際專修部 IFP', 'International Foundation Program'), note: bi('1 年華語先修 · TOCFL A2', '1 Mandarin year · TOCFL A2') });
+  path.push({ kind: 'program', name: program.name, note: levelLabel(program) });
+  return path;
+}
+
 export function matchesConnectionFilter(program,filter) {
   if(filter==='all')return true;
   if(filter==='ifp')return program.bridges.includes('ifp');
-  if(filter==='intense')return program.bridges.includes('intense') && program.lang==='en';
+  if(filter==='intense')return program.bridges.includes('intense');
   return program.lang===filter;
 }

@@ -14,6 +14,12 @@ export const ICONS = {
   flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
   replay: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v5h5"/></svg>',
   speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" stroke-linecap="round"/></svg>',
+  bird: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3 3 7.5 12 12l9-4.5z"/><path d="M3 12l9 4.5 9-4.5M3 16.5 12 21l9-4.5" opacity=".55"/></svg>',
+  tilt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M4 16 10 7h10l-6 9z"/><path d="M12 11.5v-6M10 7.5l2-2 2 2" stroke-linecap="round"/></svg>',
+  orbit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><ellipse cx="12" cy="12" rx="9" ry="4.5"/><path d="M18.5 8.2 21 7.5l-.6 2.6"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>',
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"><path d="M4 11 12 4l8 7"/><path d="M6 10v9h12v-9"/></svg>',
   ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>',
 };
 export const icon = (name) => { const s = el('span', { 'aria-hidden': 'true', style: { display: 'inline-flex' } }); s.innerHTML = ICONS[name]; return s; };
@@ -63,20 +69,52 @@ export class UIRoot {
       old.setAttribute('aria-label', title || eyebrow || '');
       old.querySelector('.panel-foot')?.remove();
       if (foot.length) old.append(el('div', { class: 'panel-foot' }, ...foot));
+      // new content (e.g. a tapped hotspot) always unfolds the panel so the answer is seen
+      this.setCollapsed(false);
       old.className = cls;
+      old.querySelector('.ph-title').textContent = [eyebrow, title].filter(Boolean).join(' · ');
       scroll.scrollTop = top;
       onMount?.(old);
       return old;
     }
+    this.collapsed = false;
     if (old) { old.classList.remove('in'); old.inert=true; old.setAttribute('aria-hidden','true'); setTimeout(() => old.remove(), 450); }
     const scroll = el('div', { class: 'panel-scroll' }, eyebrow ? el('p', { class: 'eyebrow' }, eyebrow) : null, title ? el('h2', {}, title) : null, ...body);
-    const p = el('section', { class: 'panel' + (compact ? ' compact' : '') + (tall ? ' tall' : ''), role: 'dialog', 'aria-label': title || eyebrow || '' }, scroll, foot.length ? el('div', { class: 'panel-foot' }, ...foot) : null);
+    const handle = this.panelHandle([eyebrow, title].filter(Boolean).join(' · '));
+    const p = el('section', { class: 'panel' + (compact ? ' compact' : '') + (tall ? ' tall' : ''), role: 'dialog', 'aria-label': title || eyebrow || '' }, handle, scroll, foot.length ? el('div', { class: 'panel-foot' }, ...foot) : null);
     p.dataset.key = k;
     this.root.append(p);
     requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('in')));
     this.panelEl = p;
     onMount?.(p);
     return p;
+  }
+
+  // Header bar that folds the panel away so the map can be explored (narration keeps playing).
+  panelHandle(text) {
+    const zh = I18N.lang === 'zh';
+    const toggle = el('button', { class: 'ph-toggle', type: 'button', 'aria-expanded': 'true', onclick: (e) => { e.stopPropagation(); this.setCollapsed(!this.collapsed); } },
+      el('span', { class: 'ph-label-hide' }, zh ? '收合，看地圖' : 'Hide · see map'), el('span', { class: 'ph-label-show' }, zh ? '展開說明' : 'Show details'), el('span', { class: 'ph-chev', 'aria-hidden': 'true' }));
+    const bar = el('div', { class: 'panel-handle' }, el('span', { class: 'ph-grip', 'aria-hidden': 'true' }), el('span', { class: 'ph-title' }, text), toggle);
+    bar.addEventListener('click', () => { if (this.collapsed) this.setCollapsed(false); });
+    // swipe down to fold, up to unfold (touch screens)
+    let y0 = null;
+    bar.addEventListener('pointerdown', (e) => { y0 = e.clientY; });
+    bar.addEventListener('pointerup', (e) => {
+      if (y0 == null) return;
+      const dy = e.clientY - y0; y0 = null;
+      if (dy > 36 && !this.collapsed) this.setCollapsed(true);
+      else if (dy < -36 && this.collapsed) this.setCollapsed(false);
+    });
+    return bar;
+  }
+
+  setCollapsed(on) {
+    this.collapsed = on;
+    const p = this.panelEl;
+    if (!p) return;
+    p.classList.toggle('collapsed', on);
+    p.querySelector('.ph-toggle')?.setAttribute('aria-expanded', String(!on));
   }
 
   closePanel() {
@@ -103,6 +141,16 @@ export class UIRoot {
     this.toastEl.classList.add('in');
     clearTimeout(this._toastT);
     this._toastT = setTimeout(() => this.toastEl.classList.remove('in'), ms);
+  }
+
+  // map-style camera controls, always in the same place on every 3D view
+  viewDock(items) {
+    this.viewDockEl?.remove();
+    this.viewDockEl = null;
+    if (!items) return;
+    this.viewDockEl = el('nav', { class: 'view-dock', 'aria-label': I18N.lang === 'zh' ? '視角控制' : 'View controls' },
+      ...items.map((it) => it === '|' ? el('span', { class: 'sep', 'aria-hidden': 'true' }) : el('button', { type: 'button', class: 'view-btn' + (it.on ? ' on' : ''), 'data-icon': it.icon, title: it.label, 'aria-label': it.label, 'aria-pressed': it.toggle ? String(!!it.on) : null, onclick: () => it.onClick() }, icon(it.icon), el('span', { class: 'view-label' }, it.label))));
+    this.root.append(this.viewDockEl);
   }
 
   dock(buttons) {

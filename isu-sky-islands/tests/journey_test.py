@@ -67,16 +67,16 @@ with sync_playwright() as p:
  # IFP returns from its Mandarin stop to the originally previewed degree.
  page.evaluate('()=>{const a=__app,f=a.flow;f.titleEl.remove();a.updaters=[];f.narrator.pause();f.s.life="unsure";a.setStage("campus");f.focusIsland("maker","mae");}')
  page.locator('.panel.in .panel-foot button').last.click();page.wait_for_selector('.panel.in[data-key=bridge-questions]')
- answer('hs','none','mandarin');page.locator('.panel.in .panel-foot button').last.click()
- page.wait_for_selector('.panel.in[data-key=pathway-ifp]');assert page.evaluate('__app.traveler.group.parent===__app.arch.foundation.group')
- page.locator('.panel.in .panel-foot button').last.click();page.wait_for_function('__app.controls.enabled')
+ answer('hs','none','mandarin')
+ # ticking "Mandarin first" is the IFP choice itself: confirming flies via the Mandarin island straight to the degree
+ page.wait_for_function('__app.flow.s.bridge==="ifp" && __app.controls.enabled')
  assert page.evaluate('__app.flow.s.bridge==="ifp" && __app.traveler.group.parent===__app.arch.byId("maker").group')
  page.locator('.panel.in').get_by_role('tab').nth(2).click();assert page.locator('.panel.in .timeline li').count()==5
  # A graduate can explore the industry route; the selected English equipment program is preserved.
  page.evaluate('()=>{const f=__app.flow;f.s.bridge=null;f.s.answers={};f.focusIsland("chip","equip");}')
  page.locator('.panel.in .panel-foot button').last.click();page.wait_for_selector('.panel.in[data-key=bridge-questions]')
- answer('bachelor','en','industry');page.locator('.panel.in .panel-foot button').last.click()
- page.wait_for_selector('.panel.in[data-key=pathway-intense]');page.locator('.panel.in .panel-foot button').last.click();page.wait_for_function('__app.controls.enabled')
+ answer('bachelor','en','industry')
+ page.wait_for_function('__app.flow.s.bridge==="intense" && __app.controls.enabled')
  assert page.evaluate('__app.flow.s.bridge==="intense" && __app.flow.s.programSelections.chip==="equip"')
  page.locator('.panel.in').get_by_role('tab').nth(2).click();assert page.locator('.panel.in .timeline li').count()==3
  assert not errors,errors
