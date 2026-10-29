@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { createAnchorEffect } from './anchor.js';
 import { floatingBase } from './base.js';
 import { Kit, lambert } from './kit.js';
 import { rng, glowTexture, tween, easeOut } from '../util.js';
@@ -374,6 +375,22 @@ export class Archipelago {
     }
   }
 
+  clearAnchor() {
+    this.anchoredChoice?.effect.dispose();this.anchoredChoice=null;
+  }
+
+  anchorChoice(island,programId) {
+    this.clearAnchor();this.setBeacon(null,false);
+    const target=island.programAnchors[programId];
+    if(!target)return;
+    const effect=createAnchorEffect(this.quality),p=target.position;
+    effect.group.position.set(p.x,island.sy(p.x,p.z)+.12,p.z);
+    island.group.add(effect.group);this.anchoredChoice={islandId:island.def.id,programId,effect};
+    for(const other of this.islands)this.setLit(other,other===island,.8);
+    const chosen=island.programBuildings[programId];if(chosen){chosen.house.material.emissive.set('#E8B342');chosen.house.material.emissiveIntensity=.65;chosen.lamp.material.opacity=1;}
+    effect.update(0);
+  }
+
   byId(id) { return this.islands.find((i) => i.def.id === id); }
 
   setPrograms(island, status, selected = null) {
@@ -384,11 +401,11 @@ export class Archipelago {
       if (building.ready !== ready) {
         const colors = house.geometry.attributes.color;
         colors.array.set(building.originalColors);
-        if (!ready) for (let i=0;i<colors.array.length;i+=3) { const gray=colors.array[i]*0.2126+colors.array[i+1]*0.7152+colors.array[i+2]*0.0722; colors.array[i]=colors.array[i+1]=colors.array[i+2]=gray; }
+        if (ready===false) for (let i=0;i<colors.array.length;i+=3) { const gray=colors.array[i]*0.2126+colors.array[i+1]*0.7152+colors.array[i+2]*0.0722; colors.array[i]=colors.array[i+1]=colors.array[i+2]=gray; }
         colors.needsUpdate=true; building.ready=ready;
       }
-      house.material.color.set(ready ? '#FFFFFF' : '#81858A');
-      house.material.emissive.set(p.id === selected ? (ready ? '#D39A23' : '#353A40') : ready ? '#6C531B' : '#000000');
+      house.material.color.set(ready!==false ? '#FFFFFF' : '#81858A');
+      house.material.emissive.set(p.id === selected ? (ready===null?'#49778E':ready ? '#D39A23' : '#353A40') : ready ? '#6C531B' : '#000000');
       house.material.emissiveIntensity = p.id === selected ? 0.5 : 0.2;
       lamp.material.opacity = ready ? (p.id === selected ? 1 : 0.7) : 0;
     }
@@ -442,6 +459,7 @@ export class Archipelago {
   }
 
   update(dt, t) {
+    this.anchoredChoice?.effect.update(dt);
     for (const isl of [...this.islands, this.foundation]) {
       isl.group.position.y = isl.home.y + Math.sin(t * 0.5 + isl.phase) * 0.45 + (isl.offset ?? 0);
       isl.waterfall.userData.mat.uniforms.time.value = t;

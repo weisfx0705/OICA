@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {likedSummary} from '../js/preferences.js';
+assert.deepEqual(likedSummary(new Set(),'zh'),[]);
+assert.deepEqual(likedSummary(new Set(['bad:x']),'en'),[]);
+const likes=new Set(['taiwan:overview','taiwan:free','taiwan:breakfast','kaohsiung:mountains','campus:metaverse']);
+const zh=likedSummary(likes,'zh');
+assert.equal(zh.length,3);assert.equal(zh[0].text,'民主與多元、台式早餐日常');
+assert.equal(zh[1].text,'柴山與西子灣');assert.equal(zh[2].text,'元宇宙與影像創作');
+assert.match(likedSummary(likes,'en')[0].text,/Democracy/);
+likes.delete('kaohsiung:mountains');assert.equal(likedSummary(likes).length,2);
+const many=likedSummary(new Set(['taiwan:free','taiwan:food','taiwan:breakfast','taiwan:travel']));
+assert.equal(many.length,1);assert.ok(many[0].text.endsWith('等'));
+console.log('Preference summaries passed: supplied choices only, concise bilingual labels, reversible hearts.');

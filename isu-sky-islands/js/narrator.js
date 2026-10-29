@@ -8,7 +8,7 @@ export class Narrator {
     this.enabled=storage.get('isu-narration',true);
     this.unlocked=false; this.request=0;
     this.overviewPlayed=new Set();
-    this.overviewKeys=new Set(['taiwan','kaohsiung','campus']);
+    this.overviewKeys=new Set(['taiwan','kaohsiung','campus','learning',...Object.keys(NARRATION).filter(k=>k.startsWith('island-'))]);
     this.audio=new Audio(); this.audio.preload='none'; this.audio.volume=0.92;
     this.audio.addEventListener('playing',()=>{
       if(this.playContext?.token!==this.request) return;

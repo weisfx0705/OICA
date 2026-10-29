@@ -2,6 +2,7 @@ import { el, t, I18N } from './util.js';
 import { UI } from './content.js';
 
 export const ICONS = {
+  cloudlet: '<svg viewBox="0 0 64 54" fill="none"><path d="M14 40C3 39 2 24 12 21C11 10 25 4 32 13C42 3 56 12 53 23C65 26 60 42 49 42H17" fill="#F5FAFF" stroke="#7EA1BD" stroke-width="2"/><circle cx="25" cy="29" r="3" fill="#23215F"/><circle cx="42" cy="29" r="3" fill="#23215F"/><path d="M30 36Q34 40 38 36" stroke="#23215F" stroke-width="2" stroke-linecap="round"/><path d="M20 44H48L44 50H25Z" fill="#E4B34F"/></svg>',
   globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18"/></svg>',
   bolt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
@@ -67,7 +68,7 @@ export class UIRoot {
       onMount?.(old);
       return old;
     }
-    if (old) { old.classList.remove('in'); setTimeout(() => old.remove(), 450); }
+    if (old) { old.classList.remove('in'); old.inert=true; old.setAttribute('aria-hidden','true'); setTimeout(() => old.remove(), 450); }
     const scroll = el('div', { class: 'panel-scroll' }, eyebrow ? el('p', { class: 'eyebrow' }, eyebrow) : null, title ? el('h2', {}, title) : null, ...body);
     const p = el('section', { class: 'panel' + (compact ? ' compact' : '') + (tall ? ' tall' : ''), role: 'dialog', 'aria-label': title || eyebrow || '' }, scroll, foot.length ? el('div', { class: 'panel-foot' }, ...foot) : null);
     p.dataset.key = k;
@@ -82,6 +83,7 @@ export class UIRoot {
     const old = this.panelEl;
     if (!old) return;
     old.classList.remove('in');
+    old.inert=true; old.setAttribute('aria-hidden','true');
     setTimeout(() => old.remove(), 450);
     this.panelEl = null;
     document.body.classList.remove('panel-open');

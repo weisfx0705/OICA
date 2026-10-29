@@ -1,12 +1,12 @@
 # 空中群島｜Islands in the Sky
 
-義守大學國際招生互動體驗。玩家從自己的國家飛到台灣、高雄與觀音山，選擇十年後的自己、找到自己的入學管道（橋），先到七座未來之島選科系，再看所選科系的一天、學習歷程與未來，最後插旗並得到可分享的路線卡。國際專修部另有華語先修中途島。
+義守大學國際招生互動體驗。從家鄉飛到台灣、高雄與校園，先想像生活、探索學習島和科系，再用學歷、語言與背景選入學橋，最後選課程定錨。沿路可用愛心記下喜歡的內容，產生個人的雙語旅程小結與可分享路線卡。
 
 - 純靜態網站：HTML + CSS + JavaScript 模組，不需要建置工具。
 - 3D：Three.js r160（已放在 `vendor/`，不依賴 CDN）。
-- 模型全部用程式產生，沒有外部 3D 檔，首次載入約 1.6 MB（照片只在打開面板時才載入）。
-- 音樂與音效用 Web Audio 即時合成（`js/audio.js`）；另有 Gemini 生成的 66 段中英文 AI 旁白（統一 Charon 男聲），依場景載入本機 MP3。可選語言、播放、暫停、重播和閱讀逐字稿；旁白播放時音樂降低。
-- 玩家角色是一位背著行囊的旅人（`js/world/traveler.js`）：可選膚色與衣服顏色，從家鄉飛到台灣，抵達校園成為學生，「四年」畢業，「十年後」換上各島的職業裝備。
+- 模型全部用程式產生，沒有外部 3D 檔，照片與旁白按需載入。
+- 音樂與音效用 Web Audio 即時合成（`js/audio.js`）；另有 Gemini 生成的 82 段中英文 AI 旁白（統一 Charon 男聲），依場景載入本機 MP3。可選語言、播放、暫停、重播和閱讀逐字稿；旁白播放時音樂降低。
+- 角色為原創雲朵旅伴 Cloudlet（`js/world/traveler.js`），可選雲朵與領巾顏色，具有背包、畢業帽袍與職涯配件。定錨動畫落在所選科系小屋，包含光環、波紋、粒子與錨點圖示。
 
 ## 本機預覽
 
@@ -22,11 +22,9 @@ python3 -m http.server 8000
 
 - 倉庫：<https://github.com/weisfx0705/OICA>
 - 遊戲：<https://weisfx0705.github.io/OICA/isu-sky-islands/>
-- OICA 專案入口：<https://weisfx0705.github.io/OICA/>
+- 專案入口：<https://weisfx0705.github.io/OICA/>
 
-本專案位於 OICA 倉庫的 `isu-sky-islands/`。GitHub Pages 使用 `main` 分支根目錄，推送後由既有 Pages 流程發布，不需要建置步驟。所有遊戲資源與 ES 模組採相對路徑，支援此子路徑。
-
-修改前請從 `main` 更新；驗證後僅提交本專案與必要的首頁入口變更，再推送 `origin/main`。保留原有其他專案。
+發布副本位於 OICA 倉庫的 `isu-sky-islands/`；GitHub Pages 使用 `main` 分支根目錄，不需要建置步驟。先驗證本機副本，再提交本專案及必要首頁入口變更、推送 `origin/main`，最後確認該提交的 Pages 建置及正式網址。
 
 ## 每年要更新的內容
 
@@ -43,7 +41,7 @@ python3 -m http.server 8000
 
 每個文字欄位都是 `{ zh, en }`。要加越南文，在同一層加 `vi: '...'`，介面語言切換再加上 `vi` 即可；缺少的欄位會自動退回英文。
 
-入學管道初篩在 `js/logic.js`。`resolveBridge()` 提供建議，使用者可明確選用符合初篩的其他路徑；`programStatus()` 分別檢查路徑、語言及前置學歷。所有科系都可閱讀，初步相符才能插旗。
+入學管道初篩在 `js/logic.js`。`resolveBridge()` 提供建議，使用者可明確選用符合初篩的其他路徑；`programStatus()` 分別檢查路徑、語言及前置學歷。所有科系在選橋前都可預覽；選定入學橋並初步相符後才能定錨。
 
 ## 檔案結構
 
@@ -70,7 +68,7 @@ vendor/             Three.js、OrbitControls、QR code 產生器
 
 內容依據 2026–2027 外國學生／國際專修部／INTENSE 英文簡章、116 學年度僑生及港澳生單獨招生簡章、會計處 2026 年度收費表、學務處宿舍收費表與 international.isu.edu.tw。查核紀錄見上一層資料夾的〈義守大學遊戲資料查核報告.md〉。
 
-地圖輪廓來自 Natural Earth（公共領域）。照片與校徽為義守大學所有。
+地圖輪廓來自 Natural Earth（公共領域）。照片與圖像來源見 `PHOTO-CREDITS.md`；校徽為義守大學所有。
 
 ## 更新旁白
 
@@ -93,10 +91,24 @@ API 憑證不寫入遊戲。生成資料寫入 `assets/narration/manifest.json`�
 
 ## 導覽與聲音操作
 
-- 校園介紹後直接進入未來選擇；已移除燈籠關卡與對應音檔。
+- 校園介紹後進入生活想像，再到學習島預覽；已移除燈籠及十年後身分的前置選擇。
 - 「Other Options」在中英文介面都使用這個標題，區分 IFP、INTENSE 等特殊入學選擇。
 - 右上角「回到首頁／Start over」重新載入首頁，清空這趟旅程的答案與旁白播放紀錄，保留語言、音樂等使用偏好。
 - 台灣、高雄與義守校園總覽，對每種語言在每趟旅程只自動播放一次；被打斷也算已開始介紹，返回時保持安靜。可隨時手動播放或重播。
 - 旁白共用一個播放器。切換、暫停或離開時，先用約 240 毫秒淡出，再啟動下一段；快速連點時只播放最後一次選擇，不交叉混音。優先使用 Web Audio GainNode，無支援時使用播放器音量漸變。
 - 角色保留旅人背包、學生小背包、畢業帽袍，以及各島職涯配件的變化。
 - 語音行為驗證：`python3 tests/narrator_test.py`。
+
+
+## 生活、預覽、選橋與愛心小結
+
+1. 選擇想像中的生活，再探索學習島；已移除「十年後成為誰」的前置選擇。
+2. 入學橋尚未決定時，可以閱讀所有科系、一天與學習歷程，角色留在出發岸邊，科系保持中性預覽。
+3. 依學歷、授課語言、身分與國家找入學橋。系統建議不會直接視為已選定，需明確確認。
+4. 選橋後回到原本關注且可銜接的島；若無可銜接課程，改顯示該橋可到達的群島。IFP 先經華語島，INTENSE 先看企業合作說明。
+5. 確認課程後定錨。愛心紀錄以短列點整理台灣、高雄、義守各自喜歡的內容，連同島與科系寫入畫面及分享圖；沒有點選的內容不會列入。摘要完全在瀏覽器組合，不使用生成 API，也不傳送收藏資料。
+
+`js/journey-content.js`：入學橋與七島旁白；`js/preferences.js`：愛心標籤與中英文短摘要；`js/world/anchor.js`：定錨特效。
+
+驗證：`node tests/catalog.test.mjs`、`node tests/preferences.test.mjs`、`python3 tests/narrator_test.py`、`python3 tests/catalog_views_test.py`、`python3 tests/journey_test.py`。
+發布檢查：`python3 tests/deployment_test.py --game-url https://weisfx0705.github.io/OICA/isu-sky-islands/`。
