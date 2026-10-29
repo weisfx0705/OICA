@@ -1,0 +1,407 @@
+{
+  "model": "gemini-3.1-flash-tts-preview",
+  "voice": "Charon",
+  "aiGenerated": true,
+  "styles": {
+    "zh": "Read the transcript exactly. Use the same mature male narrator throughout. Low, resonant baritone register; calm, grounded, warm documentary delivery. Consistent timbre and vocal weight across all clips. Natural Taiwan Mandarin and Taiwanese pronunciation. Moderate conversational pace, short sentence pauses. No advertising cadence, theatrical suspense, falsetto or exaggerated rasp. Do not add, translate, or paraphrase words.",
+    "en": "Read the transcript exactly. Use the same mature male narrator throughout. Low, resonant baritone register; calm, grounded, warm documentary delivery. Consistent timbre and vocal weight across all clips, including the Mandarin version. Clear international English, moderate conversational pace and short sentence pauses. No advertising cadence, theatrical suspense, falsetto or exaggerated rasp. Pronounce I-Shou as ee-show. Do not add, translate, or paraphrase words."
+  },
+  "clips": {
+    "intro": {
+      "zh": {
+        "file": "assets/narration/intro-zh.mp3",
+        "ready": true,
+        "transcript": "歡迎來到空中群島。從你的家鄉出發，飛到台灣、高雄，最後抵達義守大學。每一座島，都藏著你可以探索的未來。選擇中文或英文旁白，準備好就一起起飛吧。"
+      },
+      "en": {
+        "file": "assets/narration/intro-en.mp3",
+        "ready": true,
+        "transcript": "Welcome to Islands in the Sky. Fly from your home to Taiwan, explore Kaohsiung, and arrive at I-Shou University. Each island holds a future you can explore. Choose your narration language, and let’s take off together."
+      }
+    },
+    "globe": {
+      "zh": {
+        "file": "assets/narration/globe-zh.mp3",
+        "ready": true,
+        "transcript": "你的旅程，從哪裡開始？選擇你的國家，或直接點選地球上的位置。再替自己選一位旅人，我們就要往台灣出發了。"
+      },
+      "en": {
+        "file": "assets/narration/globe-en.mp3",
+        "ready": true,
+        "transcript": "Where does your journey begin? Choose your country, or tap a place on the globe. Pick a traveler to represent you. Next stop: Taiwan."
+      }
+    },
+    "taiwan": {
+      "zh": {
+        "file": "assets/narration/taiwan-zh.mp3",
+        "ready": true,
+        "transcript": "這裡是台灣。高山、海洋、夜市，還有連結世界的科技。在這座島上，你可以探索新的生活，也可以慢慢找到自己的方向。點選場景，看看你最感興趣的事。"
+      },
+      "en": {
+        "file": "assets/narration/taiwan-en.mp3",
+        "ready": true,
+        "transcript": "This is Taiwan: mountains, ocean, night markets, and technology that connects the world. Here, you can explore a different way of life and discover your own direction. Tap the scene to explore what interests you."
+      }
+    },
+    "kaohsiung": {
+      "zh": {
+        "file": "assets/narration/kaohsiung-zh.mp3",
+        "ready": true,
+        "transcript": "我們來到台灣南部的高雄。紅線與橘線串連城市，綠色輕軌走過街區，再搭一趟渡輪，就能到旗津看海。從港灣、表演到山城，未來的課堂、生活和工作，也可能在這裡交會。"
+      },
+      "en": {
+        "file": "assets/narration/kaohsiung-en.mp3",
+        "ready": true,
+        "transcript": "Welcome to Kaohsiung, in southern Taiwan. Red and Orange metro lines cross the city, green light rail connects its districts, and a ferry takes you to Cijin. From the harbour and performance venues to mountain communities, your future classes, everyday life and career could meet here."
+      }
+    },
+    "campus": {
+      "zh": {
+        "file": "assets/narration/campus-zh.mp3",
+        "ready": true,
+        "transcript": "接著，來到義守大學。觀音山上的校本部，連著義大世界的購物、飯店與休閒生活。燕巢的醫學院區鄰近義大醫院。元宇宙科技藝術設計中心，讓科技與創作相遇。再認識背後的義聯集團，從鋼鐵、教育到醫療與休閒，看見一個完整的生活與產業網絡。"
+      },
+      "en": {
+        "file": "assets/narration/campus-en.mp3",
+        "ready": true,
+        "transcript": "Welcome to I-Shou University. The main campus neighbours E-Da World, with shopping, hotels and leisure. The medical campus is near E-Da Hospital in Yanchao. Discover the Metaverse Technology, Art and Design Center, then explore the EUnited Group behind the university, connecting steel, education, healthcare and leisure."
+      }
+    },
+    "career": {
+      "zh": {
+        "file": "assets/narration/career-zh.mp3",
+        "ready": true,
+        "transcript": "如果十年後的你，有一段故事發生在台灣，那會是什麼模樣？先選一座讓你好奇的未來之島。這只是探索的起點，稍後每一座島、每一個科系都可以打開來看。"
+      },
+      "en": {
+        "file": "assets/narration/career-en.mp3",
+        "ready": true,
+        "transcript": "Imagine part of your story taking place in Taiwan, ten years from now. Which future makes you curious? Choose an island as your starting point. Later, you can open every island and explore every program."
+      }
+    },
+    "life": {
+      "zh": {
+        "file": "assets/narration/life-zh.mp3",
+        "ready": true,
+        "transcript": "除了想做什麼工作，你也想過什麼樣的生活？留在台灣、回到家鄉，或成為兩地之間的橋梁。現在還不確定，也沒有關係。"
+      },
+      "en": {
+        "file": "assets/narration/life-en.mp3",
+        "ready": true,
+        "transcript": "Beyond your career, what kind of life would you like? Stay in Taiwan, return home, or connect the two places. It is perfectly fine if you are still exploring."
+      }
+    },
+    "bridges": {
+      "zh": {
+        "file": "assets/narration/bridges-zh.mp3",
+        "ready": true,
+        "transcript": "接下來，找一條適合你的入學路徑。告訴我們你的學歷、授課語言和背景。你也可以先認識國際專修部的華語先修島，以及企業合作的專班路徑。"
+      },
+      "en": {
+        "file": "assets/narration/bridges-en.mp3",
+        "ready": true,
+        "transcript": "Next, explore an admission route that could suit you. Tell us your education, teaching language, and background. You can also explore the Mandarin foundation island and the industry partnership pathway."
+      }
+    },
+    "bridge-zh": {
+      "zh": {
+        "file": "assets/narration/bridge-zh-zh.mp3",
+        "ready": true,
+        "transcript": "中文橋，帶你探索中文授課的系所。進入島嶼後，亮起的房子代表與目前路徑和語言相符的選擇。點開科系，就能看介紹、學習情境和官方網站。"
+      },
+      "en": {
+        "file": "assets/narration/bridge-zh-en.mp3",
+        "ready": true,
+        "transcript": "The Chinese Bridge leads to Chinese-taught programs. On each island, lit buildings match your current route and language. Open a program to explore its introduction, learning experience, and official website."
+      }
+    },
+    "bridge-en": {
+      "zh": {
+        "file": "assets/narration/bridge-en-zh.mp3",
+        "ready": true,
+        "transcript": "英文橋，連向全英語學士學程，以及符合學歷條件的國際管理碩士班。你可以用英文開始專業學習，同時在日常生活裡慢慢認識中文。"
+      },
+      "en": {
+        "file": "assets/narration/bridge-en-en.mp3",
+        "ready": true,
+        "transcript": "The English Bridge connects English-taught bachelor’s programs and, for eligible degree holders, the international MBA. Begin your professional learning in English and explore Mandarin through everyday life."
+      }
+    },
+    "bridge-ifp": {
+      "zh": {
+        "file": "assets/narration/bridge-ifp-zh.mp3",
+        "ready": true,
+        "transcript": "國際專修部，是一座先學中文的中途島。先完成一年的華語先修，達到規定的語言門檻，再進入核定的學士科系，繼續四年的專業學習。先修島會清楚標出可以銜接的科系。"
+      },
+      "en": {
+        "file": "assets/narration/bridge-ifp-en.mp3",
+        "ready": true,
+        "transcript": "The International Foundation Program is a Mandarin learning stop on your journey. Complete a foundation year and meet the required language standard, then move into an approved bachelor’s program for four years of degree study. The foundation island shows the programs it connects to."
+      }
+    },
+    "bridge-intense": {
+      "zh": {
+        "file": "assets/narration/bridge-intense-zh.mp3",
+        "ready": true,
+        "transcript": "新型專班，是與企業合作的入學路徑。二零二七年春季班包括英語授課的設備工程，以及中文授課的機械與自動化工程。先在校學習，再進入企業實習。申請與企業合作條件，需要依當期簡章與契約確認。"
+      },
+      "en": {
+        "file": "assets/narration/bridge-intense-en.mp3",
+        "ready": true,
+        "transcript": "The INTENSE program connects university study with industry. For spring twenty twenty-seven, it offers Equipment Engineering in English and Mechanical and Automation Engineering in Chinese. Study on campus, then join a company internship. Admission and partnership conditions follow the current prospectus and agreement."
+      }
+    },
+    "bridge-oc": {
+      "zh": {
+        "file": "assets/narration/bridge-oc-zh.mp3",
+        "ready": true,
+        "transcript": "僑生與港澳生，可以透過相應的申請管道探索科系。中文與英文授課的選擇，會分別標示。最適合你的路徑，也需要一起確認身分與語言條件。"
+      },
+      "en": {
+        "file": "assets/narration/bridge-oc-en.mp3",
+        "ready": true,
+        "transcript": "Overseas Chinese students and students from Hong Kong and Macau have their own admission routes. Chinese-taught and English-taught choices are marked separately. Check both your background and language requirements to find a suitable path."
+      }
+    },
+    "islands": {
+      "zh": {
+        "file": "assets/narration/islands-zh.mp3",
+        "ready": true,
+        "transcript": "現在，飛向你感興趣的島。每一棟科系小屋都可以點開，亮燈表示與目前路徑和語言相符。先選科系，再看看這個科系的一天、學習歷程和未來。也可以切換語言篩選，繼續比較。"
+      },
+      "en": {
+        "file": "assets/narration/islands-en.mp3",
+        "ready": true,
+        "transcript": "Fly to an island that interests you. Every program building can be opened. A light marks a match for your current route and language. Choose a program first, then explore a day of learning, its study journey, and possible futures. Use the language filters to compare your choices."
+      }
+    },
+    "taiwan-free": {
+      "zh": {
+        "file": "assets/narration/taiwan-free-zh.mp3",
+        "ready": true,
+        "transcript": "台灣的民主是逐步爭取而來：1987 年解嚴，1990 年代推進國會改選與憲政改革，1996 年首次總統直選，2000 年首次政黨輪替。到 2026 年，總統直選已有 30 年。2019 年 5 月 24 日，台灣成為亞洲第一個同性婚姻合法化的國家。民主也體現在日常：表達意見、參與公共討論，並學習尊重不同族群、信仰、性別與文化。"
+      },
+      "en": {
+        "file": "assets/narration/taiwan-free-en.mp3",
+        "ready": true,
+        "transcript": "Taiwan’s democracy developed through sustained civic action: martial law ended in 1987, parliamentary and constitutional reforms followed, the first direct presidential election took place in 1996, and the first peaceful transfer between parties in 2000. In 2026, direct presidential elections mark 30 years. On May 24, 2019, Taiwan became the first country in Asia to legalise same-sex marriage. Everyday democracy also means expression, public participation and respect for different communities, faiths, genders and cultures."
+      }
+    },
+    "taiwan-food": {
+      "zh": {
+        "file": "assets/narration/taiwan-food-zh.mp3",
+        "ready": true,
+        "transcript": "夜市不只是買晚餐，也是邊走邊吃、和朋友相聚的公共生活。鹽酥雞、蚵仔煎、臭豆腐、地瓜球與珍珠奶茶，一攤一種味道，幾個人分著吃，就能多試幾樣。台灣飲食還融合不同移民社群與國際料理：從家常台菜、客家菜、原住民族飲食，到日本、越南、泰國、印尼等風味。"
+      },
+      "en": {
+        "file": "assets/narration/taiwan-food-en.mp3",
+        "ready": true,
+        "transcript": "A night market is more than dinner: it is a social space for strolling, snacking and meeting friends. Share fried chicken, oyster omelettes, stinky tofu, sweet-potato balls and bubble tea to try more flavours. Taiwan’s food culture also connects local, Hakka and Indigenous traditions with cuisines from Japan, Vietnam, Thailand, Indonesia and beyond."
+      }
+    },
+    "taiwan-breakfast": {
+      "zh": {
+        "file": "assets/narration/taiwan-breakfast-zh.mp3",
+        "ready": true,
+        "transcript": "台灣早餐值得留一個早晨慢慢吃。蛋餅、飯糰、燒餅油條配豆漿，是常見的經典；另一邊也有鐵板麵、漢堡、三明治與奶茶。中式與西式在同一條街相遇，每間店都有自己的組合。來台灣讀書，早餐店很可能是你最先熟悉的日常。"
+      },
+      "en": {
+        "file": "assets/narration/taiwan-breakfast-en.mp3",
+        "ready": true,
+        "transcript": "Make time for breakfast in Taiwan. Egg crepes, rice rolls, sesame flatbread, fried dough and soy milk are familiar classics. Shops also serve griddle noodles, burgers, sandwiches and milk tea. Chinese and Western influences meet on the same street, and every shop has its own combinations. A breakfast shop may become one of your first familiar places as a student."
+      }
+    },
+    "taiwan-travel": {
+      "zh": {
+        "file": "assets/narration/taiwan-travel-zh.mp3",
+        "ready": true,
+        "transcript": "高鐵沿西部串起主要城市，台鐵路網延伸到東部與沿海城鎮，再接捷運、公車或渡輪，就能安排一個生活圈的一日旅行。台灣靠山也靠海：可以挑一座城市的山線、港灣或海岸慢慢走，不必一天跑遍全台。跨城移動請依班次與轉乘時間規劃。"
+      },
+      "en": {
+        "file": "assets/narration/taiwan-travel-en.mp3",
+        "ready": true,
+        "transcript": "High-speed rail links major western cities, while Taiwan Railway reaches eastern and coastal towns. Connect to metro, buses or ferries for a day within one region. Mountains and sea are both part of Taiwan: choose a mountain district, harbour or coast and explore at an easy pace, rather than trying to circle the island in one day. Check timetables and transfer times for intercity trips."
+      }
+    },
+    "taiwan-tech": {
+      "zh": {
+        "file": "assets/narration/taiwan-tech-zh.mp3",
+        "ready": true,
+        "transcript": "半導體、電子、資訊與製造，是台灣與世界合作的重要連結。從新竹到台南、高雄，產業聚落讓工程、材料、程式與管理在真實問題裡相遇。"
+      },
+      "en": {
+        "file": "assets/narration/taiwan-tech-en.mp3",
+        "ready": true,
+        "transcript": "Semiconductors, electronics, computing and manufacturing connect Taiwan with the world. Industry clusters from Hsinchu to Tainan and Kaohsiung bring engineering, materials, software and management together around real problems."
+      }
+    },
+    "taiwan-safe": {
+      "zh": {
+        "file": "assets/narration/taiwan-safe-zh.mp3",
+        "ready": true,
+        "transcript": "便利的交通、生活機能與校園支持，讓初來台灣的生活可以一步步安頓。熟悉緊急聯絡方式、留意交通與天氣，遇到困難也可以向學校與國際處求助。"
+      },
+      "en": {
+        "file": "assets/narration/taiwan-safe-en.mp3",
+        "ready": true,
+        "transcript": "Transport, everyday services and campus support help you settle in step by step. Learn emergency contacts, pay attention to traffic and weather, and ask the university or international office when you need help."
+      }
+    },
+    "kaohsiung-port": {
+      "zh": {
+        "file": "assets/narration/kaohsiung-port-zh.mp3",
+        "ready": true,
+        "transcript": "高雄從港口發展出不同的城市風景：駁二的舊倉庫變成藝術與展演空間，大港橋連起港灣步道，沿著愛河與水岸，可以散步、看展，也看見城市從工業走向文化的層次。"
+      },
+      "en": {
+        "file": "assets/narration/kaohsiung-port-en.mp3",
+        "ready": true,
+        "transcript": "Kaohsiung’s harbour has many layers. Former warehouses at Pier-2 became art and performance spaces, while harbour paths and the Great Harbour Bridge connect waterfront walks, exhibitions and the city’s industrial and cultural stories."
+      }
+    },
+    "kaohsiung-concert": {
+      "zh": {
+        "file": "assets/narration/kaohsiung-concert-zh.mp3",
+        "ready": true,
+        "transcript": "從港邊的高雄流行音樂中心，到衛武營的劇場與音樂廳，再到大型演唱會，高雄讓表演成為城市生活的一部分。也能把看展、逛駁二與一場演出排在同一天。"
+      },
+      "en": {
+        "file": "assets/narration/kaohsiung-concert-en.mp3",
+        "ready": true,
+        "transcript": "From Kaohsiung Music Center by the harbour to Weiwuying’s theatres and concert halls, performances are part of city life. Combine an exhibition, a Pier-2 walk and a show in one day."
+      }
+    },
+    "kaohsiung-chip": {
+      "zh": {
+        "file": "assets/narration/kaohsiung-chip-zh.mp3",
+        "ready": true,
+        "transcript": "高雄也有半導體、封裝測試與製造產業。城市的產業轉型，讓工程、資訊、材料與管理都能找到值得研究的問題；學習與未來職涯，也能從認識產業開始。"
+      },
+      "en": {
+        "file": "assets/narration/kaohsiung-chip-en.mp3",
+        "ready": true,
+        "transcript": "Kaohsiung also hosts semiconductor, packaging, testing and manufacturing industries. Its industrial transition raises questions for engineering, computing, materials and management. Explore these sectors as part of discovering future career directions."
+      }
+    },
+    "kaohsiung-transit": {
+      "zh": {
+        "file": "assets/narration/kaohsiung-transit-zh.mp3",
+        "ready": true,
+        "transcript": "紅線連結左營、美麗島與機場；橘線從哈瑪星穿過美麗島，往鳳山與大寮；綠色環狀輕軌帶你沿港灣與街區移動。T-Pass 高雄市區通勤月票為 399 元／30 天，依方案涵蓋捷運、輕軌、適用公車客運、渡輪、YouBike 優惠與高雄市內適用台鐵；不含高鐵。票卡、啟用與運具限制請看官方規則。"
+      },
+      "en": {
+        "file": "assets/narration/kaohsiung-transit-en.mp3",
+        "ready": true,
+        "transcript": "The Red Line connects Zuoying, Formosa Boulevard and the airport. The Orange Line runs from Hamasen through Formosa Boulevard toward Fengshan and Daliao; green circular light rail links harbour districts. Kaohsiung’s T-Pass city plan costs NT$399 for 30 days and includes metro, light rail, eligible buses, ferries, YouBike benefits and eligible TRA journeys within the city. HSR is excluded. Check official card, activation and service rules."
+      }
+    },
+    "kaohsiung-cijin": {
+      "zh": {
+        "file": "assets/narration/kaohsiung-cijin-zh.mp3",
+        "ready": true,
+        "transcript": "從鼓山輪渡站搭船到旗津，下船後可以走老街、吃海鮮，再向燈塔與海岸散步。渡輪不只是接駁，也是從海面重新認識港都的一段旅程；班次與天候請依現場公告。"
+      },
+      "en": {
+        "file": "assets/narration/kaohsiung-cijin-en.mp3",
+        "ready": true,
+        "transcript": "Take the ferry from Gushan to Cijin. Explore the old street and seafood, then walk toward the lighthouse and coast. The crossing is both transport and a different view of the harbour. Follow current service and weather notices."
+      }
+    },
+    "kaohsiung-mountains": {
+      "zh": {
+        "file": "assets/narration/kaohsiung-mountains-zh.mp3",
+        "ready": true,
+        "transcript": "柴山（壽山）就在高雄市區西側，是能沿步道親近森林與自然的山。山腳的西子灣面向海港與夕陽；從哈瑪星一帶走向海岸，再到鼓山輪渡站搭船去旗津，可以把山、海與港灣串在同一天。登山請走開放步道，留意天氣；遇到獼猴，請保持距離，不餵食，也不要手提食物。"
+      },
+      "en": {
+        "file": "assets/narration/kaohsiung-mountains-en.mp3",
+        "ready": true,
+        "transcript": "Chaishan, also known as Shoushan, rises on the western edge of central Kaohsiung, with forest trails close to the city. At its foot, Sizihwan opens toward the harbour and sunset. Connect Hamasen, the coast and Gushan Ferry Pier for a day linking mountain, sea and Cijin. Use open trails and check the weather. Keep your distance from macaques, never feed them and avoid carrying food in your hands."
+      }
+    },
+    "campus-main": {
+      "zh": {
+        "file": "assets/narration/campus-main-zh.mp3",
+        "ready": true,
+        "transcript": "紅磚與中央庭園構成校本部熟悉的風景。行政大樓、理工大樓、科技大樓、綜合教學大樓與國際學院大樓，連起不同學院的課堂；宿舍、運動場與校門外的義大生活圈，則接住下課後的日常。"
+      },
+      "en": {
+        "file": "assets/narration/campus-main-en.mp3",
+        "ready": true,
+        "transcript": "Brick buildings and central courtyards shape the main campus. The Administration, Science and Engineering, Science and Technology, Comprehensive Teaching and International College buildings connect different fields of study, with dormitories, sports and the E-Da neighbourhood supporting everyday life."
+      }
+    },
+    "campus-medical": {
+      "zh": {
+        "file": "assets/narration/campus-medical-zh.mp3",
+        "ready": true,
+        "transcript": "醫學院區在燕巢，與觀音山校本部是不同地點。教學大樓和鄰近的義大醫院，讓健康照護、醫學科技與工程問題有機會互相連結；到醫學院區請查對應的交通方式。"
+      },
+      "en": {
+        "file": "assets/narration/campus-medical-en.mp3",
+        "ready": true,
+        "transcript": "The medical campus is in Yanchao, separate from the main campus on Guanyin Mountain. Its teaching buildings and nearby E-Da Hospital connect healthcare, medical technology and engineering questions. Check the transport route for the correct campus."
+      }
+    },
+    "campus-labs": {
+      "zh": {
+        "file": "assets/narration/campus-labs-zh.mp3",
+        "ready": true,
+        "transcript": "智慧科技創新中心、新媒體學習創作中心、ISU Cooking Studio & Library、智慧醫療教學中心等場域，讓程式、聲音影像、廚藝與照護都能動手練習。不同專業，也能在同一個問題裡相遇。"
+      },
+      "en": {
+        "file": "assets/narration/campus-labs-en.mp3",
+        "ready": true,
+        "transcript": "The Intelligent Technology Innovation Center, New Media Learning and Creation Center, ISU Cooking Studio and Library, and Smart Healthcare Teaching Center support practical learning in computing, media, cooking and care. Different disciplines can meet around the same question."
+      }
+    },
+    "campus-metaverse": {
+      "zh": {
+        "file": "assets/narration/campus-metaverse-zh.mp3",
+        "ready": true,
+        "transcript": "元宇宙科技藝術設計中心，把科技、藝術與影視創作放在一起。從 VR／XR、虛擬製作到即時影像與互動體驗，學習如何讓技術服務敘事，讓作品走出平面的螢幕。"
+      },
+      "en": {
+        "file": "assets/narration/campus-metaverse-en.mp3",
+        "ready": true,
+        "transcript": "The Metaverse Technology, Art and Design Center connects technology, art and screen production. Explore VR and XR, virtual production, real-time images and interaction, asking how technology can serve a story and extend a work beyond a flat screen."
+      }
+    },
+    "campus-living": {
+      "zh": {
+        "file": "assets/narration/campus-living-zh.mp3",
+        "ready": true,
+        "transcript": "義大世界購物廣場、義大遊樂世界、義大皇家酒店與義大天悅飯店，都在校本部旁的生活圈。可以逛商店、吃飯、看城市夜景，也能從服務與營運的角度觀察真實產業。校園、購物與住宿休閒各有不同空間，並非同一棟建築。"
+      },
+      "en": {
+        "file": "assets/narration/campus-living-en.mp3",
+        "ready": true,
+        "transcript": "E-Da Outlet Mall, E-Da Theme Park, E-Da Royal Hotel and E-Da Skylark Hotel form the neighbourhood beside the main campus. Shop, eat and enjoy evening views, or observe real service and hospitality operations. Campus, shopping and hotels occupy distinct spaces."
+      }
+    },
+    "campus-group": {
+      "zh": {
+        "file": "assets/narration/campus-group-zh.mp3",
+        "ready": true,
+        "transcript": "義守大學由林義守創辦，背後是義聯集團，官方品牌也使用「義联」字樣。集團由鋼鐵製造起家，發展出教育、醫療，以及地產與休閒事業。義守大學、義大醫療體系、購物廣場、遊樂世界與飯店，讓你看見一個從生產到學習、照護和生活的事業網絡。"
+      },
+      "en": {
+        "file": "assets/narration/campus-group-en.mp3",
+        "ready": true,
+        "transcript": "Founded by Lin I-Shou, the university is part of the EUnited Group. Beginning in steel manufacturing, the group expanded into education, healthcare, property and leisure. I-Shou University, E-Da healthcare, the outlet mall, theme park and hotels form a network spanning production, learning, care and everyday life."
+      }
+    },
+    "campus-rank": {
+      "zh": {
+        "file": "assets/narration/campus-rank-zh.mp3",
+        "ready": true,
+        "transcript": "從不同國家來到同一個校園，用作品、專題與合作，慢慢建立自己的方向。想了解學校最新的認證與發展，可以從官方介紹繼續探索。"
+      },
+      "en": {
+        "file": "assets/narration/campus-rank-en.mp3",
+        "ready": true,
+        "transcript": "Students from different countries share one campus, building their directions through projects, creative work and collaboration. Explore official information for the latest university developments and accreditations."
+      }
+    }
+  }
+}

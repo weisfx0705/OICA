@@ -1,0 +1,236 @@
+[
+  {
+    "file": "assets/photos/night-market.webp",
+    "source": "provided/assets/liuhe-night-market.jpg",
+    "width": 1280,
+    "height": 781,
+    "bytes": 157546,
+    "originalBytes": 540874
+  },
+  {
+    "file": "assets/photos/breakfast-danbing.webp",
+    "source": "provided/assets/breakfast-danbing.jpg",
+    "width": 960,
+    "height": 1280,
+    "bytes": 145832,
+    "originalBytes": 911085
+  },
+  {
+    "file": "assets/photos/breakfast-soymilk.webp",
+    "source": "provided/assets/breakfast-soymilk.jpg",
+    "width": 1280,
+    "height": 960,
+    "bytes": 77984,
+    "originalBytes": 633093
+  },
+  {
+    "file": "assets/photos/bubble-tea.webp",
+    "source": "provided/assets/bubble-tea.jpg",
+    "width": 960,
+    "height": 1280,
+    "bytes": 167932,
+    "originalBytes": 528935
+  },
+  {
+    "file": "assets/photos/cijin-pier.webp",
+    "source": "provided/assets/cijin-ferry.jpg",
+    "width": 1280,
+    "height": 853,
+    "bytes": 191894,
+    "originalBytes": 642062
+  },
+  {
+    "file": "assets/photos/pier2.webp",
+    "source": "provided/assets/pier2.jpg",
+    "width": 1280,
+    "height": 853,
+    "bytes": 188084,
+    "originalBytes": 665805
+  },
+  {
+    "file": "assets/photos/light-rail.webp",
+    "source": "provided/assets/light-rail-pier2.jpg",
+    "width": 1280,
+    "height": 964,
+    "bytes": 218964,
+    "originalBytes": 4861913
+  },
+  {
+    "file": "assets/photos/music-center.webp",
+    "source": "provided/assets/kaohsiung-music-center.jpg",
+    "width": 1280,
+    "height": 960,
+    "bytes": 84660,
+    "originalBytes": 5550174
+  },
+  {
+    "file": "assets/photos/weiwuying.webp",
+    "source": "provided/assets/weiwuying-aerial.jpg",
+    "width": 1280,
+    "height": 959,
+    "bytes": 219802,
+    "originalBytes": 1067619
+  },
+  {
+    "file": "assets/photos/mountain-valley.webp",
+    "source": "provided/assets/maolin-valley.jpg",
+    "width": 1280,
+    "height": 720,
+    "bytes": 263454,
+    "originalBytes": 1081264
+  },
+  {
+    "file": "assets/photos/dome-of-light.webp",
+    "source": "provided/assets/dome-of-light.jpg",
+    "width": 1280,
+    "height": 854,
+    "bytes": 251030,
+    "originalBytes": 1109016
+  },
+  {
+    "file": "assets/photos/harbor-night.webp",
+    "source": "provided/assets/wl-bay-night.jpg",
+    "width": 1280,
+    "height": 839,
+    "bytes": 91732,
+    "originalBytes": 351943
+  },
+  {
+    "file": "assets/photos/hsr-train.webp",
+    "source": "provided/assets/hsr-zuoying.jpg",
+    "width": 1280,
+    "height": 960,
+    "bytes": 117628,
+    "originalBytes": 745697
+  },
+  {
+    "file": "assets/photos/kaohsiung-station.webp",
+    "source": "provided/assets/kaohsiung-station.jpg",
+    "width": 1280,
+    "height": 960,
+    "bytes": 199406,
+    "originalBytes": 1060001
+  },
+  {
+    "file": "assets/photos/lotus-pond.webp",
+    "source": "provided/assets/lotus-pond.jpg",
+    "width": 1280,
+    "height": 960,
+    "bytes": 225034,
+    "originalBytes": 486574
+  },
+  {
+    "file": "assets/photos/campus-admin.webp",
+    "source": "provided/11 photos/1709_未命名_145-2.jpg",
+    "width": 1280,
+    "height": 853,
+    "bytes": 221494,
+    "originalBytes": 21251284
+  },
+  {
+    "file": "assets/photos/campus-gate.webp",
+    "source": "provided/11 photos/1709_未命名_280-編輯.jpg",
+    "width": 1280,
+    "height": 960,
+    "bytes": 174480,
+    "originalBytes": 16474361
+  },
+  {
+    "file": "assets/photos/campus-building.webp",
+    "source": "provided/11 photos/1709_未命名_331.jpg",
+    "width": 1280,
+    "height": 853,
+    "bytes": 215566,
+    "originalBytes": 21501313
+  },
+  {
+    "file": "assets/photos/campus-stairs.webp",
+    "source": "provided/11 photos/7_彥彰_0.jpg",
+    "width": 960,
+    "height": 638,
+    "bytes": 201772,
+    "originalBytes": 177958
+  },
+  {
+    "file": "assets/photos/campus-students.webp",
+    "source": "provided/11 photos/I-Shou Uni Promotion Photoshoot (148)_0.JPG",
+    "width": 1280,
+    "height": 962,
+    "bytes": 127586,
+    "originalBytes": 7718314
+  },
+  {
+    "file": "assets/photos/campus-international.webp",
+    "source": "provided/11 photos/I-Shou Uni Promotion Photoshoot (126)_0.JPG",
+    "width": 1280,
+    "height": 962,
+    "bytes": 133154,
+    "originalBytes": 6079631
+  },
+  {
+    "file": "assets/photos/campus-hands-on.webp",
+    "source": "provided/11 photos/I-Shou Uni Promotion Photoshoot (68)_0.JPG",
+    "width": 1280,
+    "height": 962,
+    "bytes": 62198,
+    "originalBytes": 4664829
+  },
+  {
+    "file": "assets/photos/campus-neighborhood.webp",
+    "source": "provided/11 photos/LINE_ALBUM_2022.05.31校景_220725_48_0.jpg",
+    "width": 1280,
+    "height": 853,
+    "bytes": 154426,
+    "originalBytes": 1945197
+  },
+  {
+    "file": "assets/photos/campus-courtyard.webp",
+    "source": "provided/11 photos/義守大學校景圖_0.jpg",
+    "width": 1280,
+    "height": 853,
+    "bytes": 239994,
+    "originalBytes": 18182787
+  },
+  {
+    "file": "assets/photos/metaverse-center.webp",
+    "source": "https://www.isu.edu.tw/storage/images/0gqnIk0lirMng1ZJdbaBhrCAt2r2ocNUv1qcxUm1.jpg",
+    "width": 1136,
+    "height": 651,
+    "bytes": 104624,
+    "originalBytes": 225374
+  },
+  {
+    "file": "assets/photos/campus-map.webp",
+    "source": "https://www.isu.edu.tw/storage/images/xIPmd523oeeSgQvfmtSV7synflcKOwP0ShU1ncmH.webp",
+    "width": 800,
+    "height": 588,
+    "bytes": 98498,
+    "originalBytes": 95440
+  },
+  {
+    "file": "assets/photos/medical-map.webp",
+    "source": "https://www.isu.edu.tw/storage/images/j77rqdqFe2NSKJRQv8sb5apG3Y9m1tXvo90yxK17.webp",
+    "width": 800,
+    "height": 588,
+    "bytes": 88362,
+    "originalBytes": 85564
+  },
+  {
+    "file": "assets/photos/chaishan.webp",
+    "source": "https://khh.travel/Image/439/?r=1674115586839",
+    "credit": "高雄市政府觀光局／高雄旅遊網",
+    "bytes": 80374
+  },
+  {
+    "file": "assets/photos/chaishan-trail.webp",
+    "source": "https://khh.travel/Image/43063/?r=1674110076587",
+    "credit": "高雄市政府觀光局／高雄旅遊網",
+    "bytes": 300194
+  },
+  {
+    "file": "assets/photos/sizihwan.webp",
+    "source": "https://khh.travel/Image/37412/?r=1642667524016",
+    "credit": "高雄市政府觀光局／高雄旅遊網",
+    "bytes": 51518
+  }
+]
