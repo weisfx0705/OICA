@@ -330,7 +330,8 @@ html[lang^='zh'] .caption { letter-spacing: 0.06em; }
   .panel h2 { font-size: 24px; }
   .panel-foot { padding: 12px 20px calc(14px + var(--safe-b)); }
   .photo { aspect-ratio: 16 / 8; }
-  .dock { left: auto; right: 10px; bottom: auto; top: calc(56px + var(--safe-t)); flex-direction: column; align-items: flex-end; }
+  .dock { left: auto; right: 10px; bottom: auto; top: calc(56px + var(--safe-t)); flex-direction: column; align-items: flex-end; gap: 6px; }
+  .dock .pill { height: 32px; padding: 0 10px; }
   .caption { bottom: calc(40vh + 16px); }
   .caption.free { bottom: calc(48px + var(--safe-b)); }
   .hotspot .bubble { font-size: 12.5px; padding: 7px 12px; }
@@ -596,7 +597,9 @@ html[lang^='zh'] .caption { letter-spacing: 0.06em; }
 .view-btn:hover .view-label, .view-btn:focus-visible .view-label { opacity: 1; transform: translate(0, -50%); }
 .map-tools { display: none !important; }
 @media (max-width: 760px) {
-  .view-dock { left: auto; right: 10px; top: calc(96px + var(--safe-t)); transform: none; padding: 4px; border-radius: 15px; }
+  /* a short row under the narration button: the right column belongs to the support dock,
+     and a row stays clear of the bottom panel even on short phones */
+  .view-dock { left: 10px; top: calc(104px + var(--safe-t)); transform: none; flex-direction: row; gap: 2px; padding: 4px; border-radius: 15px; }
   .view-btn { width: 36px; height: 36px; border-radius: 11px; }
   .view-btn .view-label { display: none; }
   /* pinch zooms on touch screens, so the dock keeps only the view switches */
