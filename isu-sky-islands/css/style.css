@@ -352,9 +352,9 @@ html[lang^='zh'] .caption { letter-spacing: 0.06em; }
 .hotspot.program-pin.lit .bubble { background: #FFF5D5F5; box-shadow: 0 0 0 1px #D5A83E, 0 6px 16px #23215F22; }
 .hotspot.program-pin.selected .bubble { background: var(--indigo); color: white; }
 .hotspot.foundation .bubble { background: #D5F1D9; border: 1px solid #3E9E86; }
-.hotspot.foundation.industry .bubble { background: #F9EBC9; border-color: #D9A23B; }
-.hub-first { margin: 0 0 14px; padding: 12px 14px; border-radius: 14px; background: #FBF1DA; border: 1px solid #E9C77E; }
-.hub-first b { display: block; color: #8E6724; font-size: 13px; margin-bottom: 4px; }
+.hotspot.foundation.industry .bubble { background: #FCE3E0; border-color: #C8323C; color: #8E1F27; }
+.hub-first { margin: 0 0 14px; padding: 12px 14px; border-radius: 14px; background: #FDF0EE; border: 1px solid #E8A8A2; }
+.hub-first b { display: block; color: #8E1F27; font-size: 13px; margin-bottom: 4px; }
 .hub-first p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--ink); }
 .pathway-cards { display: grid; gap: 8px; margin: 14px 0 22px; }
 .pathway-card { display: flex; align-items: center; gap: 12px; padding: 14px; text-align: left; background: #FFFEF9; border: 1px solid #C5C9D7; border-radius: 15px; }
@@ -362,7 +362,7 @@ html[lang^='zh'] .caption { letter-spacing: 0.06em; }
 .pathway-card strong { display: block; color: var(--indigo-deep); font-size: 14px; }
 .pathway-card small { display: block; margin-top: 5px; font-size: 11px; color: var(--ink-soft); line-height: 1.5; }
 .pathway-symbol { display: grid; place-items: center; width: 38px; height: 38px; flex-shrink: 0; background: #E3EFE2; border-radius: 12px; font-size: 20px; color: #296B52; }
-.pathway-card:nth-child(2) .pathway-symbol { background: #F9EBC9; color: #8E6724; }
+.pathway-card:nth-child(2) .pathway-symbol { background: #FCE3E0; color: #A3262F; }
 .route-ribbon { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 16px; }
 .route-ribbon span { padding: 8px 10px; background: #E3EFE7; border-radius: 10px; color: #29634C; font-size: 12px; font-weight: 700; }
 .route-ribbon span + span::before { content: '→ '; }

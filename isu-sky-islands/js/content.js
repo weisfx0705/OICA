@@ -69,7 +69,7 @@ export const BRIDGES = {
     rule: { zh: '先修期間不能轉系；讀完大一後只能轉到製造、營造、農業、長照、電商與服務類相關系所。', en: 'No department transfers during the Mandarin year; after Year 1, transfers are limited to manufacturing, construction, agriculture, long-term care, e-commerce and service fields.' },
   },
   intense: {
-    color: '#D9A23B',
+    color: '#C8323C',
     name: { zh: '產業橋', en: 'Industry Bridge' },
     tag: { zh: '新型專班 INTENSE', en: 'INTENSE Program' },
     who: { zh: '菲律賓、印度、印尼、越南、馬來西亞、泰國的 D3、D4、S1、S2 在學生或畢業生；學歷認定依當期簡章。', en: 'Students and graduates (D3, D4, S1, S2) from the Philippines, India, Indonesia, Vietnam, Malaysia or Thailand; credential recognition follows the intake prospectus.' },

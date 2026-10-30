@@ -80,7 +80,7 @@ export function programJourney(p, bridge) {
 export function studyPath(program, bridge) {
   const path = [];
   if (bridge === 'ifp' && program.bridges.includes('ifp')) path.push({ kind: 'ifp', name: bi('國際專修部 IFP', 'International Foundation Program'), note: bi('1 年華語先修 · TOCFL A2', '1 Mandarin year · TOCFL A2') });
-  if (bridge === 'intense' && program.bridges.includes('intense')) path.push({ kind: 'intense', name: bi('企業島 · 合作企業面試', 'Industry island · Partner company interview'), note: bi('先取得企業認同', 'Gain company approval first') });
+  if (bridge === 'intense' && program.bridges.includes('intense')) path.push({ kind: 'intense', name: bi('INTENSE 就業島 · 合作企業面試', 'INTENSE Career island · Partner company interview'), note: bi('先取得企業認同', 'Gain company approval first') });
   path.push({ kind: 'program', name: program.name, note: levelLabel(program) });
   return path;
 }

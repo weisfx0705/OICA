@@ -32,16 +32,16 @@ function landmark(id, k, island, anim) {
       for (const [x, z, ry] of [[-2.2, -1.2, 0.2], [0.6, -2.4, 0.2], [-0.4, 1.2, 0.2]]) {
         const y = at(x, z);
         k.box(2.4, 1.1, 1.7, '#EEF1F4', { x, y, z, ry });
-        for (let s = 0; s < 3; s++) k.gable(0.8, 0.45, 1.75, s % 2 ? '#F7F4EC' : '#D9A23B', { x: x + (s - 1) * 0.78 * Math.cos(ry), y: y + 1.1, z: z - (s - 1) * 0.78 * Math.sin(ry), ry });
+        for (let s = 0; s < 3; s++) k.gable(0.8, 0.45, 1.75, s % 2 ? '#F7F4EC' : '#C8323C', { x: x + (s - 1) * 0.78 * Math.cos(ry), y: y + 1.1, z: z - (s - 1) * 0.78 * Math.sin(ry), ry });
       }
       // overhead gantry crane over the yard
       const cy = at(2.2, 0.6);
       for (const dz of [-1, 1]) k.box(0.18, 2.2, 0.18, '#3A4A6B', { x: 1.2, y: cy, z: 0.6 + dz }).box(0.18, 2.2, 0.18, '#3A4A6B', { x: 3.2, y: cy, z: 0.6 + dz });
-      k.box(2.3, 0.2, 0.25, '#D9A23B', { x: 2.2, y: cy + 2.2, z: -0.4 }).box(2.3, 0.2, 0.25, '#D9A23B', { x: 2.2, y: cy + 2.2, z: 1.6 });
+      k.box(2.3, 0.2, 0.25, '#C8323C', { x: 2.2, y: cy + 2.2, z: -0.4 }).box(2.3, 0.2, 0.25, '#C8323C', { x: 2.2, y: cy + 2.2, z: 1.6 });
       k.box(0.5, 0.3, 2.2, '#3A4A6B', { x: 2.4, y: cy + 2.0, z: 0.6 });
       // the interview pavilion where the student meets the company
       k.box(1.4, 1, 1.2, '#FFFFFF', { x: -2.6, y: at(-2.6, 2.6), z: 2.6 });
-      k.roof(1.7, 0.6, 1.5, '#D9A23B', { x: -2.6, y: at(-2.6, 2.6) + 1, z: 2.6 });
+      k.roof(1.7, 0.6, 1.5, '#C8323C', { x: -2.6, y: at(-2.6, 2.6) + 1, z: 2.6 });
       ['#2F6FA8', '#C8463C', '#3E9E86', '#E07A5F', '#6B5BB8'].forEach((c, i) => {
         const fx = -0.6 + i * 0.75, fz = 3.4, fy = at(fx, fz);
         k.cyl(0.03, 0.03, 1.6, '#FFFFFF', { x: fx, y: fy, z: fz }, 5);
@@ -246,13 +246,13 @@ export class Archipelago {
       this.islands.push(this.buildIsland(def, pos, i));
     });
     // Two route hubs. IFP floats on the inner ring, off to the left so the program lines from the
-    // campus don't look like they start there; the INTENSE industry island sits beside the outer ring,
+    // campus don't look like they start there; the red INTENSE career island sits beside the outer ring,
     // smaller than the degree islands, between the chip and code islands.
     const hub = (angle, r, y) => new THREE.Vector3(Math.cos(angle) * r, y, Math.sin(angle) * r);
     this.foundation = this.buildIsland({ id: 'ifp-stop', name: { zh: '華語先修島 · IFP', en: 'Mandarin foundation · IFP' }, color: '#E7A7A0', accent: '#3E9E86', programs: [], radius: 8.5,
       grass: '#F7DCCB', grass2: '#F0CBB6', trees: ['#F2A7B8', '#F7C6D0', '#FFFFFF'] }, hub(THREE.MathUtils.degToRad(155), 30, -8), 9);
-    this.enterprise = this.buildIsland({ id: 'intense-stop', name: { zh: '企業島 · INTENSE', en: 'Industry island · INTENSE' }, color: '#D9A23B', accent: '#D9A23B', programs: [], radius: 7,
-      grass: '#E9D9A6', grass2: '#DDC88E', trees: ['#7FAE6E', '#6C9C62'] }, hub(THREE.MathUtils.degToRad(-50), 60, 3), 10);
+    this.enterprise = this.buildIsland({ id: 'intense-stop', name: { zh: 'INTENSE 就業島', en: 'INTENSE Career island' }, color: '#C8323C', accent: '#C8323C', programs: [], radius: 7,
+      grass: '#E58A7E', grass2: '#D9776B', trees: ['#7FAE6E', '#6C9C62'] }, hub(THREE.MathUtils.degToRad(-50), 60, 3), 10);
     this.hubs = [this.foundation, this.enterprise];
     for (const h of this.hubs) this.setLit(h, true, 0.01);
   }
@@ -464,10 +464,18 @@ export class Archipelago {
     const reach = this.islands.filter((isl) => isl.def.programs.some((p) => p.bridges.includes(bridgeId)));
     const local = from.clone().sub(this.center);
     const hub = this.hubFor(bridgeId);
-    const stops = hub ? [hub, ...reach] : reach;
-    stops.forEach((isl, i) => {
-      const start = hub && i > 0 ? hub.group.position.clone() : local;
-      const end = isl.group.position.clone().add(new THREE.Vector3(0, -1.2, 0));
+    // INTENSE starts on its own island: no line up from the campus, one line to each INTENSE program.
+    const pairs = [];
+    if (bridgeId === 'intense') {
+      this.group.updateWorldMatrix(true, true);
+      const start = hub.group.position.clone().add(new THREE.Vector3(0, 2, 0));
+      for (const isl of reach) for (const p of isl.def.programs.filter((p) => p.bridges.includes(bridgeId))) {
+        const end = this.group.worldToLocal(isl.programAnchors[p.id].getWorldPosition(new THREE.Vector3()));
+        end.y -= 1;
+        pairs.push([start, end]);
+      }
+    } else (hub ? [hub, ...reach] : reach).forEach((isl, i) => pairs.push([hub && i > 0 ? hub.group.position.clone() : local, isl.group.position.clone().add(new THREE.Vector3(0, -1.2, 0))]));
+    pairs.forEach(([start, end], i) => {
       const mid = start.clone().lerp(end, 0.5);
       mid.y += 10;
       const curve = new THREE.CatmullRomCurve3([start, start.clone().lerp(mid, 0.5).setY(start.y + 6), mid, end]);

@@ -143,12 +143,12 @@
       "zh": {
         "file": "assets/narration/bridge-intense-zh.mp3",
         "ready": true,
-        "transcript": "新型專班 INTENSE，是從企業出發的入學路徑。第一站是企業島：先通過合作企業的面試、取得企業認同，才會來義守就讀。申請者需要已完成專科以上學歷，並符合國家與語言條件。2026 到 2027 年的簡章列出兩個專班：英語授課的設備工程，以及中文授課的機械與自動化工程。先在校學習一年，再到企業實習一年。選定這條路後，只要確認你的起點條件就可以了。"
+        "transcript": "新型專班 INTENSE，是從企業出發的入學路徑。第一站是 INTENSE 就業島：先通過合作企業的面試、取得企業認同，才會來義守就讀。申請者需要已完成專科以上學歷，並符合國家與語言條件。2026 到 2027 年的簡章列出兩個專班：英語授課的設備工程，以及中文授課的機械與自動化工程。先在校學習一年，再到企業實習一年。選定這條路後，只要確認你的起點條件就可以了。"
       },
       "en": {
         "file": "assets/narration/bridge-intense-en.mp3",
         "ready": true,
-        "transcript": "INTENSE is an admission route that starts with industry. Its first stop is the industry island: pass an interview with a partner company and gain its approval before you come to I-Shou. Applicants need a D3 diploma or higher and must meet the country and language requirements. The 2026–27 prospectuses list two programs: Equipment Engineering taught in English, and Mechanical and Automation Engineering taught in Chinese. Study on campus for one year, then intern with the company for a year. Once you choose this route, you only need to confirm your starting point."
+        "transcript": "INTENSE is an admission route that starts with industry. Its first stop is the INTENSE career island: pass an interview with a partner company and gain its approval before you come to I-Shou. Applicants need a D3 diploma or higher and must meet the country and language requirements. The 2026–27 prospectuses list two programs: Equipment Engineering taught in English, and Mechanical and Automation Engineering taught in Chinese. Study on campus for one year, then intern with the company for a year. Once you choose this route, you only need to confirm your starting point."
       }
     },
     "bridge-oc": {
@@ -443,7 +443,7 @@
       "zh": {
         "file": "assets/narration/island-maker-zh.mp3",
         "ready": true,
-        "transcript": "你選擇的是製造島。這裡從機械、控制與自動化，到土木、結構與營建，學習怎麼把想法變成能運作的系統和空間。先看看科系，再決定怎麼跨上這座島。"
+        "transcript": "你選擇的是工匠島。這裡從機械、控制與自動化，到土木、結構與營建，學習怎麼把想法變成能運作的系統和空間。先看看科系，再決定怎麼跨上這座島。"
       },
       "en": {
         "file": "assets/narration/island-maker-en.mp3",

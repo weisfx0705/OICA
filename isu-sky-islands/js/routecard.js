@@ -66,10 +66,10 @@ export async function drawRouteCard(canvas, state) {
   const name = state.name?.trim() || (zh ? '我的學習路線' : 'My route to Taiwan');
   wrap(ctx, name, W - 144).slice(0, 2).forEach((l, i) => ctx.fillText(l, 72, 300 + i * 92));
 
-  // flight route: home → Kaohsiung → (IFP Mandarin island or INTENSE industry island) → degree island
+  // flight route: home → Kaohsiung → (IFP Mandarin island or INTENSE career island) → degree island
   const path = studyPath(program, state.bridge);
   const via = path.length > 1 ? path[0].kind : null, viaIfp = !!via;
-  const hubLabel = via === 'ifp' ? [zh ? '華語島 IFP' : 'IFP Mandarin', zh ? '先修 1 年' : 'YEAR 0'] : [zh ? '企業島 INTENSE' : 'INTENSE Industry', zh ? '企業面試' : 'INTERVIEW'];
+  const hubLabel = via === 'ifp' ? [zh ? '華語島 IFP' : 'IFP Mandarin', zh ? '先修 1 年' : 'YEAR 0'] : [zh ? 'INTENSE 就業島' : 'INTENSE Career', zh ? '企業面試' : 'INTERVIEW'];
   const ry = 470;
   const pts = viaIfp ? [[130, ry + 80], [W * 0.37, ry - 4], [W * 0.63, ry - 4], [W - 130, ry + 80]] : [[150, ry + 80], [W / 2, ry - 10], [W - 150, ry + 80]];
   ctx.strokeStyle = 'rgba(255,255,255,0.85)'; ctx.lineWidth = 5; ctx.setLineDash([2, 16]); ctx.lineCap = 'round';
@@ -105,7 +105,7 @@ export async function drawRouteCard(canvas, state) {
     ctx.font = FB(700, 25);
     const sw = Math.min(ctx.measureText(step).width + 48, W - 220);
     ctx.fillStyle = bridge.color + '22'; rr(ctx, 110, y + 92, sw, 50, 25); ctx.fill();
-    ctx.fillStyle = via === 'ifp' ? '#2A6E5D' : '#7A5410'; ctx.fillText(step, 134, y + 126);
+    ctx.fillStyle = via === 'ifp' ? '#2A6E5D' : '#8E1F27'; ctx.fillText(step, 134, y + 126);
     ctx.fillStyle = '#36348E'; ctx.font = FB(700, 30); ctx.fillText('↓', 122, y + 182);
     top = y + 236;
   }

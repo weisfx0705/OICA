@@ -599,7 +599,7 @@ export class Flow {
       }
       const zh = I18N.lang === 'zh', hubDim = (kind) => mapFilter !== 'all' && mapFilter !== kind ? ' dim' : '';
       app.labels.hotspot('hub-ifp', app.arch.foundation.anchorObj, zh ? 'IFP 華語島' : 'IFP Mandarin', onClick ? () => onClick('ifp-stop') : null, { className: 'island foundation' + hubDim('ifp'), small: zh ? '先學 1 年中文' : 'One Mandarin year first', noStem: true });
-      app.labels.hotspot('hub-intense', app.arch.enterprise.anchorObj, zh ? 'INTENSE 企業島' : 'INTENSE Industry island', onClick ? () => onClick('intense-stop') : null, { className: 'island foundation industry' + hubDim('intense'), small: zh ? '先通過企業面試' : 'Company interview first', noStem: true });
+      app.labels.hotspot('hub-intense', app.arch.enterprise.anchorObj, zh ? 'INTENSE 就業島' : 'INTENSE Career island', onClick ? () => onClick('intense-stop') : null, { className: 'island foundation industry' + hubDim('intense'), small: zh ? '先通過企業面試' : 'Company interview first', noStem: true });
     });
   }
 
@@ -649,7 +649,11 @@ export class Flow {
   arriveAfterBridge() {
     const id=this.s.pendingIsland||this.s.interest;
     const island=ISLANDS.find(i=>i.id===id);
-    if(island && island.programs.some(p=>programStatus(p,this.s).ready)) {
+    const wanted=island?.programs.find(p=>p.id===this.s.pendingProgram);
+    if(wanted && !programStatus(wanted,this.s).ready) {
+      this.focusIsland(id,wanted.id);
+      this.ui.toast(I18N.lang==='zh'?'這個科系和你目前的起點條件還不相符，看看下方說明，或回到起點調整。':'This program doesn’t match your starting point yet. Check the notes below, or adjust your starting point.');
+    } else if(island && island.programs.some(p=>programStatus(p,this.s).ready)) {
       const selected=island.programs.find(p=>p.id===this.s.pendingProgram);
       this.focusIsland(id,selected&&programStatus(selected,this.s).ready?selected.id:false);
       this.ui.toast(I18N.lang==='zh'?'橋已接上，亮燈科系可以繼續選擇與定錨。':'Your bridge is connected. Explore the lit programs and anchor your choice.');
@@ -700,9 +704,10 @@ export class Flow {
     app.arch.setBeacon(null, false); this.travelerToCampus();
     const bridgeHome = { pos: C.clone().add(V(70, 34, 120)), look: C.clone().add(V(0, 26, 0)) };
     this.showViews({ center: C.clone().add(V(0, 24, 0)), radius: 70, home: bridgeHome, onBird: () => this.birdsEye() });
-    await app.flyExplore(bridgeHome.pos, bridgeHome.look, 2.0);
-    if(token!==this.exploreToken)return;
-    let result = !!this.s.bridge;
+    app.flyExplore(bridgeHome.pos, bridgeHome.look, 2.0);
+    // Coming here (or back here) always means "review my starting point": show the questions with the
+    // answers kept. The bridge result only appears right after confirming them.
+    let result = false;
     const answers = this.s.answers;
     this.view(() => {
       const preview = this.previewBridge || this.s.bridge || this.s.primary;
@@ -725,7 +730,7 @@ export class Flow {
         const countries = [...COUNTRIES, { code: 'XX', name: { zh: '其他地區', en: 'Another place' } }];
         const countryPick = el('div', { class: 'qblock' }, el('p', { class: 'qt' }, t(UI.whereFrom)), el('div', { class: 'chips' }, countries.map(c => chip('country', c.code, c.name, this.s.country === c.code, () => { this.s.country = c.code; if (c.lat != null) this.s.home = { lat: c.lat, lon: c.lon }; this.s.homeLabel = t(c.name); this.s.homeLabelObj = c.name; }))), why('country', countries.filter(c => c.code !== this.s.country).map(c => c.code)));
         const questions=QUESTIONS;
-        const blocks = questions.map(q => el('div', { class: 'qblock', 'data-question':q.id }, el('p', { class: 'qt' }, t(q.title)), el('div', { class: 'chips' }, q.options.map(o => chip(q.id, o.id, o.label, answers[q.id] === o.id, () => { answers[q.id] = o.id; if (q.id === 'route') this.s.routeIntent = routeOfAnswer(o.id); }))), why(q.id, q.options.filter(o => answers[q.id] !== o.id).map(o => o.id)), q.id === 'route' ? el('div', { class: 'route-learn' }, el('span', {}, I18N.lang === 'zh' ? '想先了解：' : 'Learn more: '), el('button', { type: 'button', onclick: () => this.pathwayStep('ifp') }, 'IFP'), el('button', { type: 'button', onclick: () => this.pathwayStep('intense') }, 'INTENSE')) : null));
+        const blocks = questions.map(q => el('div', { class: 'qblock', 'data-question':q.id }, el('p', { class: 'qt' }, t(q.title)), el('div', { class: 'chips' }, q.options.map(o => chip(q.id, o.id, o.label, answers[q.id] === o.id, () => { answers[q.id] = o.id; if (q.id === 'route') this.s.routeIntent = routeOfAnswer(o.id); }))), why(q.id, q.options.filter(o => answers[q.id] !== o.id).map(o => o.id)), q.id === 'route' && answers.route === 'industry' ? el('p', { class: 'note route-note' }, I18N.lang === 'zh' ? 'INTENSE 兩個專班的授課語言不同：設備工程用英語（CEFR B1 以上），機械與自動化用中文（TOCFL A2 以上）。下面語言題選哪一種，就會點亮對應的專班。' : 'The two INTENSE programs use different languages: Equipment Engineering is taught in English (CEFR B1+), Mechanical & Automation in Chinese (TOCFL A2+). Your language answer below decides which one lights up.') : null, q.id === 'route' ? el('div', { class: 'route-learn' }, el('span', {}, I18N.lang === 'zh' ? '想先了解：' : 'Learn more: '), el('button', { type: 'button', onclick: () => this.pathwayStep('ifp') }, 'IFP'), el('button', { type: 'button', onclick: () => this.pathwayStep('intense') }, 'INTENSE')) : null));
         const requested=this.s.routeIntent||(answers.route==='industry'?'intense':answers.route==='mandarin'?'ifp':null);
         const complete=questions.every(q=>answers[q.id])&&this.s.country;
         const allowed=!complete||!requested||routeEligible(requested,this.s);
@@ -784,10 +789,10 @@ export class Flow {
       this.narrator.setScene('bridge-' + kind);
       const programs = ISLANDS.flatMap(i => i.programs.filter(p => p.bridges.includes(kind)).map(p => ({ i, p })));
       const partners = ['ASE · 日月光', 'Tong Yang · 東陽', 'Sinpro · 星博電子', 'Honxin · 洪興研磨', 'Shyh Hwa · 世華金屬'];
-      this.ui.panel({ key: 'pathway-' + kind, tall: true, eyebrow: t(b.tag), title: kind === 'ifp' ? (I18N.lang === 'zh' ? '華語先修島' : 'Mandarin foundation island') : (I18N.lang === 'zh' ? '企業島：先通過企業面試' : 'Industry island: the company interview comes first'), body: [
+      this.ui.panel({ key: 'pathway-' + kind, tall: true, eyebrow: t(b.tag), title: kind === 'ifp' ? (I18N.lang === 'zh' ? '華語先修島' : 'Mandarin foundation island') : (I18N.lang === 'zh' ? 'INTENSE 就業島：先通過企業面試' : 'INTENSE Career island: the company interview comes first'), body: [
         photo(kind === 'ifp' ? META.ifpPhoto : 'assets/photos/ai-center.webp', t(b.tag)), el('p', { class: 'lead' }, t(b.how)),
         el('div', { class: 'route-ribbon' }, ...(kind === 'ifp' ? [I18N.lang === 'zh' ? '1 年 · 720 小時華語' : '1 year · 720 hours Mandarin', 'TOCFL A2', I18N.lang === 'zh' ? '4 年 · 核定學士班' : '4-year approved degree'] : [I18N.lang === 'zh' ? '企業面試 · 取得認同' : 'Company interview & approval', I18N.lang === 'zh' ? '1 年在校' : '1 year on campus', I18N.lang === 'zh' ? '1 年企業實習' : '1 year internship', I18N.lang === 'zh' ? '依約在台工作' : 'Employment agreement']).map(text => el('span', {}, text))),
-        kind==='intense'?el('div',{class:'hub-first'},el('b',{},I18N.lang==='zh'?'第一站：企業島':'First stop: the industry island'),el('p',{},I18N.lang==='zh'?'INTENSE 從企業出發。先通過合作企業的面試、取得企業認同，才會來義守就讀兩年制專班；申請者需已完成專科（D3）以上學歷。':'INTENSE starts with a company. Pass an interview with a partner company and gain its approval before studying the two-year program at I-Shou. Applicants need a D3 diploma or higher.')):null,
+        kind==='intense'?el('div',{class:'hub-first'},el('b',{},I18N.lang==='zh'?'第一站：INTENSE 就業島':'First stop: the INTENSE career island'),el('p',{},I18N.lang==='zh'?'INTENSE 從企業出發。先通過合作企業的面試、取得企業認同，才會來義守就讀兩年制專班；申請者需已完成專科（D3）以上學歷。':'INTENSE starts with a company. Pass an interview with a partner company and gain its approval before studying the two-year program at I-Shou. Applicants need a D3 diploma or higher.')):null,
         kind==='intense'?el('p',{class:'note'},I18N.lang==='zh'?'兩個專班：設備工程（英語授課，CEFR B1 以上）與機械與自動化工程（中文授課，TOCFL A2 以上）。':'Two programs: Equipment Engineering (English-taught, CEFR B1+) and Mechanical & Automation Engineering (Chinese-taught, TOCFL A2+).'):null,
         el('p', { class: 'note' }, t(b.who)), el('p', { class: 'note' }, t(b.chinese)), b.rule ? el('p', { class: 'note' }, t(b.rule)) : null,
         kind === 'ifp' ? el('p', { class: 'note' }, I18N.lang === 'zh' ? '先修不是獨立學位；銜接核定科系須符合語言與修業規定，並非先修後可任選全校科系。' : 'The foundation year is not a degree. Progression is to approved programs under language and study rules, rather than unrestricted access to every department.') : el('div', {}, el('h3', {}, I18N.lang === 'zh' ? '官網列示的合作企業' : 'Partners listed on the official site'), el('div', { class: 'chips partner-list' }, partners.map(name => el('span', { class: 'tag' }, name))), el('p', { class: 'note' }, I18N.lang === 'zh' ? '企業名單是整體計畫資訊；個人媒合、當期名額、津貼與工作義務，需依簡章及簽訂契約確認。' : 'These are program-level partners. Individual matching, places, allowances and obligations follow the intake prospectus and signed agreement.')),
@@ -965,7 +970,7 @@ export class Flow {
           el('p', { class: 'note scenario-note' }, I18N.lang === 'zh' ? '一天與學習歷程為科系特色延伸的探索情境，非正式課表。實習、修課順序、修業年限與畢業條件請看系所公告；研究所依研究進度安排。' : 'Day and study journeys are exploratory scenarios, not official timetables. Courses, placements, duration and graduation requirements follow department announcements; graduate progress varies.'),
           el('details', { class: 'other-programs' }, el('summary', {}, I18N.lang === 'zh' ? '比較這座島的其他科系' : 'Compare other programs on this island'), ...list),
         ];
-        foot = [this.backButton(), el('span',{class:'spacer'}), preview?button(I18N.lang==='zh'?'認識起點，找入學橋':'Find my admission bridge',chooseBridge,{iconName:'arrow'}):button(t(UI.plantFlag), () => { this.s.flag = { islandId: id, programId: sel.id }; sound.flag(); this.routeStep(); }, { iconName: 'flag', disabled: !status.ready })];
+        foot = [this.backButton(), el('span',{class:'spacer'}), preview?button(I18N.lang==='zh'?'認識起點，找入學橋':'Find my admission bridge',chooseBridge,{iconName:'arrow'}):status.ready ? button(t(UI.plantFlag), () => { this.s.flag = { islandId: id, programId: sel.id }; sound.flag(); this.routeStep(); }, { iconName: 'flag' }) : button(I18N.lang === 'zh' ? '回到起點調整條件' : 'Adjust my starting point', chooseBridge, { iconName: 'arrow' })];
       }
       this.ui.panel({ key: 'island-' + id + '-' + (selected || 'directory'), tall: true, eyebrow: (preview?(I18N.lang==='zh'?'島嶼預覽':'Island preview'):t(d.name)) + ' · ' + t(d.industry), title: sel ? t(sel.name) : t(d.name), body, foot });
       programLabels();
@@ -976,6 +981,7 @@ export class Flow {
   islandCrumbs(d, preview, sel) {
     const zh = I18N.lang === 'zh';
     return this.crumbs([
+      preview ? null : { label: zh ? '我的起點' : 'Starting point', fn: () => { this.s.pendingIsland = d.id; this.s.pendingProgram = sel?.id || null; this.bridgeStep(); } },
       { label: preview ? (zh ? '學習島' : 'Fields of study') : (zh ? '群島' : 'Islands'), fn: () => (preview ? this.interestStep() : this.islandsStep()) },
       { label: t(d.name), fn: sel ? () => this.focusIsland(d.id, false) : null },
       sel ? { label: t(sel.name) } : null,
