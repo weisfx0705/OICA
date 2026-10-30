@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { ISLANDS, BRIDGES } from '../js/content.js';
 import { PROGRAM_PROFILES } from '../js/program-profiles.js';
-import { resolveBridge, programStatus, programJourney, routeEligible, studyPath, routeBlockers } from '../js/logic.js';
+import { resolveBridge, programStatus, programJourney, routeEligible, isMainland, studyPath, routeBlockers } from '../js/logic.js';
 const programs = ISLANDS.flatMap(i => i.programs);
 assert.equal(programs.length, 38);
 assert.equal(new Set(programs.map(p => p.id)).size, 38);
@@ -20,7 +20,7 @@ for (const p of programs) {
  for (const bridge of p.bridges) assert.ok(BRIDGES[bridge]);
  assert.ok(programJourney(p, p.bridges[0]).every(s=>s.title.zh && s.title.en && s.body.zh && s.body.en));
 }
-const state = (lang, edu='hs', bridge=lang, bg='none', country='VN') => ({bridge, country, answers:{lang, edu, bg, route:'degree'}});
+const state = (lang, edu='hs', bridge=lang, exp='none', country='VN', bg='none') => ({bridge, country, answers:{lang, edu, bg, exp, route:'degree'}});
 const byId=id=>programs.find(p=>p.id===id);
 assert.equal(routeEligible('intense',state('zh','bachelor','intense')),true);
 assert.equal(programStatus(byId('intense-mae'),state('zh','bachelor','intense')).ready,true);
@@ -42,16 +42,26 @@ assert.deepEqual(studyPath(byId('intense-mae'),'intense').map(s=>s.kind),['inten
 assert.deepEqual(routeBlockers('intense',{answers:{edu:'hs'}}).map(b=>b.key),['edu']);
 assert.deepEqual(routeBlockers('intense',{answers:{edu:'bachelor',lang:'zh'},country:'VN'}),[]);
 assert.deepEqual(routeBlockers('intense',{answers:{edu:'bachelor',lang:'none'},country:'US'}).map(b=>b.key),['lang','country']);
-assert.deepEqual(routeBlockers('ifp',{answers:{bg:'tw'}}).map(b=>b.key),['bg']);
-{const answers={edu:'hs',lang:'zh',bg:'none',route:'industry'};const r=resolveBridge(answers,'VN');assert.notEqual(r.primary,'intense');assert.ok(!r.alts.includes('intense'));
+assert.deepEqual(routeBlockers('ifp',{answers:{exp:'tw'}}).map(b=>b.key),['exp']);
+{const answers={edu:'hs',lang:'zh',bg:'none',exp:'none',route:'industry'};const r=resolveBridge(answers,'VN');assert.notEqual(r.primary,'intense');assert.ok(!r.alts.includes('intense'));
  assert.ok(!byId('intense-mae')||!programStatus(byId('intense-mae'),{answers,country:'VN',bridge:r.primary}).ready);}
 assert.equal(programStatus(byId('equip'),state('en','bachelor','intense')).ready,true);
 assert.equal(routeEligible('ifp',state('none','hs','ifp','tw')),false);
 assert.equal(routeEligible('intense',state('en','college','intense')),true);
 assert.equal(routeEligible('intense',state('en','hs','intense')),false);
-assert.equal(resolveBridge({edu:'hs',lang:'en',bg:'none',route:'degree'},'VN').primary,'en');
-assert.equal(resolveBridge({edu:'bachelor',lang:'en',bg:'none',route:'degree'},'VN').primary,'en');
-assert.equal(resolveBridge({edu:'bachelor',lang:'en',bg:'none',route:'industry'},'VN').primary,'intense');
-assert.equal(resolveBridge({edu:'hs',lang:'none',bg:'none',route:'mandarin'},'VN').primary,'ifp');
-assert.equal(resolveBridge({edu:'hs',lang:'en',bg:'oc',route:'degree'},'MY').primary,'oc');
+assert.equal(resolveBridge({edu:'hs',lang:'en',bg:'none',exp:'none',route:'degree'},'VN').primary,'en');
+assert.equal(resolveBridge({edu:'bachelor',lang:'en',bg:'none',exp:'none',route:'degree'},'VN').primary,'en');
+assert.equal(resolveBridge({edu:'bachelor',lang:'en',bg:'none',exp:'none',route:'industry'},'VN').primary,'intense');
+assert.equal(resolveBridge({edu:'hs',lang:'none',bg:'none',exp:'none',route:'mandarin'},'VN').primary,'ifp');
+assert.equal(resolveBridge({edu:'hs',lang:'en',bg:'oc',exp:'none',route:'degree'},'MY').primary,'oc');
+// status and Taiwan experience are separate: having studied or worked here only closes IFP
+assert.equal(routeEligible('en',state('en','hs','en','tw')),true);
+assert.equal(routeEligible('ifp',state('none','hs','ifp','none','VN','oc')),true);
+assert.equal(routeEligible('en',state('en','hs','en','ocstudy')),false);
+assert.equal(resolveBridge({edu:'hs',lang:'en',bg:'none',exp:'ocstudy',route:'degree'},'VN').primary,'oc');
+assert.equal(resolveBridge({edu:'hs',lang:'zh',bg:'hkmo',exp:'none',route:'degree'},'HK').primary,'oc');
+assert.ok(resolveBridge({edu:'hs',lang:'en',bg:'oc',exp:'none',route:'degree'},'MY').alts.includes('en'));
+// mainland China: no bridge fits, the page points to the International & Cross-Strait Affairs office
+assert.ok(isMainland('CN')&&!isMainland('HK'));
+for(const k of ['zh','en','ifp','intense','oc'])assert.equal(routeEligible(k,{answers:{edu:'bachelor',lang:'en',bg:'none',exp:'none'},country:'CN'}),false);
 console.log('Catalog and admission checks passed: 38 programs, 13 IFP, 5 English undergraduate, 2 INTENSE.');

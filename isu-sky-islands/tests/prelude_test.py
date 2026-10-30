@@ -47,7 +47,7 @@ with sync_playwright() as p:
  assert page.evaluate('Object.keys(__app.khh.routes).sort().join(",")')=='ferry,lightRail,orange,red'
  assert page.evaluate('!!__app.tw.routes.hsr && !!__app.tw.routes.tra')
  # Inspect colour restoration in both directions, without making grey buildings unclickable.
- page.evaluate('()=>{const f=__app.flow;f.s.country="VN";f.s.bridge="en";f.s.answers={edu:"hs",lang:"en",bg:"none",route:"degree"};f.s.life="unsure";__app.arch.group.visible=true;f.focusIsland("business");}')
+ page.evaluate('()=>{const f=__app.flow;f.s.country="VN";f.s.bridge="en";f.s.answers={edu:"hs",lang:"en",bg:"none",exp:"none",route:"degree"};f.s.life="unsure";__app.arch.group.visible=true;f.focusIsland("business");}')
  page.wait_for_timeout(2200)
  panel=page.locator('.panel.in').last
  assert panel.locator('.program-choice.lit').count()==2 and panel.locator('.program-choice.muted').count()==6

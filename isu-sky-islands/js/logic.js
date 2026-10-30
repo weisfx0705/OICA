@@ -1,14 +1,20 @@
-import { INTENSE_COUNTRIES, ISLANDS, BRIDGES, LIFE_CARDS } from './content.js';
+import { INTENSE_COUNTRIES, ISLANDS, BRIDGES, LIFE_CARDS, MAINLAND } from './content.js';
 import { PROGRAM_PROFILES } from './program-profiles.js';
 const bi = (zh, en) => ({ zh, en });
 
 // Recommendations are an initial screen, never an admission decision.
+// Mainland China is outside these routes (separate cross-strait rules): no bridge fits, the page points to the office.
+export const isMainland = (country) => MAINLAND.codes.includes(country);
+// International-student routes: foreign nationals and Overseas Chinese, unless they already studied here as 僑生.
+const foreignOk = ({ bg, exp }) => bg !== 'hkmo' && exp !== 'ocstudy';
 export function routeEligible(bridge, { answers = {}, country } = {}) {
-  const { edu, bg } = answers;
-  if (bridge === 'ifp') return bg === 'none' && !!edu;
-  if (bridge === 'intense') return ['en', 'zh'].includes(answers.lang) && bg !== 'oc' && INTENSE_COUNTRIES.includes(country) && ['college', 'bachelor', 'master'].includes(edu);
-  if (bridge === 'oc') return bg === 'oc';
-  return bg !== 'oc';
+  const { edu, bg, exp } = answers;
+  if (isMainland(country)) return false;
+  if (bridge === 'oc') return bg === 'oc' || bg === 'hkmo' || exp === 'ocstudy';
+  if (!foreignOk(answers)) return false;
+  if (bridge === 'ifp') return exp === 'none' && !!edu;
+  if (bridge === 'intense') return ['en', 'zh'].includes(answers.lang) && INTENSE_COUNTRIES.includes(country) && ['college', 'bachelor', 'master'].includes(edu);
+  return true;
 }
 
 // What already-given answers rule a route out? Works on partial answers, so the question panel can
@@ -16,9 +22,11 @@ export function routeEligible(bridge, { answers = {}, country } = {}) {
 const blockReasons = {
   'intense:edu': bi('INTENSE 需專科（D3）以上學歷，高中畢業不能選', 'INTENSE needs a D3 diploma or higher, not high school'),
   'intense:lang': bi('INTENSE 需能以中文或英文上課', 'INTENSE needs Chinese or English study ability'),
-  'intense:bg': bi('僑生、港澳生請走僑生管道，不適用 INTENSE', 'Overseas Chinese and HK/Macau students apply through their own route, not INTENSE'),
+  'intense:bg': bi('港澳學生請走僑生管道，不適用 INTENSE', 'Hong Kong and Macau students apply through their own route, not INTENSE'),
+  'intense:exp': bi('曾以僑生身分在台讀書，不能再走外國學生管道', 'Having studied here as an Overseas Chinese student, you can’t switch to international routes'),
   'intense:country': bi('INTENSE 目前招收菲律賓、印度、印尼、越南、馬來西亞、泰國', 'INTENSE currently recruits from the Philippines, India, Indonesia, Vietnam, Malaysia and Thailand'),
-  'ifp:bg': bi('IFP 限未曾在台就學或工作的外國學生', 'IFP is for international students who have not studied or worked in Taiwan'),
+  'ifp:bg': bi('IFP 只收外國籍學生，港澳學生請走僑生管道', 'IFP is for international students; Hong Kong and Macau students have their own route'),
+  'ifp:exp': bi('IFP 限未曾在台讀書或工作的學生', 'IFP is for students who have not studied or worked in Taiwan'),
 };
 // "What do you hope to gain in Taiwan?" is multiple choice; older saves hold a single id.
 export const chosenLives = (life) => (Array.isArray(life) ? life : life ? [life] : []).map((id) => LIFE_CARDS.find((c) => c.id === id)).filter(Boolean);
@@ -35,10 +43,14 @@ export function routeBlockers(bridge, { answers = {}, country } = {}) {
   if (bridge === 'intense') {
     if (answers.edu && !['college', 'bachelor', 'master'].includes(answers.edu)) out.push('edu');
     if (answers.lang && !['en', 'zh'].includes(answers.lang)) out.push('lang');
-    if (answers.bg === 'oc') out.push('bg');
+    if (answers.bg === 'hkmo') out.push('bg');
+    if (answers.exp === 'ocstudy') out.push('exp');
     if (country && !INTENSE_COUNTRIES.includes(country)) out.push('country');
   }
-  if (bridge === 'ifp' && answers.bg && answers.bg !== 'none') out.push('bg');
+  if (bridge === 'ifp') {
+    if (answers.bg === 'hkmo') out.push('bg');
+    if (answers.exp && answers.exp !== 'none') out.push('exp');
+  }
   return out.map((key) => ({ key, reason: blockReasons[bridge + ':' + key] }));
 }
 export const routeOfAnswer = (route) => route === 'industry' ? 'intense' : route === 'mandarin' ? 'ifp' : null;
@@ -46,7 +58,8 @@ export const routeOfAnswer = (route) => route === 'industry' ? 'intense' : route
 export function resolveBridge(answers, country) {
   const { lang, bg, route } = answers;
   const state = { answers, country };
-  let primary = bg === 'oc' ? 'oc' : lang === 'en' ? 'en' : lang === 'zh' ? 'zh' : bg === 'none' ? 'ifp' : 'zh';
+  // Overseas Chinese default to their own bridge but may also take the international ones (shown as alternatives).
+  let primary = bg === 'oc' || !foreignOk(answers) ? 'oc' : lang === 'en' ? 'en' : lang === 'zh' ? 'zh' : routeEligible('ifp', state) ? 'ifp' : 'zh';
   if (route === 'industry' && routeEligible('intense', state)) primary = 'intense';
   if (route === 'mandarin' && routeEligible('ifp', state)) primary = 'ifp';
   const alts = Object.keys(BRIDGES).filter(k => k !== primary && routeEligible(k, state));

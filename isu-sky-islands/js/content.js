@@ -139,7 +139,7 @@ export const LIFE_CARDS = [
   { id: 'unsure', title: { zh: '還不確定', en: 'Not sure yet' }, scene: { zh: '還在探索，但已經知道自己能去很多地方。', en: 'still exploring — and knowing how many doors are open.' } },
 ];
 
-// 第三章：三個問題
+// 第三章：起點題目
 export const QUESTIONS = [
   { id: 'route', title: { zh: '你偏好的學習路徑？', en: 'Which study route interests you?' }, options: [
     { id: 'degree', label: { zh: '直接讀專業科系', en: 'Go straight into a degree' } },
@@ -167,14 +167,34 @@ export const QUESTIONS = [
   },
   {
     id: 'bg',
-    title: { zh: '你的背景？', en: 'Your background?' },
+    title: { zh: '你的身分？', en: 'Your status?' },
     options: [
-      { id: 'none', label: { zh: '其他（例如：美國、泰國、越南、印尼等）', en: 'Others (e.g. USA, Thailand, Vietnam, Indonesia, etc.)' } },
-      { id: 'oc', label: { zh: '華裔僑生，或香港、澳門學生', en: 'Overseas Chinese, or from Hong Kong / Macau' } },
-      { id: 'tw', label: { zh: '以前在台灣讀書或工作過', en: 'I’ve studied or worked in Taiwan before' } },
+      { id: 'none', label: { zh: '外國籍學生（例如：美國、泰國、越南、印尼等）', en: 'International student (e.g. USA, Thailand, Vietnam, Indonesia, etc.)' } },
+      { id: 'oc', label: { zh: '華裔僑生（在海外長大）', en: 'Overseas Chinese (raised abroad)' } },
+      { id: 'hkmo', label: { zh: '香港、澳門學生', en: 'Hong Kong or Macau student' } },
+    ],
+  },
+  // 身分與經歷分開問：曾在台讀書或工作不影響外國學生資格（外國學生來臺就學辦法），只擋 IFP；
+  // 曾以僑生身分在台就學者，不能再走外國學生管道（同辦法第 2 條第 1 項第 1 款）。
+  {
+    id: 'exp',
+    title: { zh: '你在台灣的經歷？', en: 'Your time in Taiwan?' },
+    options: [
+      { id: 'none', label: { zh: '第一次來台灣讀書', en: 'Never studied or worked here' } },
+      { id: 'tw', label: { zh: '曾在台灣讀書或工作', en: 'I’ve studied or worked in Taiwan' } },
+      { id: 'ocstudy', label: { zh: '曾以僑生或港澳生身分在台讀書', en: 'I studied here as an Overseas Chinese / HK–Macau student' } },
     ],
   },
 ];
+
+// 陸生入學另有法規與聯招管道，目前不在本站路徑內：輸入中國時改請學生洽國際及兩岸事務處。
+export const MAINLAND = {
+  codes: ['CN'],
+  title: { zh: '來自中國大陸的學生，請洽國際及兩岸事務處', en: 'Students from mainland China: please contact the Office of International and Cross-Strait Affairs' },
+  body: { zh: '陸生來台就讀依兩岸相關法規、透過陸生聯招會辦理，與外國學生的入學橋不同，這裡無法替你判斷路徑。', en: 'Mainland Chinese students apply under separate cross-strait rules and a joint admission committee, not the international bridges shown here, so this map can’t screen your route.' },
+  contact: { zh: '國際及兩岸事務處 · oia@isu.edu.tw · +886\u2060-\u20607\u2060-\u20606577711 分機 2083–2088', en: 'International & Cross-Strait Affairs · oia@isu.edu.tw · +886\u2060-\u20607\u2060-\u20606577711 ext. 2083–2088' },
+  retry: { zh: '想先看看課程內容，可以改選其他國家試試看。', en: 'To explore the programs anyway, try choosing another country.' },
+};
 
 // 第四章：七座島。programs.bridges 列出可以到達的橋。
 // fee＝每學期學雜費（2026 年度會計處收費表），campus：main 校本部 / medical 醫學院區。

@@ -28,7 +28,7 @@ with sync_playwright() as p:
  assert page.evaluate('__app.flow.s.bridge===null')
  page.locator('.panel.in [data-program-id=ipai]').click();page.locator('.panel.in .panel-foot button').last.click()
  page.wait_for_selector('.panel.in[data-key=bridge-questions]');panel=page.locator('.panel.in');panel.locator('[data-country=VN]').click()
- for question,value in [('route','degree'),('edu','hs'),('lang','en'),('bg','none')]:panel.locator(f'[data-question={question}] [data-answer={value}]').click()
+ for question,value in [('route','degree'),('edu','hs'),('lang','en'),('bg','none'),('exp','none')]:panel.locator(f'[data-question={question}] [data-answer={value}]').click()
  panel.locator('.panel-foot button').last.click();expect(page.locator('.panel.in .bn')).to_have_text('英文橋')
  assert page.evaluate('__app.flow.s.bridge===null')
  page.locator('.panel.in .panel-foot button').last.click();page.wait_for_function('__app.controls.enabled')

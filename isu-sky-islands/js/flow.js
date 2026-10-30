@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { I18N, t, el, storage, wait } from './util.js';
-import { UI, COUNTRIES, TAIWAN, KAOHSIUNG_STAGE, CAMPUS, LIFE_CARDS, QUESTIONS, ISLANDS, BRIDGES, DORM, MANDARIN_TOWER, META } from './content.js';
-import { resolveBridge, programReachable, programStatus, routeEligible, routeBlockers, routeOfAnswer, chosenLives, toggleLife, programJourney, yearsLabel, levelLabel, matchesConnectionFilter, studyPath } from './logic.js';
+import { UI, COUNTRIES, TAIWAN, KAOHSIUNG_STAGE, CAMPUS, LIFE_CARDS, QUESTIONS, ISLANDS, BRIDGES, DORM, MANDARIN_TOWER, META, MAINLAND } from './content.js';
+import { resolveBridge, programReachable, programStatus, routeEligible, routeBlockers, routeOfAnswer, isMainland, chosenLives, toggleLife, programJourney, yearsLabel, levelLabel, matchesConnectionFilter, studyPath } from './logic.js';
 import { photo, button, link, icon, gallery } from './ui.js';
 import { SKINS, OUTFITS } from './world/traveler.js';
 import { drawRouteCard, exportRouteCard } from './routecard.js';
@@ -730,7 +730,7 @@ export class Flow {
     this.s.routeIntent=kind;this.s.answers.route=kind==='ifp'?'mandarin':'industry';
     this.s.bridge=null;this.s.primary=null;this.previewBridge=null;
     const a=this.s.answers;
-    if(this.s.country&&a.edu&&a.lang&&a.bg&&routeEligible(kind,this.s))return this.selectBridge(kind,true);
+    if(this.s.country&&a.edu&&a.lang&&a.bg&&a.exp&&routeEligible(kind,this.s))return this.selectBridge(kind,true);
     this.bridgeStep();
   }
 
@@ -755,7 +755,7 @@ export class Flow {
     const answers = this.s.answers;
     this.view(() => {
       const preview = this.previewBridge || this.s.bridge || this.s.primary;
-      this.narrator.setScene(result ? 'bridge-' + preview : 'bridges');
+      this.narrator.setScene(result && !isMainland(this.s.country) ? 'bridge-' + preview : 'bridges');
       if (!result) {
         // A choice that contradicts the chosen study route (or a route the other answers rule out) is greyed out
         // with its reason, so "high school + INTENSE" can never both light up.
@@ -778,7 +778,7 @@ export class Flow {
         const blocks = questions.map(q => el('div', { class: 'qblock', 'data-question':q.id }, el('p', { class: 'qt' }, t(q.title)), el('div', { class: 'chips' }, q.options.map(o => chip(q.id, o.id, o.label, answers[q.id] === o.id, () => { answers[q.id] = o.id; if (q.id === 'route') this.s.routeIntent = routeOfAnswer(o.id); }))), why(q.id, q.options.filter(o => answers[q.id] !== o.id).map(o => o.id)), q.id === 'route' && answers.route === 'industry' ? el('p', { class: 'note route-note' }, I18N.lang === 'zh' ? 'INTENSE 兩個專班的授課語言不同：設備工程用英語（CEFR B1 以上），機械與自動化用中文（TOCFL A2 以上）。下面語言題選哪一種，就會點亮對應的專班。' : 'The two INTENSE programs use different languages: Equipment Engineering is taught in English (CEFR B1+), Mechanical & Automation in Chinese (TOCFL A2+). Your language answer below decides which one lights up.') : null, q.id === 'route' ? el('div', { class: 'route-learn' }, el('span', {}, I18N.lang === 'zh' ? '想先了解：' : 'Learn more: '), el('button', { type: 'button', onclick: () => this.pathwayStep('ifp') }, 'IFP'), el('button', { type: 'button', onclick: () => this.pathwayStep('intense') }, 'INTENSE')) : null));
         const requested=this.s.routeIntent||(answers.route==='industry'?'intense':answers.route==='mandarin'?'ifp':null);
         const complete=questions.every(q=>answers[q.id])&&this.s.country;
-        const allowed=!complete||!requested||routeEligible(requested,this.s);
+        const allowed=!complete||!requested||isMainland(this.s.country)||routeEligible(requested,this.s);
         const done=complete&&allowed;
         const requirement=complete&&requested&&!allowed?el('p',{class:'note route-note'},requested==='ifp'?(I18N.lang==='zh'?'目前的回答不符合 IFP 的身分或來台經歷條件，可以改選其他學習路徑。':'Your answers don’t match the IFP background or previous-Taiwan-study conditions. Try another study route.'):(I18N.lang==='zh'?'INTENSE 需符合招生國家、D3 以上學歷，以及英語（設備工程）或中文（機械與自動化）授課能力。':'INTENSE needs an eligible country, a D3 or higher credential, and English (Equipment Eng.) or Chinese (Mechanical & Automation) study ability.')):null;
         this.ui.panel({ key: 'bridge-questions', tall: true, eyebrow: t(UI.chapters[2]), title: t(UI.bridgeTitle),
@@ -794,14 +794,16 @@ export class Flow {
       const b = BRIDGES[preview], zh = I18N.lang === 'zh';
       const fits = (k) => (p) => programStatus(p, { ...this.s, bridge: k }).ready;
       const usableBridge = (k) => routeEligible(k, this.s) && ISLANDS.some(i => i.programs.some(fits(k)));
-      const canUse = usableBridge(preview);
+      const canUse = usableBridge(preview), mainland = isMainland(this.s.country);
       // Every bridge can be opened and looked at; when it doesn't fit, say plainly which answer stands in the way.
       const answerLabel = (q) => { const o = QUESTIONS.find(x => x.id === q)?.options.find(x => x.id === answers[q]); return o ? t(o.label) : ''; };
       const whyNot = (k) => {
         if (usableBridge(k)) return null;
         const blocked = routeBlockers(k, this.s)[0];
         if (blocked) return t(blocked.reason);
-        if (k !== 'oc' && answers.bg === 'oc') return zh ? `你的身分選的是「${answerLabel('bg')}」，請走僑生橋。` : `You chose “${answerLabel('bg')}”, so the Overseas Chinese Bridge is your route.`;
+        if (mainland) return t(MAINLAND.body);
+        if (k !== 'oc' && answers.exp === 'ocstudy') return zh ? '曾以僑生或港澳生身分在台讀書，不能再改走外國學生管道，請走僑生橋。' : 'Having studied here as an Overseas Chinese or HK/Macau student, you can’t switch to international routes; the Overseas Chinese Bridge is yours.';
+        if (k !== 'oc' && answers.bg === 'hkmo') return zh ? `你的身分選的是「${answerLabel('bg')}」，請走僑生橋（持外國護照者請改選外國籍學生）。` : `You chose “${answerLabel('bg')}”, so the Overseas Chinese Bridge is your route (with a foreign passport, choose International student).`;
         if (k === 'oc') return zh ? `僑生橋只給華裔僑生與港澳學生；你目前的身分是「${answerLabel('bg')}」。` : `This bridge is for Overseas Chinese and Hong Kong / Macau students; you chose “${answerLabel('bg')}”.`;
         if (k === 'zh') return zh ? `中文橋通往中文授課課程，需要 TOCFL A2 以上；你的語言目前選的是「${answerLabel('lang')}」。` : `The Chinese Bridge leads to Chinese-taught programs (TOCFL A2+); your language answer is “${answerLabel('lang')}”.`;
         if (k === 'en') return zh ? `英文橋通往英語授課課程，需要 CEFR B1 以上；你的語言目前選的是「${answerLabel('lang')}」。` : `The English Bridge leads to English-taught programs (CEFR B1+); your language answer is “${answerLabel('lang')}”.`;
@@ -822,13 +824,16 @@ export class Flow {
       app.handlers = { island: id => cross(id), program: (id, pid) => cross(id, pid) };
       this.islandLabels(cross, { dimUnreached: true, bridge: preview });
       const switcher = el('div', { class: 'bridge-switch' }, el('p', { class: 'qt' }, zh ? '比較不同的入學橋' : 'Compare admission bridges'),
-        el('div', { class: 'mini-bridges' }, Object.entries(BRIDGES).map(([k, value]) => el('button', { class: 'mini-bridge' + (preview === k ? ' on' : '') + (usableBridge(k) ? '' : ' off'), type: 'button', 'aria-pressed': String(preview === k), style: { color: value.color }, onclick: () => { this.previewBridge = k; app.arch.showBridge(k, this.bridgeFrom(), { only: fits(k), preview: true }); this.render(); } }, el('i', { style: { background: value.color } }), el('span', { style: { color: '#23215F' } }, t(value.name), k === this.s.primary ? ' ★' : '')))),
-        el('small', {}, zh ? '★ 依你的回答推薦。灰色的橋目前條件不符，但都可以點開來看。' : '★ recommended from your answers. Greyed bridges don’t fit yet, but you can still open them.'));
+        el('div', { class: 'mini-bridges' }, Object.entries(BRIDGES).map(([k, value]) => el('button', { class: 'mini-bridge' + (preview === k ? ' on' : '') + (usableBridge(k) ? '' : ' off'), type: 'button', 'aria-pressed': String(preview === k), style: { color: value.color }, onclick: () => { this.previewBridge = k; app.arch.showBridge(k, this.bridgeFrom(), { only: fits(k), preview: true }); this.render(); } }, el('i', { style: { background: value.color } }), el('span', { style: { color: '#23215F' } }, t(value.name), k === this.s.primary && !mainland ? ' ★' : '')))),
+        el('small', {}, mainland ? (zh ? '每座橋都可以點開預覽它連到的島。' : 'Open any bridge to preview where it leads.') : zh ? '★ 依你的回答推薦。灰色的橋目前條件不符，但都可以點開來看。' : '★ recommended from your answers. Greyed bridges don’t fit yet, but you can still open them.'));
       this.ui.panel({ key: 'bridge-result-' + preview, tall: true, eyebrow: t(UI.chapters[2]), title: t(UI.bridgeTitle), body: [
+        mainland ? el('div', { class: 'mainland-warn', role: 'alert' }, el('b', {}, t(MAINLAND.title)), el('p', {}, t(MAINLAND.body)), el('p', { class: 'contact' }, t(MAINLAND.contact)), el('p', {}, t(MAINLAND.retry)),
+          el('button', { type: 'button', onclick: () => { result = false; this.s.bridge = null; this.previewBridge = null; app.arch.clearBridges(); app.handlers = {}; app.labels.clear(); this.render(); requestAnimationFrame(() => document.querySelector('.panel .chip.on[data-country]')?.scrollIntoView({ block: 'center', behavior: 'smooth' })); } }, zh ? '改選其他國家' : 'Choose another country'))
+          : null,
         switcher,
-        canUse ? el('p', { class: 'tap-hint' }, icon('cloudlet'), zh ? '點地圖上亮起的島，就能直接看裡面的科系。' : 'Tap a lit island on the map to go straight to its programs.')
+        mainland ? null : canUse ? el('p', { class: 'tap-hint' }, icon('cloudlet'), zh ? '點地圖上亮起的島，就能直接看裡面的科系。' : 'Tap a lit island on the map to go straight to its programs.')
           : el('div', { class: 'bridge-warn' }, el('b', {}, zh ? `預覽中 · 依你目前填寫的背景，還不能走${t(b.name)}` : `Preview · your answers don’t fit the ${t(b.name)} yet`), el('p', {}, whyNot(preview)), el('p', {}, zh ? '你仍然可以看這座橋連到哪些島，點島先預覽科系；想走這座橋，請按「上一步」調整答案。' : 'You can still see where this bridge leads and tap an island to preview its programs. To use it, go Back and adjust your answers.')),
-        el('div', { class: 'bridge-card', style: { background: `linear-gradient(135deg, ${b.color}, ${b.color}cc)` } }, el('p', { class: 'bt' }, (preview===this.s.bridge||preview===this.s.primary) ? t(UI.yourBridge) : t(UI.otherBridges)), el('p', { class: 'bn' }, t(b.name)), el('p', { class: 'bt' }, t(b.tag)), el('p', {}, t(b.how))),
+        el('div', { class: 'bridge-card', style: { background: `linear-gradient(135deg, ${b.color}, ${b.color}cc)` } }, el('p', { class: 'bt' }, (preview===this.s.bridge||preview===this.s.primary) && !mainland ? t(UI.yourBridge) : t(UI.otherBridges)), el('p', { class: 'bn' }, t(b.name)), el('p', { class: 'bt' }, t(b.tag)), el('p', {}, t(b.how))),
         this.s.needLanguage ? el('p', { class: 'note' }, t(UI.needLanguage)) : null,
         el('details', { class: 'bridge-more' }, el('summary', {}, zh ? '這座橋的條件與說明' : 'Who it’s for & details'),
           el('p', { class: 'note' }, t(b.who)), el('p', { class: 'note' }, t(b.chinese)), b.rule ? el('p', { class: 'note' }, t(b.rule)) : null,
