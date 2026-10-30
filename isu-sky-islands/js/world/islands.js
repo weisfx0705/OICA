@@ -460,11 +460,15 @@ export class Archipelago {
 
   // only: when a bridge is actually chosen, restrict lines and lit islands to programs that match the
   // student's answers (e.g. INTENSE + English never lights the Chinese-taught INTENSE program).
-  showBridge(bridgeId, from, { dimOthers = true, only = null } = {}) {
+  // preview: the student is only looking at this bridge, so it is drawn in full (every island it reaches lit,
+  // non-fitting lines pale) even when none of it fits their answers yet.
+  showBridge(bridgeId, from, { dimOthers = true, only = null, preview = false } = {}) {
     this.clearBridges();
     const color = new THREE.Color(BRIDGES[bridgeId].color);
-    const reaches = (p) => p.bridges.includes(bridgeId) && (!only || only(p));
+    const onBridge = (p) => p.bridges.includes(bridgeId);
+    const reaches = (p) => onBridge(p) && (!only || only(p));
     const reach = this.islands.filter((isl) => isl.def.programs.some(reaches));
+    const reachAll = this.islands.filter((isl) => isl.def.programs.some(onBridge));
     const local = from.clone().sub(this.center);
     const hub = this.hubFor(bridgeId);
     // INTENSE starts on its own island: no line up from the campus, one line to each INTENSE program.
@@ -479,13 +483,16 @@ export class Archipelago {
         end.y -= 1;
         pairs.push([start, end, reaches(p), p.id]);
       }
-    } else (hub ? [hub, ...reach] : reach).forEach((isl, i) => pairs.push([hub && i > 0 ? hub.group.position.clone() : local, isl.group.position.clone().add(new THREE.Vector3(0, -1.2, 0))]));
+    } else (hub ? [hub, ...reachAll] : reachAll).forEach((isl, i) => pairs.push([hub && i > 0 ? hub.group.position.clone() : local, isl.group.position.clone().add(new THREE.Vector3(0, -1.2, 0)),
+      hub && i === 0 ? reach.length > 0 : reach.includes(isl), null]));
+    // nothing on this bridge fits yet: show the bridge itself at full strength (the panel explains why it can't be used)
+    if (preview && !reach.length) for (const pair of pairs) pair[2] = true;
     pairs.forEach(([start, end, match = true, programId = null], i) => {
       const mid = start.clone().lerp(end, 0.5);
       mid.y += 10;
       const curve = new THREE.CatmullRomCurve3([start, start.clone().lerp(mid, 0.5).setY(start.y + 6), mid, end]);
       if (!match) {
-        const faint = new THREE.Mesh(new THREE.TubeGeometry(curve, 90, 0.16, 6, false), new THREE.MeshBasicMaterial({ color: '#A9AEC2', transparent: true, opacity: 0.5, depthWrite: false }));
+        const faint = new THREE.Mesh(new THREE.TubeGeometry(curve, 90, 0.16, 6, false), new THREE.MeshBasicMaterial({ color: bridgeId === 'intense' ? '#A9AEC2' : color, transparent: true, opacity: bridgeId === 'intense' ? 0.5 : 0.38, depthWrite: false }));
         faint.userData = { programId, recommended: false };
         this.group.add(faint);
         this.bridgeMeshes.push(faint);
@@ -506,7 +513,7 @@ export class Archipelago {
       this.bridgeMeshes.push(tube);
       tween({ duration: 1.6, delay: i * 0.15, onUpdate: (e) => { mat.uniforms.grow.value = e; } });
     });
-    if (dimOthers) for (const isl of this.islands) this.setLit(isl, reach.includes(isl), 0.9);
+    if (dimOthers) for (const isl of this.islands) this.setLit(isl, (preview ? reachAll : reach).includes(isl), 0.9);
     return reach;
   }
 

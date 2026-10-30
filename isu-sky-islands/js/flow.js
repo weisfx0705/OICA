@@ -786,31 +786,48 @@ export class Flow {
           foot: [this.backButton(), el('span', { class: 'spacer' }), button(this.s.routeIntent?(I18N.lang==='zh'?'確認起點，採用這條路':'Confirm my starting point'):t(UI.bridgeTitle), () => {
             if(this.s.routeIntent&&routeEligible(this.s.routeIntent,this.s)){this.selectBridge(this.s.routeIntent,true);return;}
             Object.assign(this.s, resolveBridge(answers, this.s.country));
-            this.previewBridge = this.s.primary; result = true; app.arch.showBridge(this.s.primary, this.bridgeFrom(), { only: p => programStatus(p, { ...this.s, bridge: this.s.primary }).ready }); sound.bridge(); this.render();
+            this.previewBridge = this.s.primary; result = true; app.arch.showBridge(this.s.primary, this.bridgeFrom(), { only: p => programStatus(p, { ...this.s, bridge: this.s.primary }).ready, preview: true }); sound.bridge(); this.render();
           }, { iconName: 'arrow', disabled: !done })],
         });
         return;
       }
       const b = BRIDGES[preview], zh = I18N.lang === 'zh';
-      const canUse = routeEligible(preview, this.s);
       const fits = (k) => (p) => programStatus(p, { ...this.s, bridge: k }).ready;
+      const usableBridge = (k) => routeEligible(k, this.s) && ISLANDS.some(i => i.programs.some(fits(k)));
+      const canUse = usableBridge(preview);
+      // Every bridge can be opened and looked at; when it doesn't fit, say plainly which answer stands in the way.
+      const answerLabel = (q) => { const o = QUESTIONS.find(x => x.id === q)?.options.find(x => x.id === answers[q]); return o ? t(o.label) : ''; };
+      const whyNot = (k) => {
+        if (usableBridge(k)) return null;
+        const blocked = routeBlockers(k, this.s)[0];
+        if (blocked) return t(blocked.reason);
+        if (k !== 'oc' && answers.bg === 'oc') return zh ? `你的身分選的是「${answerLabel('bg')}」，請走僑生橋。` : `You chose “${answerLabel('bg')}”, so the Overseas Chinese Bridge is your route.`;
+        if (k === 'oc') return zh ? `僑生橋只給華裔僑生與港澳學生；你目前的身分是「${answerLabel('bg')}」。` : `This bridge is for Overseas Chinese and Hong Kong / Macau students; you chose “${answerLabel('bg')}”.`;
+        if (k === 'zh') return zh ? `中文橋通往中文授課課程，需要 TOCFL A2 以上；你的語言目前選的是「${answerLabel('lang')}」。` : `The Chinese Bridge leads to Chinese-taught programs (TOCFL A2+); your language answer is “${answerLabel('lang')}”.`;
+        if (k === 'en') return zh ? `英文橋通往英語授課課程，需要 CEFR B1 以上；你的語言目前選的是「${answerLabel('lang')}」。` : `The English Bridge leads to English-taught programs (CEFR B1+); your language answer is “${answerLabel('lang')}”.`;
+        return zh ? '這座橋的課程需要對應的學歷或語言條件。' : 'This bridge’s programs need a matching education or language background.';
+      };
       // Tapping a lit island crosses this bridge at once and opens the island; the yellow button stays as the explicit path.
       const cross = (id, pid = null) => {
         if (this.openHub(id, this.render)) return;
         const isl = ISLANDS.find(i => i.id === id);
-        if (!canUse) { this.ui.toast(zh ? '目前的回答不符合這座橋，換一座亮起的橋，或回上一步調整。' : 'Your answers don’t fit this bridge. Pick another bridge, or go back and adjust.'); return; }
-        if (!isl?.programs.some(fits(preview))) { this.ui.toast(zh ? `${t(isl.name)}不在${t(b.name)}上，看看亮起來的島。` : `${t(isl.name)} isn’t on the ${t(b.name)}. Try a lit island.`); return; }
+        // a bridge (or island) that doesn't fit yet still opens: the island is shown as a preview, without anchoring
+        if (!canUse || !isl?.programs.some(fits(preview))) {
+          this.ui.toast(!canUse ? (zh ? '先預覽這座島的科系；要走這座橋，請回上一步調整答案。' : 'Previewing this island; to use this bridge, go back and adjust your answers.') : (zh ? `${t(isl.name)}沒有符合你條件的${t(b.name)}課程，先預覽科系。` : `${t(isl.name)} has no ${t(b.name)} program that fits you yet. Previewing it.`));
+          this.focusIsland(id, pid || false); return;
+        }
         this.s.pendingIsland = id; this.s.pendingProgram = pid && isl.programs.find(p => p.id === pid && fits(preview)(p)) ? pid : null;
         this.selectBridge(preview, true);
       };
       app.handlers = { island: id => cross(id), program: (id, pid) => cross(id, pid) };
-      this.islandLabels(cross, { dimUnreached: true, bridge: canUse ? preview : '__none__' });
+      this.islandLabels(cross, { dimUnreached: true, bridge: preview });
       const switcher = el('div', { class: 'bridge-switch' }, el('p', { class: 'qt' }, zh ? '比較不同的入學橋' : 'Compare admission bridges'),
-        el('div', { class: 'mini-bridges' }, Object.entries(BRIDGES).map(([k, value]) => el('button', { class: 'mini-bridge' + (preview === k ? ' on' : '') + (routeEligible(k, this.s) ? '' : ' off'), type: 'button', 'aria-pressed': String(preview === k), style: { color: value.color }, onclick: () => { this.previewBridge = k; app.arch.showBridge(k, this.bridgeFrom(), routeEligible(k, this.s) ? { only: fits(k) } : {}); this.render(); } }, el('i', { style: { background: value.color } }), el('span', { style: { color: '#23215F' } }, t(value.name), k === this.s.primary ? ' ★' : '')))),
-        el('small', {}, zh ? '★ 依你的回答推薦；灰色的橋目前條件不符。' : '★ recommended from your answers; greyed bridges don’t fit yet.'));
+        el('div', { class: 'mini-bridges' }, Object.entries(BRIDGES).map(([k, value]) => el('button', { class: 'mini-bridge' + (preview === k ? ' on' : '') + (usableBridge(k) ? '' : ' off'), type: 'button', 'aria-pressed': String(preview === k), style: { color: value.color }, onclick: () => { this.previewBridge = k; app.arch.showBridge(k, this.bridgeFrom(), { only: fits(k), preview: true }); this.render(); } }, el('i', { style: { background: value.color } }), el('span', { style: { color: '#23215F' } }, t(value.name), k === this.s.primary ? ' ★' : '')))),
+        el('small', {}, zh ? '★ 依你的回答推薦。灰色的橋目前條件不符，但都可以點開來看。' : '★ recommended from your answers. Greyed bridges don’t fit yet, but you can still open them.'));
       this.ui.panel({ key: 'bridge-result-' + preview, tall: true, eyebrow: t(UI.chapters[2]), title: t(UI.bridgeTitle), body: [
         switcher,
-        canUse ? el('p', { class: 'tap-hint' }, icon('cloudlet'), zh ? '點地圖上亮起的島，就能直接看裡面的科系。' : 'Tap a lit island on the map to go straight to its programs.') : el('p', { class: 'note route-note' }, zh ? '目前回答未符合這座橋的初步條件。換一座橋看看，或回上一步調整答案。' : 'Your answers don’t fit this bridge yet. Try another bridge, or go back and adjust.'),
+        canUse ? el('p', { class: 'tap-hint' }, icon('cloudlet'), zh ? '點地圖上亮起的島，就能直接看裡面的科系。' : 'Tap a lit island on the map to go straight to its programs.')
+          : el('div', { class: 'bridge-warn' }, el('b', {}, zh ? `預覽中 · 依你目前填寫的背景，還不能走${t(b.name)}` : `Preview · your answers don’t fit the ${t(b.name)} yet`), el('p', {}, whyNot(preview)), el('p', {}, zh ? '你仍然可以看這座橋連到哪些島，點島先預覽科系；想走這座橋，請按「上一步」調整答案。' : 'You can still see where this bridge leads and tap an island to preview its programs. To use it, go Back and adjust your answers.')),
         el('div', { class: 'bridge-card', style: { background: `linear-gradient(135deg, ${b.color}, ${b.color}cc)` } }, el('p', { class: 'bt' }, (preview===this.s.bridge||preview===this.s.primary) ? t(UI.yourBridge) : t(UI.otherBridges)), el('p', { class: 'bn' }, t(b.name)), el('p', { class: 'bt' }, t(b.tag)), el('p', {}, t(b.how))),
         this.s.needLanguage ? el('p', { class: 'note' }, t(UI.needLanguage)) : null,
         el('details', { class: 'bridge-more' }, el('summary', {}, zh ? '這座橋的條件與說明' : 'Who it’s for & details'),

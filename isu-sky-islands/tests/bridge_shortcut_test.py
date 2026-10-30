@@ -22,6 +22,16 @@ with sync_playwright() as p:
     assert landed==['island-business-directory','zh'],landed
     assert not errs,errs
     results.append((w,lang))
+    if w==1440 and lang=='zh':
+      # a bridge that doesn't fit (English, for a Chinese-speaking student) still opens as a preview
+      pg.evaluate('()=>__app.flow.bridgeStep()');pg.wait_for_selector('.panel.in[data-key=bridge-questions]')
+      pg.locator('.panel.in .panel-foot .btn').last.click();pg.wait_for_selector('.panel.in[data-key^=bridge-result]');pg.wait_for_timeout(800)
+      pg.locator('.panel.in .mini-bridge').filter(has_text='英文橋').click();pg.wait_for_timeout(1200)
+      assert pg.evaluate('__app.arch.bridgeMeshes.length')>0
+      assert '英文橋' in pg.locator('.panel.in .bridge-warn').inner_text()
+      assert pg.locator('.panel.in .panel-foot .btn').last.is_disabled()
+      pg.locator('.hotspot.island').filter(has_text='企業島').first.evaluate('n=>n.click()')
+      pg.wait_for_function('document.querySelector(".panel.in")?.dataset.key?.startsWith("island-business")',timeout=15000)
     pg.close()
   b.close()
   print({'bridge_shortcut':results})
