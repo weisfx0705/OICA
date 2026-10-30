@@ -25,13 +25,19 @@ with sync_playwright() as p:
     # back to the questions, pick another country, and the chosen IFP route opens normally
     warn.locator('button').click();pg.wait_for_selector('.panel.in[data-key=bridge-questions]')
     pg.locator('.panel.in [data-country=VN]').evaluate('n=>n.click()')
-    pg.locator('.panel.in .panel-foot .btn').last.click();pg.wait_for_function('__app.flow.s.bridge==="ifp"',timeout=15000);pg.wait_for_timeout(1500)
+    pg.locator('.panel.in .panel-foot .btn').last.click();pg.wait_for_function('__app.flow.s.bridge==="ifp"',timeout=15000)
+    # let the IFP flight land: wait until the open panel stays the same for 3 seconds
+    key=None;same=0
+    for _ in range(60):
+      k=pg.evaluate('document.querySelector(".panel.in")?.dataset.key||""');same=same+1 if k==key and not k.startswith('bridge') else 0;key=k
+      if same>=6:break
+      pg.wait_for_timeout(500)
     assert pg.locator('.mainland-warn').count()==0
     # someone who has worked in Taiwan keeps the international bridges but not IFP
     pg.evaluate('()=>__app.flow.bridgeStep()');pg.wait_for_selector('.panel.in[data-key=bridge-questions]');panel=pg.locator('.panel.in')
-    pg.wait_for_timeout(500)
+    pg.wait_for_timeout(2500);panel=pg.locator(".panel.in[data-key=bridge-questions]")
     for q,v in [('route','degree'),('lang','en'),('exp','tw')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
-    panel.locator('.panel-foot .btn').last.click();pg.wait_for_selector('.panel.in[data-key^=bridge-result]');pg.wait_for_timeout(800)
+    pg.wait_for_timeout(600);pg.locator('.panel.in[data-key=bridge-questions] .panel-foot .btn').last.evaluate('n=>n.click()');pg.wait_for_selector('.panel.in[data-key^=bridge-result]');pg.wait_for_timeout(800)
     s=pg.evaluate('[__app.flow.s.primary,__app.flow.s.alts]');assert s[0]=='en' and 'ifp' not in s[1],s
     assert not errs,errs
   print('Status checks passed: China shows the red office notice and a retry, status and Taiwan experience are separate questions.')

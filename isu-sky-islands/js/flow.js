@@ -714,10 +714,12 @@ export class Flow {
       return this.arriveAfterBridge();
     }
     if(direct && kind==='ifp') {
-      const island=this.app.arch.hubFor(kind),f=this.frameIsland(island,1.7,.8);
+      const island=this.app.arch.hubFor(kind),f=this.frameIsland(island,1.7,.8),token=this.exploreToken;
       this.ui.closePanel();this.render=null;this.narrator.stop();
       this.placeTraveler(island.group,this.landing(island),1.65).setStage('student');
-      await this.app.fly(f.pos,f.look,1.1);return this.arriveAfterBridge();
+      await this.app.fly(f.pos,f.look,1.1);
+      if(token!==this.exploreToken)return; // the student went elsewhere mid-flight
+      return this.arriveAfterBridge();
     }
     if(direct)return this.arriveAfterBridge();
     if(kind==='ifp'||kind==='intense')this.pathwayStep(kind,()=>this.arriveAfterBridge(),true,()=>this.arriveAfterBridge());
@@ -890,10 +892,8 @@ export class Flow {
   showDock() {
     this.dockOn = true;
     this.ui.dock([
-      { label: I18N.lang === 'zh' ? '入學路徑' : 'Pathways', onClick: () => { const back = this.render; this.pathwayStep(this.s.bridge === 'intense' ? 'intense' : 'ifp', back); } },
       { label: t(UI.scholarship), onClick: () => this.support('scholarship') },
       { label: t(UI.dorm), onClick: () => this.support('dorm') },
-      { label: t(UI.tower), onClick: () => this.support('tower') },
     ]);
   }
 
