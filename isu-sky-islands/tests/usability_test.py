@@ -45,7 +45,7 @@ with sync_playwright() as p:
  page.get_by_role('button',name='選擇 IFP 這條路',exact=True).click();page.wait_for_selector('.panel.in[data-key=bridge-questions]')
  assert page.locator('.panel.in [data-question=route] [data-answer=mandarin]').get_attribute('aria-pressed')=='true'
  panel=page.locator('.panel.in');panel.locator('[data-country=VN]').click()
- for q,v in [('edu','hs'),('lang','none'),('bg','none'),('exp','none')]:panel.locator(f'[data-question={q}] [data-answer={v}]').click()
+ for q,v in [('edu','hs'),('goal','ifp'),('lang','none'),('bg','none'),('exp','none')]:panel.locator(f'[data-question={q}] [data-answer={v}]').click()
  panel.locator('.panel-foot button').last.click();page.wait_for_function('__app.flow.s.bridge==="ifp"&&__app.controls.enabled')
  expect(page.locator('.panel.in h2')).to_have_text('資訊工程學系')
  # The learning card keeps the whole road: IFP first, then the department.
@@ -54,7 +54,7 @@ with sync_playwright() as p:
  assert '國際專修部 IFP → 資訊工程學系' in page.locator('.panel.in .summary-choice').inner_text()
  card=' '.join(page.evaluate('__cardText'));assert '國際專修部 IFP' in card and '資訊工程學系' in card and card.index('國際專修部 IFP')<card.index('資訊工程學系')
  # INTENSE lists both 2026–27 programs; a Chinese-speaking bachelor graduate qualifies for the Chinese-taught one.
- page.evaluate('()=>{const f=__app.flow;f.s.bridge=null;f.s.routeIntent=null;f.s.flag=null;f.s.answers={edu:"bachelor",lang:"zh",bg:"none",exp:"none",route:"degree"};f.s.pendingIsland="maker";f.s.pendingProgram="intense-mae";f.pathwayStep("intense",()=>f.interestStep());}')
+ page.evaluate('()=>{const f=__app.flow;f.s.bridge=null;f.s.routeIntent=null;f.s.flag=null;f.s.answers={edu:"bachelor",lang:"zh",bg:"none",exp:"none",route:"degree",goal:"bachelor"};f.s.pendingIsland="maker";f.s.pendingProgram="intense-mae";f.pathwayStep("intense",()=>f.interestStep());}')
  expect(page.locator('.panel.in .programs .program')).to_have_count(2)
  page.get_by_role('button',name='選擇 INTENSE 這條路',exact=True).click();page.wait_for_function('__app.flow.s.bridge==="intense"&&__app.controls.enabled')
  assert page.evaluate('__app.flow.s.answers.route')=='industry'

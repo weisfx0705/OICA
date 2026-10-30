@@ -12,7 +12,7 @@ with sync_playwright() as p:
     pg.evaluate('(lang)=>{const a=__app,f=a.flow;f.titleEl.remove();a.updaters=[];f.narrator.pause();if(document.documentElement.lang.startsWith("zh")!==(lang==="zh"))f.toggleLang();a.setStage("campus");a.arch.group.visible=true;f.s.life=["stay"];f.s.homeLabel="Vietnam";f.bridgeStep();}',lang)
     pg.wait_for_selector('.panel.in[data-key=bridge-questions]');panel=pg.locator('.panel.in')
     panel.locator('[data-country=VN]').evaluate('n=>n.click()')
-    for q,v in [('route','degree'),('edu','hs'),('lang','zh'),('bg','none'),('exp','none')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
+    for q,v in [('route','degree'),('edu','hs'),('goal','bachelor'),('lang','zh'),('bg','none'),('exp','none')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
     panel.locator('.panel-foot .btn').last.click();pg.wait_for_selector('.panel.in[data-key^=bridge-result]');pg.wait_for_timeout(2500)
     dims=pg.evaluate('[...document.querySelectorAll(".hotspot.island")].map(n=>n.innerText.split("\\n").pop()+(n.classList.contains("dim")?"(dim)":""))')
     pg.screenshot(path=OUT+f'bridge-result-{w}-{lang}.png')

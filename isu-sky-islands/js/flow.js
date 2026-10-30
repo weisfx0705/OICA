@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { I18N, t, el, storage, wait } from './util.js';
 import { UI, COUNTRIES, TAIWAN, KAOHSIUNG_STAGE, CAMPUS, LIFE_CARDS, QUESTIONS, ISLANDS, BRIDGES, DORM, MANDARIN_TOWER, META, MAINLAND } from './content.js';
-import { resolveBridge, programReachable, programStatus, routeEligible, routeBlockers, routeOfAnswer, isMainland, chosenLives, toggleLife, programJourney, yearsLabel, levelLabel, matchesConnectionFilter, studyPath } from './logic.js';
+import { resolveBridge, programReachable, programStatus, routeEligible, routeBlockers, goalBlockers, routeOfAnswer, isMainland, chosenLives, toggleLife, programJourney, yearsLabel, levelLabel, matchesConnectionFilter, studyPath, levelOf } from './logic.js';
 import { photo, button, link, icon, gallery } from './ui.js';
 import { SKINS, OUTFITS } from './world/traveler.js';
 import { drawRouteCard, exportRouteCard } from './routecard.js';
@@ -225,7 +225,7 @@ export class Flow {
       rows.length?el('ul',{},rows.map(row=>el('li',{},el('b',{},row.label+' · '),row.text))):el('p',{class:'note'},I18N.lang==='zh'?'還沒點愛心也沒關係，你已經替自己選了一個學習方向。':'No hearts saved yet — you have still chosen a direction to explore.'),
       this.s.homeLabel?el('p',{class:'summary-from'},el('b',{},I18N.lang==='zh'?'我來自 · ':'From · '),this.s.homeLabelObj?t(this.s.homeLabelObj):this.s.homeLabel):null,
       lives.length?el('p',{class:'summary-life'},el('b',{},I18N.lang==='zh'?'我想在台灣得到 · ':'What I hope to gain · '),lives.map(l=>t(l.title)).join(I18N.lang==='zh'?'、':', ')):null,
-      island?el('p',{class:'summary-choice'},el('b',{},t(island.name)),program?' · '+studyPath(program,this.s.bridge).map(step=>t(step.name)).join(' → '):''):null,
+      island?el('p',{class:'summary-choice'},el('b',{},t(island.name)),program?' · '+studyPath(program,this.s.bridge,this.s.answers.goal).map(step=>t(step.name)).join(' → '):''):null,
       compact?null:el('p',{class:'summary-encouragement'},rows.length?t(JOURNEY_ENCOURAGEMENT):(I18N.lang==='zh'?'帶著好奇，讓這個選擇成為探索新生活的起點。':'Let curiosity turn this choice into the start of a new chapter.')));
   }
 
@@ -726,13 +726,22 @@ export class Flow {
     else this.arriveAfterBridge();
   }
 
+  // "IFP first" is both a study route and a wanted degree: keep the two answers from contradicting each other.
+  syncGoal(changed) {
+    const a=this.s.answers;
+    if(changed==='goal'&&a.goal==='ifp'){a.route='mandarin';this.s.routeIntent='ifp';}
+    else if(changed==='route'&&a.route==='mandarin'&&!a.goal)a.goal='ifp';
+    else if(changed==='route'&&a.route!=='mandarin'&&a.goal==='ifp')delete a.goal; // "straight into a degree" after "IFP first": ask again
+  }
+
   choosePathway(kind) {
     const blocked=routeBlockers(kind,this.s);
     if(blocked.length){this.ui.toast(blocked.map(b=>t(b.reason)).join('；'));return;}
-    this.s.routeIntent=kind;this.s.answers.route=kind==='ifp'?'mandarin':'industry';
+    this.s.routeIntent=kind;this.s.answers.route=kind==='ifp'?'mandarin':'industry';this.syncGoal('route');
+    if(kind==='intense'&&!this.s.answers.goal)this.s.answers.goal='bachelor';
     this.s.bridge=null;this.s.primary=null;this.previewBridge=null;
     const a=this.s.answers;
-    if(this.s.country&&a.edu&&a.lang&&a.bg&&a.exp&&routeEligible(kind,this.s))return this.selectBridge(kind,true);
+    if(this.s.country&&a.edu&&a.goal&&a.lang&&a.bg&&a.exp&&routeEligible(kind,this.s))return this.selectBridge(kind,true);
     this.bridgeStep();
   }
 
@@ -765,7 +774,7 @@ export class Flow {
           if (qid === 'route') return routeBlockers(routeOfAnswer(value), this.s);
           const route = routeOfAnswer(answers.route);
           const trial = qid === 'country' ? { answers, country: value } : { answers: { ...answers, [qid]: value }, country: this.s.country };
-          return routeBlockers(route, trial).filter(b => b.key === qid);
+          return [...routeBlockers(route, trial), ...goalBlockers(trial)].filter(b => b.key === qid);
         };
         const chip = (qid, value, label, on, pick) => {
           const blocked = !on && blockedBy(qid, value)[0];
@@ -777,7 +786,7 @@ export class Flow {
         const countries = [...COUNTRIES, ...typedHome.filter(c => c.code !== 'XX'), { code: 'XX', name: typedHome[0]?.code === 'XX' ? typedHome[0].name : { zh: '其他地區', en: 'Another place' } }];
         const countryPick = el('div', { class: 'qblock' }, el('p', { class: 'qt' }, t(UI.whereFrom)), el('div', { class: 'chips' }, countries.map(c => chip('country', c.code, c.name, this.s.country === c.code, () => { this.s.country = c.code; if (c.lat != null) this.s.home = { lat: c.lat, lon: c.lon }; this.s.homeLabel = t(c.name); this.s.homeLabelObj = c.name; }))), why('country', countries.filter(c => c.code !== this.s.country).map(c => c.code)));
         const questions=QUESTIONS;
-        const blocks = questions.map(q => el('div', { class: 'qblock', 'data-question':q.id }, el('p', { class: 'qt' }, t(q.title)), el('div', { class: 'chips' }, q.options.map(o => chip(q.id, o.id, o.label, answers[q.id] === o.id, () => { answers[q.id] = o.id; if (q.id === 'route') this.s.routeIntent = routeOfAnswer(o.id); }))), why(q.id, q.options.filter(o => answers[q.id] !== o.id).map(o => o.id)), q.id === 'route' && answers.route === 'industry' ? el('p', { class: 'note route-note' }, I18N.lang === 'zh' ? 'INTENSE 兩個專班的授課語言不同：設備工程用英語（CEFR B1 以上），機械與自動化用中文（TOCFL A2 以上）。下面語言題選哪一種，就會點亮對應的專班。' : 'The two INTENSE programs use different languages: Equipment Engineering is taught in English (CEFR B1+), Mechanical & Automation in Chinese (TOCFL A2+). Your language answer below decides which one lights up.') : null, q.id === 'route' ? el('div', { class: 'route-learn' }, el('span', {}, I18N.lang === 'zh' ? '想先了解：' : 'Learn more: '), el('button', { type: 'button', onclick: () => this.pathwayStep('ifp') }, 'IFP'), el('button', { type: 'button', onclick: () => this.pathwayStep('intense') }, 'INTENSE')) : null));
+        const blocks = questions.map(q => el('div', { class: 'qblock', 'data-question':q.id }, el('p', { class: 'qt' }, t(q.title)), el('div', { class: 'chips' }, q.options.map(o => chip(q.id, o.id, o.label, answers[q.id] === o.id, () => { answers[q.id] = o.id; if (q.id === 'route') this.s.routeIntent = routeOfAnswer(o.id); this.syncGoal(q.id); }))), why(q.id, q.options.filter(o => answers[q.id] !== o.id).map(o => o.id)), q.id === 'route' && answers.route === 'industry' ? el('p', { class: 'note route-note' }, I18N.lang === 'zh' ? 'INTENSE 兩個專班的授課語言不同：設備工程用英語（CEFR B1 以上），機械與自動化用中文（TOCFL A2 以上）。下面語言題選哪一種，就會點亮對應的專班。' : 'The two INTENSE programs use different languages: Equipment Engineering is taught in English (CEFR B1+), Mechanical & Automation in Chinese (TOCFL A2+). Your language answer below decides which one lights up.') : null, q.id === 'route' ? el('div', { class: 'route-learn' }, el('span', {}, I18N.lang === 'zh' ? '想先了解：' : 'Learn more: '), el('button', { type: 'button', onclick: () => this.pathwayStep('ifp') }, 'IFP'), el('button', { type: 'button', onclick: () => this.pathwayStep('intense') }, 'INTENSE')) : null));
         const requested=this.s.routeIntent||(answers.route==='industry'?'intense':answers.route==='mandarin'?'ifp':null);
         const complete=questions.every(q=>answers[q.id])&&this.s.country;
         const allowed=!complete||!requested||isMainland(this.s.country)||routeEligible(requested,this.s);
@@ -804,6 +813,9 @@ export class Flow {
         const blocked = routeBlockers(k, this.s)[0];
         if (blocked) return t(blocked.reason);
         if (mainland) return t(MAINLAND.body);
+        if (answers.goal && !ISLANDS.some(i => i.programs.some(p => { const s = programStatus(p, { ...this.s, bridge: k }); return s.route && s.wanted; }))) return zh
+          ? `${t(BRIDGES[k].name)}沒有你想念的「${answerLabel('goal')}」課程。` + (answers.goal === 'phd' ? '義守的博士班都以中文授課。' : k === 'oc' ? '僑生、港澳生想讀碩士或博士，請洽國際及兩岸事務處（持外國籍者也可走外國學生管道）。' : '')
+          : `The ${t(BRIDGES[k].name)} doesn’t lead to the “${answerLabel('goal')}” study you want.` + (answers.goal === 'phd' ? ' All ISU doctoral programs are taught in Chinese.' : k === 'oc' ? ' Overseas Chinese or HK/Macau students who want a master’s or PhD should contact the international office (foreign nationals can also use the international route).' : '');
         if (k !== 'oc' && answers.exp === 'ocstudy') return zh ? '曾以僑生或港澳生身分在台讀書，不能再改走外國學生管道，請走僑生橋。' : 'Having studied here as an Overseas Chinese or HK/Macau student, you can’t switch to international routes; the Overseas Chinese Bridge is yours.';
         if (k !== 'oc' && answers.bg === 'hkmo') return zh ? `你的身分選的是「${answerLabel('bg')}」，請走僑生橋（持外國護照者請改選外國籍學生）。` : `You chose “${answerLabel('bg')}”, so the Overseas Chinese Bridge is your route (with a foreign passport, choose International student).`;
         if (k === 'oc') return zh ? `僑生橋只給華裔僑生與港澳學生；你目前的身分是「${answerLabel('bg')}」。` : `This bridge is for Overseas Chinese and Hong Kong / Macau students; you chose “${answerLabel('bg')}”.`;
@@ -1011,7 +1023,7 @@ export class Flow {
         const lit = programStatus(p, this.s).ready;
         return el('button', { class: 'program program-choice' + (preview?' preview':lit ? ' lit' : ' muted') + (selected === p.id ? ' on' : ''), type: 'button', 'data-program-id': p.id, 'aria-pressed': String(selected === p.id), onclick: () => choose(p.id) },
           el('span', { class: 'program-lamp' + (lit ? ' on' : ''), 'aria-hidden': 'true' }), el('span', { class: 'pn' }, t(p.name)), el('span', { class: 'pf' }, t(p.focus)),
-          el('span', { class: 'meta' }, el('span', { class: 'tag' }, p.lang === 'en' ? t(UI.langEn) : p.id === 'aj' ? (I18N.lang === 'zh' ? '中文／日文' : 'Chinese / Japanese') : t(UI.langZh)), el('span', { class: 'tag' }, t(levelLabel(p))), el('span', { class: 'tag' + (lit ? ' gold' : '') }, preview?(I18N.lang==='zh'?'先了解科系':'Preview program'):lit ? (I18N.lang === 'zh' ? '初步相符' : 'Initial match') : (I18N.lang === 'zh' ? '可探索 · 另有條件' : 'Explore · Conditions apply'))));
+          el('span', { class: 'meta' }, el('span', { class: 'tag' }, p.lang === 'en' ? t(UI.langEn) : p.id === 'aj' ? (I18N.lang === 'zh' ? '中文／日文' : 'Chinese / Japanese') : t(UI.langZh)), el('span', { class: 'tag' }, t(levelLabel(p, this.s.answers.goal))), el('span', { class: 'tag' + (lit ? ' gold' : '') }, preview?(I18N.lang==='zh'?'先了解科系':'Preview program'):lit ? (I18N.lang === 'zh' ? '初步相符' : 'Initial match') : (I18N.lang === 'zh' ? '可探索 · 另有條件' : 'Explore · Conditions apply'))));
       }));
       const special=visible.filter(p=>p.level==='intense');
       if(special.length) {
@@ -1026,21 +1038,23 @@ export class Flow {
         foot = [this.backButton(),el('span',{class:'spacer'}),...(preview?[button(I18N.lang==='zh'?'認識起點，找入學橋':'Find my admission bridge',chooseBridge,{iconName:'arrow'})]:[])].filter(Boolean);
       } else {
         const profile = PROGRAM_PROFILES[sel.id];
-        const tabs = [['intro', I18N.lang === 'zh' ? '認識科系' : 'About'], ['day', t(UI.stationDay)], ['years', t(yearsLabel(sel))], ['future', t(UI.stationFuture)]];
+        const tabs = [['intro', I18N.lang === 'zh' ? '認識科系' : 'About'], ['day', t(UI.stationDay)], ['years', t(yearsLabel(sel, this.s.answers.goal))], ['future', t(UI.stationFuture)]];
         const selectTab = value => { tab = value; if (preview) {this.render();return;} if (value === 'years') { tr.setStage('graduate'); tr.cheer(1); } else if (value === 'future') tr.setStage('pro', id); else tr.setStage('student'); this.render(); };
         let content;
-        if (tab === 'intro') content = [el('p', { class: 'lead' }, t(profile.intro)), el('h3', {}, I18N.lang === 'zh' ? '這樣的你，可能會喜歡' : 'You might enjoy this if…'), el('p', {}, t(profile.fit)), el('h3', {}, I18N.lang === 'zh' ? '你會探索的能力' : 'Skills to explore'), el('ul', { class: 'skill-list' }, profile.skills.map(s => el('li', {}, t(s))))];
+        const gradNote = levelOf(sel, this.s.answers.goal) !== (sel.level || 'bachelor') ? el('p', { class: 'note' }, I18N.lang === 'zh' ? '以下介紹以整個系所為主；碩士班、博士班的研究領域與指導教授，請看系所網站。' : 'This introduces the department as a whole; see its website for graduate research areas and advisors.') : null;
+        if (tab === 'intro') content = [gradNote, el('p', { class: 'lead' }, t(profile.intro)), el('h3', {}, I18N.lang === 'zh' ? '這樣的你，可能會喜歡' : 'You might enjoy this if…'), el('p', {}, t(profile.fit)), el('h3', {}, I18N.lang === 'zh' ? '你會探索的能力' : 'Skills to explore'), el('ul', { class: 'skill-list' }, profile.skills.map(s => el('li', {}, t(s))))];
         if (tab === 'day') content = [el('p', { class: 'note' }, I18N.lang === 'zh' ? '想像你在這個科系的一天' : 'Imagine a day in this program'), el('div', { class: 'day' }, profile.day.map((m, i) => el('div', { class: 'moment', style: { animationDelay: i * 0.1 + 's' } }, el('span', { class: 'clock' }, ['09:00','14:00','19:00'][i]), el('span', {}, t(m)))))];
-        if (tab === 'years') content = [el('p', { class: 'note' }, (this.s.bridge?t(BRIDGES[this.s.bridge].tag):(I18N.lang==='zh'?'科系學習情境預覽':'Program study preview')) + ' · ' + t(levelLabel(sel))), el('ul', { class: 'timeline' }, programJourney(sel, this.s.bridge).map((m, i) => el('li', { style: { animationDelay: i * 0.08 + 's' } }, el('b', {}, t(m.title)), el('div', {}, t(m.body)))))];
+        if (tab === 'years') content = [el('p', { class: 'note' }, (this.s.bridge?t(BRIDGES[this.s.bridge].tag):(I18N.lang==='zh'?'科系學習情境預覽':'Program study preview')) + ' · ' + t(levelLabel(sel, this.s.answers.goal))), el('ul', { class: 'timeline' }, programJourney(sel, this.s.bridge, this.s.answers.goal).map((m, i) => el('li', { style: { animationDelay: i * 0.08 + 's' } }, el('b', {}, t(m.title)), el('div', {}, t(m.body)))))];
         if (tab === 'future') content = [el('p', { class: 'lead' }, t(profile.future)), ...chosenLives(this.s.life).map(l => el('p', {}, t(l.scene))), el('p', { class: 'note' }, I18N.lang === 'zh' ? '這是可能的發展方向，可以隨學習與作品慢慢調整。' : 'These are possible directions that can change as you learn and build your work.')];
         const conditions = [];
         if (!status.route) conditions.push(I18N.lang === 'zh' ? '需改走：' + sel.bridges.map(k => t(BRIDGES[k].tag)).join('、') : 'Requires: ' + sel.bridges.map(k => t(BRIDGES[k].tag)).join(', '));
         if (!status.language) conditions.push(I18N.lang === 'zh' ? '此系需要' + (sel.lang === 'en' ? '英文' : '中文') + '授課能力' : 'Teaching language: ' + (sel.lang === 'en' ? 'English' : 'Chinese'));
+        if (!status.wanted) conditions.push(I18N.lang === 'zh' ? `你想念的是「${t(QUESTIONS.find(q => q.id === 'goal').options.find(o => o.id === this.s.answers.goal).label)}」，這裡沒有開放外國學生申請這個學位` : 'This program doesn’t admit international students to the degree you want');
         if (!status.education) conditions.push(I18N.lang === 'zh' ? '需具備對應的前一階段學歷，詳見簡章' : 'Previous-degree requirements apply; see the prospectus');
         if (!status.eligible) conditions.push(I18N.lang === 'zh' ? '目前背景未符合所選管道的初篩' : 'Your background does not match the selected route screen');
         body = [
           this.islandCrumbs(d, preview, sel),
-          el('div', { class: 'program-heading', style: { '--island-color': d.color } }, el('div', { class: 'meta' }, el('span', { class: 'tag' }, t(levelLabel(sel))), el('span', { class: 'tag' }, sel.lang === 'en' ? t(UI.langEn) : sel.id === 'aj' ? (I18N.lang === 'zh' ? '中文／日文' : 'Chinese / Japanese') : t(UI.langZh)), el('span', { class: 'tag' }, sel.campus === 'medical' ? t(UI.medicalCampus) : t(UI.mainCampus)))),
+          el('div', { class: 'program-heading', style: { '--island-color': d.color } }, el('div', { class: 'meta' }, el('span', { class: 'tag' }, t(levelLabel(sel, this.s.answers.goal))), el('span', { class: 'tag' }, sel.lang === 'en' ? t(UI.langEn) : sel.id === 'aj' ? (I18N.lang === 'zh' ? '中文／日文' : 'Chinese / Japanese') : t(UI.langZh)), el('span', { class: 'tag' }, sel.campus === 'medical' ? t(UI.medicalCampus) : t(UI.mainCampus)))),
           link(t(UI.visitSite), sel.url, { kind: 'indigo small' }),
           el('div', { class: 'program-tabs', role: 'tablist', 'aria-label': I18N.lang === 'zh' ? '科系內容' : 'Program details' }, tabs.map(([value,label]) => el('button', { id: 'tab-' + value, type: 'button', class: tab === value ? 'on' : '', role: 'tab', 'aria-selected': String(tab === value), 'aria-controls': 'program-detail', tabindex: tab === value ? '0' : '-1', onclick: () => selectTab(value), onkeydown: e => { if (!['ArrowRight','ArrowLeft','Home','End'].includes(e.key)) return; e.preventDefault(); const current = tabs.findIndex(x => x[0] === tab); const next = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : (current + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length; selectTab(tabs[next][0]); this.ui.panelEl.querySelector('#tab-' + tabs[next][0]).focus(); } }, label))),
           el('div', { id: 'program-detail', class: 'program-detail', role: 'tabpanel', 'aria-labelledby': 'tab-' + tab }, ...content),
@@ -1116,7 +1130,7 @@ export class Flow {
     const isl2 = ISLANDS.find((i) => i.id === this.s.flag.islandId);
     const prog = isl2.programs.find((p) => p.id === this.s.flag.programId);
     const mail = () => {
-      const lines = [t(UI.askBody), '', `${t(UI.routeFrom)}: ${this.s.homeLabel || '-'}`, `${t(UI.future)}: ${t(PROGRAM_PROFILES[prog.id].future)}`, `${t(UI.program)}: ${studyPath(prog, this.s.bridge).map(step => t(step.name)).join(' → ')}`, `${t(UI.yourBridge)}: ${t(b.name)} (${t(b.tag)})`];
+      const lines = [t(UI.askBody), '', `${t(UI.routeFrom)}: ${this.s.homeLabel || '-'}`, `${t(UI.future)}: ${t(PROGRAM_PROFILES[prog.id].future)}`, `${t(UI.program)}: ${studyPath(prog, this.s.bridge, this.s.answers.goal).map(step => t(step.name)).join(' → ')}`, `${t(UI.yourBridge)}: ${t(b.name)} (${t(b.tag)})`];
       return `mailto:${META.contactEmail}?subject=${encodeURIComponent(t(UI.askSubject))}&body=${encodeURIComponent(lines.join('\n'))}`;
     };
     this.view(() => {

@@ -180,6 +180,7 @@ with sync_playwright() as p:
     tap(q('edu', 'hs'), after=3.2)          # greyed out: INTENSE needs a D3 or higher
     tap(q('route', 'degree'), after=1)
     tap(q('edu', 'hs'), after=1)
+    tap(q('goal', 'bachelor'), after=1)
     tap(q('lang', 'en'), after=1)
     tap(q('bg', 'none'), after=1)
     tap(q('exp', 'none'), after=1.5)

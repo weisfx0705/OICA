@@ -13,7 +13,7 @@ with sync_playwright() as p:
     pg.wait_for_selector('.panel.in[data-key=bridge-questions]');panel=pg.locator('.panel.in')
     assert panel.locator('[data-question=bg] [data-answer]').count()==3 and panel.locator('[data-question=exp] [data-answer]').count()==3
     assert panel.locator('[data-question=bg] [data-answer=tw]').count()==0
-    for q,v in [('route','mandarin'),('edu','hs'),('lang','none'),('bg','none'),('exp','none')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
+    for q,v in [('route','mandarin'),('edu','hs'),('goal','ifp'),('lang','none'),('bg','none'),('exp','none')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
     btn=panel.locator('.panel-foot .btn').last;assert not btn.is_disabled()
     btn.click();pg.wait_for_selector('.panel.in[data-key^=bridge-result]');pg.wait_for_timeout(1500)
     warn=pg.locator('.panel.in .mainland-warn')
@@ -36,7 +36,7 @@ with sync_playwright() as p:
     # someone who has worked in Taiwan keeps the international bridges but not IFP
     pg.evaluate('()=>__app.flow.bridgeStep()');pg.wait_for_selector('.panel.in[data-key=bridge-questions]');panel=pg.locator('.panel.in')
     pg.wait_for_timeout(2500);panel=pg.locator(".panel.in[data-key=bridge-questions]")
-    for q,v in [('route','degree'),('lang','en'),('exp','tw')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
+    for q,v in [('route','degree'),('goal','bachelor'),('lang','en'),('exp','tw')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
     pg.wait_for_timeout(600);pg.locator('.panel.in[data-key=bridge-questions] .panel-foot .btn').last.evaluate('n=>n.click()');pg.wait_for_selector('.panel.in[data-key^=bridge-result]');pg.wait_for_timeout(800)
     s=pg.evaluate('[__app.flow.s.primary,__app.flow.s.alts]');assert s[0]=='en' and 'ifp' not in s[1],s
     assert not errs,errs

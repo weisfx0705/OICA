@@ -67,7 +67,7 @@ export async function drawRouteCard(canvas, state) {
   wrap(ctx, name, W - 144).slice(0, 2).forEach((l, i) => ctx.fillText(l, 72, 300 + i * 92));
 
   // flight route: home → Kaohsiung → (IFP Mandarin island or INTENSE career island) → degree island
-  const path = studyPath(program, state.bridge);
+  const path = studyPath(program, state.bridge, state.answers?.goal);
   const via = path.length > 1 ? path[0].kind : null, viaIfp = !!via;
   const hubLabel = via === 'ifp' ? [zh ? '華語島 IFP' : 'IFP Mandarin', zh ? '先修 1 年' : 'YEAR 0'] : [zh ? 'INTENSE 就業島' : 'INTENSE Career', zh ? '企業面試' : 'INTERVIEW'];
   const ry = 470;
@@ -150,7 +150,7 @@ export async function drawRouteCard(canvas, state) {
   y = 1480;
   ctx.fillStyle = '#23215F'; ctx.font = FB(700, 22);
   ctx.fillText(t(UI.timeline).toUpperCase(), 72, y);
-  const steps = programJourney(program, state.bridge).map(s => t(s.title));
+  const steps = programJourney(program, state.bridge, state.answers?.goal).map(s => t(s.title));
   const sx0 = 96, sx1 = W - 96;
   const sy = y + 60;
   ctx.strokeStyle = '#36348E'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(sx0, sy); ctx.lineTo(sx1, sy); ctx.stroke();

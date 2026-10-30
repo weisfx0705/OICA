@@ -40,7 +40,7 @@ with sync_playwright() as p:
  for text in ['日間學士班','碩士','中文','英文','IFP','INTENSE']:assert text in page.locator('.panel.in').inner_text()
  def answer(edu,lang,route):
   panel=page.locator('.panel.in');panel.locator('[data-country=VN]').click()
-  for question,value in [('route',route),('edu',edu),('lang',lang),('bg','none'),('exp','none')]:panel.locator(f'[data-question={question}] [data-answer={value}]').click()
+  for question,value in [('route',route),('edu',edu),('goal','ifp' if route=='mandarin' else 'bachelor'),('lang',lang),('bg','none'),('exp','none')]:panel.locator(f'[data-question={question}] [data-answer={value}]').click()
   panel.locator('.panel-foot .btn').last.click()
  answer('hs','en','degree')
  expect(page.locator('.panel.in .bn')).to_have_text('英文橋');assert page.evaluate('__app.flow.s.bridge===null')

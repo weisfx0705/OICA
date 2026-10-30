@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { ISLANDS, BRIDGES } from '../js/content.js';
 import { PROGRAM_PROFILES } from '../js/program-profiles.js';
-import { resolveBridge, programStatus, programJourney, routeEligible, isMainland, studyPath, routeBlockers } from '../js/logic.js';
+import { resolveBridge, programStatus, programJourney, routeEligible, isMainland, studyPath, routeBlockers, goalBlockers, degreesOf, levelLabel } from '../js/logic.js';
 const programs = ISLANDS.flatMap(i => i.programs);
 assert.equal(programs.length, 38);
 assert.equal(new Set(programs.map(p => p.id)).size, 38);
@@ -61,6 +61,28 @@ assert.equal(routeEligible('en',state('en','hs','en','ocstudy')),false);
 assert.equal(resolveBridge({edu:'hs',lang:'en',bg:'none',exp:'ocstudy',route:'degree'},'VN').primary,'oc');
 assert.equal(resolveBridge({edu:'hs',lang:'zh',bg:'hkmo',exp:'none',route:'degree'},'HK').primary,'oc');
 assert.ok(resolveBridge({edu:'hs',lang:'en',bg:'oc',exp:'none',route:'degree'},'MY').alts.includes('en'));
+// the wanted degree: 2026–27 prospectus lists 5 doctoral programs (all Chinese-taught) and 12 master's programs
+assert.deepEqual(programs.filter(p=>degreesOf(p).includes('phd')).map(p=>p.id).sort(),['csie','ee','ene','management-phd','mse']);
+assert.equal(programs.filter(p=>degreesOf(p).includes('master')).length,12);
+assert.ok(programs.filter(p=>degreesOf(p).includes('phd')).every(p=>p.lang==='zh'));
+const want=(goal,edu,lang,bridge,bg='none',country='VN')=>({bridge,country,answers:{route:'degree',edu,lang,bg,exp:'none',goal}});
+const lit=(st)=>programs.filter(p=>programStatus(p,st).ready).map(p=>p.id).sort();
+assert.deepEqual(lit(want('phd','master','zh','zh')),['csie','ee','ene','management-phd','mse']);
+assert.deepEqual(lit(want('master','bachelor','en','en')),['imba']);
+assert.deepEqual(lit(want('postbac','bachelor','zh','zh')),['scm']);
+assert.ok(!lit(want('bachelor','master','zh','zh')).includes('ccd')&&lit(want('bachelor','master','zh','zh')).includes('ee'));
+assert.equal(levelLabel(byId('ee'),'phd').zh,'博士班');assert.equal(levelLabel(byId('ee'),'bachelor').zh,'學士班');assert.equal(levelLabel(byId('che'),'master').zh,'學士班');
+assert.equal(programJourney(byId('ee'),'zh','master').length,3);
+// an Overseas Chinese student who wants a master's is sent to the Chinese bridge, not their own
+assert.equal(resolveBridge({route:'degree',edu:'bachelor',lang:'zh',bg:'oc',exp:'none',goal:'master'},'MY').primary,'zh');
+assert.equal(resolveBridge({route:'degree',edu:'master',lang:'en',bg:'none',exp:'none',goal:'phd'},'VN').goalGap,true);
+// the wanted degree and the other answers can't contradict each other
+assert.deepEqual(goalBlockers({answers:{edu:'hs',goal:'phd'}}).map(b=>b.key),['goal','edu']);
+assert.deepEqual(goalBlockers({answers:{edu:'master',goal:'phd'}}),[]);
+assert.deepEqual(routeBlockers('ifp',{answers:{goal:'master'}}).map(b=>b.key),['goal']);
+assert.deepEqual(routeBlockers('intense',{answers:{goal:'phd'}}).map(b=>b.key),['goal']);
+assert.deepEqual(goalBlockers({answers:{goal:'ifp',exp:'tw'}}).map(b=>b.key),['goal']);
+assert.equal(resolveBridge({route:'mandarin',edu:'hs',lang:'none',bg:'none',exp:'none',goal:'ifp'},'VN').primary,'ifp');
 // mainland China: no bridge fits, the page points to the International & Cross-Strait Affairs office
 assert.ok(isMainland('CN')&&!isMainland('HK'));
 for(const k of ['zh','en','ifp','intense','oc'])assert.equal(routeEligible(k,{answers:{edu:'bachelor',lang:'en',bg:'none',exp:'none'},country:'CN'}),false);

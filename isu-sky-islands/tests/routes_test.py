@@ -29,7 +29,7 @@ with sync_playwright() as p:
   pg.locator('.panel.in .panel-foot button').last.click();pg.wait_for_selector('.panel.in[data-key=bridge-questions]')
   panel=pg.locator('.panel.in')
   panel.locator(f'[data-country={country}]').evaluate('n=>n.click()')
-  for q,v in [('route',route),('edu',edu),('lang',lang),('bg',bg),('exp','none')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
+  for q,v in [('route',route),('edu',edu),('goal','ifp' if route=='mandarin' else 'master' if prog=='imba' else 'bachelor'),('lang',lang),('bg',bg),('exp','none')]: panel.locator(f'[data-question={q}] [data-answer={v}]').evaluate('n=>n.click()')
   pressed=pg.evaluate('()=>[...document.querySelectorAll(".panel.in [aria-pressed=true]")].map(n=>n.dataset.answer||n.dataset.country)')
   btn=panel.locator('.panel-foot .btn').last
   assert not btn.is_disabled(),(case,pressed)
