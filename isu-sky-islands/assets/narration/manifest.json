@@ -83,12 +83,12 @@
       "zh": {
         "file": "assets/narration/life-zh.mp3",
         "ready": true,
-        "transcript": "來台灣讀書，你最想得到什麼？是在台灣工作的機會、回家鄉創業的本事、成為兩地橋梁的能力，還是一段珍貴的相遇？先選一個。接著，我們會一起看看你想學什麼，以及哪些科系能成為這段旅程的起點。"
+        "transcript": "來台灣讀書，你最想得到什麼？是在台灣工作的機會、回家鄉創業的本事、成為兩地橋梁的能力，還是一段珍貴的相遇？可以選不只一個。接著，我們會一起看看你想學什麼，以及哪些科系能成為這段旅程的起點。"
       },
       "en": {
         "file": "assets/narration/life-en.mp3",
         "ready": true,
-        "transcript": "What do you most hope to gain from studying in Taiwan? A chance to build a career here, the skills to start something back home, the ability to bridge two places, or meaningful friendships? Choose one. Next, we’ll explore what you want to learn and the programs that could begin that journey."
+        "transcript": "What do you most hope to gain from studying in Taiwan? A chance to build a career here, the skills to start something back home, the ability to bridge two places, or meaningful friendships? Choose as many as you like. Next, we’ll explore what you want to learn and the programs that could begin that journey."
       }
     },
     "bridges": {

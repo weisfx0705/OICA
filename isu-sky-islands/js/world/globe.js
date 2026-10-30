@@ -135,8 +135,10 @@ export class Globe {
     this.group.add(g);
   }
 
-  setHome(lat, lon) {
+  // sea: an unrecognised hometown — a soft halo of light on open water instead of a pin
+  setHome(lat, lon, { sea = false } = {}) {
     if (this.homeMarker) this.group.remove(this.homeMarker);
+    this.homeHalo = null;
     this.home = { lat, lon };
     const p = latLonToVec3(lat, lon, R * 1.01);
     const g = new THREE.Group();
@@ -146,6 +148,14 @@ export class Globe {
     const core = new THREE.Mesh(new THREE.CircleGeometry(0.1, 20), new THREE.MeshBasicMaterial({ color: '#FFFFFF' }));
     core.position.z = 0.01;
     g.add(ring, core);
+    if (sea) {
+      const glow = (color, size, opacity) => { const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTexture(), color, transparent: true, opacity, blending: THREE.AdditiveBlending, depthWrite: false })); s.scale.setScalar(size); return s; };
+      const halo = [glow('#8FE3FF', 2.4, 0.55), glow('#FFE3A3', 1.1, 0.9)];
+      const ripple = new THREE.Mesh(new THREE.RingGeometry(0.3, 0.34, 48), new THREE.MeshBasicMaterial({ color: '#BDF0FF', transparent: true, side: THREE.DoubleSide }));
+      g.add(...halo, ripple);
+      core.material.color.set('#FFF4D6');
+      this.homeHalo = { halo, ripple };
+    }
     this.homeMarker = g;
     this.homeRing = ring;
     this.group.add(g);
@@ -286,6 +296,11 @@ export class Globe {
     this.twRing.scale.setScalar(s);
     this.twRing.material.opacity = 1.2 - s * 0.6;
     if (this.homeRing) { const h = 1 + 0.35 * ((this.time * 1.2) % 1); this.homeRing.scale.setScalar(h); this.homeRing.material.opacity = 1.4 - h; }
+    if (this.homeHalo) {
+      const k = (this.time * 0.45) % 1, { halo, ripple } = this.homeHalo;
+      ripple.scale.setScalar(1 + k * 3.2); ripple.material.opacity = 0.75 * (1 - k);
+      halo[0].material.opacity = 0.45 + 0.15 * Math.sin(this.time * 1.6);
+    }
   }
 
   // world-space normal of a local point, for label culling

@@ -1,4 +1,4 @@
-import { INTENSE_COUNTRIES, ISLANDS, BRIDGES } from './content.js';
+import { INTENSE_COUNTRIES, ISLANDS, BRIDGES, LIFE_CARDS } from './content.js';
 import { PROGRAM_PROFILES } from './program-profiles.js';
 const bi = (zh, en) => ({ zh, en });
 
@@ -20,6 +20,16 @@ const blockReasons = {
   'intense:country': bi('INTENSE 目前招收菲律賓、印度、印尼、越南、馬來西亞、泰國', 'INTENSE currently recruits from the Philippines, India, Indonesia, Vietnam, Malaysia and Thailand'),
   'ifp:bg': bi('IFP 限未曾在台就學或工作的外國學生', 'IFP is for international students who have not studied or worked in Taiwan'),
 };
+// "What do you hope to gain in Taiwan?" is multiple choice; older saves hold a single id.
+export const chosenLives = (life) => (Array.isArray(life) ? life : life ? [life] : []).map((id) => LIFE_CARDS.find((c) => c.id === id)).filter(Boolean);
+export function toggleLife(life, id) {
+  const now = new Set(Array.isArray(life) ? life : life ? [life] : []);
+  if (now.has(id)) now.delete(id);
+  else if (id === 'unsure') { now.clear(); now.add(id); } // "not sure yet" stands alone
+  else { now.delete('unsure'); now.add(id); }
+  return [...now];
+}
+
 export function routeBlockers(bridge, { answers = {}, country } = {}) {
   const out = [];
   if (bridge === 'intense') {

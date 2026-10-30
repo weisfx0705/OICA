@@ -1,6 +1,6 @@
 import { t, I18N } from './util.js';
 import { BRIDGES, ISLANDS, LIFE_CARDS, UI, META } from './content.js';
-import { programJourney, studyPath } from './logic.js';
+import { programJourney, studyPath, chosenLives } from './logic.js';
 import { likedSummary } from './preferences.js';
 import { PROGRAM_PROFILES } from './program-profiles.js';
 
@@ -37,7 +37,7 @@ export async function drawRouteCard(canvas, state) {
   const island = ISLANDS.find((i) => i.id === state.flag.islandId);
   const program = island.programs.find((p) => p.id === state.flag.programId);
   const bridge = BRIDGES[state.bridge];
-  const life = LIFE_CARDS.find((l) => l.id === state.life);
+  const lives = chosenLives(state.life).map((l) => t(l.title)).join(zh ? '、' : ', ') || (zh ? '還在探索' : 'Still exploring');
   const career = island;
 
   // background
@@ -138,15 +138,16 @@ export async function drawRouteCard(canvas, state) {
 
   // A concise, deterministic record of the player's own hearts and choices.
   y=1196;
-  ctx.fillStyle='rgba(255,255,255,0.92)';rr(ctx,60,y,W-120,230,32);ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.92)';rr(ctx,60,y,W-120,252,32);ctx.fill();
   ctx.fillStyle='#A64862';ctx.font=FB(700,22);const savedLikes=likedSummary(state.likes,I18N.lang);ctx.fillText(savedLikes.length?(zh?'我的生活與喜歡':'MY LIFE & WHAT I LOVE'):(zh?'我的學習選擇':'MY STUDY CHOICE'),94,y+40);
-  let rows=[t(UI.life)+' · '+t(life.title),...savedLikes.map(r=>r.label+' · '+r.text)];
-  if(!savedLikes.length)rows=[t(UI.life)+' · '+t(life.title),t(island.name)+' · '+path.map(step=>t(step.name)).join(' → '),zh?'帶著好奇，向新的學習生活出發。':'Begin a new chapter with curiosity.'];
+  const from=(zh?'我來自 · ':'From · ')+state.homeLabel;
+  let rows=[from,t(UI.life)+' · '+lives,...savedLikes.map(r=>r.label+' · '+r.text)];
+  if(!savedLikes.length)rows=[from,t(UI.life)+' · '+lives,t(island.name)+' · '+path.map(step=>t(step.name)).join(' → '),zh?'帶著好奇，向新的學習生活出發。':'Begin a new chapter with curiosity.'];
   ctx.fillStyle='#23215F';ctx.font=FB(500,26);
-  rows.slice(0,4).forEach((row,i)=>{let line=row;while(ctx.measureText(line).width>W-190&&line.length>3)line=line.slice(0,-2);if(line!==row)line+='…';ctx.fillText(line,94,y+80+i*39);});
+  rows.slice(0,5).forEach((row,i)=>{let line=row;while(ctx.measureText(line).width>W-190&&line.length>3)line=line.slice(0,-2);if(line!==row)line+='…';ctx.fillText(line,94,y+80+i*39);});
 
   // timeline
-  y = 1470;
+  y = 1480;
   ctx.fillStyle = '#23215F'; ctx.font = FB(700, 22);
   ctx.fillText(t(UI.timeline).toUpperCase(), 72, y);
   const steps = programJourney(program, state.bridge).map(s => t(s.title));

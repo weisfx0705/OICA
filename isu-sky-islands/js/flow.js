@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { I18N, t, el, storage, wait, haversineKm } from './util.js';
+import { I18N, t, el, storage, wait } from './util.js';
 import { UI, COUNTRIES, TAIWAN, KAOHSIUNG_STAGE, CAMPUS, LIFE_CARDS, QUESTIONS, ISLANDS, BRIDGES, DORM, MANDARIN_TOWER, META } from './content.js';
-import { resolveBridge, programReachable, programStatus, routeEligible, routeBlockers, routeOfAnswer, programJourney, yearsLabel, levelLabel, matchesConnectionFilter, studyPath } from './logic.js';
+import { resolveBridge, programReachable, programStatus, routeEligible, routeBlockers, routeOfAnswer, chosenLives, toggleLife, programJourney, yearsLabel, levelLabel, matchesConnectionFilter, studyPath } from './logic.js';
 import { photo, button, link, icon, gallery } from './ui.js';
 import { SKINS, OUTFITS } from './world/traveler.js';
 import { drawRouteCard, exportRouteCard } from './routecard.js';
@@ -11,6 +11,7 @@ import { ADMISSION_INTRO, ISLAND_INTROS } from './journey-content.js';
 import { PROGRAM_PROFILES } from './program-profiles.js';
 import { LIKE_TOPICS, likedSummary, JOURNEY_ENCOURAGEMENT } from './preferences.js';
 import { Narrator } from './narrator.js';
+import { findPlace, SEA_START } from './places.js';
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z);
 
@@ -216,12 +217,13 @@ export class Flow {
 
   journeySummary(island=null,program=null,compact=false) {
     const rows=likedSummary(this.s.likes,I18N.lang);
-    const life=LIFE_CARDS.find(c=>c.id===this.s.life);
+    const lives=chosenLives(this.s.life);
     if(compact&&!rows.length)return null;
     return el('section',{class:'journey-summary'+(compact?' compact':''),'aria-label':I18N.lang==='zh'?'你的旅程小結':'Your journey summary'},
       el('h3',{},rows.length?(I18N.lang==='zh'?'你帶走的喜歡':'What you love about this journey'):(I18N.lang==='zh'?'你的新起點':'Your new starting point')),
       rows.length?el('ul',{},rows.map(row=>el('li',{},el('b',{},row.label+' · '),row.text))):el('p',{class:'note'},I18N.lang==='zh'?'還沒點愛心也沒關係，你已經替自己選了一個學習方向。':'No hearts saved yet — you have still chosen a direction to explore.'),
-      life?el('p',{class:'summary-life'},el('b',{},I18N.lang==='zh'?'我想在台灣得到 · ':'What I hope to gain · '),t(life.title)):null,
+      this.s.homeLabel?el('p',{class:'summary-from'},el('b',{},I18N.lang==='zh'?'我來自 · ':'From · '),this.s.homeLabelObj?t(this.s.homeLabelObj):this.s.homeLabel):null,
+      lives.length?el('p',{class:'summary-life'},el('b',{},I18N.lang==='zh'?'我想在台灣得到 · ':'What I hope to gain · '),lives.map(l=>t(l.title)).join(I18N.lang==='zh'?'、':', ')):null,
       island?el('p',{class:'summary-choice'},el('b',{},t(island.name)),program?' · '+studyPath(program,this.s.bridge).map(step=>t(step.name)).join(' → '):''):null,
       compact?null:el('p',{class:'summary-encouragement'},rows.length?t(JOURNEY_ENCOURAGEMENT):(I18N.lang==='zh'?'帶著好奇，讓這個選擇成為探索新生活的起點。':'Let curiosity turn this choice into the start of a new chapter.')));
   }
@@ -279,12 +281,15 @@ export class Flow {
     this.narrator.setScene('globe');
     const app = this.app, g = app.globe;
     g.autoSpin = true;
-    const choose = (country, ll) => {
-      const home = country ? { lat: country.lat, lon: country.lon } : ll;
+    // country: a quick-pick chip or a typed place that was recognised; otherwise the typed text starts at sea
+    const choose = (country, typed = '') => {
+      const home = country ? { lat: country.lat, lon: country.lon } : SEA_START;
       this.s.country = country?.code ?? 'XX';
       this.s.home = home;
-      this.s.homeLabelObj = country?.name ?? null;
-      g.setHome(home.lat, home.lon);
+      this.s.homeLabelObj = country?.name ?? (typed ? { zh: typed, en: typed } : null);
+      this.s.homeTyped = typed;
+      this.s.homeAtSea = !country;
+      g.setHome(home.lat, home.lon, { sea: !country });
       g.faceLatLon(home.lat - 26, home.lon, 1.2);
       const tr = this.placeTraveler(g.group, g.homePos.clone().multiplyScalar(1.005), 1.3);
       tr.group.quaternion.setFromUnitVectors(V(0, 1, 0), g.homePos.clone().normalize());
@@ -295,11 +300,13 @@ export class Flow {
       this.homeLabels();
       this.render();
     };
-    app.handlers = {
-      globe: (ll) => {
-        const near = COUNTRIES.map((c) => ({ c, d: haversineKm(c, ll) })).sort((a, b) => a.d - b.d)[0];
-        choose(near.d < 900 ? near.c : null, ll);
-      },
+    app.handlers = {}; // the globe turns, but home is chosen from the list or by typing — no pins
+    const typeHome = (input) => {
+      const text = input.value.trim();
+      if (!text) { input.focus(); return; }
+      const place = findPlace(text);
+      choose(place, text);
+      if (!place) this.ui.toast(I18N.lang === 'zh' ? '地圖上找不到這個地方，先在海上點亮一盞光，當作你的起點。' : 'We couldn’t place that on the map, so a light on the sea marks where you begin.');
     };
     this.homeLabels = () => this.labels(() => {
       app.labels.hotspot('tw', g.taiwanMarker, t(UI.tw), null, { className: 'tag-only', facing: g.normalOf(g.taiwanPos) });
@@ -308,12 +315,15 @@ export class Flow {
     this.homeLabels();
     this.view(() => {
       const chips = COUNTRIES.map((c) => el('button', { class: 'chip' + (this.s.country === c.code ? ' on' : ''), 'data-country':c.code, type: 'button', onclick: () => choose(c) }, t(c.name)));
-      chips.push(el('button', { class: 'chip' + (this.s.country === 'XX' ? ' on' : ''), type: 'button', onclick: () => this.ui.toast(t(UI.whereFromHint)) }, t(UI.otherPlace)));
+      const input = el('input', { class: 'home-input', type: 'text', name: 'hometown', autocomplete: 'country-name', maxlength: '60', placeholder: I18N.lang === 'zh' ? '例如：Surabaya、泰國、Mexico' : 'e.g. Surabaya, Thailand, Mexico', 'aria-label': I18N.lang === 'zh' ? '輸入你的國家或城市' : 'Type your country or city', value: this.s.homeTyped || null, onkeydown: (e) => { if (e.key === 'Enter') typeHome(input); } });
+      const typed = el('div', { class: 'home-type' + (this.s.homeTyped ? ' on' : '') }, el('label', {}, I18N.lang === 'zh' ? '不在清單上？輸入你的國家或城市' : 'Not listed? Type your country or city'),
+        el('div', { class: 'home-row' }, input, button(I18N.lang === 'zh' ? '確定' : 'Set', () => typeHome(input), { kind: 'quiet small' })),
+        this.s.homeTyped ? el('p', { class: 'note home-found' }, this.s.homeAtSea ? (I18N.lang === 'zh' ? '✦ 從海上的光點出發：' : '✦ Starting from a light on the sea: ') + this.s.homeTyped : (I18N.lang === 'zh' ? '✓ 找到了：' : '✓ Found: ') + t(this.s.homeLabelObj)) : null);
       this.ui.panel({
         compact: true,
         eyebrow: t(UI.chapters[0]),
         title: t(UI.whereFrom),
-        body: [el('p', { class: 'note' }, t(UI.whereFromHint)), el('div', { class: 'chips' }, chips), this.s.home ? el('div', { style: { marginTop: '16px' } }, this.lookPicker()) : null].filter(Boolean),
+        body: [el('p', { class: 'note' }, t(UI.whereFromHint)), el('div', { class: 'chips' }, chips), typed, this.s.home ? el('div', { style: { marginTop: '16px' } }, this.lookPicker()) : null].filter(Boolean),
         foot: [button(t(UI.continue), () => this.takeOff(), { iconName: 'plane', disabled: !this.s.home })],
       });
     });
@@ -321,7 +331,7 @@ export class Flow {
 
   async takeOff() {
     const app = this.app;
-    this.s.homeLabel = this.s.homeLabelObj ? t(this.s.homeLabelObj) : `${this.s.home.lat.toFixed(1)}°, ${this.s.home.lon.toFixed(1)}°`;
+    this.s.homeLabel = this.s.homeLabelObj ? t(this.s.homeLabelObj) : (I18N.lang === 'zh' ? '海上的起點' : 'A start at sea');
     this.ui.closePanel();
     this.render = null;
     app.handlers = { globeDrag: false };
@@ -570,7 +580,7 @@ export class Flow {
     const rows=ISLANDS.flatMap(i=>(!scope||i.id===scope)?i.programs.filter(p=>filter==='ready'?programStatus(p,this.s).ready:matchesConnectionFilter(p,filter)).map(p=>({islandId:i.id,programId:p.id})):[]);
     if(filter==='all'){
       this.app.arch.clearConnections();
-      if(this.s.bridge)this.app.arch.showBridge(this.s.bridge,this.bridgeFrom());else this.app.arch.clearBridges();
+      if(this.s.bridge)this.app.arch.showBridge(this.s.bridge,this.bridgeFrom(),{only:p=>programStatus(p,this.s).ready});else this.app.arch.clearBridges();
     } else this.app.arch.showProgramConnections(rows,{filter:filter==='ready'?this.s.bridge:filter});
     return rows.length;
   }
@@ -620,9 +630,9 @@ export class Flow {
     app.flyExplore(home.pos,home.look,1.8);
     this.view(()=>{
       this.narrator.setScene('learning');
-      const life=LIFE_CARDS.find(c=>c.id===this.s.life);
+      const lives=chosenLives(this.s.life);
       this.ui.panel({key:'learning-islands',tall:true,eyebrow:t(UI.chapters[1]),title:t(UI.learningPick),body:[
-        life?el('p',{class:'route-current'},t(UI.life)+' · '+t(life.title)):null,
+        lives.length?el('p',{class:'route-current'},t(UI.life)+' · '+lives.map(l=>t(l.title)).join(I18N.lang==='zh'?'、':', ')):null,
         el('p',{class:'lead'},t(UI.futureTitle)),this.connectionControls(()=>this.render()),
         el('div',{class:'options'},ISLANDS.map(isl=>el('button',{class:'option',type:'button','data-island-id':isl.id,onclick:()=>pick(isl.id)},el('span',{class:'dot',style:{background:isl.color}},t(isl.name).slice(0,1)),el('span',{},el('div',{class:'t'},t(isl.name)),el('div',{class:'s'},t(isl.industry)+(this.s.mapFilter&&this.s.mapFilter!=='all'?' · '+isl.programs.filter(p=>matchesConnectionFilter(p,this.s.mapFilter)).length+(I18N.lang==='zh'?' 個連線課程':' linked programs'):''))),el('span',{class:'chev'},'›')))),
         this.pathwayCards(),el('p',{class:'note'},I18N.lang==='zh'?'現在是島嶼預覽：先了解科系，不必先回答入學問題。':'This is an island preview. Explore the programs before answering admission questions.'),
@@ -640,9 +650,9 @@ export class Flow {
     this.view(()=>{
       this.narrator.setScene('life');
       this.ui.panel({key:'life',tall:true,eyebrow:t(UI.chapters[1]),title:t(UI.lifePick),body:[
-        el('p',{class:'lead'},I18N.lang==='zh'?'來台灣讀書，你最想帶走的是什麼？先選一個，再去找讓你好奇的學習領域。現在還不確定，也可以繼續探索。':'What would you most like to take home from studying in Taiwan? Pick one, then explore the fields that make you curious. You can keep exploring even if you are not sure yet.'),
-        el('div',{class:'options'},LIFE_CARDS.map((c,i)=>el('button',{class:'option'+(this.s.life===c.id?' on':''),type:'button','data-life-id':c.id,onclick:()=>{this.s.life=c.id;this.render();}},el('span',{class:'dot',style:{background:['#36348E','#E07A5F','#3E9E86','#F29A8E','#8A93B8'][i]}},String(i+1)),el('span',{},el('div',{class:'t'},t(c.title))),el('span',{class:'chev'},'›')))),
-      ],foot:[this.backButton(),el('span',{class:'spacer'}),button(I18N.lang==='zh'?'看看想學的領域':'Explore fields of study',()=>this.interestStep(),{iconName:'arrow',disabled:!this.s.life})].filter(Boolean)});
+        el('p',{class:'lead'},I18N.lang==='zh'?'來台灣讀書，你想帶走哪些收穫？可以複選，再去找讓你好奇的學習領域。現在還不確定，也可以繼續探索。':'What would you like to take home from studying in Taiwan? Choose as many as you like, then explore the fields that make you curious. You can keep exploring even if you are not sure yet.'),
+        el('div',{class:'options'},LIFE_CARDS.map((c,i)=>el('button',{class:'option'+(chosenLives(this.s.life).includes(c)?' on':''),type:'button','data-life-id':c.id,'aria-pressed':String(chosenLives(this.s.life).includes(c)),onclick:()=>{this.s.life=toggleLife(this.s.life,c.id);this.render();}},el('span',{class:'dot',style:{background:['#36348E','#E07A5F','#3E9E86','#F29A8E','#8A93B8'][i]}},String(i+1)),el('span',{},el('div',{class:'t'},t(c.title))),el('span',{class:'check','aria-hidden':'true'},chosenLives(this.s.life).includes(c)?'✓':'')))),
+      ],foot:[this.backButton(),el('span',{class:'spacer'}),button(I18N.lang==='zh'?'看看想學的領域':'Explore fields of study',()=>this.interestStep(),{iconName:'arrow',disabled:!chosenLives(this.s.life).length})].filter(Boolean)});
     });
   }
 
@@ -668,7 +678,10 @@ export class Flow {
     this.hideMapTools();
     this.exploreToken=(this.exploreToken||0)+1;
     this.s.bridge=kind;this.previewBridge=null;this.s.mapFilter='all';this.app.arch.clearConnections();
-    this.app.arch.showBridge(kind,this.bridgeFrom());sound.bridge();
+    // an anchor from earlier answers that no longer fits must not keep glowing
+    const flagged=this.s.flag&&ISLANDS.find(i=>i.id===this.s.flag.islandId)?.programs.find(p=>p.id===this.s.flag.programId);
+    if(this.s.flag&&!(flagged&&programStatus(flagged,this.s).ready)){this.s.flag=null;this.app.arch.clearAnchor();}
+    this.app.arch.showBridge(kind,this.bridgeFrom(),{only:p=>programStatus(p,this.s).ready});sound.bridge();
     if(direct && (kind==='ifp'||kind==='intense')) {
       const island=this.app.arch.hubFor(kind),f=this.frameIsland(island,1.7,.8);
       this.ui.closePanel();this.render=null;this.narrator.stop();
@@ -727,7 +740,8 @@ export class Flow {
             onclick: () => { if (blocked) { this.ui.toast(t(blocked.reason) + (I18N.lang === 'zh' ? '。要改選，請先調整其他答案。' : '. Change your other answers first.')); return; } pick(); this.render(); } }, t(label));
         };
         const why = (qid, values) => { const r = values.map(v => blockedBy(qid, v)[0]).find(Boolean); return r ? el('p', { class: 'chip-why' }, '✕ ' + t(r.reason)) : null; };
-        const countries = [...COUNTRIES, { code: 'XX', name: { zh: '其他地區', en: 'Another place' } }];
+        const typedHome = this.s.country && !COUNTRIES.some(c => c.code === this.s.country) && this.s.homeLabelObj ? [{ code: this.s.country, name: this.s.homeLabelObj, lat: this.s.home?.lat, lon: this.s.home?.lon }] : [];
+        const countries = [...COUNTRIES, ...typedHome.filter(c => c.code !== 'XX'), { code: 'XX', name: typedHome[0]?.code === 'XX' ? typedHome[0].name : { zh: '其他地區', en: 'Another place' } }];
         const countryPick = el('div', { class: 'qblock' }, el('p', { class: 'qt' }, t(UI.whereFrom)), el('div', { class: 'chips' }, countries.map(c => chip('country', c.code, c.name, this.s.country === c.code, () => { this.s.country = c.code; if (c.lat != null) this.s.home = { lat: c.lat, lon: c.lon }; this.s.homeLabel = t(c.name); this.s.homeLabelObj = c.name; }))), why('country', countries.filter(c => c.code !== this.s.country).map(c => c.code)));
         const questions=QUESTIONS;
         const blocks = questions.map(q => el('div', { class: 'qblock', 'data-question':q.id }, el('p', { class: 'qt' }, t(q.title)), el('div', { class: 'chips' }, q.options.map(o => chip(q.id, o.id, o.label, answers[q.id] === o.id, () => { answers[q.id] = o.id; if (q.id === 'route') this.s.routeIntent = routeOfAnswer(o.id); }))), why(q.id, q.options.filter(o => answers[q.id] !== o.id).map(o => o.id)), q.id === 'route' && answers.route === 'industry' ? el('p', { class: 'note route-note' }, I18N.lang === 'zh' ? 'INTENSE 兩個專班的授課語言不同：設備工程用英語（CEFR B1 以上），機械與自動化用中文（TOCFL A2 以上）。下面語言題選哪一種，就會點亮對應的專班。' : 'The two INTENSE programs use different languages: Equipment Engineering is taught in English (CEFR B1+), Mechanical & Automation in Chinese (TOCFL A2+). Your language answer below decides which one lights up.') : null, q.id === 'route' ? el('div', { class: 'route-learn' }, el('span', {}, I18N.lang === 'zh' ? '想先了解：' : 'Learn more: '), el('button', { type: 'button', onclick: () => this.pathwayStep('ifp') }, 'IFP'), el('button', { type: 'button', onclick: () => this.pathwayStep('intense') }, 'INTENSE')) : null));
@@ -950,7 +964,7 @@ export class Flow {
         if (tab === 'intro') content = [el('p', { class: 'lead' }, t(profile.intro)), el('h3', {}, I18N.lang === 'zh' ? '這樣的你，可能會喜歡' : 'You might enjoy this if…'), el('p', {}, t(profile.fit)), el('h3', {}, I18N.lang === 'zh' ? '你會探索的能力' : 'Skills to explore'), el('ul', { class: 'skill-list' }, profile.skills.map(s => el('li', {}, t(s))))];
         if (tab === 'day') content = [el('p', { class: 'note' }, I18N.lang === 'zh' ? '想像你在這個科系的一天' : 'Imagine a day in this program'), el('div', { class: 'day' }, profile.day.map((m, i) => el('div', { class: 'moment', style: { animationDelay: i * 0.1 + 's' } }, el('span', { class: 'clock' }, ['09:00','14:00','19:00'][i]), el('span', {}, t(m)))))];
         if (tab === 'years') content = [el('p', { class: 'note' }, (this.s.bridge?t(BRIDGES[this.s.bridge].tag):(I18N.lang==='zh'?'科系學習情境預覽':'Program study preview')) + ' · ' + t(levelLabel(sel))), el('ul', { class: 'timeline' }, programJourney(sel, this.s.bridge).map((m, i) => el('li', { style: { animationDelay: i * 0.08 + 's' } }, el('b', {}, t(m.title)), el('div', {}, t(m.body)))))];
-        if (tab === 'future') content = [el('p', { class: 'lead' }, t(profile.future)), el('p', {}, t(LIFE_CARDS.find(l => l.id === this.s.life)?.scene)), el('p', { class: 'note' }, I18N.lang === 'zh' ? '這是可能的發展方向，可以隨學習與作品慢慢調整。' : 'These are possible directions that can change as you learn and build your work.')];
+        if (tab === 'future') content = [el('p', { class: 'lead' }, t(profile.future)), ...chosenLives(this.s.life).map(l => el('p', {}, t(l.scene))), el('p', { class: 'note' }, I18N.lang === 'zh' ? '這是可能的發展方向，可以隨學習與作品慢慢調整。' : 'These are possible directions that can change as you learn and build your work.')];
         const conditions = [];
         if (!status.route) conditions.push(I18N.lang === 'zh' ? '需改走：' + sel.bridges.map(k => t(BRIDGES[k].tag)).join('、') : 'Requires: ' + sel.bridges.map(k => t(BRIDGES[k].tag)).join(', '));
         if (!status.language) conditions.push(I18N.lang === 'zh' ? '此系需要' + (sel.lang === 'en' ? '英文' : '中文') + '授課能力' : 'Teaching language: ' + (sel.lang === 'en' ? 'English' : 'Chinese'));

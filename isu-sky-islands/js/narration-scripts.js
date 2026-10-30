@@ -1,7 +1,7 @@
 // Human-edited transcripts. Audio is generated offline; the browser only plays local files.
 import { ADMISSION_INTRO, ISLAND_INTROS } from './journey-content.js';
 import { TAIWAN, KAOHSIUNG_STAGE, CAMPUS } from './content.js';
-export const NARRATION_VERSION = 'charon-20261030-v9';
+export const NARRATION_VERSION = 'charon-20261030-v10';
 const pair = (zh, en) => ({ zh, en });
 export const NARRATION = {
   intro: pair('歡迎來到空中群島。從你的家鄉出發，飛到台灣、高雄，最後抵達義守大學。每一座島，都藏著你可以探索的未來。選擇中文或英文旁白，準備好就一起起飛吧。', 'Welcome to Islands in the Sky. Fly from your home to Taiwan, explore Kaohsiung, and arrive at I-Shou University. Each island holds a future you can explore. Choose your narration language, and let’s take off together.'),
@@ -10,7 +10,7 @@ export const NARRATION = {
   kaohsiung: pair('我們來到台灣南部的高雄。紅線與橘線串連城市，綠色輕軌走過街區，再搭一趟渡輪，就能到旗津看海。從港灣、表演到山城，未來的課堂、生活和工作，也可能在這裡交會。', 'Welcome to Kaohsiung, in southern Taiwan. Red and Orange metro lines cross the city, green light rail connects its districts, and a ferry takes you to Cijin. From the harbour and performance venues to mountain communities, your future classes, everyday life and career could meet here.'),
   campus: pair('接著，來到義守大學。觀音山上的校本部，連著義大世界的購物、飯店與休閒生活。燕巢的醫學院區鄰近義大醫院。元宇宙科技藝術設計中心，讓科技與創作相遇。再認識背後的義聯集團，從鋼鐵、教育到醫療與休閒，看見一個完整的生活與產業網絡。', 'Welcome to I-Shou University. The main campus neighbours E-Da World, with shopping, hotels and leisure. The medical campus is near E-Da Hospital in Yanchao. Discover the Metaverse Technology, Art and Design Center, then explore the EUnited Group behind the university, connecting steel, education, healthcare and leisure.'),
   learning: pair('你想在這裡學習什麼？每一座島代表一種學習領域。現在可以先預覽島上的全部科系，不需要先選入學橋。看見喜歡的方向後，再用你的學歷、語言和背景，找到通往課程的路。', 'What would you like to learn here? Each island represents a field of study. Preview every program before choosing an admission bridge. Once something interests you, use your education, language and background to find a route to it.'),
-  life: pair('來台灣讀書，你最想得到什麼？是在台灣工作的機會、回家鄉創業的本事、成為兩地橋梁的能力，還是一段珍貴的相遇？先選一個。接著，我們會一起看看你想學什麼，以及哪些科系能成為這段旅程的起點。', 'What do you most hope to gain from studying in Taiwan? A chance to build a career here, the skills to start something back home, the ability to bridge two places, or meaningful friendships? Choose one. Next, we’ll explore what you want to learn and the programs that could begin that journey.'),
+  life: pair('來台灣讀書，你最想得到什麼？是在台灣工作的機會、回家鄉創業的本事、成為兩地橋梁的能力，還是一段珍貴的相遇？可以選不只一個。接著，我們會一起看看你想學什麼，以及哪些科系能成為這段旅程的起點。', 'What do you most hope to gain from studying in Taiwan? A chance to build a career here, the skills to start something back home, the ability to bridge two places, or meaningful friendships? Choose as many as you like. Next, we’ll explore what you want to learn and the programs that could begin that journey.'),
   bridges: ADMISSION_INTRO,
   'bridge-zh': pair('中文橋，帶你探索中文授課的系所。進入島嶼後，亮起的房子代表與目前路徑和語言相符的選擇。點開科系，就能看介紹、學習情境和官方網站。', 'The Chinese Bridge leads to Chinese-taught programs. On each island, lit buildings match your current route and language. Open a program to explore its introduction, learning experience, and official website.'),
   'bridge-en': pair('英文橋，連向全英語學士學程，以及符合學歷條件的國際管理碩士班。你可以用英文開始專業學習，同時在日常生活裡慢慢認識中文。', 'The English Bridge connects English-taught bachelor’s programs and, for eligible degree holders, the international MBA. Begin your professional learning in English and explore Mandarin through everyday life.'),

@@ -368,7 +368,7 @@ export const UI = {
     { zh: '啟程', en: 'Depart' }, { zh: '生活與學習', en: 'Life & learning' }, { zh: '入學橋', en: 'Bridge' }, { zh: '課程', en: 'Programs' }, { zh: '定錨', en: 'Anchor' },
   ],
   whereFrom: { zh: '你從哪裡來？', en: 'Where are you from?' },
-  whereFromHint: { zh: '選一個國家，或直接點地球上的位置', en: 'Pick a country, or tap anywhere on the globe' },
+  whereFromHint: { zh: '選一個國家，或在下方輸入你的國家／城市', en: 'Pick a country, or type your country or city below' },
   otherPlace: { zh: '在地球上選位置', en: 'Somewhere else' },
   tapToExplore: { zh: '點一下看看', en: 'Tap to explore' },
   narr1: { zh: '這些島，是你可能的未來。', en: 'These islands are your possible futures.' },

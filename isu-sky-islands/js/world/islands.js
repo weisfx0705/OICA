@@ -458,10 +458,13 @@ export class Archipelago {
     this.bridgeMeshes = [];
   }
 
-  showBridge(bridgeId, from, { dimOthers = true } = {}) {
+  // only: when a bridge is actually chosen, restrict lines and lit islands to programs that match the
+  // student's answers (e.g. INTENSE + English never lights the Chinese-taught INTENSE program).
+  showBridge(bridgeId, from, { dimOthers = true, only = null } = {}) {
     this.clearBridges();
     const color = new THREE.Color(BRIDGES[bridgeId].color);
-    const reach = this.islands.filter((isl) => isl.def.programs.some((p) => p.bridges.includes(bridgeId)));
+    const reaches = (p) => p.bridges.includes(bridgeId) && (!only || only(p));
+    const reach = this.islands.filter((isl) => isl.def.programs.some(reaches));
     const local = from.clone().sub(this.center);
     const hub = this.hubFor(bridgeId);
     // INTENSE starts on its own island: no line up from the campus, one line to each INTENSE program.
@@ -469,7 +472,7 @@ export class Archipelago {
     if (bridgeId === 'intense') {
       this.group.updateWorldMatrix(true, true);
       const start = hub.group.position.clone().add(new THREE.Vector3(0, 2, 0));
-      for (const isl of reach) for (const p of isl.def.programs.filter((p) => p.bridges.includes(bridgeId))) {
+      for (const isl of reach) for (const p of isl.def.programs.filter(reaches)) {
         const end = this.group.worldToLocal(isl.programAnchors[p.id].getWorldPosition(new THREE.Vector3()));
         end.y -= 1;
         pairs.push([start, end]);
