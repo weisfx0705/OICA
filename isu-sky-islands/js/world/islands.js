@@ -468,20 +468,29 @@ export class Archipelago {
     const local = from.clone().sub(this.center);
     const hub = this.hubFor(bridgeId);
     // INTENSE starts on its own island: no line up from the campus, one line to each INTENSE program.
+    // The program that fits the answers glows in red; the other stays visible as a faint grey line,
+    // so the student sees both choices and which one is recommended.
     const pairs = [];
     if (bridgeId === 'intense') {
       this.group.updateWorldMatrix(true, true);
       const start = hub.group.position.clone().add(new THREE.Vector3(0, 2, 0));
-      for (const isl of reach) for (const p of isl.def.programs.filter(reaches)) {
+      for (const isl of this.islands) for (const p of isl.def.programs.filter((p) => p.bridges.includes(bridgeId))) {
         const end = this.group.worldToLocal(isl.programAnchors[p.id].getWorldPosition(new THREE.Vector3()));
         end.y -= 1;
-        pairs.push([start, end]);
+        pairs.push([start, end, reaches(p), p.id]);
       }
     } else (hub ? [hub, ...reach] : reach).forEach((isl, i) => pairs.push([hub && i > 0 ? hub.group.position.clone() : local, isl.group.position.clone().add(new THREE.Vector3(0, -1.2, 0))]));
-    pairs.forEach(([start, end], i) => {
+    pairs.forEach(([start, end, match = true, programId = null], i) => {
       const mid = start.clone().lerp(end, 0.5);
       mid.y += 10;
       const curve = new THREE.CatmullRomCurve3([start, start.clone().lerp(mid, 0.5).setY(start.y + 6), mid, end]);
+      if (!match) {
+        const faint = new THREE.Mesh(new THREE.TubeGeometry(curve, 90, 0.16, 6, false), new THREE.MeshBasicMaterial({ color: '#A9AEC2', transparent: true, opacity: 0.5, depthWrite: false }));
+        faint.userData = { programId, recommended: false };
+        this.group.add(faint);
+        this.bridgeMeshes.push(faint);
+        return;
+      }
       const mat = new THREE.ShaderMaterial({
         transparent: true, depthWrite: false,
         uniforms: { time: { value: i * 0.3 }, color: { value: color }, grow: { value: 0 } },
@@ -492,6 +501,7 @@ export class Archipelago {
           gl_FragColor = vec4(mix(color, vec3(1.0), pulse*0.22 + head*0.6), (0.55 + pulse*0.35) * (0.7+core*0.3)); }`,
       });
       const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 90, 0.34, 6, false), mat);
+      tube.userData = { programId, recommended: true };
       this.group.add(tube);
       this.bridgeMeshes.push(tube);
       tween({ duration: 1.6, delay: i * 0.15, onUpdate: (e) => { mat.uniforms.grow.value = e; } });
@@ -541,7 +551,7 @@ export class Archipelago {
       isl.waterfall.userData.mat.uniforms.time.value = t;
     }
     for (const f of this.anim) f(t);
-    for (const m of this.bridgeMeshes) m.material.uniforms.time.value += dt;
+    for (const m of this.bridgeMeshes) if (m.material.uniforms) m.material.uniforms.time.value += dt;
   }
 }
 

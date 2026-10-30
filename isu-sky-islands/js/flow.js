@@ -125,8 +125,9 @@ export class Flow {
 
   islandsView(onBird = () => this.birdsEye()) {
     const look = WORLD.islands.clone().add(V(0, -6, 0));
-    const pos = this.app.frameView(look, 63, V(0, 1, 0.12));
-    this.showViews({ center: look, radius: 66, home: { pos, look }, onBird });
+    // wide enough for the outer hubs (the INTENSE island sits beyond the ring, top right)
+    const pos = this.app.frameView(look, 70, V(0, 1, 0.12));
+    this.showViews({ center: look, radius: 72, home: { pos, look }, onBird });
     return { pos, look };
   }
 
@@ -572,7 +573,7 @@ export class Flow {
     const back=this.render;
     this.islandLabels(id=>this.openHub(id,back)||this.focusIsland(id),{mapFilter:this.s.mapFilter||'all'});
     if(!this.viewCfg)this.islandsView();
-    await app.flyExplore(app.frameView(target,64,V(0,1,.055)),target,1.3);
+    await app.flyExplore(app.frameView(target,70,V(0,1,.055)),target,1.3);
   }
 
   mapConnections(filter,scope=null) {
@@ -656,11 +657,23 @@ export class Flow {
     });
   }
 
+  // The program this bridge actually recommends, when there is exactly one (INTENSE: language decides).
+  recommendedProgram() {
+    const fits=ISLANDS.flatMap(i=>i.programs.filter(p=>p.bridges.includes(this.s.bridge)&&programStatus(p,this.s).ready).map(p=>({island:i,program:p})));
+    return fits.length===1?fits[0]:null;
+  }
+
   arriveAfterBridge() {
     const id=this.s.pendingIsland||this.s.interest;
     const island=ISLANDS.find(i=>i.id===id);
     const wanted=island?.programs.find(p=>p.id===this.s.pendingProgram);
-    if(wanted && !programStatus(wanted,this.s).ready) {
+    const rec=this.recommendedProgram();
+    if(rec && !(wanted && programStatus(wanted,this.s).ready)) {
+      // go where the answers point, not back to the island first browsed
+      this.s.pendingIsland=rec.island.id;this.s.pendingProgram=rec.program.id;
+      this.focusIsland(rec.island.id,rec.program.id);
+      if(wanted||island&&island.id!==rec.island.id)this.ui.toast(I18N.lang==='zh'?`依你的起點條件，推薦的是「${t(rec.program.name)}」。${island?t(island.name)+'的課程目前條件不符。':''}`:`Based on your starting point, we recommend ${t(rec.program.name)}.${island?' The program on '+t(island.name)+' doesn’t match yet.':''}`);
+    } else if(wanted && !programStatus(wanted,this.s).ready) {
       this.focusIsland(id,wanted.id);
       this.ui.toast(I18N.lang==='zh'?'這個科系和你目前的起點條件還不相符，看看下方說明，或回到起點調整。':'This program doesn’t match your starting point yet. Check the notes below, or adjust your starting point.');
     } else if(island && island.programs.some(p=>programStatus(p,this.s).ready)) {
@@ -682,7 +695,24 @@ export class Flow {
     const flagged=this.s.flag&&ISLANDS.find(i=>i.id===this.s.flag.islandId)?.programs.find(p=>p.id===this.s.flag.programId);
     if(this.s.flag&&!(flagged&&programStatus(flagged,this.s).ready)){this.s.flag=null;this.app.arch.clearAnchor();}
     this.app.arch.showBridge(kind,this.bridgeFrom(),{only:p=>programStatus(p,this.s).ready});sound.bridge();
-    if(direct && (kind==='ifp'||kind==='intense')) {
+    if(direct && kind==='intense') {
+      // first a view of the INTENSE island with both program lines, then on to the recommended program
+      const arch=this.app.arch,token=this.exploreToken,hub=arch.enterprise,v=new THREE.Vector3();
+      const spots=[hub,...arch.islands.filter(i=>i.def.programs.some(p=>p.bridges.includes('intense')))].map(i=>i.group.getWorldPosition(new THREE.Vector3()));
+      const center=spots.reduce((a,b)=>a.add(b),v).multiplyScalar(1/spots.length);
+      const radius=Math.max(...spots.map(p=>p.distanceTo(center)))+12;
+      this.ui.closePanel();this.render=null;this.narrator.stop();this.app.labels.clear();
+      this.placeTraveler(hub.group,this.landing(hub),1.65).setStage('student');
+      await this.app.fly(this.app.frameView(center,radius,V(0.15,1,0.55),{panel:false}),center,1.6);
+      if(token!==this.exploreToken)return;
+      const rec=this.recommendedProgram();
+      if(rec)this.labels(()=>this.app.labels.hotspot('rec',arch.byId(rec.island.id).programAnchors[rec.program.id],(I18N.lang==='zh'?'推薦 · ':'Recommended · ')+t(rec.program.name),null,{className:'tag-only recommended'}));
+      this.ui.toast(rec?(I18N.lang==='zh'?`紅線是依你的條件推薦的專班：${t(rec.program.name)}；灰線是另一個專班。`:`The red line is the program that fits you: ${t(rec.program.name)}. The grey line is the other one.`):(I18N.lang==='zh'?'紅線連到符合你條件的專班。':'Red lines lead to the programs that fit you.'));
+      await wait(2.4);
+      if(token!==this.exploreToken)return;
+      return this.arriveAfterBridge();
+    }
+    if(direct && kind==='ifp') {
       const island=this.app.arch.hubFor(kind),f=this.frameIsland(island,1.7,.8);
       this.ui.closePanel();this.render=null;this.narrator.stop();
       this.placeTraveler(island.group,this.landing(island),1.65).setStage('student');
