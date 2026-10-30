@@ -207,6 +207,14 @@ html[lang^='zh'] .bridge-card .bn { font-family: var(--font-zh); font-weight: 90
 .mini-bridge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(255, 255, 255, 0.85); box-shadow: inset 0 0 0 1px var(--line); font-size: 13px; font-weight: 600; }
 .mini-bridge i { width: 10px; height: 10px; border-radius: 50%; display: block; }
 .mini-bridge.on { box-shadow: inset 0 0 0 2px currentColor; }
+.mini-bridge.off { opacity: 0.5; }
+.mini-bridge.on.off { opacity: 0.8; }
+.bridge-switch { margin: 0 0 14px; padding: 12px; border-radius: 16px; background: rgba(255, 255, 255, 0.7); box-shadow: inset 0 0 0 1px var(--line); }
+.bridge-switch .qt { margin: 0 0 8px; font-size: 13px; font-weight: 700; color: var(--indigo-deep); }
+.bridge-switch small { display: block; margin-top: 8px; font-size: 11px; color: var(--ink-soft); }
+.tap-hint { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; background: #FFF5D5; color: #5D4311; font-size: 13.5px; font-weight: 700; }
+.tap-hint svg { flex: none; width: 20px; height: 20px; }
+.bridge-more summary { cursor: pointer; color: var(--indigo); font-weight: 700; font-size: 14px; padding: 6px 0; }
 
 /* program list */
 .programs { display: grid; gap: 8px; }
