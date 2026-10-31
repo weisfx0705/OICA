@@ -95,7 +95,9 @@ export class UIRoot {
     const zh = I18N.lang === 'zh';
     const toggle = el('button', { class: 'ph-toggle', type: 'button', 'aria-expanded': 'true', onclick: (e) => { e.stopPropagation(); this.setCollapsed(!this.collapsed); } },
       el('span', { class: 'ph-label-hide' }, zh ? '收合，看地圖' : 'Hide · see map'), el('span', { class: 'ph-label-show' }, zh ? '展開說明' : 'Show details'), el('span', { class: 'ph-chev', 'aria-hidden': 'true' }));
-    const bar = el('div', { class: 'panel-handle' }, el('span', { class: 'ph-grip', 'aria-hidden': 'true' }), el('span', { class: 'ph-title' }, text), toggle);
+    // one tap: fold the panel and fly out to the whole archipelago (the panel often covers the map on phones)
+    const bird = el('button', { class: 'ph-bird', type: 'button', onclick: (e) => { e.stopPropagation(); this.setCollapsed(true); this.birdAction?.(); } }, icon('bird'), el('span', {}, zh ? '鳥瞰地圖' : 'Bird’s-eye map'));
+    const bar = el('div', { class: 'panel-handle' }, el('span', { class: 'ph-grip', 'aria-hidden': 'true' }), el('span', { class: 'ph-title' }, text), bird, toggle);
     bar.addEventListener('click', () => { if (this.collapsed) this.setCollapsed(false); });
     // swipe down to fold, up to unfold (touch screens)
     let y0 = null;
@@ -147,6 +149,9 @@ export class UIRoot {
   viewDock(items) {
     this.viewDockEl?.remove();
     this.viewDockEl = null;
+    // the panel header's "Bird's-eye map" button reuses this dock's bird's-eye action, and shows only when there is one
+    this.birdAction = items?.find((it) => it.icon === 'bird')?.onClick || null;
+    this.root.classList.toggle('can-bird', !!this.birdAction);
     if (!items) return;
     this.viewDockEl = el('nav', { class: 'view-dock', 'aria-label': I18N.lang === 'zh' ? '視角控制' : 'View controls' },
       ...items.map((it) => it === '|' ? el('span', { class: 'sep', 'aria-hidden': 'true' }) : el('button', { type: 'button', class: 'view-btn' + (it.on ? ' on' : ''), 'data-icon': it.icon, title: it.label, 'aria-label': it.label, 'aria-pressed': it.toggle ? String(!!it.on) : null, onclick: () => it.onClick() }, icon(it.icon), el('span', { class: 'view-label' }, it.label))));

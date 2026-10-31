@@ -628,6 +628,13 @@ html[lang^='zh'] .caption { letter-spacing: 0.06em; }
 .ph-toggle:hover { background: rgba(54, 52, 142, 0.13); }
 .ph-chev { width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-2px, -2px); transition: transform .3s ease; }
 .ph-label-show { display: none; }
+/* header "Bird's-eye map": folds the panel and shows the whole map (only where the view dock offers it) */
+.ph-bird { display: none; align-items: center; gap: 6px; flex: 0 0 auto; height: 34px; padding: 0 14px; border-radius: 999px; font-size: 13px; font-weight: 800; color: var(--indigo-deep); background: var(--gold); box-shadow: 0 6px 14px -8px rgba(35, 33, 95, 0.6); white-space: nowrap; transition: transform .15s ease, filter .15s ease; }
+.ph-bird:hover { filter: brightness(1.05); transform: translateY(-1px); }
+.ph-bird:focus-visible { outline: 3px solid var(--indigo); outline-offset: 2px; }
+.ph-bird svg { width: 17px; height: 17px; }
+.can-bird .ph-bird { display: inline-flex; }
+.panel.collapsed .ph-bird { display: none; }
 .panel.collapsed { top: calc(76px + var(--safe-t)) !important; bottom: auto !important; max-height: none !important; }
 .panel.collapsed .panel-scroll, .panel.collapsed .panel-foot { display: none; }
 .panel.collapsed .panel-handle { border-bottom: 0; cursor: pointer; padding-top: 12px; padding-bottom: 12px; }
