@@ -57,7 +57,7 @@ export class UIRoot {
     p.replaceChildren(...UI.chapters.map((c, i) => el('div', { class: 'step' + (i < index ? ' done' : '') + (i === index ? ' now' : '') }, el('i'), el('span', {}, t(c)))));
   }
 
-  panel({ eyebrow, title, body = [], foot = [], compact = false, tall = false, onMount, key } = {}) {
+  panel({ eyebrow, title, body = [], foot = [], compact = false, tall = false, expand = false, onMount, key } = {}) {
     const old = this.panelEl;
     const k = key ?? `${eyebrow}|${title}`;
     const cls = 'panel in' + (compact ? ' compact' : '') + (tall ? ' tall' : '');
@@ -72,16 +72,19 @@ export class UIRoot {
       // new content (e.g. a tapped hotspot) always unfolds the panel so the answer is seen
       this.setCollapsed(false);
       old.className = cls;
+      old.classList.toggle('expanded', this.expanded);
       old.querySelector('.ph-title').textContent = [eyebrow, title].filter(Boolean).join(' · ');
       scroll.scrollTop = top;
       onMount?.(old);
       return old;
     }
     this.collapsed = false;
+    // phones: a lower-third sheet that can grow to full height; forms (expand) open grown
+    this.expanded = !!expand;
     if (old) { old.classList.remove('in'); old.inert=true; old.setAttribute('aria-hidden','true'); setTimeout(() => old.remove(), 450); }
     const scroll = el('div', { class: 'panel-scroll' }, eyebrow ? el('p', { class: 'eyebrow' }, eyebrow) : null, title ? el('h2', {}, title) : null, ...body);
     const handle = this.panelHandle([eyebrow, title].filter(Boolean).join(' · '));
-    const p = el('section', { class: 'panel' + (compact ? ' compact' : '') + (tall ? ' tall' : ''), role: 'dialog', 'aria-label': title || eyebrow || '' }, handle, scroll, foot.length ? el('div', { class: 'panel-foot' }, ...foot) : null);
+    const p = el('section', { class: 'panel' + (compact ? ' compact' : '') + (tall ? ' tall' : '') + (this.expanded ? ' expanded' : ''), role: 'dialog', 'aria-label': title || eyebrow || '' }, handle, scroll, foot.length ? el('div', { class: 'panel-foot' }, ...foot) : null);
     p.dataset.key = k;
     this.root.append(p);
     requestAnimationFrame(() => requestAnimationFrame(() => p.classList.add('in')));
@@ -97,26 +100,38 @@ export class UIRoot {
       el('span', { class: 'ph-label-hide' }, zh ? '收合，看地圖' : 'Hide · see map'), el('span', { class: 'ph-label-show' }, zh ? '展開說明' : 'Show details'), el('span', { class: 'ph-chev', 'aria-hidden': 'true' }));
     // one tap: fold the panel and fly out to the whole archipelago (the panel often covers the map on phones)
     const bird = el('button', { class: 'ph-bird', type: 'button', onclick: (e) => { e.stopPropagation(); this.setCollapsed(true); this.birdAction?.(); } }, icon('bird'), el('span', {}, zh ? '鳥瞰地圖' : 'Bird’s-eye map'));
-    const bar = el('div', { class: 'panel-handle' }, el('span', { class: 'ph-grip', 'aria-hidden': 'true' }), el('span', { class: 'ph-title' }, text), bird, toggle);
+    // phones only: grow the sheet to read more, shrink it back to see the map
+    const grow = el('button', { class: 'ph-expand', type: 'button', 'aria-expanded': String(!!this.expanded), onclick: (e) => { e.stopPropagation(); this.setExpanded(!this.expanded); } },
+      el('span', { class: 'ph-label-grow' }, zh ? '展開' : 'More'), el('span', { class: 'ph-label-shrink' }, zh ? '縮小' : 'Less'), el('span', { class: 'ph-up', 'aria-hidden': 'true' }));
+    const bar = el('div', { class: 'panel-handle' }, el('span', { class: 'ph-grip', 'aria-hidden': 'true' }), el('span', { class: 'ph-title' }, text), bird, grow, toggle);
     bar.addEventListener('click', () => { if (this.collapsed) this.setCollapsed(false); });
-    // swipe down to fold, up to unfold (touch screens)
+    // swipe: down shrinks a grown sheet, then folds it; up unfolds, then grows (touch screens)
     let y0 = null;
     bar.addEventListener('pointerdown', (e) => { y0 = e.clientY; });
     bar.addEventListener('pointerup', (e) => {
       if (y0 == null) return;
       const dy = e.clientY - y0; y0 = null;
-      if (dy > 36 && !this.collapsed) this.setCollapsed(true);
-      else if (dy < -36 && this.collapsed) this.setCollapsed(false);
+      if (dy > 36) { if (this.expanded) this.setExpanded(false); else if (!this.collapsed) this.setCollapsed(true); }
+      else if (dy < -36) { if (this.collapsed) this.setCollapsed(false); else if (!this.expanded) this.setExpanded(true); }
     });
     return bar;
   }
 
   setCollapsed(on) {
     this.collapsed = on;
+    if (on) this.setExpanded(false);
     const p = this.panelEl;
     if (!p) return;
     p.classList.toggle('collapsed', on);
     p.querySelector('.ph-toggle')?.setAttribute('aria-expanded', String(!on));
+  }
+
+  setExpanded(on) {
+    this.expanded = on;
+    const p = this.panelEl;
+    if (!p) return;
+    p.classList.toggle('expanded', on);
+    p.querySelector('.ph-expand')?.setAttribute('aria-expanded', String(on));
   }
 
   closePanel() {

@@ -282,6 +282,9 @@ export class Flow {
     this.narrator.setScene('globe');
     const app = this.app, g = app.globe;
     g.autoSpin = true;
+    // phones: once home is set, the panel jumps to the companion picker instead of hiding it below the fold
+    let pickLook = false;
+    const phone = () => window.matchMedia('(max-width: 760px)').matches;
     // country: a quick-pick chip or a typed place that was recognised; otherwise the typed text starts at sea
     const choose = (country, typed = '') => {
       const home = country ? { lat: country.lat, lon: country.lon } : SEA_START;
@@ -299,6 +302,7 @@ export class Flow {
       tr.setStage('traveler');
       tr.wave(2);
       this.homeLabels();
+      pickLook = phone();
       this.render();
     };
     app.handlers = {}; // the globe turns, but home is chosen from the list or by typing — no pins
@@ -315,6 +319,15 @@ export class Flow {
     });
     this.homeLabels();
     this.view(() => {
+      if (pickLook && this.s.home) {
+        const zh = I18N.lang === 'zh', from = this.s.homeLabelObj ? t(this.s.homeLabelObj) : (zh ? '海上的起點' : 'A start at sea');
+        this.ui.panel({
+          key: 'globe-look', compact: true, eyebrow: t(UI.chapters[0]), title: t(UI.lookTitle),
+          body: [el('p', { class: 'note home-found' }, (zh ? '✓ 出發地：' : '✓ Starting from: ') + from), this.lookPicker()],
+          foot: [el('button', { class: 'btn quiet small back-step', type: 'button', onclick: () => { pickLook = false; this.render(); } }, icon('back'), zh ? '換出發地' : 'Change place'), el('span', { class: 'spacer' }), button(t(UI.continue), () => this.takeOff(), { iconName: 'plane' })],
+        });
+        return;
+      }
       const chips = COUNTRIES.map((c) => el('button', { class: 'chip' + (this.s.country === c.code ? ' on' : ''), 'data-country':c.code, type: 'button', onclick: () => choose(c) }, t(c.name)));
       const input = el('input', { class: 'home-input', type: 'text', name: 'hometown', autocomplete: 'country-name', maxlength: '60', placeholder: I18N.lang === 'zh' ? '例如：Surabaya、泰國、Mexico' : 'e.g. Surabaya, Thailand, Mexico', 'aria-label': I18N.lang === 'zh' ? '輸入你的國家或城市' : 'Type your country or city', value: this.s.homeTyped || null, onkeydown: (e) => { if (e.key === 'Enter') typeHome(input); } });
       const typed = el('div', { class: 'home-type' + (this.s.homeTyped ? ' on' : '') }, el('label', {}, I18N.lang === 'zh' ? '不在清單上？輸入你的國家或城市' : 'Not listed? Type your country or city'),
@@ -792,7 +805,7 @@ export class Flow {
         const allowed=!complete||!requested||isMainland(this.s.country)||routeEligible(requested,this.s);
         const done=complete&&allowed;
         const requirement=complete&&requested&&!allowed?el('p',{class:'note route-note'},requested==='ifp'?(I18N.lang==='zh'?'目前的回答不符合 IFP 的身分或來台經歷條件，可以改選其他學習路徑。':'Your answers don’t match the IFP background or previous-Taiwan-study conditions. Try another study route.'):(I18N.lang==='zh'?'INTENSE 需符合招生國家、D3 以上學歷，以及英語（設備工程）或中文（機械與自動化）授課能力。':'INTENSE needs an eligible country, a D3 or higher credential, and English (Equipment Eng.) or Chinese (Mechanical & Automation) study ability.')):null;
-        this.ui.panel({ key: 'bridge-questions', tall: true, eyebrow: t(UI.chapters[2]), title: t(UI.bridgeTitle),
+        this.ui.panel({ key: 'bridge-questions', tall: true, expand: true, eyebrow: t(UI.chapters[2]), title: t(UI.bridgeTitle),
           body: [el('p',{class:'lead'},t(ADMISSION_INTRO)),el('p',{class:'route-current'},I18N.lang==='zh'?'你的出發點 → 入學橋 → 科系':'Your starting point → Admission bridge → Program'), countryPick, ...blocks, requirement].filter(Boolean),
           foot: [this.backButton(), el('span', { class: 'spacer' }), button(this.s.routeIntent?(I18N.lang==='zh'?'確認起點，採用這條路':'Confirm my starting point'):t(UI.bridgeTitle), () => {
             if(this.s.routeIntent&&routeEligible(this.s.routeIntent,this.s)){this.selectBridge(this.s.routeIntent,true);return;}
@@ -1137,7 +1150,7 @@ export class Flow {
       const input = el('input', { id: 'route-name', type: 'text', maxlength: 28, value: this.s.name, autocomplete: 'off', placeholder: I18N.lang === 'zh' ? '例如：Linh' : 'e.g. Linh' });
       input.addEventListener('input', () => { this.s.name = input.value; clearTimeout(timer); timer = setTimeout(redraw, 250); });
       this.ui.panel({
-        tall: true, eyebrow: t(UI.chapters[4]), title: t(UI.routeTitle),
+        tall: true, expand: true, eyebrow: t(UI.chapters[4]), title: t(UI.routeTitle),
         body: [el('div', { class: 'route-wrap' },
           this.journeySummary(isl2,prog),
           el('button', { class: 'route-preview-open', type: 'button', 'aria-label': I18N.lang === 'zh' ? '放大路線卡' : 'Enlarge route card', onclick: () => preview.src && openImage(preview.src, t(UI.routeTitle) + (I18N.lang === 'zh' ? '　·　再點一下看原尺寸' : ' · tap again for full size'), { className: 'card-viewer', zoomable: true }) }, preview, el('span', { class: 'photo-expand', 'aria-hidden': 'true' }, '↗')),

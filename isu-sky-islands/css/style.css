@@ -133,7 +133,9 @@ html[lang^='zh'] .title h1 { font-family: var(--font-zh); font-weight: 900; lett
   overflow: hidden;
 }
 .panel.in { transform: none; opacity: 1; }
-.panel.compact { top: auto; max-height: calc(100vh - 110px); }
+/* dvh = the visible height: on iPad Safari and phones in landscape 100vh includes the area behind the toolbar,
+   which pushed the overview panels (Taiwan, Kaohsiung, Guanyin) up under the top buttons. Same numbers on desktop. */
+.panel.compact { top: auto; max-height: calc(100vh - 110px); max-height: calc(100dvh - 110px - var(--safe-t)); }
 .panel-scroll { overflow-y: auto; padding: 26px 26px 18px; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 .panel-foot { padding: 14px 26px calc(18px + var(--safe-b)); display: flex; gap: 10px; justify-content: flex-end; align-items: center; border-top: 1px solid var(--line); background: rgba(255, 255, 255, 0.45); }
 .panel-foot .spacer { flex: 1; }
@@ -672,3 +674,33 @@ html[lang^='zh'] .caption { letter-spacing: 0.06em; }
 .card-viewer img { max-height: calc(94dvh - 110px); border-radius: 14px; cursor: zoom-in; }
 .card-viewer.zoomed { width: min(1080px, 94vw); }
 .card-viewer.zoomed img { width: max(100%, 720px); max-width: none; max-height: none; cursor: zoom-out; } /* phones: about 2× with scrolling */
+
+/* ---------- phones: the map comes first ----------
+   Panels open as a lower-third sheet (about 42% of the screen) so most of the screen stays on the map.
+   "展開" (or a swipe up on the header) grows the sheet for reading; "縮小" / swipe down brings the map back. */
+.ph-expand { display: none; }
+@media (max-width: 760px) {
+  .panel, .panel.compact, .panel.tall { max-height: max(42dvh, 300px); transition: transform .6s cubic-bezier(.2, .8, .2, 1), opacity .45s ease, max-height .35s ease; }
+  .panel.expanded, .panel.compact.expanded, .panel.tall.expanded { max-height: calc(100dvh - 60px - var(--safe-t)); }
+  .panel-scroll { padding-top: 14px; }
+  .panel-scroll > .eyebrow { display: none; } /* the chapter name is already in the header */
+  .panel h2 { font-size: 21px; }
+  .panel:not(.collapsed) .ph-title { display: none; } /* the heading below repeats it; room for the buttons */
+  .panel-handle { padding-top: 14px; padding-bottom: 6px; }
+  .ph-expand { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; height: 38px; padding: 0 12px; border-radius: 999px; font-size: 12px; font-weight: 700; color: var(--indigo); background: rgba(54, 52, 142, 0.07); white-space: nowrap; }
+  .ph-up { width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(-135deg) translate(-1px, -1px); transition: transform .3s ease; }
+  .ph-label-shrink { display: none; }
+  .panel.expanded .ph-label-grow { display: none; }
+  .panel.expanded .ph-label-shrink { display: inline; }
+  .panel.expanded .ph-up { transform: rotate(45deg) translate(-2px, -2px); }
+  .panel.collapsed .ph-expand { display: none; }
+  .caption { bottom: calc(max(42dvh, 300px) + 12px); }
+  .panel[data-key="globe-look"] .look > .qt { display: none; } /* the heading already says it */
+}
+
+/* tablets in portrait (iPad): a narrower side panel leaves more of the map visible; desktop (>1024px) is unchanged */
+@media (min-width: 761px) and (max-width: 1024px) {
+  .panel { width: min(360px, 46vw); right: 12px; }
+  .panel-scroll { padding: 20px 20px 14px; }
+  .panel h2 { font-size: 25px; }
+}

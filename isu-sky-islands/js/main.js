@@ -146,7 +146,7 @@ class App {
     let tx = 0, ty = 0, mode = null;
     if (p && p.classList.contains('in') && !p.classList.contains('collapsed')) {
       const r = p.getBoundingClientRect();
-      if (r.width > this.w * 0.8) { mode = 'bottom'; ty = Math.min(r.height * 0.5, this.h * 0.3); }
+      if (r.width > this.w * 0.8) { mode = 'bottom'; ty = Math.max(0, Math.min(r.height * 0.5 - 48, this.h * 0.3)); } // phones: centre between the top buttons and the sheet
       else { mode = 'side'; tx = Math.min((r.width + 20) * 0.5, this.w * 0.25); }
     }
     this.panelMode = mode;
