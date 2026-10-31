@@ -176,20 +176,26 @@ export function link(label, href, { kind = 'quiet', iconName = 'ext' } = {}) {
   return el('a', { class: 'btn ' + kind, href, target: '_blank', rel: 'noopener', style: { textDecoration: 'none' } }, label, icon(iconName));
 }
 
+// Full-size image in a modal; click outside or × to close. A data: URL (the route card) can't open in a new tab.
+export function openImage(src, caption, { credit, className = '', zoomable = false } = {}) {
+  const dialog = el('dialog', { class: 'photo-viewer' + (className ? ' ' + className : ''), 'aria-label': caption },
+    el('button', { class: 'viewer-close', type: 'button', 'aria-label': I18N.lang === 'zh' ? '關閉' : 'Close', onclick: () => dialog.close() }, '×'),
+    el('img', { src, alt: caption }),
+    el('p', {}, caption, credit ? el('small', {}, credit) : null),
+    src.startsWith('data:') ? null : el('a', { href: src, target: '_blank', rel: 'noopener' }, I18N.lang === 'zh' ? '新分頁開啟圖片' : 'Open image in a new tab'));
+  // zoomable: a second tap shows the image at full width (tall cards), a third goes back
+  if (zoomable) { const img = dialog.querySelector('img'); img.title = I18N.lang === 'zh' ? '再點一下看原尺寸' : 'Tap again for full size'; img.addEventListener('click', () => { dialog.classList.toggle('zoomed'); img.title = dialog.classList.contains('zoomed') ? (I18N.lang === 'zh' ? '點一下縮回' : 'Tap to fit') : (I18N.lang === 'zh' ? '再點一下看原尺寸' : 'Tap again for full size'); }); }
+  dialog.addEventListener('close', () => dialog.remove());
+  dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
+  document.body.append(dialog); dialog.showModal();
+  return dialog;
+}
+
 export function gallery(images = []) {
   if (!images.length) return null;
   return el('div', { class: 'chapter-gallery' + (images.length === 2 ? ' gallery-pair' : '') }, images.map((item, index) => {
     const caption = t(item.caption);
-    const open = () => {
-      const dialog = el('dialog', { class: 'photo-viewer', 'aria-label': caption },
-        el('button', { class: 'viewer-close', type: 'button', 'aria-label': I18N.lang === 'zh' ? '關閉照片' : 'Close photo', onclick: () => dialog.close() }, '×'),
-        el('img', { src: item.src, alt: caption }),
-        el('p', {}, caption, item.credit ? el('small', {}, item.credit) : null),
-        el('a', { href: item.src, target: '_blank', rel: 'noopener' }, I18N.lang === 'zh' ? '新分頁開啟圖片' : 'Open image in a new tab'));
-      dialog.addEventListener('close', () => dialog.remove());
-      dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); });
-      document.body.append(dialog); dialog.showModal();
-    };
+    const open = () => openImage(item.src, caption, { credit: item.credit });
     return el('figure', { class: 'chapter-photo' + (index === 0 ? ' hero' : '') },
       el('button', { type: 'button', onclick: open, 'aria-label': (I18N.lang === 'zh' ? '放大照片：' : 'Enlarge photo: ') + caption }, el('img', { src: item.src, alt: caption, loading: 'lazy', decoding: 'async', width: 640, height: 400 }), el('span', { class: 'photo-expand', 'aria-hidden': 'true' }, '↗')),
       el('figcaption', {}, caption));

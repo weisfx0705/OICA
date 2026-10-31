@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { I18N, t, el, storage, wait } from './util.js';
 import { UI, COUNTRIES, TAIWAN, KAOHSIUNG_STAGE, CAMPUS, LIFE_CARDS, QUESTIONS, ISLANDS, BRIDGES, DORM, MANDARIN_TOWER, META, MAINLAND } from './content.js';
 import { resolveBridge, programReachable, programStatus, routeEligible, routeBlockers, goalBlockers, routeOfAnswer, isMainland, chosenLives, toggleLife, programJourney, yearsLabel, levelLabel, matchesConnectionFilter, studyPath, levelOf } from './logic.js';
-import { photo, button, link, icon, gallery } from './ui.js';
+import { photo, button, link, icon, gallery, openImage } from './ui.js';
 import { SKINS, OUTFITS } from './world/traveler.js';
 import { drawRouteCard, exportRouteCard } from './routecard.js';
 import { WORLD } from './world/layout.js';
@@ -1140,7 +1140,8 @@ export class Flow {
         tall: true, eyebrow: t(UI.chapters[4]), title: t(UI.routeTitle),
         body: [el('div', { class: 'route-wrap' },
           this.journeySummary(isl2,prog),
-          preview,
+          el('button', { class: 'route-preview-open', type: 'button', 'aria-label': I18N.lang === 'zh' ? '放大路線卡' : 'Enlarge route card', onclick: () => preview.src && openImage(preview.src, t(UI.routeTitle) + (I18N.lang === 'zh' ? '　·　再點一下看原尺寸' : ' · tap again for full size'), { className: 'card-viewer', zoomable: true }) }, preview, el('span', { class: 'photo-expand', 'aria-hidden': 'true' }, '↗')),
+          el('p', { class: 'note route-preview-hint' }, I18N.lang === 'zh' ? '點路線卡可以放大看' : 'Tap the card to see it full size'),
           el('div', { class: 'field' }, el('label', { for: 'route-name' }, t(UI.yourName)), input),
           el('div', { class: 'actions' },
             button(t(UI.share), async () => { const r = await exportRouteCard(canvas, 'isu-route-card.png'); if (r === 'downloaded') this.ui.toast(t(UI.download)); }, { iconName: 'share' }),

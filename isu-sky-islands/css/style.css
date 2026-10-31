@@ -655,3 +655,13 @@ html[lang^='zh'] .caption { letter-spacing: 0.06em; }
 .home-found { margin: 8px 2px 0; }
 .summary-from { padding: 10px 0 2px; margin: 0 !important; font-size: 13px !important; border-top: 1px solid #DFC3CC; color: #674B58 !important; }
 .summary-from + .summary-life { border-top: 0; padding-top: 2px; }
+
+/* Route card: the preview opens full size */
+.route-preview-open { position: relative; display: block; margin: 0 auto; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 18px; max-width: 100%; }
+.route-preview-open:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+.route-preview-open .photo-expand { bottom: 12px; right: 12px; width: 34px; height: 34px; font-size: 17px; box-shadow: 0 4px 10px rgba(35, 33, 95, 0.3); }
+.route-preview-hint { text-align: center; margin-top: -6px; }
+.card-viewer { width: fit-content; max-width: 94vw; padding: 44px 14px 10px; overflow: auto; }
+.card-viewer img { max-height: calc(94dvh - 110px); border-radius: 14px; cursor: zoom-in; }
+.card-viewer.zoomed { width: min(1080px, 94vw); }
+.card-viewer.zoomed img { width: max(100%, 720px); max-width: none; max-height: none; cursor: zoom-out; } /* phones: about 2× with scrolling */
