@@ -1,6 +1,6 @@
 import { t, I18N } from './util.js';
 import { BRIDGES, ISLANDS, LIFE_CARDS, UI, META } from './content.js';
-import { programJourney, studyPath, chosenLives } from './logic.js';
+import { programJourney, studyPath, chosenLives, levelLabel } from './logic.js';
 import { likedSummary } from './preferences.js';
 import { PROGRAM_PROFILES } from './program-profiles.js';
 
@@ -39,6 +39,8 @@ export async function drawRouteCard(canvas, state) {
   const bridge = BRIDGES[state.bridge];
   const lives = chosenLives(state.life).map((l) => t(l.title)).join(zh ? '、' : ', ') || (zh ? '還在探索' : 'Still exploring');
   const career = island;
+  // the degree the student said they want (starting-point question), short enough to share a line; older saves have none
+  const GOAL_SHORT = { bachelor: ['學士', 'Bachelor’s'], master: ['碩士', 'Master’s'], phd: ['博士', 'PhD'], postbac: ['學士後中醫', 'Post-bacc. Chinese Medicine'], ifp: ['先讀華語，再讀學士', 'Mandarin first, then a bachelor’s'] }[state.answers?.goal];
 
   // background
   const g = ctx.createLinearGradient(0, 0, 0, H);
@@ -117,9 +119,15 @@ export async function drawRouteCard(canvas, state) {
   const fl = wrap(ctx, t(program.focus), W - 220).slice(0, 1);
   fl.forEach((l, i) => ctx.fillText(l, 110, yy + i * 38));
   yy += fl.length * 38 + 30;
-  // campus + language tags
-  ctx.font = FB(600, 22);
+  // degree level (highlighted) + campus + language tags
+  ctx.font = FB(700, 22);
   let tx = 110;
+  const level = t(levelLabel(program, state.answers?.goal));
+  const lw = ctx.measureText(level).width + 36;
+  ctx.fillStyle = '#FFC53A'; rr(ctx, tx, yy, lw, 44, 22); ctx.fill();
+  ctx.fillStyle = '#23215F'; ctx.fillText(level, tx + 18, yy + 30);
+  tx += lw + 12;
+  ctx.font = FB(600, 22);
   for (const tag of [program.campus === 'medical' ? t(UI.medicalCampus) : t(UI.mainCampus), `${t(UI.taughtIn)} ${program.lang === 'en' ? t(UI.langEn) : t(UI.langZh)}`]) {
     const tw = ctx.measureText(tag).width + 36;
     ctx.fillStyle = 'rgba(54,52,142,0.08)'; rr(ctx, tx, yy, tw, 44, 22); ctx.fill();
@@ -140,7 +148,7 @@ export async function drawRouteCard(canvas, state) {
   y=1196;
   ctx.fillStyle='rgba(255,255,255,0.92)';rr(ctx,60,y,W-120,252,32);ctx.fill();
   ctx.fillStyle='#A64862';ctx.font=FB(700,22);const savedLikes=likedSummary(state.likes,I18N.lang);ctx.fillText(savedLikes.length?(zh?'我的生活與喜歡':'MY LIFE & WHAT I LOVE'):(zh?'我的學習選擇':'MY STUDY CHOICE'),94,y+40);
-  const from=(zh?'我來自 · ':'From · ')+state.homeLabel;
+  const from=(zh?'我來自 · ':'From · ')+state.homeLabel+(GOAL_SHORT?(zh?'　｜　我想念 · ':'  |  Studying · ')+GOAL_SHORT[zh?0:1]:'');
   let rows=[from,t(UI.life)+' · '+lives,...savedLikes.map(r=>r.label+' · '+r.text)];
   if(!savedLikes.length)rows=[from,t(UI.life)+' · '+lives,t(island.name)+' · '+path.map(step=>t(step.name)).join(' → '),zh?'帶著好奇，向新的學習生活出發。':'Begin a new chapter with curiosity.'];
   ctx.fillStyle='#23215F';ctx.font=FB(500,26);
