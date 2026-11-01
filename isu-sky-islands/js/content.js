@@ -1,6 +1,6 @@
 // 遊戲內容資料（國際處每年更新這個檔案即可，不需要動其他程式）
 // 每個文字欄位都是 { zh, en }；新增語言時在同一層加 vi、id 等鍵即可，缺漏時會自動退回英文。
-// 金額、日期、名單的依據：2026–2027 外國學生／國際專修部／INTENSE 英文簡章、116 僑港澳單招簡章、會計處 2026 收費表。
+// 金額、日期、名單的依據：2026–2027 外國學生／國際專修部／INTENSE 英文簡章、116 僑港澳單招簡章。學費金額暫不呈現。
 
 export const META = {
   updated: '2026-10-29',
@@ -81,7 +81,7 @@ export const BRIDGES = {
     timeline: [
       { zh: '第 1 年・在校', en: 'Year 1 · Campus' }, { zh: '第 2 年・企業實習', en: 'Year 2 · Internship' }, { zh: '畢業・依約就業', en: 'Graduate · Employment' },
     ],
-    scholarship: { zh: '政府獎學金：學雜費最長 2 年、每學期最高 NT$50,000；首次來台行政費最高 1 萬、單程機票最高 9 千。企業在校期間每月至少 NT$10,000 生活津貼；校外實習津貼不低於基本工資。', en: 'Government scholarship: tuition for up to two years (max NT$50,000 per semester), up to NT$10,000 for arrival costs and NT$9,000 for a one-way flight. Companies pay at least NT$10,000 a month while you study, and at least minimum wage during internships.' },
+    scholarship: { zh: '政府獎學金：補助學雜費最長 2 年；首次來台行政費最高 1 萬、單程機票最高 9 千。企業在校期間每月至少 NT$10,000 生活津貼；校外實習津貼不低於基本工資。', en: 'Government scholarship: tuition covered for up to two years, plus up to NT$10,000 for arrival costs and NT$9,000 for a one-way flight. Companies pay at least NT$10,000 a month while you study, and at least minimum wage during internships.' },
     chinese: { zh: '2026–2027 簡章列出兩個專班：英語授課的設備工程（英語 CEFR B1 以上，第二年中文達 TOCFL A2），以及中文授課的機械與自動化工程（中文 TOCFL A2 以上，第二年達 B1）。', en: 'The 2026–27 prospectuses list two programs: English-taught Equipment Engineering (CEFR B1 English; TOCFL A2 Chinese in Year 2) and Chinese-taught Mechanical and Automation Engineering (TOCFL A2 Chinese; B1 in Year 2).' },
   },
   oc: {
@@ -210,7 +210,7 @@ export const MAINLAND = {
 
 // 第四章：七座島。programs.bridges 列出可以到達的橋。
 // degrees：系所另有碩士班、博士班招收外國學生時列出（2026–2027 外國學生簡章印刷頁 1–3）；沒寫就是只有該 level。
-// fee＝每學期學雜費（2026 年度會計處收費表），campus：main 校本部 / medical 醫學院區。
+// 學費金額暫不在網站上呈現（避免日後忘記更新）；campus：main 校本部 / medical 醫學院區。
 export const ISLANDS = [
   {
     id: 'chip', photo: 'assets/photos/computer-lab.webp', color: '#7FB7E6', accent: '#2F6FA8',
@@ -226,12 +226,12 @@ export const ISLANDS = [
     ],
     milestone: { zh: '半導體廠實習', en: 'Internship at a chip plant' },
     programs: [
-      { id: 'sdpg', name: { zh: '半導體學士學位學程', en: 'Semiconductor Degree Program' }, url: 'https://sdpg.isu.edu.tw/en-US', bridges: ['zh', 'ifp'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '半導體材料、製程、IC 封裝與智慧製造', en: 'Materials, processes, IC packaging, smart manufacturing' } },
-      { id: 'ene', name: { zh: '電子工程學系', en: 'Dept. of Electronic Engineering' }, url: 'https://ene.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master', 'phd'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '光電半導體、電子智慧系統', en: 'Optoelectronics, semiconductors, smart electronics' } },
-      { id: 'ee', name: { zh: '電機工程學系', en: 'Dept. of Electrical Engineering' }, url: 'https://ee.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master', 'phd'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '通訊光電、智慧控制、能源與系統', en: 'Communications, smart control, energy systems' } },
-      { id: 'mse', name: { zh: '材料科學與工程學系', en: 'Dept. of Materials Science and Engineering' }, url: 'https://mse.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master', 'phd'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '金屬、電子光電與多功能材料', en: 'Metals, electronic and functional materials' } },
-      { id: 'che', name: { zh: '化學工程學系', en: 'Dept. of Chemical Engineering' }, url: 'https://che.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '化工製程、生物技術、綠色能源', en: 'Chemical processes, biotech, green energy' } },
-      { id: 'equip', name: { zh: 'INTENSE 學士後設備工程二年制學士專班', en: 'INTENSE · Post-Baccalaureate Equipment Engineering' }, url: 'https://ee.isu.edu.tw/en-US', bridges: ['intense'], lang: 'en', campus: 'main', fee: null, level: 'intense', focus: { zh: '2027 春季班：全英語授課，設備技術與企業實習', en: 'Spring 2027: English-taught equipment technology and company internship' } },
+      { id: 'sdpg', name: { zh: '半導體學士學位學程', en: 'Semiconductor Degree Program' }, url: 'https://sdpg.isu.edu.tw/en-US', bridges: ['zh', 'ifp'], lang: 'zh', campus: 'main', focus: { zh: '半導體材料、製程、IC 封裝與智慧製造', en: 'Materials, processes, IC packaging, smart manufacturing' } },
+      { id: 'ene', name: { zh: '電子工程學系', en: 'Dept. of Electronic Engineering' }, url: 'https://ene.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master', 'phd'], lang: 'zh', campus: 'main', focus: { zh: '光電半導體、電子智慧系統', en: 'Optoelectronics, semiconductors, smart electronics' } },
+      { id: 'ee', name: { zh: '電機工程學系', en: 'Dept. of Electrical Engineering' }, url: 'https://ee.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master', 'phd'], lang: 'zh', campus: 'main', focus: { zh: '通訊光電、智慧控制、能源與系統', en: 'Communications, smart control, energy systems' } },
+      { id: 'mse', name: { zh: '材料科學與工程學系', en: 'Dept. of Materials Science and Engineering' }, url: 'https://mse.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master', 'phd'], lang: 'zh', campus: 'main', focus: { zh: '金屬、電子光電與多功能材料', en: 'Metals, electronic and functional materials' } },
+      { id: 'che', name: { zh: '化學工程學系', en: 'Dept. of Chemical Engineering' }, url: 'https://che.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '化工製程、生物技術、綠色能源', en: 'Chemical processes, biotech, green energy' } },
+      { id: 'equip', name: { zh: 'INTENSE 學士後設備工程二年制學士專班', en: 'INTENSE · Post-Baccalaureate Equipment Engineering' }, url: 'https://ee.isu.edu.tw/en-US', bridges: ['intense'], lang: 'en', campus: 'main', level: 'intense', focus: { zh: '2027 春季班：全英語授課，設備技術與企業實習', en: 'Spring 2027: English-taught equipment technology and company internship' } },
     ],
   },
   {
@@ -248,9 +248,9 @@ export const ISLANDS = [
     ],
     milestone: { zh: 'AI 專題與科技公司實習', en: 'AI project and tech internship' },
     programs: [
-      { id: 'csie', name: { zh: '資訊工程學系', en: 'Dept. of Information Engineering' }, url: 'https://csie.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master', 'phd'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: 'AI 多媒體、雲端物聯網、資安', en: 'AI multimedia, cloud & IoT, cybersecurity' } },
-      { id: 'mis', name: { zh: '資訊管理學系', en: 'Dept. of Information Management' }, url: 'https://mis.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'main', fee: 47994, focus: { zh: 'AI 應用、電子商務、數據與雲端', en: 'Applied AI, e-commerce, data & cloud' } },
-      { id: 'ipai', name: { zh: '智慧科技英語學士學位學程', en: 'International Program on AI Technology' }, url: 'https://ipai.isu.edu.tw/en-US', bridges: ['en'], lang: 'en', campus: 'main', fee: 72500, focus: { zh: 'AI、大數據、物聯網、機器人，全英語授課', en: 'AI, big data, IoT and robotics, taught in English' } },
+      { id: 'csie', name: { zh: '資訊工程學系', en: 'Dept. of Information Engineering' }, url: 'https://csie.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master', 'phd'], lang: 'zh', campus: 'main', focus: { zh: 'AI 多媒體、雲端物聯網、資安', en: 'AI multimedia, cloud & IoT, cybersecurity' } },
+      { id: 'mis', name: { zh: '資訊管理學系', en: 'Dept. of Information Management' }, url: 'https://mis.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'main', focus: { zh: 'AI 應用、電子商務、數據與雲端', en: 'Applied AI, e-commerce, data & cloud' } },
+      { id: 'ipai', name: { zh: '智慧科技英語學士學位學程', en: 'International Program on AI Technology' }, url: 'https://ipai.isu.edu.tw/en-US', bridges: ['en'], lang: 'en', campus: 'main', focus: { zh: 'AI、大數據、物聯網、機器人，全英語授課', en: 'AI, big data, IoT and robotics, taught in English' } },
     ],
   },
   {
@@ -267,9 +267,9 @@ export const ISLANDS = [
     ],
     milestone: { zh: '工廠或營建工地實習', en: 'Factory or construction-site internship' },
     programs: [
-      { id: 'mae', name: { zh: '機械與自動化工程學系', en: 'Dept. of Mechanical and Automation Engineering' }, url: 'https://mae.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '機電整合、智慧製造、3D 列印', en: 'Mechatronics, smart manufacturing, 3D printing' } },
-      { id: 'civil', name: { zh: '土木工程學系', en: 'Dept. of Civil Engineering' }, url: 'https://civil.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '結構營建、防災、永續與數位工程', en: 'Structures, disaster resilience, digital construction' } },
-      { id: 'intense-mae', name: { zh: 'INTENSE 機械與自動化工程二年制學士專班', en: 'INTENSE · Mechanical and Automation Engineering' }, url: 'https://mae.isu.edu.tw/en-US', bridges: ['intense'], lang: 'zh', campus: 'main', fee: null, level: 'intense', focus: { zh: '2027 春季班：中文授課（TOCFL A2 以上），1 年在校＋1 年企業實習', en: 'Spring 2027: Chinese-taught (TOCFL A2+), one year on campus plus one year of company internship' } },
+      { id: 'mae', name: { zh: '機械與自動化工程學系', en: 'Dept. of Mechanical and Automation Engineering' }, url: 'https://mae.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '機電整合、智慧製造、3D 列印', en: 'Mechatronics, smart manufacturing, 3D printing' } },
+      { id: 'civil', name: { zh: '土木工程學系', en: 'Dept. of Civil Engineering' }, url: 'https://civil.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '結構營建、防災、永續與數位工程', en: 'Structures, disaster resilience, digital construction' } },
+      { id: 'intense-mae', name: { zh: 'INTENSE 機械與自動化工程二年制學士專班', en: 'INTENSE · Mechanical and Automation Engineering' }, url: 'https://mae.isu.edu.tw/en-US', bridges: ['intense'], lang: 'zh', campus: 'main', level: 'intense', focus: { zh: '2027 春季班：中文授課（TOCFL A2 以上），1 年在校＋1 年企業實習', en: 'Spring 2027: Chinese-taught (TOCFL A2+), one year on campus plus one year of company internship' } },
     ],
   },
   {
@@ -286,16 +286,16 @@ export const ISLANDS = [
     ],
     milestone: { zh: '醫院臨床實習', en: 'Clinical placement in hospital' },
     programs: [
-      { id: 'nurse', name: { zh: '護理學系', en: 'Dept. of Nursing' }, url: 'https://nurse.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'medical', fee: 55495, focus: { zh: '臨床護理、健康促進，須完成台灣臨床實習', en: 'Clinical nursing and health promotion, with Taiwan clinical placements' } },
-      { id: 'bme', name: { zh: '生物醫學工程學系', en: 'Dept. of Biomedical Engineering' }, url: 'https://bme.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'medical', fee: 55495, focus: { zh: '生醫電子、生醫材料、組織工程', en: 'Biomedical electronics, biomaterials, tissue engineering' } },
-      { id: 'pt', name: { zh: '物理治療學系', en: 'Dept. of Physical Therapy' }, url: 'https://pt.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', fee: 55495, focus: { zh: '物理治療、長照與運動復健', en: 'Physical therapy, elder care, sports rehab' } },
-      { id: 'ot', name: { zh: '職能治療學系', en: 'Dept. of Occupational Therapy' }, url: 'https://ot.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', fee: 55495, focus: { zh: '兒童、成人、心理與社區職能', en: 'Pediatric, adult, mental-health and community OT' } },
-      { id: 'nut', name: { zh: '營養學系', en: 'Dept. of Nutrition' }, url: 'https://nut.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', fee: 55495, focus: { zh: '臨床營養、食品營養、團膳', en: 'Clinical and food nutrition, food service' } },
-      { id: 'healthcare', name: { zh: '醫務管理學系', en: 'Dept. of Healthcare Administration' }, url: 'https://healthcare.isu.edu.tw/en-US', bridges: ['zh', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'medical', fee: 47994, focus: { zh: '醫療機構與高齡產業管理、智慧醫療', en: 'Hospital and senior-care management, smart health' } },
-      { id: 'bst', name: { zh: '醫學科學與生物科技學系', en: 'Dept. of Medical Science and Biotechnology' }, url: 'https://bst.isu.edu.tw/en-US', bridges: ['zh', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'medical', fee: 55495, focus: { zh: '醫學科學、細胞與基因、生物科技', en: 'Medical science, cells & genes, biotech' } },
-      { id: 'rt', name: { zh: '醫學影像暨放射科學系', en: 'Dept. of Medical Imaging and Radiological Sciences' }, url: 'https://rt.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', fee: 55495, focus: { zh: '醫學影像、放射診斷與治療', en: 'Medical imaging, radiology and radiotherapy' } },
-      { id: 'mls', name: { zh: '醫學檢驗技術學系', en: 'Dept. of Medical Laboratory Science' }, url: 'https://mls.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', fee: 55495, focus: { zh: '臨床檢驗與實驗室實務', en: 'Clinical testing and lab practice' } },
-      { id: 'scm', name: { zh: '學士後中醫學系', en: 'School of Chinese Medicine for Post Baccalaureate' }, url: 'https://scmpb.isu.edu.tw/en-US', bridges: ['zh'], lang: 'zh', campus: 'medical', fee: null, level: 'postbac', focus: { zh: '已有學士學位者的五年制中醫專業養成；另有先修科目與審查要求', en: 'A five-year Chinese medicine program for degree holders, with prerequisite and admissions requirements' } },
+      { id: 'nurse', name: { zh: '護理學系', en: 'Dept. of Nursing' }, url: 'https://nurse.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'medical', focus: { zh: '臨床護理、健康促進，須完成台灣臨床實習', en: 'Clinical nursing and health promotion, with Taiwan clinical placements' } },
+      { id: 'bme', name: { zh: '生物醫學工程學系', en: 'Dept. of Biomedical Engineering' }, url: 'https://bme.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'medical', focus: { zh: '生醫電子、生醫材料、組織工程', en: 'Biomedical electronics, biomaterials, tissue engineering' } },
+      { id: 'pt', name: { zh: '物理治療學系', en: 'Dept. of Physical Therapy' }, url: 'https://pt.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', focus: { zh: '物理治療、長照與運動復健', en: 'Physical therapy, elder care, sports rehab' } },
+      { id: 'ot', name: { zh: '職能治療學系', en: 'Dept. of Occupational Therapy' }, url: 'https://ot.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', focus: { zh: '兒童、成人、心理與社區職能', en: 'Pediatric, adult, mental-health and community OT' } },
+      { id: 'nut', name: { zh: '營養學系', en: 'Dept. of Nutrition' }, url: 'https://nut.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', focus: { zh: '臨床營養、食品營養、團膳', en: 'Clinical and food nutrition, food service' } },
+      { id: 'healthcare', name: { zh: '醫務管理學系', en: 'Dept. of Healthcare Administration' }, url: 'https://healthcare.isu.edu.tw/en-US', bridges: ['zh', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'medical', focus: { zh: '醫療機構與高齡產業管理、智慧醫療', en: 'Hospital and senior-care management, smart health' } },
+      { id: 'bst', name: { zh: '醫學科學與生物科技學系', en: 'Dept. of Medical Science and Biotechnology' }, url: 'https://bst.isu.edu.tw/en-US', bridges: ['zh', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'medical', focus: { zh: '醫學科學、細胞與基因、生物科技', en: 'Medical science, cells & genes, biotech' } },
+      { id: 'rt', name: { zh: '醫學影像暨放射科學系', en: 'Dept. of Medical Imaging and Radiological Sciences' }, url: 'https://rt.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', focus: { zh: '醫學影像、放射診斷與治療', en: 'Medical imaging, radiology and radiotherapy' } },
+      { id: 'mls', name: { zh: '醫學檢驗技術學系', en: 'Dept. of Medical Laboratory Science' }, url: 'https://mls.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'medical', focus: { zh: '臨床檢驗與實驗室實務', en: 'Clinical testing and lab practice' } },
+      { id: 'scm', name: { zh: '學士後中醫學系', en: 'School of Chinese Medicine for Post Baccalaureate' }, url: 'https://scmpb.isu.edu.tw/en-US', bridges: ['zh'], lang: 'zh', campus: 'medical', level: 'postbac', focus: { zh: '已有學士學位者的五年制中醫專業養成；另有先修科目與審查要求', en: 'A five-year Chinese medicine program for degree holders, with prerequisite and admissions requirements' } },
     ],
   },
   {
@@ -312,9 +312,9 @@ export const ISLANDS = [
     ],
     milestone: { zh: '飯店或餐廳校外實習', en: 'Hotel or restaurant internship' },
     programs: [
-      { id: 'hm', name: { zh: '餐旅管理學系', en: 'Dept. of Hospitality Management' }, url: 'https://hm.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 47994, focus: { zh: '餐飲與旅館經營，須校外實習，設高級管家服務學程', en: 'Hotel & restaurant management with internships and a butler-service track' } },
-      { id: 'ca', name: { zh: '廚藝暨美食學學系', en: 'Dept. of Culinary Arts and Gastronomy' }, url: 'https://ca.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '廚藝技術、廚務管理、健康飲食，須校外實習', en: 'Culinary skills, kitchen management, healthy cuisine, with internships' } },
-      { id: 'icth', name: { zh: '智慧觀光餐旅管理英語學士學位學程', en: 'Program in Intelligent Tourism and Hospitality Management' }, url: 'https://icth.isu.edu.tw/en-US', bridges: ['en', 'oc'], lang: 'en', campus: 'main', fee: 72500, focus: { zh: '觀光餐旅、智慧服務，全英語授課', en: 'Tourism, hospitality and smart service, taught in English' } },
+      { id: 'hm', name: { zh: '餐旅管理學系', en: 'Dept. of Hospitality Management' }, url: 'https://hm.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '餐飲與旅館經營，須校外實習，設高級管家服務學程', en: 'Hotel & restaurant management with internships and a butler-service track' } },
+      { id: 'ca', name: { zh: '廚藝暨美食學學系', en: 'Dept. of Culinary Arts and Gastronomy' }, url: 'https://ca.isu.edu.tw/en-US', bridges: ['zh', 'ifp', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '廚藝技術、廚務管理、健康飲食，須校外實習', en: 'Culinary skills, kitchen management, healthy cuisine, with internships' } },
+      { id: 'icth', name: { zh: '智慧觀光餐旅管理英語學士學位學程', en: 'Program in Intelligent Tourism and Hospitality Management' }, url: 'https://icth.isu.edu.tw/en-US', bridges: ['en', 'oc'], lang: 'en', campus: 'main', focus: { zh: '觀光餐旅、智慧服務，全英語授課', en: 'Tourism, hospitality and smart service, taught in English' } },
     ],
   },
   {
@@ -331,11 +331,11 @@ export const ISLANDS = [
     ],
     milestone: { zh: '影視公司或媒體實習', en: 'Studio or media internship' },
     programs: [
-      { id: 'imem', name: { zh: '國際傳媒與娛樂管理英語學士學位學程', en: 'Program in International Media and Entertainment Management' }, url: 'https://imem.isu.edu.tw/en-US', bridges: ['en', 'oc'], lang: 'en', campus: 'main', fee: 72500, focus: { zh: '影視娛樂、活動策展、數位行銷，全英語授課', en: 'Entertainment, events and digital marketing, taught in English' } },
-      { id: 'filmtv', name: { zh: '電影與電視學系', en: 'Dept. of Film and TV' }, url: 'https://filmtv.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '劇情片、編導、攝影燈光、虛擬製作', en: 'Narrative film, directing, cinematography, virtual production' } },
-      { id: 'dmc', name: { zh: '大眾傳播學系', en: 'Dept. of Mass Communication' }, url: 'https://dmc.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '全媒體敘事、內容產製、廣告公關', en: 'Cross-media storytelling, content, advertising & PR' } },
-      { id: 'dvad', name: { zh: '視覺藝術與設計學系', en: 'Dept. of Visual Arts and Design' }, url: 'https://dvad.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', fee: 55373, focus: { zh: '視覺創作、科技藝術、互動設計', en: 'Visual art, tech art, interactive design' } },
-      { id: 'ccd', name: { zh: '文創傳播與設計碩士班', en: 'Master Program of Cultural Creative Communication and Design' }, url: 'https://mccd.isu.edu.tw/en-US', bridges: ['zh'], lang: 'zh', campus: 'main', fee: null, level: 'master', focus: { zh: '文化創意、傳播設計與跨域研究', en: 'Cultural creativity, communication, design and interdisciplinary research' } },
+      { id: 'imem', name: { zh: '國際傳媒與娛樂管理英語學士學位學程', en: 'Program in International Media and Entertainment Management' }, url: 'https://imem.isu.edu.tw/en-US', bridges: ['en', 'oc'], lang: 'en', campus: 'main', focus: { zh: '影視娛樂、活動策展、數位行銷，全英語授課', en: 'Entertainment, events and digital marketing, taught in English' } },
+      { id: 'filmtv', name: { zh: '電影與電視學系', en: 'Dept. of Film and TV' }, url: 'https://filmtv.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '劇情片、編導、攝影燈光、虛擬製作', en: 'Narrative film, directing, cinematography, virtual production' } },
+      { id: 'dmc', name: { zh: '大眾傳播學系', en: 'Dept. of Mass Communication' }, url: 'https://dmc.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '全媒體敘事、內容產製、廣告公關', en: 'Cross-media storytelling, content, advertising & PR' } },
+      { id: 'dvad', name: { zh: '視覺藝術與設計學系', en: 'Dept. of Visual Arts and Design' }, url: 'https://dvad.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '視覺創作、科技藝術、互動設計', en: 'Visual art, tech art, interactive design' } },
+      { id: 'ccd', name: { zh: '文創傳播與設計碩士班', en: 'Master Program of Cultural Creative Communication and Design' }, url: 'https://mccd.isu.edu.tw/en-US', bridges: ['zh'], lang: 'zh', campus: 'main', level: 'master', focus: { zh: '文化創意、傳播設計與跨域研究', en: 'Cultural creativity, communication, design and interdisciplinary research' } },
     ],
   },
   {
@@ -352,14 +352,14 @@ export const ISLANDS = [
     ],
     milestone: { zh: '跨國企業或金融業實習', en: 'Internship at a global firm' },
     programs: [
-      { id: 'iciba', name: { zh: '國際企業經營英語學士學位學程', en: 'Program in International Business Administration' }, url: 'https://iciba.isu.edu.tw/en-US', bridges: ['en', 'oc'], lang: 'en', campus: 'main', fee: 72500, focus: { zh: '國際企業、行銷與跨文化管理，全英語', en: 'Global business, marketing and cross-cultural management' } },
-      { id: 'icfa', name: { zh: '財務與商業分析英語學士學位學程', en: 'Program in Finance and Business Analytics' }, url: 'https://icfa.isu.edu.tw/en-US', bridges: ['en', 'oc'], lang: 'en', campus: 'main', fee: 72500, focus: { zh: '財務、商業分析、金融科技，全英語', en: 'Finance, business analytics and fintech' } },
-      { id: 'imba', name: { zh: '國際管理碩士班 IMBA', en: 'International MBA (IMBA)' }, url: 'https://imba.isu.edu.tw/en-US', bridges: ['en'], lang: 'en', campus: 'main', fee: 0, level: 'master', focus: { zh: '英語授課的管理碩士', en: 'An English-taught master’s in management' } },
-      { id: 'ba', name: { zh: '企業管理學系', en: 'Dept. of Business Administration' }, url: 'https://ba.isu.edu.tw/en-US', bridges: ['zh', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'main', fee: 47994, focus: { zh: '企業經營、行銷、AI 創新與創業', en: 'Management, marketing, AI innovation, startups' } },
-      { id: 'finance', name: { zh: '財務金融管理學系', en: 'Dept. of Finance' }, url: 'https://finance.isu.edu.tw/en-US', bridges: ['zh', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'main', fee: 47994, focus: { zh: '企業財務、金融科技與資料分析', en: 'Corporate finance, fintech, data analysis' } },
-      { id: 'acc', name: { zh: '會計學系', en: 'Dept. of Accounting' }, url: 'https://acc.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', fee: 47994, focus: { zh: '會計、審計、稅務、永續碳管理', en: 'Accounting, auditing, tax, carbon management' } },
-      { id: 'aj', name: { zh: '應用日語學系', en: 'Dept. of Applied Japanese' }, url: 'https://aj.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', fee: 47994, focus: { zh: '日語、日本商業貿易與跨文化', en: 'Japanese language, trade and culture' } },
-      { id: 'management-phd', name: { zh: '管理博士班', en: 'PhD Program in Management' }, url: 'https://gsm.isu.edu.tw/en-US', bridges: ['zh'], lang: 'zh', campus: 'main', fee: null, level: 'phd', focus: { zh: '管理組與工業管理組，以研究方法與博士論文為主軸', en: 'Management and industrial management tracks, centred on research methods and a doctoral dissertation' } },
+      { id: 'iciba', name: { zh: '國際企業經營英語學士學位學程', en: 'Program in International Business Administration' }, url: 'https://iciba.isu.edu.tw/en-US', bridges: ['en', 'oc'], lang: 'en', campus: 'main', focus: { zh: '國際企業、行銷與跨文化管理，全英語', en: 'Global business, marketing and cross-cultural management' } },
+      { id: 'icfa', name: { zh: '財務與商業分析英語學士學位學程', en: 'Program in Finance and Business Analytics' }, url: 'https://icfa.isu.edu.tw/en-US', bridges: ['en', 'oc'], lang: 'en', campus: 'main', focus: { zh: '財務、商業分析、金融科技，全英語', en: 'Finance, business analytics and fintech' } },
+      { id: 'imba', name: { zh: '國際管理碩士班 IMBA', en: 'International MBA (IMBA)' }, url: 'https://imba.isu.edu.tw/en-US', bridges: ['en'], lang: 'en', campus: 'main', level: 'master', focus: { zh: '英語授課的管理碩士', en: 'An English-taught master’s in management' } },
+      { id: 'ba', name: { zh: '企業管理學系', en: 'Dept. of Business Administration' }, url: 'https://ba.isu.edu.tw/en-US', bridges: ['zh', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'main', focus: { zh: '企業經營、行銷、AI 創新與創業', en: 'Management, marketing, AI innovation, startups' } },
+      { id: 'finance', name: { zh: '財務金融管理學系', en: 'Dept. of Finance' }, url: 'https://finance.isu.edu.tw/en-US', bridges: ['zh', 'oc'], degrees: ['bachelor', 'master'], lang: 'zh', campus: 'main', focus: { zh: '企業財務、金融科技與資料分析', en: 'Corporate finance, fintech, data analysis' } },
+      { id: 'acc', name: { zh: '會計學系', en: 'Dept. of Accounting' }, url: 'https://acc.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '會計、審計、稅務、永續碳管理', en: 'Accounting, auditing, tax, carbon management' } },
+      { id: 'aj', name: { zh: '應用日語學系', en: 'Dept. of Applied Japanese' }, url: 'https://aj.isu.edu.tw/en-US', bridges: ['zh', 'oc'], lang: 'zh', campus: 'main', focus: { zh: '日語、日本商業貿易與跨文化', en: 'Japanese language, trade and culture' } },
+      { id: 'management-phd', name: { zh: '管理博士班', en: 'PhD Program in Management' }, url: 'https://gsm.isu.edu.tw/en-US', bridges: ['zh'], lang: 'zh', campus: 'main', level: 'phd', focus: { zh: '管理組與工業管理組，以研究方法與博士論文為主軸', en: 'Management and industrial management tracks, centred on research methods and a doctoral dissertation' } },
     ],
   },
 ];
@@ -425,7 +425,6 @@ export const UI = {
   reachable: { zh: '你的橋可以到', en: 'Your bridge reaches it' },
   needOtherBridge: { zh: '要走另一座橋：', en: 'Needs another bridge: ' },
   visitSite: { zh: '系所網站', en: 'Program site' },
-  perSemester: { zh: '每學期學雜費', en: 'Per-semester fees' },
   mainCampus: { zh: '校本部', en: 'Main campus' },
   medicalCampus: { zh: '醫學院區', en: 'Medical campus' },
   taughtIn: { zh: '授課', en: 'Taught in' },
