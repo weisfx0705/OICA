@@ -1,4 +1,4 @@
-import { GoogleGenAI, Modality, Type } from "@google/genai";
+import { type GenerateContentResponse, GoogleGenAI, Type } from "@google/genai";
 import { InterpretationResult, Poem } from "../types";
 
 const ISU_GRADUATION_CONTEXT = `
@@ -302,55 +302,6 @@ function decodeBase64(base64: string) {
   return bytes;
 }
 
-function writeString(view: DataView, offset: number, string: string) {
-  for (let i = 0; i < string.length; i++) {
-    view.setUint8(offset + i, string.charCodeAt(i));
-  }
-}
-
-function createWavBlob(samples: Uint8Array, sampleRate: number, numChannels: number): Blob {
-  const buffer = new ArrayBuffer(44 + samples.length);
-  const view = new DataView(buffer);
-
-  writeString(view, 0, "RIFF");
-  view.setUint32(4, 36 + samples.length, true);
-  writeString(view, 8, "WAVE");
-  writeString(view, 12, "fmt ");
-  view.setUint32(16, 16, true);
-  view.setUint16(20, 1, true);
-  view.setUint16(22, numChannels, true);
-  view.setUint32(24, sampleRate, true);
-  view.setUint32(28, sampleRate * numChannels * 2, true);
-  view.setUint16(32, numChannels * 2, true);
-  view.setUint16(34, 16, true);
-  writeString(view, 36, "data");
-  view.setUint32(40, samples.length, true);
-
-  const rawBytes = new Uint8Array(buffer);
-  rawBytes.set(samples, 44);
-
-  return new Blob([buffer], { type: "audio/wav" });
-}
-
-async function decodeAudioData(
-  data: Uint8Array,
-  ctx: AudioContext,
-  sampleRate: number,
-  numChannels: number,
-): Promise<AudioBuffer> {
-  const dataInt16 = new Int16Array(data.buffer);
-  const frameCount = dataInt16.length / numChannels;
-  const buffer = ctx.createBuffer(numChannels, frameCount, sampleRate);
-
-  for (let channel = 0; channel < numChannels; channel++) {
-    const channelData = buffer.getChannelData(channel);
-    for (let i = 0; i < frameCount; i++) {
-      channelData[i] = dataInt16[i * numChannels + channel] / 32768.0;
-    }
-  }
-  return buffer;
-}
-
 export const generateInterpretationAudio = async (
   apiKey: string,
   interpretation: string,
@@ -375,40 +326,48 @@ Oracle reading: ${interpretation}`,
     "This oracle says your next chapter is open, but your suitcase should contain courage, patience, and at least one practical plan. Choose the road that lets your talent breathe, and remember: graduation is not the end of homework, it is just life assigning a group project.";
 
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-3.1-flash-tts-preview",
-      contents: [
-        {
-          parts: [
-            {
-              text: `Read aloud in English only. Use a warm, witty 2026 graduation oracle voice. Clear pace, celebratory but not cheesy. The party is only the location; focus on the graduate's future blessing. Do not mention any calendar year except 2026. Do not read emoji or Markdown: ${summaryText}`,
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: summaryText,
+              speech_metadata: { style: "Warm, witty, and celebratory graduation-oracle delivery in English, with a clear pace." },
+            }],
+          }],
+          generationConfig: {
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } },
             },
-          ],
-        },
-      ],
-      config: {
-        responseModalities: [Modality.AUDIO],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: "Puck" },
           },
-        },
+        }),
       },
-    });
+    );
+    if (!response.ok) {
+      throw new Error(`Gemini TTS request failed (HTTP ${response.status})`);
+    }
 
-    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    const result: GenerateContentResponse = await response.json();
+    const base64Audio = result.candidates?.[0]?.content?.parts
+      ?.find((part) => part.inlineData?.data)?.inlineData?.data;
     if (base64Audio) {
-      const rawData = decodeBase64(base64Audio);
+      const wav = decodeBase64(base64Audio);
+      const blob = new Blob([wav], { type: "audio/wav" });
       const audioCtx =
         existingContext ||
         new (window.AudioContext || (window as any).webkitAudioContext)({
           sampleRate: 24000,
         });
-
-      const audioBuffer = await decodeAudioData(rawData, audioCtx, 24000, 1);
-      const audioBlob = createWavBlob(rawData, 24000, 1);
-
-      return { buffer: audioBuffer, blob: audioBlob };
+      try {
+        const buffer = await audioCtx.decodeAudioData(wav.buffer);
+        return { buffer, blob };
+      } finally {
+        if (!existingContext) await audioCtx.close();
+      }
     }
   } catch (error) {
     console.error("TTS Error:", error);

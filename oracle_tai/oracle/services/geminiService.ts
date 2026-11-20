@@ -1,5 +1,5 @@
 
-import { GoogleGenAI, Modality, Type } from "@google/genai";
+import { type GenerateContentResponse, GoogleGenAI, Type } from "@google/genai";
 import { Poem, InterpretationResult } from "../types";
 import { ProgramOption } from "../programs";
 
@@ -340,69 +340,6 @@ function decodeBase64(base64: string) {
   return bytes;
 }
 
-function writeString(view: DataView, offset: number, string: string) {
-  for (let i = 0; i < string.length; i++) {
-    view.setUint8(offset + i, string.charCodeAt(i));
-  }
-}
-
-function createWavBlob(samples: Uint8Array, sampleRate: number, numChannels: number): Blob {
-  const buffer = new ArrayBuffer(44 + samples.length);
-  const view = new DataView(buffer);
-
-  // RIFF identifier
-  writeString(view, 0, 'RIFF');
-  // file length
-  view.setUint32(4, 36 + samples.length, true);
-  // RIFF type
-  writeString(view, 8, 'WAVE');
-  // format chunk identifier
-  writeString(view, 12, 'fmt ');
-  // format chunk length
-  view.setUint32(16, 16, true);
-  // sample format (raw)
-  view.setUint16(20, 1, true);
-  // channel count
-  view.setUint16(22, numChannels, true);
-  // sample rate
-  view.setUint32(24, sampleRate, true);
-  // byte rate (sampleRate * blockAlign)
-  view.setUint32(28, sampleRate * numChannels * 2, true);
-  // block align (channel count * bytes per sample)
-  view.setUint16(32, numChannels * 2, true);
-  // bits per sample
-  view.setUint16(34, 16, true);
-  // data chunk identifier
-  writeString(view, 36, 'data');
-  // data chunk length
-  view.setUint32(40, samples.length, true);
-
-  // write the PCM samples
-  const rawBytes = new Uint8Array(buffer);
-  rawBytes.set(samples, 44);
-
-  return new Blob([buffer], { type: 'audio/wav' });
-}
-
-async function decodeAudioData(
-  data: Uint8Array,
-  ctx: AudioContext,
-  sampleRate: number,
-  numChannels: number,
-): Promise<AudioBuffer> {
-  const dataInt16 = new Int16Array(data.buffer);
-  const frameCount = dataInt16.length / numChannels;
-  const buffer = ctx.createBuffer(numChannels, frameCount, sampleRate);
-
-  for (let channel = 0; channel < numChannels; channel++) {
-    const channelData = buffer.getChannelData(channel);
-    for (let i = 0; i < frameCount; i++) {
-      channelData[i] = dataInt16[i * numChannels + channel] / 32768.0;
-    }
-  }
-  return buffer;
-}
-
 export const generateInterpretationAudio = async (
   apiKey: string,
   interpretation: string,
@@ -426,35 +363,48 @@ export const generateInterpretationAudio = async (
 
   // 2. Convert Thai text to speech.
   try {
-    const response = await ai.models.generateContent({
-      model: "gemini-3.1-flash-tts-preview",
-      contents: [{ parts: [{ text: `อ่านออกเสียงเป็นภาษาไทยเท่านั้น น้ำเสียงอบอุ่น สดใส เหมาะกับนักเรียนไทยที่กำลังสนใจเรียนต่อไต้หวัน จังหวะชัดเจน ไม่เร็วเกินไป และไม่ต้องอ่านอีโมจิ: ${summaryText}` }] }],
-      config: {
-        responseModalities: [Modality.AUDIO],
-        speechConfig: {
-          voiceConfig: {
-            prebuiltVoiceConfig: { voiceName: 'Puck' },
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash-tts:generateContent",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{
+              text: summaryText,
+              speech_metadata: { style: "ภาษาไทยเท่านั้น น้ำเสียงอบอุ่น สดใส เหมาะกับนักเรียนไทยที่สนใจเรียนต่อไต้หวัน จังหวะชัดเจน ไม่เร็วเกินไป" },
+            }],
+          }],
+          generationConfig: {
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } },
+            },
           },
-        },
+        }),
       },
-    });
+    );
+    if (!response.ok) {
+      throw new Error(`Gemini TTS request failed (HTTP ${response.status})`);
+    }
 
-    const base64Audio = response.candidates?.[0]?.content?.parts?.[0]?.inlineData?.data;
+    const result: GenerateContentResponse = await response.json();
+    const base64Audio = result.candidates?.[0]?.content?.parts
+      ?.find((part) => part.inlineData?.data)?.inlineData?.data;
     if (base64Audio) {
-      const rawData = decodeBase64(base64Audio);
-      // Use existing context if provided, otherwise create a temporary one for decoding
-      const audioCtx = existingContext || new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
-
-      const audioBuffer = await decodeAudioData(
-        rawData,
-        audioCtx,
-        24000,
-        1,
-      );
-
-      const audioBlob = createWavBlob(rawData, 24000, 1);
-
-      return { buffer: audioBuffer, blob: audioBlob };
+      const wav = decodeBase64(base64Audio);
+      const blob = new Blob([wav], { type: "audio/wav" });
+      const audioCtx =
+        existingContext ||
+        new (window.AudioContext || (window as any).webkitAudioContext)({
+          sampleRate: 24000,
+        });
+      try {
+        const buffer = await audioCtx.decodeAudioData(wav.buffer);
+        return { buffer, blob };
+      } finally {
+        if (!existingContext) await audioCtx.close();
+      }
     }
   } catch (error) {
     console.error("TTS Error:", error);
